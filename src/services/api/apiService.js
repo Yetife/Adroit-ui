@@ -3,10 +3,15 @@ import METHODS from "./apiMethods.js";
 
 const { GET, POST, PUT, PATCH, DELETE } = METHODS;
 
-const authServiceCallEndpoint = ({ method, url, data, needsAuth }) => {
-    return callEndpoint({ method, url, data, needsAuth });
+const authServiceCallEndpoint = ({method, url, data, needsAuth}) => {
+    return callEndpoint({method, url, data, needsAuth})
+}
+
+export const validateUser = async user => {
+    const url = '/Adroit/Login/ValidateUser'
+    return authServiceCallEndpoint({method: POST, data: user, url})
 };
-export const login = async user => {
+export const otpLogin = async user => {
     const url = '/Adroit/Login/UserLogin'
     return authServiceCallEndpoint({method: POST, data: user, url})
 };

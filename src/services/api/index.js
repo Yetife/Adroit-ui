@@ -5,12 +5,6 @@ import {getSessionItem} from "../storage/index.js";
 
 let BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
-// if (process.env.NODE_ENV === "development") {
-//   BASE_URL = import.meta.env.VITE_APP_DEV_AUTH_URL;
-// } else {
-//   BASE_URL = import.meta.env.VITE_APP_DEV_AUTH_URL;
-// }
-
 export const refreshToken = async () => {
   try {
     const resp = await axios.post(BASE_URL + "/auth/refresh", {

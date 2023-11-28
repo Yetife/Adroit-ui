@@ -23,7 +23,7 @@ const Layout = ({children}) => {
                     <div className="px-6 py-6 pt-28 mx-auto w-full">
                         {location.pathname !== '/dashboard' && <h3 className="flex text-xs md:ml-[15rem] font-medium">{currentRoute.map(((breadcrumb, ind) => (
                             <span key={ind} className='flex flex-row'>
-                             <span className='px-2 capitalize'> {currentRoute[ind + 1]}</span>
+                             <span className='px-2 capitalize text-[16px] text-[#4A5D58]'> {currentRoute[ind + 1]}</span>
                                 {currentRoute[ind + 2] &&
                                     <img src={'../img/arrow-right.svg'} alt='arrow-right' width={5} height={5}/>}
                             </span>

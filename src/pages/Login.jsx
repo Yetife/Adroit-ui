@@ -14,7 +14,8 @@ import {Link as ReactLink, useNavigate} from 'react-router-dom';
 import {FormControl, InputAdornment, OutlinedInput, TextField} from "@mui/material";
 import {useDispatch} from "react-redux";
 import {updateSnackbar} from "../store/snackbar/reducer.js";
-import {login} from "../services/api/apiService.js";
+import {validateUser} from "../services/api/apiService.js";
+import axios, {Axios} from "axios";
 
 export const theme = extendTheme({
     colors: {
@@ -43,18 +44,56 @@ const Login = () => {
         const { value, name } = event.target;
         setInputs((values) => ({ ...values, [fieldName]: value }));
     };
-    const handleClick = ()=> {
+
+    const baseUrl = "http://prananettech-001-site28.ftempurl.com/api"
+    const handleClick = async()=> {
         setLoading(true)
-        login({
-            username: "",
-            userPassword: ""
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
-        }).catch(err =>{
+        try {
+            const user =  await axios.post('http://prananettech-001-site28.ftempurl.com/api/Adroit/Login/ValidateUser', {
+                    username: inputs.username,
+                    userPassword: inputs.password,
+                    ipAddress: "192.168.1.100",
+                    latitude: "-123.4567",
+                    longitude: "45.6789",
+                    applicationId: import.meta.env.VITE_APP_APPLICATION_ID,
+                    clientId: import.meta.env.VITE_APP_CLIENT_ID,
+                }, {
+                    headers: {
+                        'Content-Type': "application/json",
+                        'Accept': "application/json",
+                        'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*'
+                    }
+                })
+            if(user.data.statusCode === 200){
+                sessionStorage.setItem("loginUser", JSON.stringify(user.data.data));
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
+                route('/verify')
+            }else {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
+                setLoading(false)
+                route('/verify')
+            }
+        }catch(e){
+            console.log(e);
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
-        })
+            setLoading(false)
+            route('/verify')
+        }
+        // validateUser({
+        //     username: inputs.username,
+        //     userPassword: inputs.password,
+        //     ipAddress: "192.168.1.100",
+        //     latitude: "-123.4567",
+        //     longitude: "45.6789",
+        //     applicationId: import.meta.env.VITE_APP_APPLICATION_ID,
+        //     clientId: import.meta.env.VITE_APP_CLIENT_ID,
+        // }).then(res => {
+        //     dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
+        //     route('/verify')
+        // }).catch(err =>{
+        //     dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
+        // })
         setLoading(false)
-        route('/verify')
         console.log(inputs)
     }
 
@@ -101,7 +140,7 @@ const Login = () => {
                                 </FormControl>
                             </Stack>
                             <Stack m={{base:"25px 20px", md: "25px 0px"}}>
-                                <Button variant="primary" bgColor="#00C795" height="50px" size='md' as={ReactLink} isLoading={loading} isDisabled={true} colorScheme="brand" loadingText='Submitting' onClick={handleClick}>
+                                <Button variant="primary" bgColor="#00C795" height="50px" size='md' as={ReactLink} isLoading={loading} isDisabled={true} colorScheme={"brand"} loadingText='Submitting' onClick={handleClick}>
                                     <Text color="white">Login</Text>
                                 </Button>
                             </Stack>

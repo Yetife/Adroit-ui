@@ -7,6 +7,7 @@ import Customer from "../pages/LoanApplication/Customer.jsx";
 import AdjustApplication from "../pages/LoanApplication/AdjustApplication.jsx";
 import DeclinedApplication from "../pages/LoanApplication/DeclinedApplication.jsx";
 import LoanStatus from "../pages/LoanApplication/LoanStatus.jsx";
+import GeneralSetup from "../pages/generalSetup/index.jsx";
 
 const ROUTES = [
     {
@@ -66,6 +67,12 @@ const ROUTES = [
         key: "COLLECTION",
         exact: true,
         element: <Collection />,
+    },
+    {
+        path: "/generalsetup",
+        key: "GENERAL SETUP",
+        exact: true,
+        element: <GeneralSetup />,
     },
 ]
 export default ROUTES;

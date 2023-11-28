@@ -8,13 +8,20 @@ import {
     Button,
 } from "@chakra-ui/react";
 import lock from '../assets/lock.svg'
-import {Link as ReactLink} from "react-router-dom";
+import {Link as ReactLink, useNavigate} from "react-router-dom";
 import logo from "../assets/logo.svg";
 import {FormControl, InputAdornment, OutlinedInput} from "@mui/material";
+import axios from "axios";
+import {updateSnackbar} from "../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
 
 const Otp = () => {
     const [verificationCode, setVerificationCode] = useState('');
     const [remainingTime, setRemainingTime] = useState(120);
+    const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
+    const route = useNavigate()
+
 
     useEffect(() => {
         const timerInterval = setInterval(() => {
@@ -30,6 +37,58 @@ const Otp = () => {
         const inputValue = event.target.value;
         setVerificationCode(inputValue);
     };
+
+    const handleLogin = async()=> {
+       // const user = sessionStorage.getItem("loginUser");
+        setLoading(true)
+        try {
+            const user =  await axios.post('http://prananettech-001-site28.ftempurl.com/api/Adroit/Login/UserLogin', {
+                otp: "",
+                username: "adroituser",
+                userPassword: "1234",
+                ipAddress: "192.168.1.100",
+                latitude: "-123.4567",
+                longitude: "45.6789",
+                applicationId: import.meta.env.VITE_APP_APPLICATION_ID,
+                clientId: import.meta.env.VITE_APP_CLIENT_ID,
+            }, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*'
+                }
+            })
+            if(user.data.statusCode === 200){
+                sessionStorage.setItem("loginUser", JSON.stringify(user.data.data));
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
+                route('/dashboard')
+            }else {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
+                setLoading(false)
+                route('/dashboard')
+            }
+        }catch(e){
+            console.log(e);
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
+            setLoading(false)
+            route('/dashboard')
+        }
+        // otpLogin({
+        //     username: inputs.username,
+        //     userPassword: inputs.password,
+        //     ipAddress: "192.168.1.100",
+        //     latitude: "-123.4567",
+        //     longitude: "45.6789",
+        //     applicationId: import.meta.env.VITE_APP_APPLICATION_ID,
+        //     clientId: import.meta.env.VITE_APP_CLIENT_ID,
+        // }).then(res => {
+        //     dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
+        //     route('/verify')
+        // }).catch(err =>{
+        //     dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
+        // })
+        setLoading(false)
+    }
 
 
     return (
@@ -51,7 +110,8 @@ const Otp = () => {
                 >
                     <CardBody>
                         <div className="items-center justify-center flex flex-col md:m-auto m-auto">
-                            <img alt={"lock"} src={lock}/>
+                            <img alt={"lock" +
+                                ""} src={lock}/>
                             <Text color="#135D54" p="40px 0 20px" fontFamily="Inter" fontSize={{md:"32px", base: "24px"}} fontStyle="normal" fontWeight="700" lineHeight="21.6px">
                                 Verify Login
                             </Text>
@@ -77,8 +137,8 @@ const Otp = () => {
                                 />
                             </FormControl>
                             <Stack>
-                                <Button variant="primary" bgColor="#00C795" size='md' as={ReactLink} w={{md: '464px', base: '300px'}} height="50px"
-                                        to={'/dashboard'}>
+                                <Button variant="primary" bgColor="#00C795" size='md' as={ReactLink} isLoading={loading} isDisabled={true} colorScheme="brand" loadingText='Submitting' w={{md: '464px', base: '300px'}} height="50px"
+                                        onClick={handleLogin}>
                                     <Text color="white">Submit</Text>
                                 </Button>
                             </Stack>
