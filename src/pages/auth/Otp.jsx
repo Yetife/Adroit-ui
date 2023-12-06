@@ -7,13 +7,15 @@ import {
     Text,
     Button,
 } from "@chakra-ui/react";
-import lock from '../assets/lock.svg'
+import lock from '../../assets/lock.svg'
 import {Link as ReactLink, useNavigate} from "react-router-dom";
-import logo from "../assets/logo.svg";
+import logo from "../../assets/logo.svg";
 import {FormControl, InputAdornment, OutlinedInput} from "@mui/material";
 import axios from "axios";
-import {updateSnackbar} from "../store/snackbar/reducer.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
+import jwtDecode from "jwt-decode";
+import {storeUserToken} from "../../services/storage/index.js";
 
 const Otp = () => {
     const [verificationCode, setVerificationCode] = useState('');
@@ -39,11 +41,11 @@ const Otp = () => {
     };
 
     const handleLogin = async()=> {
-       // const user = sessionStorage.getItem("loginUser");
+       const otp = JSON.parse(sessionStorage.getItem("userOtp"));
         setLoading(true)
         try {
-            const user =  await axios.post('http://prananettech-001-site28.ftempurl.com/api/Adroit/Login/UserLogin', {
-                otp: "",
+            const user =  await axios.post('http://prananettech-001-site27.ftempurl.com/api/Adroit/Login/UserLogin', {
+                otp: otp,
                 username: "adroituser",
                 userPassword: "1234",
                 ipAddress: "192.168.1.100",
@@ -58,35 +60,22 @@ const Otp = () => {
                     'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*'
                 }
             })
-            if(user.data.statusCode === 200){
-                sessionStorage.setItem("loginUser", JSON.stringify(user.data.data));
+            if(user.status === 200){
+                console.log(user.data.data.data.token)
+                let decodedToken = jwtDecode(user.data.data.data.token);
+                sessionStorage.setItem("userData", JSON.stringify(decodedToken));
+                storeUserToken(user.data.data.data.token);
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
                 route('/dashboard')
             }else {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
                 setLoading(false)
-                route('/dashboard')
             }
         }catch(e){
             console.log(e);
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
             setLoading(false)
-            route('/dashboard')
         }
-        // otpLogin({
-        //     username: inputs.username,
-        //     userPassword: inputs.password,
-        //     ipAddress: "192.168.1.100",
-        //     latitude: "-123.4567",
-        //     longitude: "45.6789",
-        //     applicationId: import.meta.env.VITE_APP_APPLICATION_ID,
-        //     clientId: import.meta.env.VITE_APP_CLIENT_ID,
-        // }).then(res => {
-        //     dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
-        //     route('/verify')
-        // }).catch(err =>{
-        //     dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
-        // })
         setLoading(false)
     }
 

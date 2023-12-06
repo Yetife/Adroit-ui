@@ -1,5 +1,5 @@
-import {useState} from 'react';
-import logo from '../assets/logo.svg';
+import {useEffect, useState} from 'react';
+import logo from '../../assets/logo.svg';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {
     GridItem,
@@ -13,9 +13,10 @@ import {
 import {Link as ReactLink, useNavigate} from 'react-router-dom';
 import {FormControl, InputAdornment, OutlinedInput, TextField} from "@mui/material";
 import {useDispatch} from "react-redux";
-import {updateSnackbar} from "../store/snackbar/reducer.js";
-import {validateUser} from "../services/api/apiService.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+// import {validateUser} from "../../services/api/apiService.js";
 import axios, {Axios} from "axios";
+import {useValidateUserMutation} from "../../store/features/user/api.js";
 
 export const theme = extendTheme({
     colors: {
@@ -36,6 +37,7 @@ const Login = () => {
         username: '',
         password: '',
     })
+    const [validateUser] = useValidateUserMutation()
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
@@ -45,56 +47,30 @@ const Login = () => {
         setInputs((values) => ({ ...values, [fieldName]: value }));
     };
 
-    const baseUrl = "http://prananettech-001-site28.ftempurl.com/api"
-    const handleClick = async()=> {
+    useEffect(()=>{
+        sessionStorage.clear()
+    },[])
+
+    const handleClick = ()=> {
         setLoading(true)
-        try {
-            const user =  await axios.post('http://prananettech-001-site28.ftempurl.com/api/Adroit/Login/ValidateUser', {
-                    username: inputs.username,
-                    userPassword: inputs.password,
-                    ipAddress: "192.168.1.100",
-                    latitude: "-123.4567",
-                    longitude: "45.6789",
-                    applicationId: import.meta.env.VITE_APP_APPLICATION_ID,
-                    clientId: import.meta.env.VITE_APP_CLIENT_ID,
-                }, {
-                    headers: {
-                        'Content-Type': "application/json",
-                        'Accept': "application/json",
-                        'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*'
-                    }
-                })
-            if(user.data.statusCode === 200){
-                sessionStorage.setItem("loginUser", JSON.stringify(user.data.data));
-                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
-                route('/verify')
-            }else {
-                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
-                setLoading(false)
-                route('/verify')
+        validateUser({
+            body: {
+                username: inputs.username,
+                userPassword: inputs.password,
+                ipAddress: "192.168.1.100",
+                latitude: "-123.4567",
+                longitude: "45.6789",
+                applicationId: import.meta.env.VITE_APP_APPLICATION_ID,
+                clientId: import.meta.env.VITE_APP_CLIENT_ID
             }
-        }catch(e){
-            console.log(e);
+        }).then(res => {
+            sessionStorage.setItem("userOtp", JSON.stringify(res.data.id));
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
+            route('/verify')
+        }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
             setLoading(false)
-            route('/verify')
-        }
-        // validateUser({
-        //     username: inputs.username,
-        //     userPassword: inputs.password,
-        //     ipAddress: "192.168.1.100",
-        //     latitude: "-123.4567",
-        //     longitude: "45.6789",
-        //     applicationId: import.meta.env.VITE_APP_APPLICATION_ID,
-        //     clientId: import.meta.env.VITE_APP_CLIENT_ID,
-        // }).then(res => {
-        //     dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
-        //     route('/verify')
-        // }).catch(err =>{
-        //     dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
-        // })
-        setLoading(false)
-        console.log(inputs)
+        })
     }
 
     return (

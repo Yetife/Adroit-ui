@@ -2,17 +2,20 @@ import {createTheme} from "@mui/material";
 
 const themes = createTheme({
     palette:{
-        enumWhite: {
+        waveWhite: {
             main: '#FFFFFF'
         },
-        enumBlue: {
+        waveBlue: {
             main: '#095AD3'
         },
-        enumBackground: {
+        waveBackground: {
             main: '#DEDCDC'
         },
-        enumRed:{
+        waveRed:{
             main: '#EA0707'
+        },
+        waveGreen:{
+            main: '#00C796'
         }
     }
 })

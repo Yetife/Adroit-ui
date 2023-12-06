@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import Sidebar from "../components/Sidebar.jsx";
 import {useLocation, useNavigate} from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
+import {ChevronRight} from "react-feather";
 
 const Layout = ({children}) => {
     const [ menuOpen, setMenuOpen ] = useState(false);
@@ -12,6 +13,11 @@ const Layout = ({children}) => {
     const updateSidebarOpen = (val) => {
         setMenuOpen(val)
     }
+    const transformString = (str) => {
+        // Use a regular expression to split the camelCase string
+        // and then join it with spaces
+        return str?.replace(/([a-z])([A-Z])/g, '$1 $2');
+    };
 
     return (
         <div className={` flex bg-gray-200`}>
@@ -23,9 +29,9 @@ const Layout = ({children}) => {
                     <div className="px-6 py-6 pt-28 mx-auto w-full">
                         {location.pathname !== '/dashboard' && <h3 className="flex text-xs md:ml-[15rem] font-medium">{currentRoute.map(((breadcrumb, ind) => (
                             <span key={ind} className='flex flex-row'>
-                             <span className='px-2 capitalize text-[16px] text-[#4A5D58]'> {currentRoute[ind + 1]}</span>
+                             <span className='px-2 capitalize text-[16px] text-[#4A5D58] capitalize'> {transformString(currentRoute[ind + 1])}</span>
                                 {currentRoute[ind + 2] &&
-                                    <img src={'../img/arrow-right.svg'} alt='arrow-right' width={5} height={5}/>}
+                                    <ChevronRight style={{color: "#00C796", height: "17px"}} />}
                             </span>
                         )))}
 

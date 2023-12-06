@@ -17,7 +17,7 @@ const Search = ({search, setSearch}) => {
                     ),
                 }}
                 variant="outlined"
-                className={"tw-w-[326px md:tw-w-271px"}
+                className={"tw-w-[306px] md:tw-w-[271px]"}
             />
         </div>
     );

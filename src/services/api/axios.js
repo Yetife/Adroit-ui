@@ -2,8 +2,9 @@ import axios from "axios";
 import {getUserToken} from "../storage/index.js";
 
 const header = {
-    "Content-Type": "application/json",
+    'Content-Type': "application/json",
     'Accept': "application/json",
+    'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*'
 };
 export default axios.create({
     headers: header

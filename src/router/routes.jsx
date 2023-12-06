@@ -1,5 +1,5 @@
-import Login from "../pages/Login.jsx";
-import Otp from "../pages/Otp.jsx";
+import Login from "../pages/auth/Login.jsx";
+import Otp from "../pages/auth/Otp.jsx";
 import Dashboard from "../pages/Dashboard.jsx";
 import LoanUnderwriting from "../pages/LoanUnderwriting.jsx";
 import Collection from "../pages/Collection.jsx";
@@ -8,6 +8,22 @@ import AdjustApplication from "../pages/LoanApplication/AdjustApplication.jsx";
 import DeclinedApplication from "../pages/LoanApplication/DeclinedApplication.jsx";
 import LoanStatus from "../pages/LoanApplication/LoanStatus.jsx";
 import GeneralSetup from "../pages/generalSetup/index.jsx";
+import Bank from "../pages/generalSetup/Bank.jsx";
+import EducationalLevel from "../pages/generalSetup/EducationalLevel.jsx";
+import EmploymentType from "../pages/generalSetup/EmploymentType.jsx";
+import EmploymentSector from "../pages/generalSetup/EmploymentSector.jsx";
+import Gender from "../pages/generalSetup/Gender.jsx";
+import Lga from "../pages/generalSetup/Lga.jsx";
+import MaritalStatus from "../pages/generalSetup/MaritalStatus.jsx";
+import Dependents from "../pages/generalSetup/Dependents.jsx";
+import Residency from "../pages/generalSetup/Residency.jsx";
+import Organization from "../pages/generalSetup/Organization.jsx";
+import ResidentialStatus from "../pages/generalSetup/ResidentialStatus.jsx";
+import SalaryRange from "../pages/generalSetup/SalaryRange.jsx";
+import SalaryPaymentDay from "../pages/generalSetup/SalaryPaymentDay.jsx";
+import State from "../pages/generalSetup/State.jsx";
+import Title from "../pages/generalSetup/Title.jsx";
+import Country from "../pages/generalSetup/Country.jsx";
 
 const ROUTES = [
     {
@@ -69,10 +85,112 @@ const ROUTES = [
         element: <Collection />,
     },
     {
-        path: "/generalsetup",
-        key: "GENERAL SETUP",
+        path: "/generalSetup",
         exact: true,
-        element: <GeneralSetup />,
+        children: [
+            {
+                path: "",
+                key: "GENERAL SETUP",
+                exact: true,
+                element: <GeneralSetup />,
+            },
+            {
+                path: "bank",
+                key: "bank",
+                exact: true,
+                element: <Bank />,
+            },
+            {
+                path: "educationalLevel",
+                key: "educationLevel",
+                exact: true,
+                element: <EducationalLevel />,
+            },
+            {
+                path: "employmentType",
+                key: "employmentType",
+                exact: true,
+                element: <EmploymentType />,
+            },
+            {
+                path: "employmentSector",
+                key: "employmentSector",
+                exact: true,
+                element: <EmploymentSector />,
+            },
+            {
+                path: "gender",
+                key: "gender",
+                exact: true,
+                element: <Gender />,
+            },
+            {
+                path: "L.G.A",
+                key: "lga",
+                exact: true,
+                element: <Lga />,
+            },
+            {
+                path: "maritalStatus",
+                key: "maritalStatus",
+                exact: true,
+                element: <MaritalStatus />,
+            },
+            {
+                path: "noOfDependent",
+                key: "noOfDependent",
+                exact: true,
+                element: <Dependents />,
+            },
+            {
+                path: "noOfYearsAtResident",
+                key: "noOfYearsAtResident",
+                exact: true,
+                element: <Residency />,
+            },
+            {
+                path: "organization",
+                key: "organization",
+                exact: true,
+                element: <Organization />,
+            },
+            {
+                path: "residentialStatus",
+                key: "residentialStatus",
+                exact: true,
+                element: <ResidentialStatus />,
+            },
+            {
+                path: "salaryRange",
+                key: "salaryRange",
+                exact: true,
+                element: <SalaryRange />,
+            },
+            {
+                path: "salaryPaymentDay",
+                key: "salaryPaymentDay",
+                exact: true,
+                element: <SalaryPaymentDay />,
+            },
+            {
+                path: "state",
+                key: "state",
+                exact: true,
+                element: <State />,
+            },
+            {
+                path: "title",
+                key: "title",
+                exact: true,
+                element: <Title />,
+            },
+            {
+                path: "country",
+                key: "country",
+                exact: true,
+                element: <Country />,
+            },
+        ]
     },
 ]
 export default ROUTES;

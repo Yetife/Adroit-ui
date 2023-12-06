@@ -59,9 +59,10 @@ export default function SnackBar() {
     return (
         <>
             <SnackbarProvider
+                className="h-[60px] text-7xl"
                ref={notistackRef}
                anchorOrigin={{
-                   vertical: 'bottom',
+                   vertical: 'top',
                    horizontal: 'right',
                }}
                Components={{
@@ -69,7 +70,7 @@ export default function SnackBar() {
                    error: StyledMaterialDesignContent,
                }}
                action={(key) => (
-                  <Button variant={'text'} sx={{color: 'white', fontSize: '12px', fontFamily:'DM Sans'}} onClick={() => { notistackRef.current.closeSnackbar(key); }}>
+                  <Button variant={'text'} sx={{color: 'white', fontSize: '16px', fontFamily:'DM Sans'}} onClick={() => { notistackRef.current.closeSnackbar(key); }}>
                       <div style={{fontSize: '12px', fontFamily:'DM Sans'}}>
                           Dismiss
                       </div>

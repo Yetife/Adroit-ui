@@ -1,6 +1,6 @@
 import {fetchBaseQuery} from "@reduxjs/toolkit/query";
 import {Mutex} from "async-mutex";
-import {getUserToken,} from "src/services/storage";
+import {getUserToken,} from "../storage";
 
 const baseUrl = import.meta.env.VITE_APP_BASE_URL;
 const mutex = new Mutex();
@@ -9,11 +9,12 @@ const XApiKey = import.meta.env.VITE_APP_ENCRYPTION_KEY;
 const baseQuery = fetchBaseQuery({
   baseUrl,
   prepareHeaders: (headers) => {
+    headers.set("accept", "application/json");
+    headers.set("content-type", "application/json");
+    headers.set("XApiKey", XApiKey)
     const token = getUserToken();
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
-      headers.set("content-type", "application/json");
-      headers.set("XApiKey", XApiKey)
     }
     return headers;
   },

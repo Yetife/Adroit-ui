@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3000",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -19,6 +19,7 @@
     "@mui/utils": "latest",
     "@mui/x-data-grid": "^6.8.0",
     "@mui/x-date-pickers": "^6.5.0",
+    "@radix-ui/react-dialog": "^1.0.4",
     "@reduxjs/toolkit": "^1.9.5",
     "async-mutex": "^0.4.0",
     "axios": "^1.4.0",
@@ -29,6 +30,7 @@
     "lodash": "^4.17.21",
     "luxon": "^3.3.0",
     "notistack": "^3.0.1",
+
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
