@@ -1,24 +1,22 @@
+import  {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
-import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {
-    useAddFixedDepositStatusMutation,
-} from "../../store/features/generalSetup/api.js";
+import {useAddFixedDepositAmountRangeMutation, useAddTitleMutation} from "../../store/features/generalSetup/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import TitleTable from "../../components/generalSetup/title/TitleTable.jsx";
-import AddFixedDepositStatusModal from "../../components/generalSetup/fixedDepositStatus/AddFixedDepositStatusModal.jsx";
-import FixedDepositStatusTable from "../../components/generalSetup/fixedDepositStatus/FixedDepositStatusTable.jsx";
+import AddFixedDepositAmountRangeModal from "../../components/generalSetup/fixedDepositAmountRange/AddFixedDepositAmountRangeModal.jsx";
+import FixedDepositAmountRangeTable from "../../components/generalSetup/fixedDepositAmountRange/FixedDepositAmountRangeTable.jsx";
 
-const FixedDepositStatus = () => {
+const FixedDepositAmountRange = () => {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
-    const [depositStatus, setDepositStatus] = useState("")
+    const [depositFrom, setDepositFrom] = useState("")
+    const [depositTo, setDepositTo] = useState("")
     const dispatch = useDispatch()
-    const [addDepositStatus] = useAddFixedDepositStatusMutation()
+    const [addRange] = useAddFixedDepositAmountRangeMutation()
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = (searchValue) => {
@@ -30,15 +28,17 @@ const FixedDepositStatus = () => {
     }
 
     const handleAdd = ()=> {
-        addDepositStatus({
+        addRange({
             body: {
-                name: depositStatus,
+                fromAmount: depositFrom,
+                toAmount: depositTo,
                 status: checked ? 1 : 0
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
-            setDepositStatus("")
+            setDepositFrom("")
+            setDepositTo("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
@@ -60,12 +60,12 @@ const FixedDepositStatus = () => {
                     </div>
                 </div>
                 <div>
-                    <FixedDepositStatusTable searchTerm={searchTerm}/>
+                    <FixedDepositAmountRangeTable searchTerm={searchTerm}/>
                 </div>
-                <AddFixedDepositStatusModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositStatus={depositStatus} setDepositStatus={setDepositStatus} handleAdd={handleAdd}/>
+                <AddFixedDepositAmountRangeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} handleAdd={handleAdd}/>
             </div>
         </Layout>
-    );
+    )
 };
 
-export default FixedDepositStatus;
+export default FixedDepositAmountRange;

@@ -87,24 +87,38 @@ const GeneralSetup = () => {
             name: "Title",
             icon: titleIcon,
             path: "/generalSetup/title"
-        },{
+        },
+        {
+            name: "Country",
+            icon: stateIcon,
+            path: "/generalSetup/country"
+        },
+        {
             name: "Fixed Deposit Status",
             icon: titleIcon,
-            path: "/generalSetup/bank"
+            path: "/generalSetup/fixedDepositStatus"
         },{
             name: "Fixed Deposit Tenor",
             icon: titleIcon,
-            path: "/generalSetup/bank"
+            path: "/generalSetup/fixedDepositTenor"
         },{
             name: "Fixed Deposit Range",
             icon: titleIcon,
-            path: "/generalSetup/bank"
+            path: "/generalSetup/fixedDepositAmountRange"
         },{
             name: "Fixed Deposit Preliquidation Charges",
             icon: titleIcon,
-            path: "/generalSetup/bank"
+            path: "/generalSetup/fixedDepositPreliquidationCharges"
         },{
-            name: "Country",
+            name: "Regular Loan Interest Rate",
+            icon: stateIcon,
+            path: "/generalSetup/country"
+        },{
+            name: "Fixed Deposit Interest Rate",
+            icon: stateIcon,
+            path: "/generalSetup/fixedDepositInterestRate"
+        },{
+            name: "Regular Loan Charges",
             icon: stateIcon,
             path: "/generalSetup/country"
         }
@@ -116,7 +130,7 @@ const GeneralSetup = () => {
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
                     <Search />
                 </div>
-                <div className="flex flex-wrap mt-14">
+                <div className="flex flex-wrap mt-12">
                     {
                         items.map((item, index)=>(
                             <div key={index} style={{boxShadow: "0px 0px 16px 0px rgba(0, 0, 0, 0.15)", boxSizing: 'border-box', borderRadius: '8px', position:"relative", marginBottom:"20px", backgroundColor:"white", cursor: "pointer"}}

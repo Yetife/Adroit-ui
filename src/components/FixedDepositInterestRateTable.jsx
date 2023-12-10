@@ -1,17 +1,21 @@
-import React, {useState} from "react";
-import {
-    useDeleteLgaMutation,
-    useEditLgaMutation,
-    useGetAllLgaQuery
-} from "../../store/features/generalSetup/api.js";
-import {LinearProgress, ThemeProvider} from "@mui/material";
-import themes from "../reusables/theme.jsx";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useState} from "react";
 import {useDispatch} from "react-redux";
-import AddLgaModal from "./AddLgaModal.jsx";
+import {
+    useDeleteFixedDepositAmountRangeMutation,
+    useEditFixedDepositAmountRangeMutation, useGetAllFixedDepositAmountRangeQuery
+} from "../store/features/generalSetup/api.js";
+import {updateSnackbar} from "../store/snackbar/reducer.js";
+import AddFixedDepositAmountRangeModal
+    from "./generalSetup/fixedDepositAmountRange/AddFixedDepositAmountRangeModal.jsx";
+import {LinearProgress, ThemeProvider} from "@mui/material";
+import themes from "./reusables/theme.jsx";
 
-const LgaTable = () => {
-    const {data, isFetching, error} = useGetAllLgaQuery()
+const FixedDepositInterestRateTable = ({searchTerm}) => {
+    const {data, isFetching, error} = useGetAllFixedDepositAmountRangeQuery()
+
+    const filteredData = data?.data?.filter((item) =>
+        item?.fromAmount?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">
@@ -27,7 +31,7 @@ const LgaTable = () => {
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        { data?.data?.length > 0 && data?.data?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
+                        { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
                         </tbody>
                     </table>
                     {/*{ data?.data?.length > 0 && <Pagination totalCount={data?.resultCount} getPage={getPage} /> }*/}
@@ -43,27 +47,29 @@ const LgaTable = () => {
     );
 };
 
-export default LgaTable;
+export default FixedDepositInterestRateTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-20 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
             {name}
         </th>
     )
 }
 
-const header = ['S/N', 'L.G.A', 'Status', 'Actions' ]
+const header = ['S/N', 'From Amount', 'To Amount', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
     const [open, setOpen] = useState(false);
     const [checked, setChecked] = useState(true);
-    const [lga, setLga] = useState("")
     const dispatch = useDispatch()
+    const [depositFrom, setDepositFrom] = useState("")
+    const [depositTo, setDepositTo] = useState("")
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
-   const [deleteLga] = useDeleteLgaMutation()
+    const [deleteRange] = useDeleteFixedDepositAmountRangeMutation()
+    const [editRange] = useEditFixedDepositAmountRangeMutation()
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -72,18 +78,20 @@ export function TableData({data, no}) {
     const handleOpenView = (data) =>{
         setOpen(true)
         setPurpose("view")
-        setLga(data.name)
+        setDepositFrom(data.fromAmount)
+        setDepositTo(data.toAmount)
         setChecked(data.status === 1 ? true : false )
     }
     const handleOpenEdit = (data) =>{
         setOpen(true)
         setPurpose("edit")
-        setLga(data.name)
+        setDepositFrom(data.fromAmount)
+        setDepositTo(data.toAmount)
         setId(data.id)
         setChecked(data.status === 1 ? true : false )
     }
     const handleRemove = (id)=>{
-        deleteLga(id).then((res) => {
+        deleteRange(id).then((res) => {
             dispatch(
                 updateSnackbar({
                     type: "TOGGLE_SNACKBAR_OPEN",
@@ -94,19 +102,39 @@ export function TableData({data, no}) {
         });
     }
 
+    const handleEdit = ()=> {
+        editRange({
+            body: {
+                fromAmount: depositFrom,
+                toAmount: depositTo,
+                status: checked ? 1 : 0,
+                id: id
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpen(!open)
+            setDepositFrom("")
+            setDepositTo("")
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
 
     return (
         <tr>
-            <td className="px-20 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
-            <td className="px-20 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.name}</span>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.fromAmount}</span>
             </td>
-            <td className="px-20 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.toAmount}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === 1 ? "Active" : "Inactive"}</span>
             </td>
-            <td className="px-20 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <a  onClick={handleshowDropDown } className="text-2xl cursor-pointer pt-0 leading-5 text-indigo-00 hover:text-indigo-900">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="7" viewBox="0 0 30 7" fill="none">
                         <path d="M2 3.625C2 4.05598 2.17121 4.4693 2.47595 4.77405C2.7807 5.07879 3.19402 5.25 3.625 5.25C4.05598 5.25 4.4693 5.07879 4.77405 4.77405C5.07879 4.4693 5.25 4.05598 5.25 3.625C5.25 3.19402 5.07879 2.7807 4.77405 2.47595C4.4693 2.17121 4.05598 2 3.625 2C3.19402 2 2.7807 2.17121 2.47595
@@ -121,9 +149,7 @@ export function TableData({data, no}) {
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.id)}>Remove</span>
         </span>
             </td>
-
-            <AddLgaModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} lga={lga} setLga={setLga} id={id} purpose={purpose}/>
-
+            <AddFixedDepositAmountRangeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} handleAdd={handleEdit} purpose={purpose}/>
         </tr>
     )
 }

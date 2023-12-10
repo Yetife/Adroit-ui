@@ -1,17 +1,23 @@
-import React, {useState} from "react";
+import {useState} from 'react';
+import {useDispatch} from "react-redux";
 import {
-    useDeleteLgaMutation,
-    useEditLgaMutation,
-    useGetAllLgaQuery
+    useDeleteFixedDepositTenorMutation,
+    useDeleteTitleMutation, useEditFixedDepositTenorMutation,
+    useEditTitleMutation, useGetAllFixedDepositTenorQuery,
+    useGetAllTitleQuery
 } from "../../store/features/generalSetup/api.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import AddTitleModal from "./title/AddTitleModal.jsx";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../reusables/theme.jsx";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import {useDispatch} from "react-redux";
-import AddLgaModal from "./AddLgaModal.jsx";
+import AddFixedDepositTenorModal from "./AddFixedDepositTenorModal.jsx";
 
-const LgaTable = () => {
-    const {data, isFetching, error} = useGetAllLgaQuery()
+const FixedDepositTenorTable = ({searchTerm}) => {
+    const {data, isFetching, error} = useGetAllFixedDepositTenorQuery()
+
+    const filteredData = data?.data?.filter((item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">
@@ -27,7 +33,7 @@ const LgaTable = () => {
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        { data?.data?.length > 0 && data?.data?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
+                        { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
                         </tbody>
                     </table>
                     {/*{ data?.data?.length > 0 && <Pagination totalCount={data?.resultCount} getPage={getPage} /> }*/}
@@ -43,27 +49,31 @@ const LgaTable = () => {
     );
 };
 
-export default LgaTable;
+export default FixedDepositTenorTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-20 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
             {name}
         </th>
     )
 }
 
-const header = ['S/N', 'L.G.A', 'Status', 'Actions' ]
+const header = ['S/N', 'Tenor Name', 'Tenor Code', 'Tenor Description', 'Tenor Days', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
     const [open, setOpen] = useState(false);
     const [checked, setChecked] = useState(true);
-    const [lga, setLga] = useState("")
+    const [tenorName, setTenorName] = useState("")
+    const [tenorDesc, setTenorDesc] = useState("")
+    const [tenorCode, setTenorCode] = useState("")
+    const [tenorDays, setTenorDays] = useState("")
     const dispatch = useDispatch()
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
-   const [deleteLga] = useDeleteLgaMutation()
+    const [deleteTenor] = useDeleteFixedDepositTenorMutation()
+    const [editTenor] = useEditFixedDepositTenorMutation()
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -72,18 +82,24 @@ export function TableData({data, no}) {
     const handleOpenView = (data) =>{
         setOpen(true)
         setPurpose("view")
-        setLga(data.name)
+        setTenorName(data.name)
+        setTenorCode(data.code)
+        setTenorDesc(data.description)
+        setTenorDays(data.days)
         setChecked(data.status === 1 ? true : false )
     }
     const handleOpenEdit = (data) =>{
         setOpen(true)
         setPurpose("edit")
-        setLga(data.name)
+        setTenorName(data.name)
+        setTenorCode(data.code)
+        setTenorDesc(data.description)
+        setTenorDays(data.days)
         setId(data.id)
         setChecked(data.status === 1 ? true : false )
     }
     const handleRemove = (id)=>{
-        deleteLga(id).then((res) => {
+        deleteTenor(id).then((res) => {
             dispatch(
                 updateSnackbar({
                     type: "TOGGLE_SNACKBAR_OPEN",
@@ -94,19 +110,49 @@ export function TableData({data, no}) {
         });
     }
 
+    const handleEdit = ()=> {
+        editTenor({
+            body: {
+                name: tenorName,
+                code: tenorCode,
+                description: tenorDesc,
+                days: tenorDays,
+                status: checked ? 1 : 0,
+                id: id
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpen(!open)
+            setTenorName("")
+            setTenorCode("")
+            setTenorDays("")
+            setTenorDesc("")
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
 
     return (
         <tr>
-            <td className="px-20 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
-            <td className="px-20 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.name}</span>
             </td>
-            <td className="px-20 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.code}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.description}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.days}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === 1 ? "Active" : "Inactive"}</span>
             </td>
-            <td className="px-20 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <a  onClick={handleshowDropDown } className="text-2xl cursor-pointer pt-0 leading-5 text-indigo-00 hover:text-indigo-900">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="7" viewBox="0 0 30 7" fill="none">
                         <path d="M2 3.625C2 4.05598 2.17121 4.4693 2.47595 4.77405C2.7807 5.07879 3.19402 5.25 3.625 5.25C4.05598 5.25 4.4693 5.07879 4.77405 4.77405C5.07879 4.4693 5.25 4.05598 5.25 3.625C5.25 3.19402 5.07879 2.7807 4.77405 2.47595C4.4693 2.17121 4.05598 2 3.625 2C3.19402 2 2.7807 2.17121 2.47595
@@ -121,9 +167,8 @@ export function TableData({data, no}) {
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.id)}>Remove</span>
         </span>
             </td>
-
-            <AddLgaModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} lga={lga} setLga={setLga} id={id} purpose={purpose}/>
-
+            <AddFixedDepositTenorModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} tenorName={tenorName} setTenorName={setTenorName} tenorCode={tenorCode} setTenorCode={setTenorCode} tenorDesc={tenorDesc}
+                                       setTenorDesc={setTenorDesc} tenorDays={tenorDays} setTenorDays={setTenorDays} handleAdd={handleEdit} purpose={purpose}/>
         </tr>
     )
 }

@@ -1,24 +1,24 @@
+import  {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
-import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {
-    useAddFixedDepositStatusMutation,
-} from "../../store/features/generalSetup/api.js";
+import {useAddFixedDepositTenorMutation} from "../../store/features/generalSetup/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import TitleTable from "../../components/generalSetup/title/TitleTable.jsx";
-import AddFixedDepositStatusModal from "../../components/generalSetup/fixedDepositStatus/AddFixedDepositStatusModal.jsx";
-import FixedDepositStatusTable from "../../components/generalSetup/fixedDepositStatus/FixedDepositStatusTable.jsx";
+import AddFixedDepositTenorModal from "../../components/generalSetup/AddFixedDepositTenorModal.jsx";
+import FixedDepositTenorTable from "../../components/generalSetup/FixedDepositTenorTable.jsx";
 
-const FixedDepositStatus = () => {
+const FixedDepositTenor = () => {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
-    const [depositStatus, setDepositStatus] = useState("")
+    const [tenorName, setTenorName] = useState("")
+    const [tenorDesc, setTenorDesc] = useState("")
+    const [tenorCode, setTenorCode] = useState("")
+    const [tenorDays, setTenorDays] = useState("")
     const dispatch = useDispatch()
-    const [addDepositStatus] = useAddFixedDepositStatusMutation()
+    const [addTenor] = useAddFixedDepositTenorMutation()
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = (searchValue) => {
@@ -30,15 +30,21 @@ const FixedDepositStatus = () => {
     }
 
     const handleAdd = ()=> {
-        addDepositStatus({
+        addTenor({
             body: {
-                name: depositStatus,
+                name: tenorName,
+                code: tenorCode,
+                description: tenorDesc,
+                days: tenorDays,
                 status: checked ? 1 : 0
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
-            setDepositStatus("")
+            setTenorName("")
+            setTenorCode("")
+            setTenorDays("")
+            setTenorDesc("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
@@ -60,12 +66,13 @@ const FixedDepositStatus = () => {
                     </div>
                 </div>
                 <div>
-                    <FixedDepositStatusTable searchTerm={searchTerm}/>
+                    <FixedDepositTenorTable searchTerm={searchTerm}/>
                 </div>
-                <AddFixedDepositStatusModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositStatus={depositStatus} setDepositStatus={setDepositStatus} handleAdd={handleAdd}/>
+                <AddFixedDepositTenorModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} tenorName={tenorName} setTenorName={setTenorName} tenorCode={tenorCode} setTenorCode={setTenorCode} tenorDesc={tenorDesc}
+                                           setTenorDesc={setTenorDesc} tenorDays={tenorDays} setTenorDays={setTenorDays} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );
 };
 
-export default FixedDepositStatus;
+export default FixedDepositTenor;

@@ -14,27 +14,11 @@ const Lga = () => {
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
     const [lga, setLga] = useState("")
-    const dispatch = useDispatch()
-    const [addLga] = useAddLgaMutation()
 
     const handleOpen = () => {
         setOpen(true)
     }
 
-    const handleAdd = ()=> {
-        addLga({
-            body: {
-                name: lga,
-                statusID: checked ? 1 : 0
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-            setLga("")
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
     return (
         <Layout>
             <div className="px-2">
@@ -54,7 +38,7 @@ const Lga = () => {
                 <div>
                     <LgaTable />
                 </div>
-                <AddLgaModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} lga={lga} setLga={setLga} handleAdd={handleAdd}/>
+                <AddLgaModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} lga={lga} setLga={setLga} />
             </div>
         </Layout>
     );

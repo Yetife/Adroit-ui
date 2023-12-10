@@ -1,18 +1,21 @@
-import {useState} from "react";
+import {useState} from 'react';
 import {useDispatch} from "react-redux";
-import {useDeleteStateMutation, useEditStateMutation, useGetAllStateQuery
-} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {
+    useDeleteFixedDepositPreliquidationChargesMutation,
+    useEditFixedDepositPreliquidationChargesMutation, useGetAllFixedDepositPreliquidationChargesQuery,
+} from "../../../store/features/generalSetup/api.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
-import themes from "../reusables/theme.jsx";
-import AddStateModal from "./AddStateModal.jsx";
+import themes from "../../reusables/theme.jsx";
+import AddFixedDepositPreliquidationChargesModal from "./AddFixedDepositPreliquidationChargesModal.jsx";
 
-const StateTable = ({searchTerm}) => {
-    const {data, isFetching, error} = useGetAllStateQuery()
+const FixedDepositPreliquidationChargesTable = ({searchTerm}) => {
+    const {data, isFetching, error} = useGetAllFixedDepositPreliquidationChargesQuery()
 
     const filteredData = data?.data?.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        item?.fromAmount?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
 
     return (
         <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">
@@ -44,7 +47,8 @@ const StateTable = ({searchTerm}) => {
     );
 };
 
-export default StateTable;
+export default FixedDepositPreliquidationChargesTable;
+
 
 export function TableHeader({name}) {
     return (
@@ -54,18 +58,21 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'State', 'Status', 'Actions' ]
+const header = ['S/N', 'From Amount', 'To Amount', 'Is Percentage', 'Amount Charge', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
     const [open, setOpen] = useState(false);
     const [checked, setChecked] = useState(true);
-    const [state, setState] = useState("")
+    const [depositFrom, setDepositFrom] = useState("")
+    const [depositTo, setDepositTo] = useState("")
+    const [percentage, setPercentage] = useState("")
+    const [charges, setCharges] = useState("")
     const dispatch = useDispatch()
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
-    const [deleteState] = useDeleteStateMutation()
-    const [editState] = useEditStateMutation()
+    const [deleteCharges] = useDeleteFixedDepositPreliquidationChargesMutation()
+    const [editCharges] = useEditFixedDepositPreliquidationChargesMutation()
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -74,18 +81,24 @@ export function TableData({data, no}) {
     const handleOpenView = (data) =>{
         setOpen(true)
         setPurpose("view")
-        setState(data.name)
+        setDepositFrom(data.fromAmount)
+        setDepositTo(data.toAmount)
+        setPercentage(data.isPercentage)
+        setCharges(data.amountCharge)
         setChecked(data.status === 1 ? true : false )
     }
     const handleOpenEdit = (data) =>{
         setOpen(true)
         setPurpose("edit")
-        setState(data.name)
+        setDepositFrom(data.fromAmount)
+        setDepositTo(data.toAmount)
+        setPercentage(data.isPercentage)
+        setCharges(data.amountCharge)
         setId(data.id)
         setChecked(data.status === 1 ? true : false )
     }
     const handleRemove = (id)=>{
-        deleteState(id).then((res) => {
+        deleteCharges(id).then((res) => {
             dispatch(
                 updateSnackbar({
                     type: "TOGGLE_SNACKBAR_OPEN",
@@ -97,16 +110,22 @@ export function TableData({data, no}) {
     }
 
     const handleEdit = ()=> {
-        editState({
+        editCharges({
             body: {
-                name: state,
-                statusID: checked ? 1 : 0,
+                fromAmount: depositFrom,
+                toAmount: depositTo,
+                isPercentage: percentage,
+                amountCharge: charges,
+                status: checked ? 1 : 0,
                 id: id
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
-            setState("")
+            setDepositFrom("")
+            setDepositTo("")
+            setPercentage("")
+            setCharges("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
@@ -118,7 +137,16 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.name}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.fromAmount}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.toAmount}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.isPercentage}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.amountCharge}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === 1 ? "Active" : "Inactive"}</span>
@@ -138,8 +166,8 @@ export function TableData({data, no}) {
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.id)}>Remove</span>
         </span>
             </td>
-            <AddStateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} purpose={purpose} state={state} setState={setState} handleAdd={handleEdit}/>
-
+            <AddFixedDepositPreliquidationChargesModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} percentage={percentage} setPercentage={setPercentage}
+                                                       charges={charges} setCharges={setCharges} handleAdd={handleEdit} purpose={purpose}/>
         </tr>
     )
 }

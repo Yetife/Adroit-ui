@@ -1,57 +1,43 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import {Checkbox} from "@mui/material";
 import {Close} from "@mui/icons-material";
+import {
+    useAddStateMutation,
+    useEditStateMutation
+} from "../../../store/features/generalSetup/api.js";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
-import {useAddLgaMutation, useEditLgaMutation} from "../../store/features/generalSetup/api.js";
 
-const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, purpose, id}) => {
-    const [state, setState] = useState([]);
+const AddStateModal = ({open, setOpen, checked, setChecked, state, setState, purpose, id}) => {
+    const [country, setCountry] = useState([]);
     const [selectedValue, setSelectedValue] = useState('');
     const [selectedId, setSelectedId] = useState('');
     const dispatch = useDispatch()
-    const [addLga] = useAddLgaMutation()
-    const [editLga] = useEditLgaMutation()
-
-
-
-    const handleChange = (event) => {
-        setChecked(event.target.checked);
-    };
-    const handleLgaChange = (e) => {
-        setLga(e.target.value)
-    };
-
-    const handleSelectChange = (event) => {
-        const selectedOption = event.target.value;
-        const selectedOptionObject = state.find((option) => option.name === selectedOption);
-
-        setSelectedValue(selectedOption);
-        setSelectedId(selectedOptionObject ? selectedOptionObject.id : ''); // Use the corresponding ID
-    };
+    const [addState] = useAddStateMutation()
+    const [editState] = useEditStateMutation()
 
     const handleAdd = ()=> {
         if (!id){
-            addLga({
+            addState({
                 body: {
-                    name: lga,
+                    name: state,
                     statusID: checked ? 1 : 0,
-                    detId: selectedValue,
+                    detId: selectedValue
                 }
             }).then(res => {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
                 setOpen(!open)
-                setLga("")
+                setState("")
                 setSelectedValue("")
             }).catch(err =>{
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
             })
         }else{
-            editLga({
+            editState({
                 body: {
-                    name: lga,
+                    name: state,
                     statusID: checked ? 1 : 0,
                     detId: selectedValue,
                     id: id
@@ -59,18 +45,34 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, purpose, 
             }).then(res => {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
                 setOpen(!open)
-                setlga("")
-                setSelectedValue("")
+                setState("")
             }).catch(err =>{
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
             })
         }
     }
+
+    const handleSelectChange = (event) => {
+        const selectedOption = event.target.value;
+        const selectedOptionObject = country.find((option) => option.name === selectedOption);
+
+        setSelectedValue(selectedOption);
+        setSelectedId(selectedOptionObject ? selectedOptionObject.id : ''); // Use the corresponding ID
+    };
+
+    const handleChange = (event) => {
+        setChecked(event.target.checked);
+    };
+
+    const handleLgaChange = (e) => {
+        setState(e.target.value);
+    };
+
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidStates');
-            setState(response.data.data);
-            console.log('Fetched state:', response.data.data);
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidCountry');
+            setCountry(response.data.data);
+            console.log('Fetched Country:', response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -80,18 +82,19 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, purpose, 
         fetchData();
     }, []);
 
-    const fetchLga = async () => {
+    const fetchState = async () => {
         try {
-            const response = await axios.get(`http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getLgabyid/id?id=${id}`);
-            setSelectedValue(response.data?.data.stateid)
-            console.log(response?.data.data.stateid)
+            const response = await axios.get(`http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getStatebyid/id?id=${id}`);
+            setSelectedValue(response.data?.data.countryid)
+            console.log(response?.data.data.countryid)
+            console.log('Fetched Country:', response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
     if (id && open){
-        fetchLga()
+        fetchState()
     }
 
     return (
@@ -111,25 +114,25 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, purpose, 
                             <div>
                                 <span className="ml-8">
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                    L.G.A
+                                    State
                                   </h3>
                                   <input
                                       type="text"
-                                      value={lga}
+                                      value={state}
                                       disabled={purpose === "view"}
                                       onChange={handleLgaChange}
-                                      placeholder="Enter lga"
+                                      placeholder="Enter state"
                                       className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                   />
                                 </span>
                                 <span className="ml-8">
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                    State
+                                    Country
                                   </h3>
                                      <select id="select" value={selectedValue} onChange={handleSelectChange}
                                              style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
-                                        <option value="" disabled>Select a state</option>
-                                         {state && state?.map((option) => (
+                                        <option value="" disabled>Select a country</option>
+                                             {country.map((option) => (
                                              <option key={option.id} value={option.id}>
                                                  {option.name}
                                              </option>
@@ -155,7 +158,7 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, purpose, 
                                 <div className="flex space-x-3 float-right my-4">
                                     <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8" onClick={()=>setOpen(!open)}>Close</button>
                                     {purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
-                                             onClick={handleAdd}>Save</button>}
+                                                                   onClick={handleAdd}>Save</button>}
                                 </div>
                             </div>
                         </div>
@@ -174,4 +177,4 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, purpose, 
     );
 };
 
-export default AddLgaModal;
+export default AddStateModal;

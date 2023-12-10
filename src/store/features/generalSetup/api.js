@@ -9,7 +9,9 @@ export const generalSetUpApi = createApi({
         "DelMaritalStatus", "EditMaritalStatus", "AddDependents", "DelDependents", "EditDependent", "AddResidency", "DelResidency", "EditResidency",
         "AddOrganization", "DelOrganization", "EditOrganization", "AddResidentialStatus", "DelResidentialStatus", "EditResidentialStatus",
         "AddSalaryRange", "DelSalaryRange", "EditSalaryRange", "AddSalaryPaymentDay", "DelSalaryPaymentDay", "EditSalaryPaymentDay", "AddState",
-        "DelState", "EditState", "AddTitle", "DelTitle", "EditTitle", "AddCountry", "DelCountry", "EditCountry"],
+        "DelState", "EditState", "AddTitle", "DelTitle", "EditTitle", "AddCountry", "DelCountry", "EditCountry", "AddFixedDepositStatus", "DelFixedDepositStatus",
+        "EditFixedDepositStatus", "AddFixedDepositTenor", "DelFixedDepositTenor", "EditFixedDepositTenor", "AddFixedDepositPreliquidationCharges", "DelFixedDepositPreliquidationCharges",
+        "EditFixedDepositPreliquidationCharges"] ,
 
     endpoints: (builder) => ({
         addBanks: builder.mutation({
@@ -403,6 +405,12 @@ export const generalSetUpApi = createApi({
             }),
             providesTags: ["AddState", "DelState", "EditState"]
         }),
+        getAStateById: builder.query({
+            query: (id) => ({
+                url: `/GeneralSetUp/getStatebyid/id?id=${id}`,
+            }),
+            providesTags: []
+        }),
         deleteState: builder.mutation({
             query:(id)=>({
                 url:`/GeneralSetUp/deleteStatebyid/id?id=${id}`,
@@ -476,6 +484,128 @@ export const generalSetUpApi = createApi({
             }),
             invalidatesTags: ["EditCountry"]
         }),
+        getACountryById: builder.query({
+            query: (id) => ({
+                url: `/GeneralSetUp/getCountrybyid/id?id=${id}`,
+            }),
+            providesTags: []
+        }),
+        addFixedDepositStatus: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/addFixedDepositStatus`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddFixedDepositStatus"]
+        }),
+        getAllFixedDepositStatus: builder.query({
+            query: () => ({
+                url: `/GeneralSetUp/getallvalidFixedDepositStatus`,
+            }),
+            providesTags: ["AddFixedDepositStatus", "DelFixedDepositStatus", "EditFixedDepositStatus"]
+        }),
+        deleteFixedDepositStatus: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/deleteFixedDepositStatusbyid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelFixedDepositStatus"]
+        }),
+        editFixedDepositStatus: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/updateFixedDepositStatus`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["EditFixedDepositStatus"]
+        }),
+        addFixedDepositTenor: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/addFixedDepositTenor`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddFixedDepositTenor"]
+        }),
+        getAllFixedDepositTenor: builder.query({
+            query: () => ({
+                url: `/GeneralSetUp/getallvalidFixedDepositTenors`,
+            }),
+            providesTags: ["AddFixedDepositTenor", "DelFixedDepositTenor", "EditFixedDepositTenor"]
+        }),
+        deleteFixedDepositTenor: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/deleteFixedDepositTenorbyid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelFixedDepositTenor"]
+        }),
+        editFixedDepositTenor: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/updateFixedDepositTenor`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["EditFixedDepositTenor"]
+        }),
+        addFixedDepositAmountRange: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/addFixedDepositAmountRange`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddFixedDepositAmountRange"]
+        }),
+        getAllFixedDepositAmountRange: builder.query({
+            query: () => ({
+                url: `/GeneralSetUp/getallvalidFixedDepositAmountRange`,
+            }),
+            providesTags: ["AddFixedDepositAmountRange", "DelFixedDepositAmountRange", "EditFixedDepositAmountRange"]
+        }),
+        deleteFixedDepositAmountRange: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/deleteFixedDepositAmountRangebyid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelFixedDepositAmountRange"]
+        }),
+        editFixedDepositAmountRange: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/updateFixedDepositAmountRange`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["EditFixedDepositAmountRange"]
+        }),
+        addFixedDepositPreliquidationCharges: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/addFixedDepositPreliquidationCharges`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddFixedDepositPreliquidationCharges"]
+        }),
+        getAllFixedDepositPreliquidationCharges: builder.query({
+            query: () => ({
+                url: `/GeneralSetUp/getallvalidFixedDepositPreliquidationCharges`,
+            }),
+            providesTags: ["AddFixedDepositPreliquidationCharges", "DelFixedDepositPreliquidationCharges", "EditFixedDepositPreliquidationCharges"]
+        }),
+        deleteFixedDepositPreliquidationCharges: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/deleteFixedDepositPreliquidationChargesbyid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelFixedDepositPreliquidationCharges"]
+        }),
+        editFixedDepositPreliquidationCharges: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/updateFixedDepositPreliquidationCharges`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["EditFixedDepositPreliquidationCharges"]
+        }),
     })
 })
 
@@ -534,6 +664,7 @@ export const {
     useEditSalaryPaymentDayMutation,
     useAddStateMutation,
     useGetAllStateQuery,
+    useGetAStateByIdQuery,
     useDeleteStateMutation,
     useEditStateMutation,
     useAddTitleMutation,
@@ -542,6 +673,23 @@ export const {
     useEditTitleMutation,
     useAddCountryMutation,
     useGetAllCountryQuery,
+    useGetACountryByIdQuery,
     useDeleteCountryMutation,
     useEditCountryMutation,
+    useAddFixedDepositStatusMutation,
+    useGetAllFixedDepositStatusQuery,
+    useDeleteFixedDepositStatusMutation,
+    useEditFixedDepositStatusMutation,
+    useAddFixedDepositTenorMutation,
+    useGetAllFixedDepositTenorQuery,
+    useDeleteFixedDepositTenorMutation,
+    useEditFixedDepositTenorMutation,
+    useAddFixedDepositAmountRangeMutation,
+    useGetAllFixedDepositAmountRangeQuery,
+    useDeleteFixedDepositAmountRangeMutation,
+    useEditFixedDepositAmountRangeMutation,
+    useAddFixedDepositPreliquidationChargesMutation,
+    useGetAllFixedDepositPreliquidationChargesQuery,
+    useDeleteFixedDepositPreliquidationChargesMutation,
+    useEditFixedDepositPreliquidationChargesMutation,
 } = generalSetUpApi

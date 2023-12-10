@@ -8,17 +8,20 @@ import {Button, Text} from "@chakra-ui/react";
 import LgaTable from "../../components/generalSetup/LgaTable.jsx";
 import AddLgaModal from "../../components/generalSetup/AddLgaModal.jsx";
 import {useAddStateMutation} from "../../store/features/generalSetup/api.js";
-import StateTable from "../../components/generalSetup/StateTable.jsx";
-import AddStateModal from "../../components/generalSetup/AddStateModal.jsx";
+import StateTable from "../../components/generalSetup/state/StateTable.jsx";
+import AddStateModal from "../../components/generalSetup/state/AddStateModal.jsx";
 
 const State = () => {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
     const [state, setState] = useState("")
+    // const [selectedId, setSelectedId] = useState('');
     const dispatch = useDispatch()
     const [addState] = useAddStateMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedValue, setSelectedValue] = useState('');
+
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -28,20 +31,22 @@ const State = () => {
         setOpen(true)
     }
 
-    const handleAdd = ()=> {
-        addState({
-            body: {
-                name: state,
-                statusID: checked ? 1 : 0
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-            setState("")
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
+    // const handleAdd = ()=> {
+    //     addState({
+    //         body: {
+    //             name: state,
+    //             statusID: checked ? 1 : 0,
+    //             detId: selectedValue
+    //         }
+    //     }).then(res => {
+    //         dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+    //         setOpen(!open)
+    //         setState("")
+    //         setSelectedValue("")
+    //     }).catch(err =>{
+    //         dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+    //     })
+    // }
     return (
         <Layout>
             <div className="px-2">
@@ -61,7 +66,7 @@ const State = () => {
                 <div>
                     <StateTable searchTerm={searchTerm}/>
                 </div>
-                <AddStateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} state={state} setState={setState} handleAdd={handleAdd}/>
+                <AddStateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} state={state} setState={setState}/>
             </div>
         </Layout>
     );

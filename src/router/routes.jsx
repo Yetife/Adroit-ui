@@ -24,6 +24,11 @@ import SalaryPaymentDay from "../pages/generalSetup/SalaryPaymentDay.jsx";
 import State from "../pages/generalSetup/State.jsx";
 import Title from "../pages/generalSetup/Title.jsx";
 import Country from "../pages/generalSetup/Country.jsx";
+import FixedDepositStatus from "../pages/generalSetup/FixedDepositStatus.jsx";
+import FixedDepositTenor from "../pages/generalSetup/FixedDepositTenor.jsx";
+import FixedDepositAmountRange from "../pages/generalSetup/FixedDepositAmountRange.jsx";
+import FixedDepositPreliquidationCharges from "../pages/generalSetup/FixedDepositPreliquidationCharges.jsx";
+import FixedDepositInterestRate from "../pages/generalSetup/FixedDepositInterestRate.jsx";
 
 const ROUTES = [
     {
@@ -189,6 +194,36 @@ const ROUTES = [
                 key: "country",
                 exact: true,
                 element: <Country />,
+            },
+            {
+                path: "fixedDepositStatus",
+                key: "fixedDepositStatus",
+                exact: true,
+                element: <FixedDepositStatus />,
+            },
+            {
+                path: "fixedDepositTenor",
+                key: "fixedDepositTenor",
+                exact: true,
+                element: <FixedDepositTenor />,
+            },
+            {
+                path: "fixedDepositAmountRange",
+                key: "fixedDepositAmountRange",
+                exact: true,
+                element: <FixedDepositAmountRange />,
+            },
+            {
+                path: "fixedDepositPreliquidationCharges",
+                key: "fixedDepositPreliquidationCharges",
+                exact: true,
+                element: <FixedDepositPreliquidationCharges />,
+            },
+            {
+                path: "fixedDepositInterestRate",
+                key: "fixedDepositInterestRate",
+                exact: true,
+                element: <FixedDepositInterestRate />,
             },
         ]
     },
