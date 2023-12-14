@@ -1,19 +1,14 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import {Close} from "@mui/icons-material";
 import {Checkbox} from "@mui/material";
+import {Close} from "@mui/icons-material";
 
-const AddBankModal = ({open, setOpen, purpose, checked, setChecked, bankName, setBankName, bankCode, setBankCode, handleAdd}) => {
-
+const AddTenorModal = ({open, setOpen, checked, setChecked, tenor, setTenor, purpose, handleAdd}) => {
     const handleChange = (event) => {
         setChecked(event.target.checked);
     };
-    const handleNameChange = (e) => {
-        setBankName(e.target.value)
+    const handleTenorChange = (e) => {
+        setTenor(e.target.value)
     };
-    const handleCodeChange = (e) => {
-        setBankCode(e.target.value)
-    };
-
 
 
     return (
@@ -33,27 +28,14 @@ const AddBankModal = ({open, setOpen, purpose, checked, setChecked, bankName, se
                             <div>
                                 <span className="ml-8">
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                    Bank
+                                    Tenor
                                   </h3>
                                   <input
                                       type="text"
-                                      value={bankName}
+                                      value={tenor}
                                       disabled={purpose === "view"}
-                                      onChange={handleNameChange}
-                                      placeholder="Enter bank"
-                                      className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                  />
-                                </span>
-                                <span className="ml-8">
-                                  <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                    Bank Code
-                                  </h3>
-                                  <input
-                                      type="text"
-                                      value={bankCode}
-                                      disabled={purpose === "view"}
-                                      onChange={handleCodeChange}
-                                      placeholder="Enter bank"
+                                      onChange={handleTenorChange}
+                                      placeholder="Enter tenor"
                                       className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                   />
                                 </span>
@@ -76,7 +58,7 @@ const AddBankModal = ({open, setOpen, purpose, checked, setChecked, bankName, se
                                 <div className="flex space-x-3 float-right my-4">
                                     <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8" onClick={()=>setOpen(!open)}>Close</button>
                                     {purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
-                                              onClick={handleAdd}>Save</button>}
+                                                                   onClick={handleAdd}>Save</button>}
                                 </div>
                             </div>
                         </div>
@@ -95,4 +77,4 @@ const AddBankModal = ({open, setOpen, purpose, checked, setChecked, bankName, se
     );
 };
 
-export default AddBankModal;
+export default AddTenorModal;

@@ -112,7 +112,7 @@ const GeneralSetup = () => {
         },{
             name: "Regular Loan Interest Rate",
             icon: stateIcon,
-            path: "/generalSetup/country"
+            path: "/generalSetup/regularLoanInterestRate"
         },{
             name: "Fixed Deposit Interest Rate",
             icon: stateIcon,
@@ -120,7 +120,7 @@ const GeneralSetup = () => {
         },{
             name: "Regular Loan Charges",
             icon: stateIcon,
-            path: "/generalSetup/country"
+            path: "/generalSetup/regularLoanCharges"
         }
     ]
 

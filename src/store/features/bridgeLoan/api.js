@@ -1,0 +1,197 @@
+import {createApi} from "@reduxjs/toolkit/query/react";
+import customFetchBase from "../../../services/api/customFetchBaseQuery.js";
+
+export const bridgeLoanApi = createApi({
+    reducerPath: "bridgeLoanApi",
+    baseQuery: customFetchBase,
+    tagTypes:["AddDocumentSetup", "EditDocumentSetup", "AddDocumentStatus", "EditDocumentStatus", "AddFacilityType", "DelFacilityType", "EditFacilityType",
+        "AddTenor", "DelTenor", "EditTenor", "AddDocumentationStage", "DelDocumentationStage", "EditDocumentationStage", "AddDisbursementStatus", "DelDisbursementStatus",
+        "EditDisbursementStatus"],
+    endpoints: (builder) => ({
+        addDocumentSetup: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/DocumentSetUp/add`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddDocumentSetup"]
+        }),
+        getAllValidDocumentSetup: builder.query({
+            query: () => ({
+                url: `/BridgeLoan/DocumentSetUp/getallvalid`,
+            }),
+            providesTags: ["AddDocumentSetup", "EditDocumentSetup"]
+        }),
+        editDocumentSetup: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/DocumentSetUp/update`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["EditDocumentSetup"]
+        }),
+        addDocumentStatus: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/DocumentationStatus/add`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddDocumentStatus"]
+        }),
+        getAllValidDocumentStatus: builder.query({
+            query: () => ({
+                url: `/BridgeLoan/DocumentationStatus/getallvalid`,
+            }),
+            providesTags: ["AddDocumentStatus", "EditDocumentStatus"]
+        }),
+        editDocumentStatus: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/DocumentationStatus/update`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["EditDocumentStatus"]
+        }),
+        addTenor: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/GeneralSetUpTenor/add`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddTenor"]
+        }),
+        getAllValidTenor: builder.query({
+            query: () => ({
+                url: `/BridgeLoan/GeneralSetUpTenor/getallvalid`,
+            }),
+            providesTags: ["AddTenor", "DelTenor", "EditTenor"]
+        }),
+        deleteTenor: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/deletebankbyid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelTenor"]
+        }),
+        editTenor: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/GeneralSetUpTenor/Update`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["EditTenor"]
+        }),
+        addFacilityType: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/GeneralSetUpFacilityType/add`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddFacilityType"]
+        }),
+        getAllValidFacilityType: builder.query({
+            query: () => ({
+                url: `/BridgeLoan/GeneralSetUpFacilityType/getallvalid`,
+            }),
+            providesTags: ["AddFacilityType", "DelFacilityType", "EditFacilityType"]
+        }),
+        deleteFacilityType: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/GeneralSetUpFacilityTypebyid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelFacilityType"]
+        }),
+        editFacilityType: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/GeneralSetUpFacilityType/Update`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["EditFacilityType"]
+        }),
+        addDocumentationStage: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/GeneralSetUpDocumentationStage/add`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddDocumentationStage"]
+        }),
+        getAllValidDocumentationStage: builder.query({
+            query: () => ({
+                url: `/BridgeLoan/GeneralSetUpDocumentationStage/getallvalid`,
+            }),
+            providesTags: ["AddDocumentationStage", "DelDocumentationStage", "EditDocumentationStage"]
+        }),
+        deleteDocumentationStage: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/GeneralSetUpDocumentationStage/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelDocumentationStage"]
+        }),
+        editDocumentationStage: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/GeneralSetUpDocumentationStage/Update`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["EditDocumentationStage"]
+        }),
+        addDisbursementStatus: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/GeneralSetUpDisbursementStatus/add`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddDisbursementStatus"]
+        }),
+        getAllValidDisbursementStatus: builder.query({
+            query: () => ({
+                url: `/BridgeLoan/GeneralSetUpDisbursementStatus/getallvalid`,
+            }),
+            providesTags: ["AddDisbursementStatus", "DelDisbursementStatus", "EditDisbursementStatus"]
+        }),
+        deleteDisbursementStatus: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/GeneralSetUpDisbursementStatus/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelDisbursementStatus"]
+        }),
+        editDisbursementStatus: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/GeneralSetUpDisbursementStatus/Update`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["EditDisbursementStatus"]
+        }),
+    })
+})
+
+export const {
+    useAddDocumentSetupMutation,
+    useGetAllValidDocumentSetupQuery,
+    useEditDocumentSetupMutation,
+    useAddDocumentStatusMutation,
+    useGetAllValidDocumentStatusQuery,
+    useEditDocumentStatusMutation,
+    useAddTenorMutation,
+    useGetAllValidTenorQuery,
+    useDeleteTenorMutation,
+    useEditTenorMutation,
+    useAddFacilityTypeMutation,
+    useGetAllValidFacilityTypeQuery,
+    useDeleteFacilityTypeMutation,
+    useEditFacilityTypeMutation,
+    useAddDocumentationStageMutation,
+    useGetAllValidDocumentationStageQuery,
+    useDeleteDocumentationStageMutation,
+    useEditDocumentationStageMutation,
+    useAddDisbursementStatusMutation,
+    useGetAllValidDisbursementStatusQuery,
+    useDeleteDisbursementStatusMutation,
+    useEditDisbursementStatusMutation,
+} = bridgeLoanApi

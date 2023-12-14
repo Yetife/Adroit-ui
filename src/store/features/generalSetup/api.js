@@ -11,7 +11,7 @@ export const generalSetUpApi = createApi({
         "AddSalaryRange", "DelSalaryRange", "EditSalaryRange", "AddSalaryPaymentDay", "DelSalaryPaymentDay", "EditSalaryPaymentDay", "AddState",
         "DelState", "EditState", "AddTitle", "DelTitle", "EditTitle", "AddCountry", "DelCountry", "EditCountry", "AddFixedDepositStatus", "DelFixedDepositStatus",
         "EditFixedDepositStatus", "AddFixedDepositTenor", "DelFixedDepositTenor", "EditFixedDepositTenor", "AddFixedDepositPreliquidationCharges", "DelFixedDepositPreliquidationCharges",
-        "EditFixedDepositPreliquidationCharges"] ,
+        "EditFixedDepositPreliquidationCharges", "AddRegularLoanInterestRate", "DelRegularLoanInterestRate", "EditRegularLoanInterestRate"] ,
 
     endpoints: (builder) => ({
         addBanks: builder.mutation({
@@ -606,6 +606,64 @@ export const generalSetUpApi = createApi({
             }),
             invalidatesTags: ["EditFixedDepositPreliquidationCharges"]
         }),
+        addRegularLoanInterestRate: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/addRegularLoanInterestRate`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddRegularLoanInterestRate"]
+        }),
+        getAllRegularLoanInterestRate: builder.query({
+            query: () => ({
+                url: `/GeneralSetUp/getallvalidRegularLoanInterestRate`,
+            }),
+            providesTags: ["AddRegularLoanInterestRate", "DelRegularLoanInterestRate", "EditRegularLoanInterestRate"]
+        }),
+        deleteRegularLoanInterestRate: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/deleteRegularLoanInterestRatebyid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelRegularLoanInterestRate"]
+        }),
+        editRegularLoanInterestRate: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/updateRegularLoanInterestRate`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["EditRegularLoanInterestRate"]
+        }),
+        addRegularLoanCharge: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/addRegularLoanCharge`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddRegularLoanCharge"]
+        }),
+        getAllRegularLoanCharge: builder.query({
+            query: () => ({
+                url: `/GeneralSetUp/getallvalidRegularLoanCharge`,
+            }),
+            providesTags: ["AddRegularLoanCharge", "DelRegularLoanCharge", "EditRegularLoanCharge"]
+        }),
+        deleteRegularLoanCharge: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/deleteRegularLoanChargebyid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelRegularLoanCharge"]
+        }),
+        editRegularLoanCharge: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/updateRegularLoanCharge`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["EditRegularLoanCharge"]
+        })
     })
 })
 
@@ -688,6 +746,14 @@ export const {
     useGetAllFixedDepositAmountRangeQuery,
     useDeleteFixedDepositAmountRangeMutation,
     useEditFixedDepositAmountRangeMutation,
+    useAddRegularLoanInterestRateMutation,
+    useGetAllRegularLoanInterestRateQuery,
+    useDeleteRegularLoanInterestRateMutation,
+    useEditRegularLoanInterestRateMutation,
+    useAddRegularLoanChargeMutation,
+    useGetAllRegularLoanChargeQuery,
+    useDeleteRegularLoanChargeMutation,
+    useEditRegularLoanChargeMutation,
     useAddFixedDepositPreliquidationChargesMutation,
     useGetAllFixedDepositPreliquidationChargesQuery,
     useDeleteFixedDepositPreliquidationChargesMutation,

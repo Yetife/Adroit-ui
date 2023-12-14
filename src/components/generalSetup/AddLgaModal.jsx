@@ -7,9 +7,9 @@ import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 import {useAddLgaMutation, useEditLgaMutation} from "../../store/features/generalSetup/api.js";
 
-const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, purpose, id}) => {
+const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, selectedValue,setSelectedValue, purpose, id}) => {
     const [state, setState] = useState([]);
-    const [selectedValue, setSelectedValue] = useState('');
+    // const [selectedValue, setSelectedValue] = useState('');
     const [selectedId, setSelectedId] = useState('');
     const dispatch = useDispatch()
     const [addLga] = useAddLgaMutation()
@@ -59,7 +59,7 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, purpose, 
             }).then(res => {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
                 setOpen(!open)
-                setlga("")
+                setLga("")
                 setSelectedValue("")
             }).catch(err =>{
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
@@ -80,19 +80,19 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, purpose, 
         fetchData();
     }, []);
 
-    const fetchLga = async () => {
-        try {
-            const response = await axios.get(`http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getLgabyid/id?id=${id}`);
-            setSelectedValue(response.data?.data.stateid)
-            console.log(response?.data.data.stateid)
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
-
-    if (id && open){
-        fetchLga()
-    }
+    // const fetchLga = async () => {
+    //     try {
+    //         const response = await axios.get(`http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getLgabyid/id?id=${id}`);
+    //         setSelectedValue(response.data?.data.stateid)
+    //         console.log(response?.data.data.stateid)
+    //     } catch (error) {
+    //         console.error('Error fetching data:', error);
+    //     }
+    // };
+    //
+    // if (id && open){
+    //     fetchLga()
+    // }
 
     return (
         <div>
@@ -126,7 +126,7 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, purpose, 
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                     State
                                   </h3>
-                                     <select id="select" value={selectedValue} onChange={handleSelectChange}
+                                     <select id="select" value={selectedValue} disabled={purpose === "view"} onChange={handleSelectChange}
                                              style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                         <option value="" disabled>Select a state</option>
                                          {state && state?.map((option) => (

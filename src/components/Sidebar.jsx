@@ -197,13 +197,13 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             name: 'Bridge Loan',
             hasDropdown: true,
             icon: receipt,
-            route: '/bridgeLoan',
+            route: '/bridgeLoan/documentationSetup',
             iconClosed: arrowUp,
             iconOpened: arrowDown,
             dropdown: [
                 {
                     applicationPageName: 'Documentation Setup',
-                    href: '/bridgeLoan/setup',
+                    href: '/bridgeLoan/documentationSetup',
                     route: '/bridgeLoan',
                 },
                 {
@@ -213,7 +213,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
                 },
                 {
                     applicationPageName: 'Documentation Status',
-                    href: '/bridgeLoan/status',
+                    href: '/bridgeLoan/documentationStatus',
                     route: '/bridgeLoan',
                 },
                 {

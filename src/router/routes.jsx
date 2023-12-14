@@ -29,6 +29,15 @@ import FixedDepositTenor from "../pages/generalSetup/FixedDepositTenor.jsx";
 import FixedDepositAmountRange from "../pages/generalSetup/FixedDepositAmountRange.jsx";
 import FixedDepositPreliquidationCharges from "../pages/generalSetup/FixedDepositPreliquidationCharges.jsx";
 import FixedDepositInterestRate from "../pages/generalSetup/FixedDepositInterestRate.jsx";
+import RegularLoanInterestRate from "../pages/generalSetup/RegularLoanInterestRate.jsx";
+import RegularLoanCharges from "../pages/generalSetup/RegularLoanCharges.jsx";
+import DocumentationSetup from "../pages/bridgeLoan/DocumentationSetup.jsx";
+import DocumentationStatus from "../pages/bridgeLoan/DocumentationStatus.jsx";
+import BridgeLoanGeneralSetup from "../pages/bridgeLoan/generalSetup/BridgeLoanGeneralSetup.jsx";
+import FacilityType from "../pages/bridgeLoan/generalSetup/FacilityType.jsx";
+import Tenor from "../pages/bridgeLoan/generalSetup/Tenor.jsx";
+import DocumentStages from "../pages/bridgeLoan/generalSetup/DocumentStages.jsx";
+import DisbursementStatus from "../pages/bridgeLoan/generalSetup/DisbursementStatus.jsx";
 
 const ROUTES = [
     {
@@ -224,6 +233,72 @@ const ROUTES = [
                 key: "fixedDepositInterestRate",
                 exact: true,
                 element: <FixedDepositInterestRate />,
+            },
+            {
+                path: "regularLoanInterestRate",
+                key: "regularLoanInterestRate",
+                exact: true,
+                element: <RegularLoanInterestRate />,
+            },
+
+            {
+                path: "regularLoanCharges",
+                key: "regularLoanCharges",
+                exact: true,
+                element: <RegularLoanCharges />,
+            },
+        ]
+    },
+    {
+        path: "/bridgeLoan",
+        exact: true,
+        children:[
+            {
+                path: "documentationSetup",
+                key: "DOCUMENTATION SETUP",
+                exact: true,
+                element: <DocumentationSetup />,
+            },
+            {
+                path: "documentationStatus",
+                key: "DOCUMENTATION STATUS",
+                exact: true,
+                element: <DocumentationStatus />,
+            }, {
+                path: "generalSetup",
+                exact: true,
+                children: [
+                    {
+                        path: "",
+                        key: "GENERAL SETUP",
+                        exact: true,
+                        element: <BridgeLoanGeneralSetup />,
+                    },
+                    {
+                        path: "tenor",
+                        key: "TENOR",
+                        exact: true,
+                        element: <Tenor />,
+                    },
+                    {
+                        path: "facilityType",
+                        key: "FACILITY TYPE",
+                        exact: true,
+                        element: <FacilityType />,
+                    },
+                    {
+                        path: "documentStages",
+                        key: "DOCUMENT STAGES",
+                        exact: true,
+                        element: <DocumentStages />,
+                    },
+                    {
+                        path: "disbursementStatus",
+                        key: "DISBURSEMENT STATUS",
+                        exact: true,
+                        element: <DisbursementStatus />,
+                    },
+                ]
             },
         ]
     },

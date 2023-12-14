@@ -1,46 +1,40 @@
-import {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
+import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {useAddFixedDepositAmountRangeMutation} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import Layout from "../Layout.jsx";
-import Search from "../../components/reusables/Search.jsx";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import Layout from "../../Layout.jsx";
+import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import FixedDepositInterestRateTable from "../../components/generalSetup/FixedDepositInterestRateTable.jsx";
-import AddFixedDepositInterestRateModal from "../../components/generalSetup/AddFixedDepositInterestRateModal.jsx";
+import AddTenorModal from "../../../components/bridgeLoan/generalSetup/tenor/AddTenorModal.jsx";
+import TenorTable from "../../../components/bridgeLoan/generalSetup/tenor/TenorTable.jsx";
+import {useAddTenorMutation} from "../../../store/features/bridgeLoan/api.js";
 
-const FixedDepositInterestRate = () => {
+const Tenor = () => {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
-    const [depositFrom, setDepositFrom] = useState("")
-    const [depositTo, setDepositTo] = useState("")
-    const [rate, setRate] = useState("")
+    const [tenor, setTenor] = useState("")
     const dispatch = useDispatch()
-    const [addRange] = useAddFixedDepositAmountRangeMutation()
     const [searchTerm, setSearchTerm] = useState("");
-
-    const handleSearch = (searchValue) => {
-        setSearchTerm(searchValue);
-    };
+    const [addTenor] = useAddTenorMutation()
 
     const handleOpen = () => {
         setOpen(true)
     }
 
+    const handleSearch = (searchValue) => {
+        setSearchTerm(searchValue);
+    };
     const handleAdd = ()=> {
-        addRange({
+        addTenor({
             body: {
-                fromAmount: depositFrom,
-                toAmount: depositTo,
-                interestRate: rate,
-                status: checked ? 1 : 0
+                name: tenor,
+                status: checked ? "1" : "0"
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
-            setDepositFrom("")
-            setDepositTo("")
+            setTenor("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
@@ -62,12 +56,12 @@ const FixedDepositInterestRate = () => {
                     </div>
                 </div>
                 <div>
-                    <FixedDepositInterestRateTable searchTerm={searchTerm}/>
+                    <TenorTable searchTerm={searchTerm}/>
                 </div>
-                <AddFixedDepositInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} rate={rate} setRate={setRate} handleAdd={handleAdd}/>
+                <AddTenorModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} tenor={tenor} setTenor={setTenor} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );
 };
 
-export default FixedDepositInterestRate;
+export default Tenor;

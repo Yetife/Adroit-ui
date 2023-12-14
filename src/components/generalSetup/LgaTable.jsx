@@ -60,6 +60,7 @@ export function TableData({data, no}) {
     const [open, setOpen] = useState(false);
     const [checked, setChecked] = useState(true);
     const [lga, setLga] = useState("")
+    const [selectedValue, setSelectedValue] = useState('');
     const dispatch = useDispatch()
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
@@ -73,12 +74,15 @@ export function TableData({data, no}) {
         setOpen(true)
         setPurpose("view")
         setLga(data.name)
+        setSelectedValue(data.stateid)
+        setId(data.id)
         setChecked(data.status === 1 ? true : false )
     }
     const handleOpenEdit = (data) =>{
         setOpen(true)
         setPurpose("edit")
         setLga(data.name)
+        setSelectedValue(data.stateid)
         setId(data.id)
         setChecked(data.status === 1 ? true : false )
     }
@@ -122,7 +126,7 @@ export function TableData({data, no}) {
         </span>
             </td>
 
-            <AddLgaModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} lga={lga} setLga={setLga} id={id} purpose={purpose}/>
+            <AddLgaModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} lga={lga} setLga={setLga} setSelectedValue={setSelectedValue} selectedValue={selectedValue} id={id} purpose={purpose}/>
 
         </tr>
     )

@@ -129,7 +129,7 @@ const AddStateModal = ({open, setOpen, checked, setChecked, state, setState, pur
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                     Country
                                   </h3>
-                                     <select id="select" value={selectedValue} onChange={handleSelectChange}
+                                     <select id="select" value={selectedValue} disabled={purpose === "view"} onChange={handleSelectChange}
                                              style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                         <option value="" disabled>Select a country</option>
                                              {country.map((option) => (

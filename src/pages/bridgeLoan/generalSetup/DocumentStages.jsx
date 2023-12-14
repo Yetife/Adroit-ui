@@ -1,46 +1,46 @@
 import {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {useAddFixedDepositAmountRangeMutation} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import Layout from "../Layout.jsx";
-import Search from "../../components/reusables/Search.jsx";
+import {useAddGenderMutation} from "../../../store/features/generalSetup/api.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import Layout from "../../Layout.jsx";
+import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import FixedDepositInterestRateTable from "../../components/generalSetup/FixedDepositInterestRateTable.jsx";
-import AddFixedDepositInterestRateModal from "../../components/generalSetup/AddFixedDepositInterestRateModal.jsx";
+import GenderTable from "../../../components/generalSetup/gender/GenderTable.jsx";
+import AddGenderModal from "../../../components/generalSetup/gender/AddGenderModal.jsx";
+import DocumentationStagesTable
+    from "../../../components/bridgeLoan/generalSetup/documentationStages/DocumentationStagesTable.jsx";
+import AddDocumentStagesModal
+    from "../../../components/bridgeLoan/generalSetup/documentationStages/AddDocumentStagesModal.jsx";
+import search from "../../../components/reusables/Search.jsx";
+import {useAddDocumentationStageMutation} from "../../../store/features/bridgeLoan/api.js";
 
-const FixedDepositInterestRate = () => {
+const DocumentStages = () => {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
-    const [depositFrom, setDepositFrom] = useState("")
-    const [depositTo, setDepositTo] = useState("")
-    const [rate, setRate] = useState("")
+    const [stages, setStages] = useState("")
     const dispatch = useDispatch()
-    const [addRange] = useAddFixedDepositAmountRangeMutation()
     const [searchTerm, setSearchTerm] = useState("");
-
-    const handleSearch = (searchValue) => {
-        setSearchTerm(searchValue);
-    };
+    const [addStages] = useAddDocumentationStageMutation()
 
     const handleOpen = () => {
         setOpen(true)
     }
 
+    const handleSearch = (searchValue) => {
+        setSearchTerm(searchValue);
+    };
     const handleAdd = ()=> {
-        addRange({
+        addStages({
             body: {
-                fromAmount: depositFrom,
-                toAmount: depositTo,
-                interestRate: rate,
-                status: checked ? 1 : 0
+                name: stages,
+                status: checked ? "1" : "0"
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
-            setDepositFrom("")
-            setDepositTo("")
+            setStages("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
@@ -62,12 +62,12 @@ const FixedDepositInterestRate = () => {
                     </div>
                 </div>
                 <div>
-                    <FixedDepositInterestRateTable searchTerm={searchTerm}/>
+                    <DocumentationStagesTable searchTerm={searchTerm}/>
                 </div>
-                <AddFixedDepositInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} rate={rate} setRate={setRate} handleAdd={handleAdd}/>
+                <AddDocumentStagesModal open={open} setOpen={setOpen} stages={stages} setStages={setStages} checked={checked} setChecked={setChecked} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );
 };
 
-export default FixedDepositInterestRate;
+export default DocumentStages;

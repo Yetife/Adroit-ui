@@ -1,17 +1,20 @@
 import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {useDeleteStateMutation, useEditStateMutation, useGetAllStateQuery
-} from "../../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {
+    useDeleteFixedDepositAmountRangeMutation,
+    useEditFixedDepositAmountRangeMutation, useGetAllFixedDepositAmountRangeQuery
+} from "../../store/features/generalSetup/api.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import AddFixedDepositAmountRangeModal
+    from "./fixedDepositAmountRange/AddFixedDepositAmountRangeModal.jsx";
 import {LinearProgress, ThemeProvider} from "@mui/material";
-import themes from "../../reusables/theme.jsx";
-import AddStateModal from "./AddStateModal.jsx";
+import themes from "../reusables/theme.jsx";
 
-const StateTable = ({searchTerm}) => {
-    const {data, isFetching, error} = useGetAllStateQuery()
+const FixedDepositInterestRateTable = ({searchTerm}) => {
+    const {data, isFetching, error} = useGetAllFixedDepositAmountRangeQuery()
 
     const filteredData = data?.data?.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        item?.fromAmount?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
@@ -44,7 +47,7 @@ const StateTable = ({searchTerm}) => {
     );
 };
 
-export default StateTable;
+export default FixedDepositInterestRateTable;
 
 export function TableHeader({name}) {
     return (
@@ -54,17 +57,21 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'State', 'Status', 'Actions' ]
+const header = ['S/N', 'From Amount', 'To Amount', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
     const [open, setOpen] = useState(false);
     const [checked, setChecked] = useState(true);
-    const [state, setState] = useState("")
     const dispatch = useDispatch()
+    const [depositFrom, setDepositFrom] = useState("")
+    const [depositTo, setDepositTo] = useState("")
+    const [rate, setRate] = useState("")
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
-    const [deleteState] = useDeleteStateMutation()
+    const [deleteRange] = useDeleteFixedDepositAmountRangeMutation()
+    const [editRange] = useEditFixedDepositAmountRangeMutation()
+
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
     const handleBlurDropdown = () => setShowDropdown(false)
@@ -72,19 +79,21 @@ export function TableData({data, no}) {
     const handleOpenView = (data) =>{
         setOpen(true)
         setPurpose("view")
-        setState(data.name)
-        setId(data.id)
+        setDepositFrom(data.fromAmount)
+        setDepositTo(data.toAmount)
+        setRate(data.interestRate)
         setChecked(data.status === 1 ? true : false )
     }
     const handleOpenEdit = (data) =>{
         setOpen(true)
         setPurpose("edit")
-        setState(data.name)
+        setDepositFrom(data.fromAmount)
+        setDepositTo(data.toAmount)
         setId(data.id)
         setChecked(data.status === 1 ? true : false )
     }
     const handleRemove = (id)=>{
-        deleteState(id).then((res) => {
+        deleteRange(id).then((res) => {
             dispatch(
                 updateSnackbar({
                     type: "TOGGLE_SNACKBAR_OPEN",
@@ -95,13 +104,34 @@ export function TableData({data, no}) {
         });
     }
 
+    const handleEdit = ()=> {
+        editRange({
+            body: {
+                fromAmount: depositFrom,
+                toAmount: depositTo,
+                status: checked ? 1 : 0,
+                id: id
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpen(!open)
+            setDepositFrom("")
+            setDepositTo("")
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
+
     return (
         <tr>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.name}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.fromAmount}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.toAmount}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === 1 ? "Active" : "Inactive"}</span>
@@ -121,7 +151,7 @@ export function TableData({data, no}) {
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.id)}>Remove</span>
         </span>
             </td>
-            <AddStateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} purpose={purpose} state={state} setState={setState} id={id}/>
+            <AddFixedDepositAmountRangeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} handleAdd={handleEdit} purpose={purpose}/>
         </tr>
     )
 }

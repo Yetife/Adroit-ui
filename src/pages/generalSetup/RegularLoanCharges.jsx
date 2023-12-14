@@ -1,22 +1,18 @@
+import {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
-import {useState} from "react";
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import AddLgaModal from "../../components/generalSetup/AddLgaModal.jsx";
-import LgaTable from "../../components/generalSetup/LgaTable.jsx";
+import AddRegularLoanChargeModal from "../../components/generalSetup/AddRegularLoanChargeModal.jsx";
+import RegularLoanChargesTable from "../../components/generalSetup/RegularLoanChargesTable.jsx";
 
-const Lga = () => {
+const RegularLoanCharges = () => {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
-    const [lga, setLga] = useState("")
-    const [selectedValue, setSelectedValue] = useState('');
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const handleSearch = (searchValue) => {
-        setSearchTerm(searchValue);
-    };
+    const [depositFrom, setDepositFrom] = useState("")
+    const [depositTo, setDepositTo] = useState("")
+    const [cAmount, setCAmount] = useState('')
 
     const handleOpen = () => {
         setOpen(true)
@@ -26,7 +22,7 @@ const Lga = () => {
         <Layout>
             <div className="px-2">
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
-                    <Search search={searchTerm} setSearch={handleSearch}/>
+                    <Search />
                     <div>
                         <Button variant="outline" borderColor="#00C795" marginRight="10px"
                                 border={"1px solid #00C796"}  borderRadius="4px" height="37px"
@@ -39,12 +35,12 @@ const Lga = () => {
                     </div>
                 </div>
                 <div>
-                    <LgaTable searchTerm={searchTerm}/>
+                    <RegularLoanChargesTable />
                 </div>
-                <AddLgaModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} lga={lga} setLga={setLga} selectedValue={selectedValue} setSelectedValue={setSelectedValue}/>
+                <AddRegularLoanChargeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} cAmount={cAmount} setCAmount={setCAmount} />
             </div>
         </Layout>
     );
 };
 
-export default Lga;
+export default RegularLoanCharges;

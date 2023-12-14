@@ -1,46 +1,41 @@
-import {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
+import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {useAddFixedDepositAmountRangeMutation} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import Layout from "../Layout.jsx";
-import Search from "../../components/reusables/Search.jsx";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import Layout from "../../Layout.jsx";
+import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import FixedDepositInterestRateTable from "../../components/generalSetup/FixedDepositInterestRateTable.jsx";
-import AddFixedDepositInterestRateModal from "../../components/generalSetup/AddFixedDepositInterestRateModal.jsx";
+import {useAddFacilityTypeMutation} from "../../../store/features/bridgeLoan/api.js";
+import TenorTable from "../../../components/bridgeLoan/generalSetup/tenor/TenorTable.jsx";
+import AddFacilityTypeModal from "../../../components/bridgeLoan/generalSetup/facilityType/AddFacilityTypeModal.jsx";
+import FacilityTypeTable from "../../../components/bridgeLoan/generalSetup/facilityType/FacilityTypeTable.jsx";
 
-const FixedDepositInterestRate = () => {
+const FacilityType = () => {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
-    const [depositFrom, setDepositFrom] = useState("")
-    const [depositTo, setDepositTo] = useState("")
-    const [rate, setRate] = useState("")
+    const [type, setType] = useState("")
     const dispatch = useDispatch()
-    const [addRange] = useAddFixedDepositAmountRangeMutation()
     const [searchTerm, setSearchTerm] = useState("");
-
-    const handleSearch = (searchValue) => {
-        setSearchTerm(searchValue);
-    };
+    const [addFacility] = useAddFacilityTypeMutation()
 
     const handleOpen = () => {
         setOpen(true)
     }
 
+    const handleSearch = (searchValue) => {
+        setSearchTerm(searchValue);
+    };
     const handleAdd = ()=> {
-        addRange({
+        addFacility({
             body: {
-                fromAmount: depositFrom,
-                toAmount: depositTo,
-                interestRate: rate,
-                status: checked ? 1 : 0
+                name: type,
+                status: checked ? "1" : "0"
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
-            setDepositFrom("")
-            setDepositTo("")
+            setType("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
@@ -62,12 +57,12 @@ const FixedDepositInterestRate = () => {
                     </div>
                 </div>
                 <div>
-                    <FixedDepositInterestRateTable searchTerm={searchTerm}/>
+                    <FacilityTypeTable searchTerm={searchTerm}/>
                 </div>
-                <AddFixedDepositInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} rate={rate} setRate={setRate} handleAdd={handleAdd}/>
+                <AddFacilityTypeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} type={type} setType={setType} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );
 };
 
-export default FixedDepositInterestRate;
+export default FacilityType;
