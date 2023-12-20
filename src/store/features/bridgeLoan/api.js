@@ -6,7 +6,7 @@ export const bridgeLoanApi = createApi({
     baseQuery: customFetchBase,
     tagTypes:["AddDocumentSetup", "EditDocumentSetup", "AddDocumentStatus", "EditDocumentStatus", "AddFacilityType", "DelFacilityType", "EditFacilityType",
         "AddTenor", "DelTenor", "EditTenor", "AddDocumentationStage", "DelDocumentationStage", "EditDocumentationStage", "AddDisbursementStatus", "DelDisbursementStatus",
-        "EditDisbursementStatus"],
+        "EditDisbursementStatus", "AddDocumentation", "EditDocumentation", "AddDisbursement", "ReturnDisbursement"],
     endpoints: (builder) => ({
         addDocumentSetup: builder.mutation({
             query: ({body}) => ({
@@ -51,6 +51,50 @@ export const bridgeLoanApi = createApi({
                 body
             }),
             invalidatesTags: ["EditDocumentStatus"]
+        }),
+        addDocumentation: builder.mutation({
+            query: (formData) => ({
+                url: `/BridgeLoan/Documentation/add`,
+                method: "POST",
+                body: formData
+            }),
+            invalidatesTags: ["AddDocumentation"]
+        }),
+        getAllValidDocumentation: builder.query({
+            query: () => ({
+                url: `/BridgeLoan/Documentation/getallvalid`,
+            }),
+            providesTags: ["AddDocumentation", "EditDocumentation"]
+        }),
+        editDocumentation: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/Documentation/update`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["EditDocumentation"]
+        }),
+        addDisbursement: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/Disbursement/add`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddDisbursement"]
+        }),
+        returnDisbursement: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/Disbursement/return`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["ReturnDisbursement"]
+        }),
+        getAllProcessedDisbursement: builder.query({
+            query: () => ({
+                url: `/BridgeLoan/Disbursement/getprocessed`,
+            }),
+            providesTags: ["AddDisbursement", "ReturnDisbursement"]
         }),
         addTenor: builder.mutation({
             query: ({body}) => ({
@@ -178,6 +222,12 @@ export const {
     useAddDocumentStatusMutation,
     useGetAllValidDocumentStatusQuery,
     useEditDocumentStatusMutation,
+    useAddDocumentationMutation,
+    useGetAllValidDocumentationQuery,
+    useEditDocumentationMutation,
+    useAddDisbursementMutation,
+    useGetAllProcessedDisbursementQuery,
+    useReturnDisbursementMutation,
     useAddTenorMutation,
     useGetAllValidTenorQuery,
     useDeleteTenorMutation,

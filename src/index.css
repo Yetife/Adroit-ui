@@ -41,3 +41,12 @@
     font-weight: 600;
     line-height: 21.6px;
 }
+.scroll-container {
+    overflow-x: auto;
+    max-width: 100%; /* Ensure the container takes the full width */
+}
+
+/* Hide the scrollbar */
+.scroll-container::-webkit-scrollbar {
+    display: none;
+}

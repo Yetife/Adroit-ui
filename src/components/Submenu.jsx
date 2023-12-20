@@ -6,11 +6,15 @@ const Submenu = ({data}) => {
     const router = useNavigate()
     const location = useLocation()
     const [showDropdown, setShowDropdown] = useState(false);
+    const [showSubDropdown, setShowSubDropdown] = useState(false);
 
     const currentRoute = '/' + location.pathname.split('/')[1]
 
     const handleShowDropdown = () => {
         setShowDropdown(!showDropdown);
+    };
+    const handleShowSubDropdown = () => {
+        setShowSubDropdown(!showDropdown);
     };
 
     return (
@@ -28,9 +32,23 @@ const Submenu = ({data}) => {
                         <div>
                             {data.dropdown?.map((each, ind) => (
                                     <div key={ind}>
-                                        <Link className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25" to={each.href}>
-                                            <span className={`${ location.pathname === each.href && 'medium'} mx-3 text-sm font-normal ${ location.pathname === each.href ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>{each.applicationPageName}</span>
-                                        </Link>
+                                        <div className="flex" onClick={each.hasDropdown && handleShowSubDropdown}>
+                                            <Link className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25" to={each.href}>
+                                                <span className={`${ location.pathname === each.href && 'medium'} mx-3 text-sm font-normal ${ location.pathname === each.href ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>{each.applicationPageName}</span>
+                                            </Link>
+                                            {each.hasDropdown && showSubDropdown ? <img src={data.iconClosed} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> : each.hasDropdown ? <img src={data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> : null}
+                                        </div>
+                                        {
+                                            each.hasDropdown && showDropdown && (
+                                                each.dropdown?.map((sub, index) => (
+                                                    <div key={index} className="flex">
+                                                        <Link className="flex font-bold items-center px-8 py-2  text-gray-100 bg-white bg-opacity-25" to={sub.href}>
+                                                            <span className={`${ location.pathname === each.href && 'medium'} mx-3 text-sm font-normal ${ location.pathname === sub.href ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}> - {sub.applicationPageName}</span>
+                                                        </Link>
+                                                    </div>
+                                                ))
+                                            )
+                                        }
                                     </div>
                                 ))
                             }

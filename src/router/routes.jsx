@@ -38,6 +38,11 @@ import FacilityType from "../pages/bridgeLoan/generalSetup/FacilityType.jsx";
 import Tenor from "../pages/bridgeLoan/generalSetup/Tenor.jsx";
 import DocumentStages from "../pages/bridgeLoan/generalSetup/DocumentStages.jsx";
 import DisbursementStatus from "../pages/bridgeLoan/generalSetup/DisbursementStatus.jsx";
+import Documentation from "../pages/bridgeLoan/Documentation.jsx";
+import Returned from "../pages/bridgeLoan/disbursement/Returned.jsx";
+import New from "../pages/bridgeLoan/disbursement/New.jsx";
+import AddNewPage from "../components/bridgeLoan/disbursement/new/AddNewPage.jsx";
+import Processed from "../pages/bridgeLoan/disbursement/Processed.jsx";
 
 const ROUTES = [
     {
@@ -260,11 +265,48 @@ const ROUTES = [
                 element: <DocumentationSetup />,
             },
             {
+                path: "documentation",
+                key: "DOCUMENTATION",
+                exact: true,
+                element: <Documentation />,
+            },
+            {
                 path: "documentationStatus",
                 key: "DOCUMENTATION STATUS",
                 exact: true,
                 element: <DocumentationStatus />,
-            }, {
+            },
+            {
+                path: "disbursement",
+                exact: true,
+                children: [
+                    {
+                        path: "returned",
+                        key: "RETURNED",
+                        exact: true,
+                        element: <Returned />,
+                    },
+                    {
+                        path: "new",
+                        key: "NEW",
+                        exact: true,
+                        element: <New />,
+                    },
+                    {
+                        path: "processed",
+                        key: "PROCESSED",
+                        exact: true,
+                        element: <Processed />,
+                    },
+                    {
+                        path: "new/add",
+                        key: "NEW ADD",
+                        exact: true,
+                        element: <AddNewPage />,
+                    },
+                ]
+            },
+            {
                 path: "generalSetup",
                 exact: true,
                 children: [

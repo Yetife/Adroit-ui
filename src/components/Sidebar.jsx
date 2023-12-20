@@ -218,8 +218,31 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
                 },
                 {
                     applicationPageName: 'Disbursement',
-                    href: '/bridgeLoan/disbursement',
+                    href: '/bridgeLoan/disbursement/returned',
                     route: '/bridgeLoan',
+                    hasDropdown: true,
+                    dropdown: [
+                        {
+                            applicationPageName: 'Returned',
+                            href: '/bridgeLoan/disbursement/returned',
+                            route: '/bridgeLoan',
+                        },
+                        {
+                            applicationPageName: 'Process',
+                            href: '/bridgeLoan/disbursement/processed',
+                            route: '/bridgeLoan',
+                        },
+                        {
+                            applicationPageName: 'New',
+                            href: '/bridgeLoan/disbursement/new',
+                            route: '/bridgeLoan',
+                        },
+                        {
+                            applicationPageName: 'Disbursed',
+                            href: '/bridgeLoan/disbursement/disbursed',
+                            route: '/bridgeLoan',
+                        },
+                    ]
                 },
                 {
                     applicationPageName: 'Report',
