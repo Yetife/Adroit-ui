@@ -19,12 +19,15 @@ const Layout = ({children}) => {
         return str?.replace(/([a-z])([A-Z])/g, '$1 $2');
     };
 
+    const user = JSON.parse(sessionStorage.getItem("userData"));
+
+
     return (
         <div className={` flex bg-gray-200`}>
             <div className={`fixed z-20 transition-opacity bg-black lg:hidden ${ menuOpen ? 'opacity-50 block' : 'opacity-0'} `} ></div>
             <Sidebar  openSidebar={menuOpen} updateSidebarOpen={updateSidebarOpen} />
             <div className="flex flex-col flex-1 overflow-hidden">
-                <Navbar openSidebar={updateSidebarOpen} name='Adekunle Adetona' email='adekunle.adetona@gmail.com' />
+                <Navbar openSidebar={updateSidebarOpen} name={user.FirstName + " " + user.LastName} email={user.email} />
                 <main className="flex-1 bg-white md:pl-20 md:pr-8 w-full">
                     <div className="px-6 py-6 pt-28 mx-auto w-full">
                         {location.pathname !== '/dashboard' && <h3 className="flex text-xs md:ml-[15rem] font-medium">{currentRoute.map(((breadcrumb, ind) => (

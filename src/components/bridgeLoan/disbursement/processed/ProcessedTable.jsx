@@ -59,6 +59,7 @@ export function TableData({data, no}) {
     const [open, setOpen] = useState(false);
     const [id, setId] = useState(0)
     const [status, setStatus] = useState("")
+    const [selectedGender, setSelectedGender] = useState('')
 
     const initialState = {
         surname: "",
@@ -84,6 +85,7 @@ export function TableData({data, no}) {
        setOpen(true)
        setId(data.uniqueId)
        setStatus(data.status)
+       setSelectedGender(data?.gender)
         setInputs({
             surname: data?.surname,
             firstName: data?.firstname,
@@ -99,7 +101,7 @@ export function TableData({data, no}) {
             idDateIssued: data?.idDateIssued,
             transferAmount: data?.transferAmount,
             preferredNaration: data?.preferredNaration,
-            repayment: ""
+            repayment: data?.repaymentDate
         })
    }
     return (
@@ -150,13 +152,13 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.preferredNaration}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.preferredNaration}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.repaymentDate}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200 cursor-pointer">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium" onClick={()=>handleOpenReturn(data)}>Return</span>
             </td>
 
-            <ProcessedModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} id={id} status={status}/>
+            <ProcessedModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} id={id} status={status} selectedGender={selectedGender} setSelectedGender={setSelectedGender}/>
         </tr>
     )
 }

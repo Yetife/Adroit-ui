@@ -70,6 +70,7 @@ export function TableData({data, no}) {
     const [status, setStatus] = useState("")
     const [selectedType, setSelectedType] = useState("")
     const [selectedTenor, setSelectedTenor] = useState("")
+    const [selectedRate, setSelectedRate] = useState("")
     const [selectedFiles, setSelectedFiles] = useState(null);
     const [selectedStatus, setSelectedStatus] = useState("")
     const [ showDropdown, setShowDropdown ] = useState(false)
@@ -117,6 +118,8 @@ export function TableData({data, no}) {
         })
         setSelectedStatus(data?.documentationStatus)
         setSelectedType(data?.facilityType)
+        setSelectedTenor(data?.tenor)
+        setSelectedRate(data?.interestRate)
     }
 
     const download = (e) => {
@@ -181,10 +184,10 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.maturityDate).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dob}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.amount}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.tenor}</span>
             </td>
             <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <a onClick={handleshowDropDown}
@@ -209,10 +212,9 @@ export function TableData({data, no}) {
 
             <AddDocumentModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}
                               setSelectedType={setSelectedType} selectedType={selectedType}
-                              selectedStatus={selectedStatus}
-                              setSelectedStatus={setSelectedStatus} selectedTenor={selectedTenor}
+                              selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} selectedTenor={selectedTenor}
                               setSelectedTenor={setSelectedTenor} selectedFiles={selectedFiles}
-                              setSelectedFiles={setSelectedFiles} purpose={purpose}/>
+                              setSelectedFiles={setSelectedFiles} selectedRate={selectedRate} setSelectedRate={setSelectedRate} purpose={purpose}/>
         </tr>
     )
 }

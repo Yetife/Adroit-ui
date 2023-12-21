@@ -1,11 +1,10 @@
-import {useState} from 'react';
+import {useState} from "react";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../../reusables/theme.jsx";
-import {useGetAllReturnedDisbursementQuery} from "../../../../store/features/bridgeLoan/api.js";
-import ReturnedModal from "./ReturnedModal.jsx";
+import {useGetAllDisbursedDisbursementQuery} from "../../../../store/features/bridgeLoan/api.js";
 
-const ReturnedTable = ({sesrchTerm}) => {
-    const {data, isFetching, error} = useGetAllReturnedDisbursementQuery()
+export const DisbursedTable = ({searchTerm}) => {
+    const {data, isFetching, error} = useGetAllDisbursedDisbursementQuery()
     if (error) return <p>Network error</p>
 
     const filteredData = data?.data?.filter((item) =>
@@ -39,10 +38,8 @@ const ReturnedTable = ({sesrchTerm}) => {
                 </div>
             </div>
         </div>
-    );
-};
-
-export default ReturnedTable;
+    )
+}
 
 export function TableHeader({name}) {
     return (
@@ -53,57 +50,12 @@ export function TableHeader({name}) {
 }
 
 const header = ['S/N', 'Surname', 'First Name', 'Middle Name', 'Email Address', 'House No.', 'Street Name', 'City', 'State', 'D.O.B', 'BVN', 'ID NO. (International Passport Only)',
-    'ID Date Issued', 'Transfer Amount', 'Preferred Narration', 'Re-Payment Date', 'Action' ]
+    'ID Date Issued', 'Transfer Amount', 'Preferred Narration', 'Re-Payment Date' ]
 
 export function TableData({data, no}) {
     const [open, setOpen] = useState(false);
     const [id, setId] = useState(0)
-    const [status, setStatus] = useState("")
-    const [selectedGender, setSelectedGender] = useState('')
 
-    const initialState = {
-        surname: "",
-        firstName: "",
-        middleName: "",
-        emailAddress: "",
-        houseNo: "",
-        streetName: "",
-        city: "",
-        state: "",
-        date: "",
-        bvn: "",
-        idNo: "",
-        idDateIssued: "",
-        transferAmount: "",
-        preferredNaration: "",
-        repayment: "",
-        comments: "",
-    }
-    const [inputs, setInputs] = useState(initialState)
-
-    const handleOpenReturn = (data) => {
-        setOpen(true)
-        setId(data.uniqueId)
-        setStatus(data.status)
-        setSelectedGender(data?.gender)
-        setInputs({
-            surname: data?.surname,
-            firstName: data?.firstname,
-            middleName: data?.middlename,
-            emailAddress: data?.emailAddress,
-            houseNo: data?.houseNo,
-            streetName: data?.streetName,
-            city: data?.city,
-            state: data?.state,
-            date: data?.dob,
-            bvn: data?.bvn,
-            idNo: data?.idNo,
-            idDateIssued: data?.idDateIssued,
-            transferAmount: data?.transferAmount,
-            preferredNaration: data?.preferredNaration,
-            repayment: data?.repaymentDate
-        })
-    }
     return (
         <tr>
             <td className="px-3 py-4 border-b border-gray-200">
@@ -154,11 +106,6 @@ export function TableData({data, no}) {
             <td className="px-3 py-4 border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.repaymentDate}</span>
             </td>
-            <td className="px-3 py-4 border-b border-gray-200 cursor-pointer">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium" onClick={()=>handleOpenReturn(data)}>Edit</span>
-            </td>
-
-            <ReturnedModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} id={id} status={status} selectedGender={selectedGender} setSelectedGender={setSelectedGender}/>
         </tr>
     )
 }

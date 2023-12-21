@@ -83,7 +83,7 @@ const AddNewPage = () => {
                 firstname: inputs.firstName,
                 middlename: inputs.middleName,
                 emailAddress: inputs.email,
-                gender: inputs.gender,
+                gender: selectedGender,
                 houseNo: inputs.houseNo,
                 streetName: inputs.streetName,
                 city: inputs.city,

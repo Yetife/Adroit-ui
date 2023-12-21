@@ -1,18 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {useReturnDisbursementMutation} from "../../../store/features/bridgeLoan/api.js";
+import {getUserToken} from "../../../services/storage/index.js";
+import axios from "axios";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
-import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {useAddDisbursementMutation, useReturnDisbursementMutation} from "../../../../store/features/bridgeLoan/api.js";
-import {getUserToken} from "../../../../services/storage/index.js";
-import axios from "axios";
-import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
+import DatePicker from "react-datepicker";
+import {Checkbox} from "@mui/material";
 
-const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGender, setSelectedGender}) => {
-    const router = useNavigate()
+const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGender, setSelectedGender}) => {
     const [gender, setGender] = useState([])
     const [selectedId, setSelectedId] = useState('');
-    const [searchTerm, setSearchTerm] = useState("");
     const dispatch  = useDispatch()
     const [returnDisbursement] = useReturnDisbursementMutation()
     const token = getUserToken();
@@ -20,9 +19,6 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
-    };
-    const handleSearch = (searchValue) => {
-        setSearchTerm(searchValue);
     };
 
     const handleGenderChange = (event) => {
@@ -59,7 +55,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
 
         returnDisbursement({
             body: {
-                surname: inputs.surname,
+                name: inputs.name,
                 firstname: inputs.firstName,
                 middlename: inputs.middleName,
                 emailAddress: inputs.emailAddress,
@@ -75,7 +71,6 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                 transferAmount: inputs.transferAmount,
                 preferredNaration: inputs.preferredNaration,
                 repaymentDate: inputs.repayment,
-                comments: inputs.comments,
                 createdBy: user.FirstName,
                 status: status,
                 uniqueId: id,
@@ -87,7 +82,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
-}
+    }
     return (
         <div>
             <Dialog.Root
@@ -106,37 +101,37 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                 <div className="flex">
                                     <span>
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        Surname
+                                        Product Name
                                       </h3>
                                       <input
                                           type="text"
-                                          value={inputs.surname}
-                                          onChange={(event) => handleChange(event, "surname")}
-                                          placeholder="Enter surname"
+                                          value={inputs.name}
+                                          onChange={(event) => handleChange(event, "name")}
+                                          placeholder="Enter name"
                                           className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        First Name
+                                        Amount (Start From)
                                       </h3>
                                       <input
                                           type="text"
-                                          value={inputs.firstName}
-                                          onChange={(event) => handleChange(event, "firstName")}
-                                          placeholder="Enter firstName"
+                                          value={inputs.minimumamount}
+                                          onChange={(event) => handleChange(event, "minimumamount")}
+                                          placeholder="Enter Amount From"
                                           className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        Middle Name
+                                        Amount (To)
                                       </h3>
                                       <input
                                           type="text"
-                                          value={inputs.middleName}
-                                          onChange={(event) => handleChange(event, "middleName")}
-                                          placeholder="Enter middleName"
+                                          value={inputs.maximumamount}
+                                          onChange={(event) => handleChange(event, "maximumamount")}
+                                          placeholder="Enter Amount to"
                                           className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
@@ -146,45 +141,54 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                 <div className="flex">
                                     <span>
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        Email Address
+                                        Tenor
                                       </h3>
-                                      <input
-                                          type="text"
-                                          value={inputs.emailAddress}
-                                          onChange={(event) => handleChange(event, "emailAddress")}
-                                          placeholder="Enter name"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                      />
-                                    </span>
-                                    <span className="ml-8">
-                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                       Gender
-                                      </h3>
-                                         <select id="select" value={selectedGender}
-                                                 onChange={handleGenderChange}
-                                                 className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                      <select id="select" value={selectedGender}
+                                              onChange={handleGenderChange}
+                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select gender</option>
-                                             {gender && gender?.map((option) => (
-                                                 <option key={option.uniqueId} value={option.id}>
-                                                     {option.name}
-                                                 </option>
-                                             ))}
+                                          {gender && gender?.map((option) => (
+                                              <option key={option.uniqueId} value={option.id}>
+                                                  {option.name}
+                                              </option>
+                                          ))}
                                         </select>
                                     </span>
                                     <span className="ml-8">
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        House No.
+                                       Start Date
                                       </h3>
-                                      <input
-                                          type="text"
-                                          value={inputs.houseNo}
-                                          onChange={(event) => handleChange(event, "houseNo")}
-                                          placeholder="Enter house number"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                      />
+                                         <DatePicker
+                                             className='border broder-gray-700 ml-3 px-2 rounded-md py-3 text-[14px] focus:outline-none'
+                                             // closeOnScroll={true}
+                                             dateFormat="dd/MM/yyyy"
+                                             placeholderText="Select a date"
+                                             selected={inputs.startDate}
+                                             onChange={(event) => handleChange(event, "startDate")}
+                                             showYearDropdown
+                                             showMonthDropdown
+                                             showDisabledMonthNavigation
+                                             dropdownMode="select"
+                                         />
                                     </span>
-                                    </div>
+                                    <span className="flex items-center">
+                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap">
+                                        Has End Date
+                                    </h3>
+                                     <Checkbox
+                                         checked={inputs.checked}
+                                         disabled={purpose === "view"}
+                                         sx={{
+                                             '&.Mui-checked': {
+                                                 color: "#00C796",
+                                             },
+                                         }}
+                                         onChange={(event) => handleChange(event, "checked")}
+                                         inputProps={{'aria-label': 'controlled'}}
+                                     />
+                                </span>
                                 </div>
+                            </div>
                             <div className="pb-4">
                                 <div className="flex">
                                     <span>
@@ -321,20 +325,6 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                     </span>
                                 </div>
                             </div>
-                            <div className="pb-4 -mt-6">
-                                <span className="ml-8">
-                                  <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                    Comment
-                                  </h3>
-                                     <textarea id="message" name="message" rows="4" cols="50"
-                                               value={inputs.comments}
-                                               onChange={(event) => handleChange(event, "comments")}
-                                               placeholder="Add comment"
-                                               className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                     ></textarea>
-                                </span>
-                            </div>
-
                             <div className="flex space-x-3 float-right">
                                 <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-2" onClick={()=>setOpen(!open)}>Close</button>
                                 <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-2" onClick={handleAdd}>Send</button>
@@ -356,4 +346,4 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
     );
 };
 
-export default ProcessedModal;
+export default ProductModal;

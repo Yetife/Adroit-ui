@@ -96,6 +96,18 @@ export const bridgeLoanApi = createApi({
             }),
             providesTags: ["AddDisbursement", "ReturnDisbursement"]
         }),
+        getAllReturnedDisbursement: builder.query({
+            query: () => ({
+                url: `/BridgeLoan/Disbursement/getreturned`,
+            }),
+            providesTags: ["AddDisbursement", "ReturnDisbursement"]
+        }),
+        getAllDisbursedDisbursement: builder.query({
+            query: () => ({
+                url: `/BridgeLoan/Disbursement/getdisbursed`,
+            }),
+            providesTags: ["AddDisbursement", "ReturnDisbursement"]
+        }),
         addTenor: builder.mutation({
             query: ({body}) => ({
                 url: `/BridgeLoan/GeneralSetUpTenor/add`,
@@ -227,6 +239,8 @@ export const {
     useEditDocumentationMutation,
     useAddDisbursementMutation,
     useGetAllProcessedDisbursementQuery,
+    useGetAllReturnedDisbursementQuery,
+    useGetAllDisbursedDisbursementQuery,
     useReturnDisbursementMutation,
     useAddTenorMutation,
     useGetAllValidTenorQuery,

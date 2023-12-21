@@ -43,6 +43,8 @@ import Returned from "../pages/bridgeLoan/disbursement/Returned.jsx";
 import New from "../pages/bridgeLoan/disbursement/New.jsx";
 import AddNewPage from "../components/bridgeLoan/disbursement/new/AddNewPage.jsx";
 import Processed from "../pages/bridgeLoan/disbursement/Processed.jsx";
+import Disbursed from "../pages/bridgeLoan/disbursement/Disbursed.jsx";
+import Product from "../pages/administration/Product.jsx";
 
 const ROUTES = [
     {
@@ -255,11 +257,23 @@ const ROUTES = [
         ]
     },
     {
+        path: "/administration",
+        exact: true,
+        children: [
+            {
+                path: "",
+                key: "PRODUCT",
+                exact: true,
+                element: <Product />,
+            },
+        ]
+    },
+    {
         path: "/bridgeLoan",
         exact: true,
         children:[
             {
-                path: "documentationSetup",
+                path: "",
                 key: "DOCUMENTATION SETUP",
                 exact: true,
                 element: <DocumentationSetup />,
@@ -297,6 +311,12 @@ const ROUTES = [
                         key: "PROCESSED",
                         exact: true,
                         element: <Processed />,
+                    },
+                    {
+                        path: "disbursed",
+                        key: "DISBURSED",
+                        exact: true,
+                        element: <Disbursed/>,
                     },
                     {
                         path: "new/add",

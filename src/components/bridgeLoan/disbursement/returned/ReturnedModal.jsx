@@ -1,18 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import * as Dialog from "@radix-ui/react-dialog";
-import {Close} from "@mui/icons-material";
-import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
-import {useAddDisbursementMutation, useReturnDisbursementMutation} from "../../../../store/features/bridgeLoan/api.js";
+import {useReturnDisbursementMutation} from "../../../../store/features/bridgeLoan/api.js";
 import {getUserToken} from "../../../../services/storage/index.js";
 import axios from "axios";
 import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
+import * as Dialog from "@radix-ui/react-dialog";
+import {Close} from "@mui/icons-material";
+import DatePicker from "react-datepicker";
 
-const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGender, setSelectedGender}) => {
-    const router = useNavigate()
+const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGender, setSelectedGender}) => {
     const [gender, setGender] = useState([])
     const [selectedId, setSelectedId] = useState('');
-    const [searchTerm, setSearchTerm] = useState("");
     const dispatch  = useDispatch()
     const [returnDisbursement] = useReturnDisbursementMutation()
     const token = getUserToken();
@@ -20,9 +18,6 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
-    };
-    const handleSearch = (searchValue) => {
-        setSearchTerm(searchValue);
     };
 
     const handleGenderChange = (event) => {
@@ -75,7 +70,6 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                 transferAmount: inputs.transferAmount,
                 preferredNaration: inputs.preferredNaration,
                 repaymentDate: inputs.repayment,
-                comments: inputs.comments,
                 createdBy: user.FirstName,
                 status: status,
                 uniqueId: id,
@@ -87,7 +81,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
-}
+    }
     return (
         <div>
             <Dialog.Root
@@ -183,8 +177,8 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
-                                    </div>
                                 </div>
+                            </div>
                             <div className="pb-4">
                                 <div className="flex">
                                     <span>
@@ -321,20 +315,6 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                     </span>
                                 </div>
                             </div>
-                            <div className="pb-4 -mt-6">
-                                <span className="ml-8">
-                                  <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                    Comment
-                                  </h3>
-                                     <textarea id="message" name="message" rows="4" cols="50"
-                                               value={inputs.comments}
-                                               onChange={(event) => handleChange(event, "comments")}
-                                               placeholder="Add comment"
-                                               className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                     ></textarea>
-                                </span>
-                            </div>
-
                             <div className="flex space-x-3 float-right">
                                 <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-2" onClick={()=>setOpen(!open)}>Close</button>
                                 <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-2" onClick={handleAdd}>Send</button>
@@ -356,4 +336,4 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
     );
 };
 
-export default ProcessedModal;
+export default ReturnedModal;

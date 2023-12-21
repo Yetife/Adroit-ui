@@ -19,7 +19,7 @@ const New = () => {
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
                         <Button variant="primary"borderColor="#00C795" marginRight="10px"
-                                bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                                bgColor="#135D54" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Bulk Upload</Text>
                         </Button>
                         <Button variant="primary" to={'/bridgeLoan/disbursement/new/add'} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>

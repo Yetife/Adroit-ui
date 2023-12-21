@@ -9,10 +9,11 @@ import {useAddDocumentationMutation} from "../../../store/features/bridgeLoan/ap
 import {fetchDocumentation} from "../../../store/documentationSlice.js";
 
 
-const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTenor, setSelectedTenor,selectedType, setSelectedType, selectedStatus, setSelectedStatus, selectedFiles, setSelectedFiles, id}) => {
+const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTenor, setSelectedTenor,selectedType, setSelectedType, selectedStatus, setSelectedStatus, selectedRate, setSelectedRate, selectedFiles, setSelectedFiles, id}) => {
     const [type, setType] = useState([]);
     const [status, setStatus] = useState([]);
     const [tenor, setTenor] = useState([]);
+    const [interest, setInterest] = useState([])
     // const [selectedValue, setSelectedValue] = useState('');
     // const [selectedLoan, setSelectedLoan] = useState('');
     const [selectedId, setSelectedId] = useState('');
@@ -77,6 +78,13 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTe
         setSelectedStatus(selectedOption);
         setSelectedId(selectedOptionObject ? selectedOptionObject.uniqueId : '');
     };
+    const handleRateChange = (event) => {
+        const selectedOption = event.target.value;
+        const selectedOptionObject = interest.find((option) => option.interestRate === selectedOption);
+
+        setSelectedRate(selectedOption);
+        setSelectedId(selectedOptionObject ? selectedOptionObject.id : '');
+    };
 
     const fetchData = async () => {
         try {
@@ -127,11 +135,28 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTe
             console.error('Error fetching data:', error);
         }
     };
+    const fetchInterest = async () => {
+        try {
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidRegularLoanInterestRate', {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*',
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setInterest(response.data.data);
+            console.log('Fetched state:', response.data.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     useEffect(() => {
         fetchData();
         fetchTenor()
         fetchStatus()
+        fetchInterest()
     }, []);
 
     const handleAdd = async ()=> {
@@ -142,13 +167,15 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTe
             formData.append('ObligorName', inputs.obName);
             formData.append('ObligorDob', inputs.dateOfBirth);
             formData.append('FacilityType', selectedType)
-            formData.append('InterestRate', selectedType);
+            formData.append('InterestRate', selectedRate);
             formData.append('DocumentationStatus', selectedStatus);
             formData.append('ValueDate', inputs.valueDate);
             formData.append('MaturityDate', inputs.maturityDate);
             formData.append('Comment', inputs.comment);
-            formData.append('CreatedBy', user.FirstName);
+            formData.append('CreatedBy', user.UserName);
             formData.append('DocumentationDoc', selectedFiles);
+            formData.append('Tenor', selectedTenor);
+            formData.append('Amount', inputs.amount);
             // ... other form data
             const token = getUserToken();
             const baseUrl = import.meta.env.VITE_APP_BASE_URL;
@@ -260,15 +287,15 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTe
                                     </span>
                                     <span className="ml-8">
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                       Loan Tenor
+                                       Interest Rate
                                       </h3>
-                                         <select id="select" value={selectedTenor} disabled={purpose === "view"}
-                                                 onChange={handleLoanChange}
+                                         <select id="select" value={selectedRate} disabled={purpose === "view"}
+                                                 onChange={handleRateChange}
                                                  className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
-                                            <option value="" disabled>Select tenor</option>
-                                             {tenor && tenor?.map((option) => (
-                                                 <option key={option.uniqueId} value={option.uniqueId}>
-                                                     {option.docName}
+                                            <option value="" disabled>Select interest</option>
+                                             {interest && interest?.map((option) => (
+                                                 <option key={option.id} value={option.id}>
+                                                     {option.interestRate}
                                                  </option>
                                              ))}
                                         </select>
