@@ -7,15 +7,22 @@ import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import DatePicker from "react-datepicker";
-import {Checkbox} from "@mui/material";
+import {Checkbox, Divider} from "@mui/material";
 
-const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGender, setSelectedGender}) => {
+const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, setStartDate, endDate, setEndDate, asEndDate, setAsEndDate, selectedGender, isOptInProcessingFee, setIsOptInProcessingFee, selectedTenor, setSelectedTenor, purpose}) => {
+    const [tenor, setTenor] = useState([])
     const [gender, setGender] = useState([])
+    const [rate, setRate] = useState([])
     const [selectedId, setSelectedId] = useState('');
     const dispatch  = useDispatch()
     const [returnDisbursement] = useReturnDisbursementMutation()
     const token = getUserToken();
-
+    const handleChecked = (event) => {
+        setAsEndDate(event.target.checked);
+    };
+    const handleFeeChecked = (event) => {
+        setIsOptInProcessingFee(event.target.checked);
+    };
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
@@ -23,13 +30,12 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGen
 
     const handleGenderChange = (event) => {
         const selectedOption = event.target.value;
-        const selectedOptionObject = gender.find((option) => option.name === selectedOption);
+        const selectedOptionObject = tenor.find((option) => option.name === selectedOption);
 
-        setSelectedGender(selectedOption);
-        setSelectedId(selectedOptionObject ? selectedOptionObject.id : '');
+        setSelectedTenor(selectedOption);
     };
 
-    const fetchGender = async () => {
+    const fetchTenor = async () => {
         try {
             const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidGenders', {
                 headers: {
@@ -39,7 +45,23 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGen
                     'authorization': `Bearer ${token}`
                 }
             });
-            setGender(response.data.data);
+            setTenor(response.data.data);
+            console.log('Fetched state:', response.data.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    const fetchInterest = async () => {
+        try {
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidRegularLoanInterestRate', {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*',
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setRate(response.data.data);
             console.log('Fetched state:', response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -47,7 +69,8 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGen
     };
 
     useEffect(() => {
-        fetchGender();
+        fetchTenor();
+        fetchInterest()
     }, []);
 
     const handleAdd = () => {
@@ -59,7 +82,8 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGen
                 firstname: inputs.firstName,
                 middlename: inputs.middleName,
                 emailAddress: inputs.emailAddress,
-                gender: selectedGender,
+                tenor: inputs.tenor,
+                interestRate: inputs.interestRate,
                 houseNo: inputs.houseNo,
                 streetName: inputs.streetName,
                 city: inputs.city,
@@ -94,7 +118,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGen
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
                     <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[50%] left-[50%] max-h-[99vh] w-[90vw] max-w-[900px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-                        <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-8">Edit</Dialog.Title>
+                        <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-8">Add Product</Dialog.Title>
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-2">
                             <div className="py-4">
@@ -104,6 +128,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGen
                                         Product Name
                                       </h3>
                                       <input
+                                          disabled={purpose === "view"}
                                           type="text"
                                           value={inputs.name}
                                           onChange={(event) => handleChange(event, "name")}
@@ -116,7 +141,8 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGen
                                         Amount (Start From)
                                       </h3>
                                       <input
-                                          type="text"
+                                          disabled={purpose === "view"}
+                                          type="number"
                                           value={inputs.minimumamount}
                                           onChange={(event) => handleChange(event, "minimumamount")}
                                           placeholder="Enter Amount From"
@@ -128,7 +154,8 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGen
                                         Amount (To)
                                       </h3>
                                       <input
-                                          type="text"
+                                          type="number"
+                                          disabled={purpose === "view"}
                                           value={inputs.maximumamount}
                                           onChange={(event) => handleChange(event, "maximumamount")}
                                           placeholder="Enter Amount to"
@@ -143,12 +170,13 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGen
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                         Tenor
                                       </h3>
-                                      <select id="select" value={selectedGender}
-                                              onChange={handleGenderChange}
+                                      <select id="select" value={inputs.tenor}
+                                              disabled={purpose === "view"}
+                                              onChange={(event) => handleChange(event, "tenor")}
                                               className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
-                                            <option value="" disabled>Select gender</option>
-                                          {gender && gender?.map((option) => (
-                                              <option key={option.uniqueId} value={option.id}>
+                                            <option value="" disabled>Select tenor</option>
+                                          {tenor && tenor?.map((option) => (
+                                              <option key={option.uniqueId} value={option.name}>
                                                   {option.name}
                                               </option>
                                           ))}
@@ -159,175 +187,220 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGen
                                        Start Date
                                       </h3>
                                          <DatePicker
-                                             className='border broder-gray-700 ml-3 px-2 rounded-md py-3 text-[14px] focus:outline-none'
+                                             className='border broder-gray-700 px-2 rounded-md py-3 text-[14px] focus:outline-none'
                                              // closeOnScroll={true}
                                              dateFormat="dd/MM/yyyy"
                                              placeholderText="Select a date"
-                                             selected={inputs.startDate}
-                                             onChange={(event) => handleChange(event, "startDate")}
+                                             disabled={purpose === "view"}
+                                             selected={startDate}
+                                             onChange={(date) => setStartDate(date)}
                                              showYearDropdown
                                              showMonthDropdown
                                              showDisabledMonthNavigation
                                              dropdownMode="select"
                                          />
                                     </span>
-                                    <span className="flex items-center">
+                                    <span className="flex items-center ml-16 mt-4">
                                    <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap">
                                         Has End Date
                                     </h3>
                                      <Checkbox
-                                         checked={inputs.checked}
+                                         checked={asEndDate}
                                          disabled={purpose === "view"}
                                          sx={{
                                              '&.Mui-checked': {
                                                  color: "#00C796",
                                              },
                                          }}
-                                         onChange={(event) => handleChange(event, "checked")}
+                                         onChange={handleChecked}
                                          inputProps={{'aria-label': 'controlled'}}
                                      />
                                 </span>
                                 </div>
                             </div>
-                            <div className="pb-4">
-                                <div className="flex">
+                            <div className="flex pb-4">
+                                <span>
+                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                        Interest Rate
+                                      </h3>
+                                      <select id="select" value={inputs.interestRate}
+                                              disabled={purpose === "view"}
+                                              onChange={(event) => handleChange(event, "interestRate")}
+                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                            <option value="" disabled>Select interest rate</option>
+                                          {rate && rate?.map((option) => (
+                                              <option key={option.uniqueId} value={option.interestRate}>
+                                                  {option.interestRate}
+                                              </option>
+                                          ))}
+                                        </select>
+                                    </span>
+                                {
+                                    asEndDate && (
+                                        <span className="ml-8">
+                                          <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                           End Date
+                                          </h3>
+                                         <DatePicker
+                                             className='border broder-gray-700  px-2 rounded-md py-3 text-[14px] focus:outline-none'
+                                             // closeOnScroll={true}
+                                             dateFormat="dd/MM/yyyy"
+                                             placeholderText="Select a date"
+                                             disabled={purpose === "view"}
+                                             selected={endDate}
+                                             onChange={(date) => setEndDate(date)}
+                                             showYearDropdown
+                                             showMonthDropdown
+                                             showDisabledMonthNavigation
+                                             dropdownMode="select"
+                                         />
+                                    </span>
+                                    )
+                                }
+                            </div>
+                            <Divider/>
+                            <div className="pt-4">
+                                <p className="font-[700] text-[#4A5D58] text-[16px] whitespace-nowrap">Loan
+                                    Processing Fees</p>
+                                <span className="flex items-center -ml-3">
+                                     <Checkbox
+                                         checked={isOptInProcessingFee}
+                                         disabled={purpose === "view"}
+                                         sx={{
+                                             '&.Mui-checked': {
+                                                 color: "#00C796",
+                                             },
+                                         }}
+                                         onChange={handleFeeChecked}
+                                         inputProps={{'aria-label': 'controlled'}}
+                                     />
+                                    <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap">
+                                        Opt in loan processing fee
+                                    </h3>
+                                </span>
+                                <div className="flex my-6">
                                     <span>
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        Street Name
+                                        Fixed Price
                                       </h3>
-                                      <input
-                                          type="text"
-                                          value={inputs.streetName}
-                                          onChange={(event) => handleChange(event, "streetName")}
-                                          placeholder="Enter street name"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                      />
+                                       <div className="input-container">
+                                          <span className="percent-sign">NGN</span>
+                                          <input
+                                              type="text"
+                                              className="percent-input font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              value={inputs.fixedPrice}
+                                              onChange={(event) => handleChange(event, "fixedPrice")}
+                                          />
+                                        </div>
                                     </span>
                                     <span className="ml-8">
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        City
+                                        Principal
                                       </h3>
-                                      <input
-                                          type="text"
-                                          value={inputs.city}
-                                          onChange={(event) => handleChange(event, "city")}
-                                          placeholder="Enter city"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                      />
-                                    </span>
-                                    <span className="ml-8">
-                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        State
-                                      </h3>
-                                      <input
-                                          type="text"
-                                          value={inputs.state}
-                                          onChange={(event) => handleChange(event, "state")}
-                                          placeholder="Enter state"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                      />
+                                       <div className="input-container">
+                                          <span className="percent-sign">%</span>
+                                          <input
+                                              type="text"
+                                              className="percent-input font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              value={inputs.principal}
+                                              onChange={(event) => handleChange(event, "principal")}
+                                              placeholder="Enter the fixed amount"
+                                          />
+                                        </div>
                                     </span>
                                 </div>
                             </div>
-                            <div className="pb-4">
-                                <div className="flex">
-                                      <span>
-                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        Date Of Birth
-                                      </h3>
-                                       <input
-                                           type="date"
-                                           value={inputs.date}
-                                           onChange={(event) => handleChange(event, "date")}
-                                           placeholder="Enter date"
-                                           className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                       />
-                                    </span>
-                                    <span className="ml-8">
-                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        BVN
-                                      </h3>
-                                      <input
-                                          type="text"
-                                          value={inputs.bvn}
-                                          onChange={(event) => handleChange(event, "bvn")}
-                                          placeholder="Enter bvn"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                      />
-                                    </span>
-                                    <span className="ml-8">
-                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        ID No. (International Passport Only)
-                                      </h3>
-                                      <input
-                                          type="text"
-                                          value={inputs.idNo}
-                                          onChange={(event) => handleChange(event, "idNo")}
-                                          placeholder="Enter id number"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                      />
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="pb-4">
-                                <div className="flex">
-                                    <span>
-                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        ID Date issued
-                                      </h3>
-                                      <input
-                                          type="date"
-                                          value={inputs.idDateIssued}
-                                          onChange={(event) => handleChange(event, "idDate")}
-                                          placeholder="Enter id date"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                      />
-                                    </span>
-                                    <span className="ml-8">
-                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        Transfer Amount
-                                      </h3>
-                                      <input
-                                          type="text"
-                                          value={inputs. transferAmount}
-                                          onChange={(event) => handleChange(event, "transferAmt")}
-                                          placeholder="Enter transfer amount"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                      />
-                                    </span>
-                                    <span className="ml-8">
-                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        Preferred Narration
-                                      </h3>
-                                      <input
-                                          type="text"
-                                          value={inputs.preferredNaration}
-                                          onChange={(event) => handleChange(event, "narration")}
-                                          placeholder="Enter preferred narration"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                      />
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="pb-4">
-                                <div className="flex">
+                            <Divider/>
+                            <div className="pt-4">
+                                <p className="font-[700] text-[#4A5D58] text-[16px] whitespace-nowrap">Late fees (
+                                    Penalties)</p>
+                                <div className="flex my-6">
                                      <span>
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        Repayment Date
+                                        Late Fee Type
+                                      </h3>
+                                      <select id="select" value={selectedGender}
+                                              disabled={purpose === "view"}
+                                              onChange={handleGenderChange}
+                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                            <option value="" disabled>Select tenor</option>
+                                          {gender && gender?.map((option) => (
+                                              <option key={option.uniqueId} value={option.name}>
+                                                  {option.name}
+                                              </option>
+                                          ))}
+                                        </select>
+                                    </span>
+                                    <span className="ml-8">
+                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                        Fixed Price
+                                      </h3>
+                                       <div className="input-container">
+                                          <span className="percent-sign">NGN</span>
+                                          <input
+                                              type="text"
+                                              className="percent-input font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              value={inputs.fixedPrice}
+                                              onChange={(event) => handleChange(event, "fixedPrice")}
+                                          />
+                                        </div>
+                                    </span>
+                                    <span className="ml-8">
+                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                        Late Fee Principal
+                                      </h3>
+                                      <select id="select" value={selectedGender}
+                                              disabled={purpose === "view"}
+                                              onChange={handleGenderChange}
+                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                            <option value="" disabled>Select tenor</option>
+                                          {gender && gender?.map((option) => (
+                                              <option key={option.uniqueId} value={option.name}>
+                                                  {option.name}
+                                              </option>
+                                          ))}
+                                        </select>
+                                    </span>
+                                </div>
+                                <div className="flex my-6">
+                                    <span>
+                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                        Grace period before late fees apply
                                       </h3>
                                       <input
-                                          type="date"
-                                          value={inputs.repayment}
-                                          onChange={(event) => handleChange(event, "repayment")}
-                                          placeholder="Enter repayment date"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          type="text"
+                                          disabled={purpose === "view"}
+                                          value={inputs.gracePeriod}
+                                          onChange={(event) => handleChange(event, "gracePeriod")}
+                                          placeholder="Enter the text"
+                                          className="font-medium w-[345px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
+                                    </span>
+                                    <span className="ml-8">
+                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                        Fee Frequency
+                                      </h3>
+                                      <select id="select" value={selectedGender}
+                                              disabled={purpose === "view"}
+                                              onChange={handleGenderChange}
+                                              className="font-medium w-[420px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                            <option value="" disabled>Select tenor</option>
+                                          {gender && gender?.map((option) => (
+                                              <option key={option.uniqueId} value={option.name}>
+                                                  {option.name}
+                                              </option>
+                                          ))}
+                                        </select>
                                     </span>
                                 </div>
                             </div>
                             <div className="flex space-x-3 float-right">
-                                <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-2" onClick={()=>setOpen(!open)}>Close</button>
-                                <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-2" onClick={handleAdd}>Send</button>
+                                <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-2"
+                                        onClick={() => setOpen(!open)}>Close
+                                </button>
+                                <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-2"
+                                        onClick={handleAdd}>Save
+                                </button>
                             </div>
                         </div>
 
@@ -336,7 +409,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, selectedGen
                                 className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[20px] right-[40px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                                 aria-label="Close"
                             >
-                                <Close />
+                                <Close/>
                             </button>
                         </Dialog.Close>
                     </Dialog.Content>

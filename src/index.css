@@ -50,3 +50,18 @@
 .scroll-container::-webkit-scrollbar {
     display: none;
 }
+.input-container {
+    position: relative;
+}
+
+.percent-sign {
+    position: absolute;
+    top: 50%;
+    left: 8px; /* Adjust the distance from the input field */
+    transform: translateY(-50%);
+    color: #aaa; /* Optional: Set the color of the percent sign */
+}
+
+.percent-input {
+    padding-left: 50px; /* Space for the percent sign */
+}

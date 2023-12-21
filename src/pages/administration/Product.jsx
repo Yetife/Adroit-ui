@@ -7,15 +7,32 @@ import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import DocumentationSetupTable from "../../components/bridgeLoan/documentationSetup/DocumentationSetupTable.jsx";
-import AddDocumentationSetupModal from "../../components/bridgeLoan/documentationSetup/AddDocumentationSetupModal.jsx";
+import ProductModal from "../../components/administration/products/ProductModal.jsx";
 
 const Product = () => {
     const [open, setOpen] = useState(false)
     const [docName, setDocName] = useState("")
-    const [checked, setChecked] = useState(true)
+    const [asEndDate, setAsEndDate] = useState(false)
+    const [isOptInProcessingFee, setIsOptInProcessingFee] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const dispatch = useDispatch()
     const [addSetup] = useAddDocumentSetupMutation()
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState("");
+    const initialState = {
+        name: "",
+        minimumamount: 0,
+        maximumamount: 0,
+        startDate: new Date(),
+        endDate: new Date(),
+        lateFeePrincipal: "",
+        fixedPrice: 0,
+        gracePeriod: "",
+        principal: 0,
+        tenor: "",
+        interestRate: "",
+    }
+    const [inputs, setInputs] = useState(initialState)
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -53,7 +70,8 @@ const Product = () => {
                 <div>
                     <DocumentationSetupTable searchTerm={searchTerm}/>
                 </div>
-                <AddDocumentationSetupModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} docName={docName} setDocName={setDocName}  handleAdd={handleAdd}/>
+                <ProductModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
+                              asEndDate={asEndDate} setAsEndDate={setAsEndDate} setIsOptInProcessingFee={setIsOptInProcessingFee} isOptInProcessingFee={isOptInProcessingFee} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );
