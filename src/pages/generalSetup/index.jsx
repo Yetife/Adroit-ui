@@ -117,11 +117,24 @@ const GeneralSetup = () => {
             name: "Fixed Deposit Interest Rate",
             icon: stateIcon,
             path: "/generalSetup/fixedDepositInterestRate"
-        },{
+        },
+        {
             name: "Regular Loan Charges",
             icon: stateIcon,
             path: "/generalSetup/regularLoanCharges"
-        }
+        }, {
+            name: "Late Fee Type",
+            icon: stateIcon,
+            path: "/generalSetup/lateFeeType"
+        }, {
+            name: "Late Fee Principal",
+            icon: stateIcon,
+            path: "/generalSetup/regularLoanCharges"
+        }, {
+            name: "Fee Frequency",
+            icon: stateIcon,
+            path: "/generalSetup/regularLoanCharges"
+        },
     ]
 
     return (

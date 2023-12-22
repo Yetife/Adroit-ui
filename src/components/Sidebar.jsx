@@ -191,7 +191,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             hasDropdown: false,
             href: '/debtManagement',
             route: '/debtManagement',
-            icon: '../img/trail'
+            icon: dashboard,
         },
         {
             name: 'Bridge Loan',
@@ -261,21 +261,21 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             hasDropdown: false,
             href: '/customerCentric',
             route: '/customerCentric',
-            icon: '../img/trail'
+            icon: dashboard,
         },
         {
             name: 'General Setup',
             hasDropdown: false,
             href: '/generalSetup',
             route: '/generalSetup',
-            icon: '../img/trail'
+            icon: dashboard,
         },
         {
             name: 'Report',
             hasDropdown: false,
             href: '/report',
             route: '/report',
-            icon: '../img/trail'
+            icon: dashboard,
         },
 
     ]

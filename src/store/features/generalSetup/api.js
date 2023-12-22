@@ -11,7 +11,8 @@ export const generalSetUpApi = createApi({
         "AddSalaryRange", "DelSalaryRange", "EditSalaryRange", "AddSalaryPaymentDay", "DelSalaryPaymentDay", "EditSalaryPaymentDay", "AddState",
         "DelState", "EditState", "AddTitle", "DelTitle", "EditTitle", "AddCountry", "DelCountry", "EditCountry", "AddFixedDepositStatus", "DelFixedDepositStatus",
         "EditFixedDepositStatus", "AddFixedDepositTenor", "DelFixedDepositTenor", "EditFixedDepositTenor", "AddFixedDepositPreliquidationCharges", "DelFixedDepositPreliquidationCharges",
-        "EditFixedDepositPreliquidationCharges", "AddRegularLoanInterestRate", "DelRegularLoanInterestRate", "EditRegularLoanInterestRate"] ,
+        "EditFixedDepositPreliquidationCharges", "AddRegularLoanInterestRate", "DelRegularLoanInterestRate", "EditRegularLoanInterestRate", "AddLateFeeTypes", "DelLateFeeTypes",
+        "EditLateFeeTypes"] ,
 
     endpoints: (builder) => ({
         addBanks: builder.mutation({
@@ -663,6 +664,35 @@ export const generalSetUpApi = createApi({
                 body
             }),
             invalidatesTags: ["EditRegularLoanCharge"]
+        }),
+        addLateFeeTypes: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/addLateFeeTypes`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddLateFeeTypes"]
+        }),
+        getAllLateFeeTypes: builder.query({
+            query: () => ({
+                url: `/GeneralSetUp/getallvalidLateFeeTypes`,
+            }),
+            providesTags: ["AddLateFeeTypes", "DelLateFeeTypes", "EditLateFeeTypes"]
+        }),
+        deleteLateFeeTypes: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/deleteLateFeeTypebyid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelLateFeeTypes"]
+        }),
+        editLateFeeTypes: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/updateLateFeeType`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["EditLateFeeTypes"]
         })
     })
 })
@@ -754,6 +784,10 @@ export const {
     useGetAllRegularLoanChargeQuery,
     useDeleteRegularLoanChargeMutation,
     useEditRegularLoanChargeMutation,
+    useAddLateFeeTypesMutation,
+    useGetAllLateFeeTypesQuery,
+    useDeleteLateFeeTypesMutation,
+    useEditLateFeeTypesMutation,
     useAddFixedDepositPreliquidationChargesMutation,
     useGetAllFixedDepositPreliquidationChargesQuery,
     useDeleteFixedDepositPreliquidationChargesMutation,
