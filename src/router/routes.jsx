@@ -46,6 +46,8 @@ import Processed from "../pages/bridgeLoan/disbursement/Processed.jsx";
 import Disbursed from "../pages/bridgeLoan/disbursement/Disbursed.jsx";
 import Product from "../pages/administration/Product.jsx";
 import LateFeeType from "../pages/generalSetup/LateFeeType.jsx";
+import LateFeePrincipal from "../pages/generalSetup/LateFeePrincipal.jsx";
+import FeeFrequency from "../pages/generalSetup/FeeFrequency.jsx";
 
 const ROUTES = [
     {
@@ -261,6 +263,18 @@ const ROUTES = [
                 exact: true,
                 element: <LateFeeType
                 />,
+            },
+            {
+                path: "lateFeePrincipal",
+                key: "lateFeePrincipal",
+                exact: true,
+                element: <LateFeePrincipal/>,
+            },
+            {
+                path: "feeFrequency",
+                key: "feeFrequency",
+                exact: true,
+                element: <FeeFrequency/>,
             },
         ]
     },

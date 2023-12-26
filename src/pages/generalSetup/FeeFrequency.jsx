@@ -1,21 +1,22 @@
+import {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
-import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {useAddLateFeePrincipalMutation} from "../../store/features/generalSetup/api.js";
+import {useAddLateFeeTypesMutation} from "../../store/features/generalSetup/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import LateFeePrincipalTable from "../../components/generalSetup/lateFeePrincipal/LateFeePrincipalTable.jsx";
-import AddLateFeePrincipalModal from "../../components/generalSetup/lateFeePrincipal/AddLateFeePrincipalModal.jsx";
+import LateFeeTypeTable from "../../components/generalSetup/lateFeeType/LateFeeTypeTable.jsx";
+import AddFeeFrequencyModal from "../../components/generalSetup/feeFrequency/AddFeeFrequencyModal.jsx";
+import FeeFrequencyTable from "../../components/generalSetup/feeFrequency/FeeFrequencyTable.jsx";
 
-const LateFeePrincipal = () => {
+const FeeFrequency = () => {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
-    const [feePrincipal, setFeePrincipal] = useState("")
+    const [feeFreq, setFeeFreq] = useState("")
     const dispatch = useDispatch()
-    const [addStatus] = useAddLateFeePrincipalMutation()
+    const [addStatus] = useAddLateFeeTypesMutation()
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = (searchValue) => {
@@ -30,13 +31,13 @@ const LateFeePrincipal = () => {
     const handleAdd = ()=> {
         addStatus({
             body: {
-                name: feePrincipal,
+                name: feeFreq,
                 statusID: checked ? 1 : 0
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
-            setFeePrincipal("")
+            setFeeFreq("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
@@ -58,12 +59,12 @@ const LateFeePrincipal = () => {
                     </div>
                 </div>
                 <div>
-                    <LateFeePrincipalTable searchTerm={searchTerm}/>
+                    <FeeFrequencyTable searchTerm={searchTerm}/>
                 </div>
-                <AddLateFeePrincipalModal open={open} setOpen={setOpen} handleAdd={handleAdd} feePrincipal={feePrincipal} setFeePrincipal={setFeePrincipal} checked={checked} setChecked={setChecked}/>
+                <AddFeeFrequencyModal open={open} setOpen={setOpen} handleAdd={handleAdd} feeFreq={feeFreq} setFeeFreq={setFeeFreq} checked={checked} setChecked={setChecked}/>
             </div>
         </Layout>
     );
 };
 
-export default LateFeePrincipal;
+export default FeeFrequency;

@@ -12,6 +12,8 @@ import {Checkbox, Divider} from "@mui/material";
 const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, setStartDate, endDate, setEndDate, asEndDate, setAsEndDate, selectedGender, isOptInProcessingFee, setIsOptInProcessingFee, selectedTenor, setSelectedTenor, purpose}) => {
     const [tenor, setTenor] = useState([])
     const [gender, setGender] = useState([])
+    const [feeType, setFeeType] = useState([])
+    const [feePrincipal, setFeePrincipal] = useState([])
     const [rate, setRate] = useState([])
     const [selectedId, setSelectedId] = useState('');
     const dispatch  = useDispatch()
@@ -67,10 +69,44 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
             console.error('Error fetching data:', error);
         }
     };
+    const fetchFeeType = async () => {
+        try {
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidLateFeeTypes', {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*',
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setFeeType(response.data.data);
+            console.log('Fetched state:', response.data.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    const fetchFeePrincipal = async () => {
+        try {
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidLateFeePrincipals', {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*',
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setFeePrincipal(response.data.data);
+            console.log('Fetched state:', response.data.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     useEffect(() => {
         fetchTenor();
         fetchInterest()
+        fetchFeeType()
+        fetchFeePrincipal()
     }, []);
 
     const handleAdd = () => {
@@ -319,12 +355,12 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                         Late Fee Type
                                       </h3>
-                                      <select id="select" value={selectedGender}
+                                      <select id="select" value={inputs.lateFeeType}
                                               disabled={purpose === "view"}
-                                              onChange={handleGenderChange}
+                                              onChange={(event) => handleChange(event, "lateFeeType")}
                                               className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
-                                            <option value="" disabled>Select tenor</option>
-                                          {gender && gender?.map((option) => (
+                                            <option value="" disabled>Select fee type</option>
+                                          {feeType && feeType?.map((option) => (
                                               <option key={option.uniqueId} value={option.name}>
                                                   {option.name}
                                               </option>
@@ -349,12 +385,12 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                         Late Fee Principal
                                       </h3>
-                                      <select id="select" value={selectedGender}
+                                      <select id="select" value={inputs.lateFeePrincipal}
                                               disabled={purpose === "view"}
-                                              onChange={handleGenderChange}
+                                              onChange={(event) => handleChange(event, "lateFeePrincipal")}
                                               className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
-                                            <option value="" disabled>Select tenor</option>
-                                          {gender && gender?.map((option) => (
+                                            <option value="" disabled>Select fee principal</option>
+                                          {feePrincipal && feePrincipal?.map((option) => (
                                               <option key={option.uniqueId} value={option.name}>
                                                   {option.name}
                                               </option>

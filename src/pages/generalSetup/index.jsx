@@ -129,11 +129,11 @@ const GeneralSetup = () => {
         }, {
             name: "Late Fee Principal",
             icon: stateIcon,
-            path: "/generalSetup/regularLoanCharges"
+            path: "/generalSetup/lateFeePrincipal"
         }, {
             name: "Fee Frequency",
             icon: stateIcon,
-            path: "/generalSetup/regularLoanCharges"
+            path: "/generalSetup/feeFrequency"
         },
     ]
 

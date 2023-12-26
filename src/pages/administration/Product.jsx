@@ -26,6 +26,7 @@ const Product = () => {
         startDate: new Date(),
         endDate: new Date(),
         lateFeePrincipal: "",
+        lateFeeType: "",
         fixedPrice: 0,
         gracePeriod: "",
         principal: 0,

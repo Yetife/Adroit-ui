@@ -12,7 +12,7 @@ export const generalSetUpApi = createApi({
         "DelState", "EditState", "AddTitle", "DelTitle", "EditTitle", "AddCountry", "DelCountry", "EditCountry", "AddFixedDepositStatus", "DelFixedDepositStatus",
         "EditFixedDepositStatus", "AddFixedDepositTenor", "DelFixedDepositTenor", "EditFixedDepositTenor", "AddFixedDepositPreliquidationCharges", "DelFixedDepositPreliquidationCharges",
         "EditFixedDepositPreliquidationCharges", "AddRegularLoanInterestRate", "DelRegularLoanInterestRate", "EditRegularLoanInterestRate", "AddLateFeeTypes", "DelLateFeeTypes",
-        "EditLateFeeTypes"] ,
+        "EditLateFeeTypes", "AddLateFeePrincipal", "DelLateFeePrincipal", "EditLateFeePrincipal"] ,
 
     endpoints: (builder) => ({
         addBanks: builder.mutation({
@@ -693,7 +693,65 @@ export const generalSetUpApi = createApi({
                 body
             }),
             invalidatesTags: ["EditLateFeeTypes"]
-        })
+        }),
+        addLateFeePrincipal: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/addLateFeePrincipal`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddLateFeePrincipal"]
+        }),
+        getAllLateFeePrincipals: builder.query({
+            query: () => ({
+                url: `/GeneralSetUp/getallvalidLateFeePrincipals`,
+            }),
+            providesTags: ["AddLateFeePrincipal", "DelLateFeePrincipal", "EditLateFeePrincipal"]
+        }),
+        deleteLateFeePrincipal: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/deleteLateFeePrincipalbyid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelLateFeePrincipal"]
+        }),
+        editLateFeePrincipal: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/updateLateFeePrincipal`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["EditLateFeePrincipal"]
+        }),
+        addFeeFrequencys: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/addFeeFrequencys`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddFeeFrequencys"]
+        }),
+        getAllFeeFrequencys: builder.query({
+            query: () => ({
+                url: `/GeneralSetUp/getallvalidFeeFrequencys`,
+            }),
+            providesTags: ["AddFeeFrequencys", "DelFeeFrequency", "EditFeeFrequency"]
+        }),
+        deleteFeeFrequency: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/deleteFeeFrequencybyid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelFeeFrequency"]
+        }),
+        editFeeFrequency: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/updateFeeFrequency`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["EditLFeeFrequency"]
+        }),
     })
 })
 
@@ -788,6 +846,14 @@ export const {
     useGetAllLateFeeTypesQuery,
     useDeleteLateFeeTypesMutation,
     useEditLateFeeTypesMutation,
+    useAddFeeFrequencysMutation,
+    useGetAllFeeFrequencysQuery,
+    useDeleteFeeFrequencyMutation,
+    useEditFeeFrequencyMutation,
+    useAddLateFeePrincipalMutation,
+    useGetAllLateFeePrincipalsQuery,
+    useDeleteLateFeePrincipalMutation,
+    useEditLateFeePrincipalMutation,
     useAddFixedDepositPreliquidationChargesMutation,
     useGetAllFixedDepositPreliquidationChargesQuery,
     useDeleteFixedDepositPreliquidationChargesMutation,

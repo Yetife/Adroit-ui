@@ -4,7 +4,7 @@ import themes from "../../../reusables/theme.jsx";
 import {useGetAllReturnedDisbursementQuery} from "../../../../store/features/bridgeLoan/api.js";
 import ReturnedModal from "./ReturnedModal.jsx";
 
-const ReturnedTable = ({sesrchTerm}) => {
+const ReturnedTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllReturnedDisbursementQuery()
     if (error) return <p>Network error</p>
 
