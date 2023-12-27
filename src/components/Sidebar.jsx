@@ -166,8 +166,26 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
                 },
                 {
                     applicationPageName: 'Underwriter',
-                    href: '/administration/underwriter',
+                    href: '/administration/underwriter/level',
                     route: '/administration',
+                    hasDropdown: true,
+                    dropdown: [
+                        {
+                            applicationPageName: 'Level',
+                            href: '/administration/underwriter/level',
+                            route: '/administration',
+                        },
+                        {
+                            applicationPageName: 'Manage',
+                            href: '/administration/underwriter/manage',
+                            route: '/administration',
+                        },
+                        {
+                            applicationPageName: 'Regular Loan',
+                            href: '/administration/underwriter/regularLoan',
+                            route: '/administration',
+                        },
+                    ]
                 },
                 {
                     applicationPageName: 'Staff',

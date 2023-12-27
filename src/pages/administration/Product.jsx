@@ -8,21 +8,23 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import DocumentationSetupTable from "../../components/bridgeLoan/documentationSetup/DocumentationSetupTable.jsx";
 import ProductModal from "../../components/administration/products/ProductModal.jsx";
+import ProductsTable from "../../components/administration/products/ProductsTable.jsx";
+import dayjs from "dayjs";
+import {useAddProductMutation} from "../../store/features/administration/api.js";
 
 const Product = () => {
     const [open, setOpen] = useState(false)
-    const [docName, setDocName] = useState("")
     const [asEndDate, setAsEndDate] = useState(false)
     const [isOptInProcessingFee, setIsOptInProcessingFee] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const dispatch = useDispatch()
-    const [addSetup] = useAddDocumentSetupMutation()
+    const [addProduct] = useAddProductMutation()
     const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState("");
+    const [endDate, setEndDate] = useState(new Date());
     const initialState = {
         name: "",
-        minimumamount: 0,
-        maximumamount: 0,
+        minimuimamount: 0,
+        maximuimamount: 0,
         startDate: new Date(),
         endDate: new Date(),
         lateFeePrincipal: "",
@@ -32,6 +34,7 @@ const Product = () => {
         principal: 0,
         tenor: "",
         interestRate: "",
+        feeFrequency: "",
     }
     const [inputs, setInputs] = useState(initialState)
 
@@ -42,16 +45,29 @@ const Product = () => {
         setOpen(true)
     }
 
-    const handleAdd = ()=> {
-        addSetup({
+    const handleAdd = () => {
+        const user = JSON.parse(sessionStorage.getItem("userData"));
+        addProduct({
             body: {
-                name: docName,
-                status: checked ? "1" : "0"
+                name: inputs.name,
+                minimuimamount: inputs.minimumamount,
+                maximuimamount: inputs.maximumamount,
+                startdate: dayjs(startDate).format('YYYY-MM-DD'),
+                enddate: asEndDate ? dayjs(endDate).format('YYYY-MM-DD') : "",
+                lateFeePrincipal: inputs.lateFeePrincipal,
+                lateFeeType: inputs.lateFeeType,
+                fixedPrice: inputs.fixedPrice,
+                gracePeriod: inputs.gracePeriod,
+                principal: inputs.principal,
+                tenor: inputs.tenor,
+                interestRate: inputs.interestRate,
+                isOptInProcessingFee: isOptInProcessingFee,
+                asEndDate: asEndDate,
+                feeFrequency: inputs.feeFrequency,
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
-            setDocName("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
@@ -69,7 +85,7 @@ const Product = () => {
                     </div>
                 </div>
                 <div>
-                    <DocumentationSetupTable searchTerm={searchTerm}/>
+                    <ProductsTable searchTerm={searchTerm}/>
                 </div>
                 <ProductModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
                               asEndDate={asEndDate} setAsEndDate={setAsEndDate} setIsOptInProcessingFee={setIsOptInProcessingFee} isOptInProcessingFee={isOptInProcessingFee} handleAdd={handleAdd}/>

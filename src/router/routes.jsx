@@ -48,6 +48,10 @@ import Product from "../pages/administration/Product.jsx";
 import LateFeeType from "../pages/generalSetup/LateFeeType.jsx";
 import LateFeePrincipal from "../pages/generalSetup/LateFeePrincipal.jsx";
 import FeeFrequency from "../pages/generalSetup/FeeFrequency.jsx";
+import LoanTenor from "../pages/administration/LoanTenor.jsx";
+import Level from "../pages/administration/underwritter/Level.jsx";
+import Manage from "../pages/administration/underwritter/Manage.jsx";
+import RegularLoan from "../pages/administration/underwritter/RegularLoan.jsx";
 
 const ROUTES = [
     {
@@ -287,6 +291,36 @@ const ROUTES = [
                 key: "PRODUCT",
                 exact: true,
                 element: <Product />,
+            },
+            {
+                path: "loanTenor",
+                key: "loanTenor",
+                exact: true,
+                element: <LoanTenor />,
+            },
+            {
+                path: "underwriter",
+                exact: true,
+                children: [
+                    {
+                        path: "level",
+                        key: "level",
+                        exact: true,
+                        element: <Level />,
+                    },
+                    {
+                        path: "manage",
+                        key: "manage",
+                        exact: true,
+                        element: <Manage/>,
+                    },
+                    {
+                        path: "regularLoan",
+                        key: "regularLoan",
+                        exact: true,
+                        element: <RegularLoan />,
+                    },
+                ]
             },
         ]
     },

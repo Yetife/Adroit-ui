@@ -1,33 +1,26 @@
 import {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
-import {
-    useAddRegularLoanChargeMutation, useEditRegularLoanChargeMutation,
-} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
 import axios from "axios";
 import * as Dialog from "@radix-ui/react-dialog";
 import {Checkbox} from "@mui/material";
 import {Close} from "@mui/icons-material";
-import {getUserToken} from "../../services/storage/index.js";
+import {
+    useAddRegularLoanChargesMutation,
+    useEditRegularLoanChargesMutation
+} from "../../../../store/features/administration/api.js";
+import {getUserToken} from "../../../../services/storage/index.js";
 
-const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount, setCAmount, depositFrom, setDepositFrom, depositTo, setDepositTo, purpose, id}) => {
+const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom, setDepositFrom, selectedValue, setSelectedValue, selectedLoan, setSelectedLoan, selectedPer, setSelectedPer, depositTo, setDepositTo, purpose, id}) => {
     const [type, setType] = useState([]);
     const [tenor, setTenor] = useState([]);
     const per = [{name: true}, {name: false}]
-    const [selectedPer, setSelectedPer] = useState(false);
-    const [selectedValue, setSelectedValue] = useState('');
-    const [selectedLoan, setSelectedLoan] = useState('');
-    const [selectedId, setSelectedId] = useState('');
     const dispatch = useDispatch()
-    const [addLoan] = useAddRegularLoanChargeMutation()
-    const [editLoan] = useEditRegularLoanChargeMutation()
+    const [addLoan] = useAddRegularLoanChargesMutation()
+    const [editLoan] = useEditRegularLoanChargesMutation()
     const token = getUserToken();
 
 
-
-    const handleChange = (event) => {
-        setChecked(event.target.checked);
-    };
 
     const handleFromChange = (e) => {
         setDepositFrom(e.target.value)
@@ -44,17 +37,11 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
 
     const handleSelectChange = (event) => {
         const selectedOption = event.target.value;
-        const selectedOptionObject = type.find((option) => option.name === selectedOption);
-
         setSelectedValue(selectedOption);
-        setSelectedId(selectedOptionObject ? selectedOptionObject.id : '');
     };
     const handleLoanChange = (event) => {
         const selectedOption = event.target.value;
-        const selectedOptionObject = tenor.find((option) => option.name === selectedOption);
-
         setSelectedLoan(selectedOption);
-        setSelectedId(selectedOptionObject ? selectedOptionObject.id : '');
     };
 
     const handleAdd = ()=> {
@@ -66,7 +53,6 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
                     chargeAmount: cAmount,
                     loanTenorid: selectedLoan,
                     isPercentage: Boolean(selectedPer),
-                    status: checked ? 1 : 0,
                     employmentTypeId: selectedValue,
                 }
             }).then(res => {
@@ -77,6 +63,7 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
                 setDepositFrom("")
                 setSelectedValue("")
                 setSelectedLoan("")
+                setSelectedPer(false)
             }).catch(err =>{
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
             })
@@ -88,9 +75,8 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
                     chargeAmount: cAmount,
                     loanTenorid: selectedLoan,
                     isPercentage: Boolean(selectedPer),
-                    status: checked ? 1 : 0,
                     employmentTypeId: selectedValue,
-                    id: id
+                    uniqueId: id
                 }
             }).then(res => {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
@@ -100,6 +86,7 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
                 setDepositFrom("")
                 setSelectedValue("")
                 setSelectedLoan("")
+                setSelectedPer(false)
             }).catch(err =>{
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
             })
@@ -123,7 +110,7 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
     };
     const fetchTenor = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidRegularLoanTenors', {
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/Administration/LoanTenor/getallvalidLoanTenors',{
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -143,20 +130,20 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
         fetchTenor()
     }, []);
 
-    const fetchType = async () => {
-        try {
-            const response = await axios.get(`http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getRegularLoanChargebyid/id?id=${id}`);
-            setSelectedValue(response.data?.data.employmentTypeId)
-            setSelectedLoan(response.data?.data.loanTenorid)
-            setSelectedPer(response.data?.data.isPercentage)
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
-
-    if (id && open){
-        fetchType()
-    }
+    // const fetchType = async () => {
+    //     try {
+    //         const response = await axios.get(`http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getRegularLoanChargebyid/id?id=${id}`);
+    //         setSelectedValue(response.data?.data.employmentTypeId)
+    //         setSelectedLoan(response.data?.data.loanTenorid)
+    //         setSelectedPer(response.data?.data.isPercentage)
+    //     } catch (error) {
+    //         console.error('Error fetching data:', error);
+    //     }
+    // };
+    //
+    // if (id && open){
+    //     fetchType()
+    // }
 
     return (
         <div>
@@ -181,9 +168,9 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
                                           </h3>
                                              <select id="select" value={selectedValue} disabled={purpose === "view"} onChange={handleSelectChange}
                                                      style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
-                                                <option value="" disabled>Select a type</option>
+                                                <option value="" disabled>Select type</option>
                                                  {type && type?.map((option) => (
-                                                     <option key={option.id} value={option.id}>
+                                                     <option key={option.id} value={option.name}>
                                                          {option.name}
                                                      </option>
                                                  ))}
@@ -226,7 +213,7 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
                                                      style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                                 <option value="" disabled>Select loan tenor</option>
                                                  {tenor && tenor?.map((option) => (
-                                                     <option key={option.id} value={option.id}>
+                                                     <option key={option.id} value={option.name}>
                                                          {option.name}
                                                      </option>
                                                  ))}
@@ -259,23 +246,6 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
                                         </span>
                                     </div>
                                 </div>
-
-                                <div className="text-center mt-8">
-                                    <span className="flex items-center">
-                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap">
-                                        Active
-                                    </h3>
-                                     <Checkbox
-                                         checked={checked}
-                                         disabled={purpose === "view"}
-                                         sx={{'&.Mui-checked': {
-                                                 color: "#00C796",
-                                             },}}
-                                         onChange={handleChange}
-                                         inputProps={{ 'aria-label': 'controlled' }}
-                                     />
-                                </span>
-                                </div>
                                 <div className="flex space-x-3 float-right my-4">
                                     <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8" onClick={()=>setOpen(!open)}>Close</button>
                                     {purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
@@ -298,4 +268,4 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
     );
 };
 
-export default AddRegularLoanChargeModal;
+export default AddRegularLoanCharges;

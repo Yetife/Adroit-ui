@@ -750,7 +750,7 @@ export const generalSetUpApi = createApi({
                 method: "PUT",
                 body
             }),
-            invalidatesTags: ["EditLFeeFrequency"]
+            invalidatesTags: ["EditFeeFrequency"]
         }),
     })
 })

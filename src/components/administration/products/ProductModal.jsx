@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
-import {useReturnDisbursementMutation} from "../../../store/features/bridgeLoan/api.js";
 import {getUserToken} from "../../../services/storage/index.js";
 import axios from "axios";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
@@ -8,16 +7,17 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import DatePicker from "react-datepicker";
 import {Checkbox, Divider} from "@mui/material";
+import {useAddProductMutation} from "../../../store/features/administration/api.js";
+import dayjs from "dayjs";
 
-const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, setStartDate, endDate, setEndDate, asEndDate, setAsEndDate, selectedGender, isOptInProcessingFee, setIsOptInProcessingFee, selectedTenor, setSelectedTenor, purpose}) => {
+const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, setStartDate, endDate, setEndDate, asEndDate, setAsEndDate, selectedGender, isOptInProcessingFee, setIsOptInProcessingFee, selectedTenor, setSelectedTenor, purpose, handleAdd}) => {
     const [tenor, setTenor] = useState([])
     const [gender, setGender] = useState([])
     const [feeType, setFeeType] = useState([])
+    const [feeFreq, setFeeFreq] = useState([])
     const [feePrincipal, setFeePrincipal] = useState([])
     const [rate, setRate] = useState([])
-    const [selectedId, setSelectedId] = useState('');
     const dispatch  = useDispatch()
-    const [returnDisbursement] = useReturnDisbursementMutation()
     const token = getUserToken();
     const handleChecked = (event) => {
         setAsEndDate(event.target.checked);
@@ -39,7 +39,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
 
     const fetchTenor = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidGenders', {
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/Administration/LoanTenor/getallvalidLoanTenors', {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -101,48 +101,32 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
             console.error('Error fetching data:', error);
         }
     };
+const fetchFeeFrequency = async () => {
+        try {
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidFeeFrequencys', {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*',
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setFeeFreq(response.data.data);
+            console.log('Fetched state:', response.data.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     useEffect(() => {
         fetchTenor();
         fetchInterest()
         fetchFeeType()
         fetchFeePrincipal()
+        fetchFeeFrequency()
     }, []);
 
-    const handleAdd = () => {
-        const user = JSON.parse(sessionStorage.getItem("userData"));
 
-        returnDisbursement({
-            body: {
-                name: inputs.name,
-                firstname: inputs.firstName,
-                middlename: inputs.middleName,
-                emailAddress: inputs.emailAddress,
-                tenor: inputs.tenor,
-                interestRate: inputs.interestRate,
-                houseNo: inputs.houseNo,
-                streetName: inputs.streetName,
-                city: inputs.city,
-                state: inputs.state,
-                dob: inputs.date,
-                bvn: inputs.bvn,
-                idNo: inputs.idNo,
-                idDateIssued: inputs.idDateIssued,
-                transferAmount: inputs.transferAmount,
-                preferredNaration: inputs.preferredNaration,
-                repaymentDate: inputs.repayment,
-                createdBy: user.FirstName,
-                status: status,
-                uniqueId: id,
-
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
     return (
         <div>
             <Dialog.Root
@@ -222,19 +206,27 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                        Start Date
                                       </h3>
-                                         <DatePicker
-                                             className='border broder-gray-700 px-2 rounded-md py-3 text-[14px] focus:outline-none'
-                                             // closeOnScroll={true}
-                                             dateFormat="dd/MM/yyyy"
-                                             placeholderText="Select a date"
+                                         <input
+                                             type="date"
                                              disabled={purpose === "view"}
-                                             selected={startDate}
-                                             onChange={(date) => setStartDate(date)}
-                                             showYearDropdown
-                                             showMonthDropdown
-                                             showDisabledMonthNavigation
-                                             dropdownMode="select"
+                                             value={inputs.startDate}
+                                             onChange={(event) => handleChange(event, "startDate")}
+                                             placeholder="Enter start date"
+                                             className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                          />
+                                         {/*<DatePicker*/}
+                                         {/*    className='border broder-gray-700 px-2 rounded-md py-3 text-[14px] focus:outline-none'*/}
+                                         {/*    // closeOnScroll={true}*/}
+                                         {/*    dateFormat="dd/MM/yyyy"*/}
+                                         {/*    placeholderText="Select a date"*/}
+                                         {/*    disabled={purpose === "view"}*/}
+                                         {/*    selected={startDate}*/}
+                                         {/*    onChange={(date) => setStartDate(date)}*/}
+                                         {/*    showYearDropdown*/}
+                                         {/*    showMonthDropdown*/}
+                                         {/*    showDisabledMonthNavigation*/}
+                                         {/*    dropdownMode="select"*/}
+                                         {/*/>*/}
                                     </span>
                                     <span className="flex items-center ml-16 mt-4">
                                    <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap">
@@ -277,19 +269,27 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
                                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                            End Date
                                           </h3>
-                                         <DatePicker
-                                             className='border broder-gray-700  px-2 rounded-md py-3 text-[14px] focus:outline-none'
-                                             // closeOnScroll={true}
-                                             dateFormat="dd/MM/yyyy"
-                                             placeholderText="Select a date"
-                                             disabled={purpose === "view"}
-                                             selected={endDate}
-                                             onChange={(date) => setEndDate(date)}
-                                             showYearDropdown
-                                             showMonthDropdown
-                                             showDisabledMonthNavigation
-                                             dropdownMode="select"
-                                         />
+                                            <input
+                                                disabled={purpose === "view"}
+                                                type="date"
+                                                value={inputs.endDate}
+                                                onChange={(event) => handleChange(event, "endDate")}
+                                                placeholder="Enter start date"
+                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                            />
+                                         {/*<DatePicker*/}
+                                         {/*    className='border broder-gray-700  px-2 rounded-md py-3 text-[14px] focus:outline-none'*/}
+                                         {/*    // closeOnScroll={true}*/}
+                                         {/*    dateFormat="dd/MM/yyyy"*/}
+                                         {/*    placeholderText="Select a date"*/}
+                                         {/*    disabled={purpose === "view"}*/}
+                                         {/*    selected={endDate}*/}
+                                         {/*    onChange={(date) => setEndDate(date)}*/}
+                                         {/*    showYearDropdown*/}
+                                         {/*    showMonthDropdown*/}
+                                         {/*    showDisabledMonthNavigation*/}
+                                         {/*    dropdownMode="select"*/}
+                                         {/*/>*/}
                                     </span>
                                     )
                                 }
@@ -322,6 +322,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
                                        <div className="input-container">
                                           <span className="percent-sign">NGN</span>
                                           <input
+                                              disabled={purpose === "view"}
                                               type="text"
                                               className="percent-input font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                               value={inputs.fixedPrice}
@@ -336,6 +337,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
                                        <div className="input-container">
                                           <span className="percent-sign">%</span>
                                           <input
+                                              disabled={purpose === "view"}
                                               type="text"
                                               className="percent-input font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                               value={inputs.principal}
@@ -374,6 +376,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
                                        <div className="input-container">
                                           <span className="percent-sign">NGN</span>
                                           <input
+                                              disabled={purpose === "view"}
                                               type="text"
                                               className="percent-input font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                               value={inputs.fixedPrice}
@@ -416,12 +419,12 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                         Fee Frequency
                                       </h3>
-                                      <select id="select" value={selectedGender}
+                                      <select id="select" value={inputs.feeFrequency}
                                               disabled={purpose === "view"}
-                                              onChange={handleGenderChange}
+                                              onChange={(event) => handleChange(event, "feeFrequency")}
                                               className="font-medium w-[420px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
-                                            <option value="" disabled>Select tenor</option>
-                                          {gender && gender?.map((option) => (
+                                            <option value="" disabled>Select fee frequency</option>
+                                          {feeFreq && feeFreq?.map((option) => (
                                               <option key={option.uniqueId} value={option.name}>
                                                   {option.name}
                                               </option>
@@ -434,9 +437,9 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
                                 <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-2"
                                         onClick={() => setOpen(!open)}>Close
                                 </button>
-                                <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-2"
-                                        onClick={handleAdd}>Save
-                                </button>
+                                {purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-2"
+                                         onClick={handleAdd}>Save
+                                </button>}
                             </div>
                         </div>
 

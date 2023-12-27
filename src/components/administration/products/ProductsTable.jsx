@@ -1,29 +1,31 @@
 import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {
-    useDeleteFixedDepositTenorMutation,
-    useEditFixedDepositTenorMutation, useGetAllFixedDepositTenorQuery
-} from "../../../store/features/generalSetup/api.js";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import ProductModal from "./ProductModal.jsx";
+import {
+    useDeleteProductMutation,
+    useEditProductMutation,
+    useGetAllProductsQuery
+} from "../../../store/features/administration/api.js";
+import dayjs from "dayjs";
 
 const ProductsTable = ({searchTerm}) => {
-    const {data, isFetching, error} = useGetAllFixedDepositTenorQuery()
+    const {data, isFetching, error} = useGetAllProductsQuery()
 
     const filteredData = data?.data?.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        item.adminProduct.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
-        <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">
+        <div className="flex overflow-x-auto rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2">
                 <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
                     {isFetching && <ThemeProvider theme={themes}>
                         <LinearProgress color={"waveGreen"}/>
                     </ThemeProvider>}
-                    <table className="table-auto md:w-full px-20">
+                    <table className="table-auto md:w-full">
                         <thead>
                         <tr>
                             { header?.map((val, ind) => <TableHeader key={ind + val} name={val} />)}
@@ -56,7 +58,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Tenor Name', 'Tenor Code', 'Tenor Description', 'Tenor Days', 'Status', 'Actions' ]
+const header = ['S/N', 'Product', 'Amount', 'Interest Rate', 'Tenor', 'Start Date', 'End Date', 'Date Created', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
@@ -68,8 +70,8 @@ export function TableData({data, no}) {
     const dispatch = useDispatch()
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
-    const [deleteTenor] = useDeleteFixedDepositTenorMutation()
-    const [editTenor] = useEditFixedDepositTenorMutation()
+    const [deleteProduct] = useDeleteProductMutation()
+    const [editProduct] = useEditProductMutation()
     const initialState = {
         name: "",
         minimumamount: 0,
@@ -93,22 +95,52 @@ export function TableData({data, no}) {
     const handleOpenView = (data) =>{
         setOpen(true)
         setPurpose("view")
-        setStartDate(data.name)
-        setAsEndDate(data.code)
-        setEndDate(data.description)
-        setIsOptInProcessingFee(data.days)
+        setStartDate(data.startdate)
+        setAsEndDate(data.adminProduct.asEndDate)
+        setEndDate(data.adminProduct.enddate)
+        setIsOptInProcessingFee(data?.adminProductLoanProcessingFee[0].isOptInProcessingFee)
+        setInputs({
+            name: data.adminProduct.name,
+            minimumamount: data.adminProduct.minimuimamount,
+            maximumamount: data.adminProduct.maximuimamount,
+            lateFeePrincipal: data?.adminProductLateFee[0].lateFeePrincipal,
+            startDate: data.adminProduct.startdate,
+            endDate: data.adminProduct.enddate,
+            lateFeeType: data?.adminProductLateFee[0].lateFeeType,
+            fixedPrice: data?.adminProductLateFee[0].fixedPrice,
+            gracePeriod: data?.adminProductLateFee[0].gracePeriod,
+            principal: data?.adminProductLoanProcessingFee[0].principal,
+            tenor: data.adminProduct.tenor,
+            interestRate: data.adminProduct.interestRate,
+            feeFrequency: data?.adminProductLateFee[0].feeFrequency,
+        })
     }
     const handleOpenEdit = (data) =>{
         setOpen(true)
         setPurpose("edit")
-        setStartDate(data.name)
-        setAsEndDate(data.code)
-        setEndDate(data.description)
-        setIsOptInProcessingFee(data.days)
-        setId(data.id)
+        setStartDate(data.startdate)
+        setAsEndDate(data.adminProduct.asEndDate)
+        setEndDate(data.adminProduct.enddate)
+        setIsOptInProcessingFee(data?.adminProductLoanProcessingFee[0].isOptInProcessingFee)
+        setInputs({
+            name: data.adminProduct.name,
+            minimumamount: data.adminProduct.minimuimamount,
+            maximumamount: data.adminProduct.maximuimamount,
+            lateFeePrincipal: data?.adminProductLateFee[0].lateFeePrincipal,
+            startDate: data.adminProduct.startdate,
+            endDate: data.adminProduct.enddate,
+            lateFeeType: data?.adminProductLateFee[0].lateFeeType,
+            fixedPrice: data?.adminProductLateFee[0].fixedPrice,
+            gracePeriod: data?.adminProductLateFee[0].gracePeriod,
+            principal: data?.adminProductLoanProcessingFee[0].principal,
+            tenor: data.adminProduct.tenor,
+            interestRate: data.adminProduct.interestRate,
+            feeFrequency: data?.adminProductLateFee[0].feeFrequency,
+        })
+        setId(data.adminProduct.id)
     }
     const handleRemove = (id)=>{
-        deleteTenor(id).then((res) => {
+        deleteProduct(id).then((res) => {
             dispatch(
                 updateSnackbar({
                     type: "TOGGLE_SNACKBAR_OPEN",
@@ -120,22 +152,33 @@ export function TableData({data, no}) {
     }
 
     const handleEdit = ()=> {
-        editTenor({
+        editProduct({
             body: {
-                name: tenorName,
-                code: tenorCode,
-                description: tenorDesc,
-                days: tenorDays,
-                status: checked ? 1 : 0,
-                id: id
+                id: id,
+                name: inputs.name,
+                minimuimamount: inputs.minimumamount,
+                maximuimamount: inputs.maximumamount,
+                startdate: dayjs(startDate).format('YYYY-MM-DD'),
+                enddate: asEndDate ? dayjs(endDate).format('YYYY-MM-DD') : "",
+                lateFeePrincipal: inputs.lateFeePrincipal,
+                lateFeeType: inputs.lateFeeType,
+                fixedPrice: inputs.fixedPrice,
+                gracePeriod: inputs.gracePeriod,
+                principal: inputs.principal,
+                tenor: inputs.tenor,
+                interestRate: inputs.interestRate,
+                isOptInProcessingFee: isOptInProcessingFee,
+                asEndDate: asEndDate,
+                feeFrequency: inputs.feeFrequency,
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
-            setTenorName("")
-            setTenorCode("")
-            setTenorDays("")
-            setTenorDesc("")
+            setInputs({})
+            setStartDate("")
+            setAsEndDate("")
+            setEndDate("")
+            setIsOptInProcessingFee("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
@@ -147,19 +190,25 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.name}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.adminProduct.name}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.code}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.adminProduct.minimuimamount} - {data?.adminProduct.maximuimamount}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.description}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.adminProduct.interestRate}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.days}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.adminProduct.tenor}</span>
+            </td><
+            td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.adminProduct.startdate).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === 1 ? "Active" : "Inactive"}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.adminProduct.enddate).format("YYYY/MM/DD")}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.adminProduct.datecreated).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <a  onClick={handleshowDropDown } className="text-2xl cursor-pointer pt-0 leading-5 text-indigo-00 hover:text-indigo-900">
@@ -173,11 +222,11 @@ export function TableData({data, no}) {
                 <span  onMouseLeave={handleBlurDropdown} className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer" style={{ display: showDropdown ? "block" : "none"}}>
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white" onClick={()=>handleOpenView(data)}>View</span>
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleOpenEdit(data)}>Edit</span>
-                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.id)}>Remove</span>
+                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.adminProduct.id)}>Remove</span>
         </span>
             </td>
             <ProductModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
-                          asEndDate={asEndDate} setAsEndDate={setAsEndDate} setIsOptInProcessingFee={setIsOptInProcessingFee} isOptInProcessingFee={isOptInProcessingFee} handleAdd={handleAdd} purpose={purpose}/>
+                          asEndDate={asEndDate} setAsEndDate={setAsEndDate} setIsOptInProcessingFee={setIsOptInProcessingFee} isOptInProcessingFee={isOptInProcessingFee} handleAdd={handleEdit} purpose={purpose}/>
         </tr>
     )
 }
