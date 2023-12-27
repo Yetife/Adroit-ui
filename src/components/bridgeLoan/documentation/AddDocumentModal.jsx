@@ -166,15 +166,15 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTe
             formData.append('Lender', inputs.lender);
             formData.append('ObligorName', inputs.obName);
             formData.append('ObligorDob', inputs.dateOfBirth);
-            formData.append('FacilityType', selectedType)
-            formData.append('InterestRate', selectedRate);
-            formData.append('DocumentationStatus', selectedStatus);
+            formData.append('FacilityType', inputs.facilityType)
+            formData.append('InterestRate', inputs.interestRate);
+            formData.append('DocumentationStatus', inputs.docStatus);
             formData.append('ValueDate', inputs.valueDate);
             formData.append('MaturityDate', inputs.maturityDate);
             formData.append('Comment', inputs.comment);
             formData.append('CreatedBy', user.UserName);
             formData.append('DocumentationDoc', selectedFiles);
-            formData.append('Tenor', selectedTenor);
+            formData.append('Tenor', inputs.tenor);
             formData.append('Amount', inputs.amount);
             // ... other form data
             const token = getUserToken();
@@ -274,13 +274,13 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTe
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                        Loan Tenor
                                       </h3>
-                                         <select id="select" value={selectedTenor} disabled={purpose === "view"}
-                                                 onChange={handleLoanChange}
+                                         <select id="select" value={inputs.tenor} disabled={purpose === "view"}
+                                                 onChange={(event) => handleChange(event, "tenor")}
                                                  className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select tenor</option>
                                              {tenor && tenor?.map((option) => (
-                                                 <option key={option.uniqueId} value={option.uniqueId}>
-                                                     {option.docName}
+                                                 <option key={option.uniqueId} value={option.name}>
+                                                     {option.name}
                                                  </option>
                                              ))}
                                         </select>
@@ -289,12 +289,12 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTe
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                        Interest Rate
                                       </h3>
-                                         <select id="select" value={selectedRate} disabled={purpose === "view"}
-                                                 onChange={handleRateChange}
+                                         <select id="select" value={inputs.interestRate} disabled={purpose === "view"}
+                                                 onChange={(event) => handleChange(event, "interestRate")}
                                                  className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select interest</option>
                                              {interest && interest?.map((option) => (
-                                                 <option key={option.id} value={option.id}>
+                                                 <option key={option.id} value={option.interestRate}>
                                                      {option.interestRate}
                                                  </option>
                                              ))}
@@ -319,12 +319,12 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTe
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                        Facility Type
                                       </h3>
-                                         <select id="select" value={selectedType} disabled={purpose === "view"}
-                                                 onChange={handleTypeChange}
+                                         <select id="select" value={inputs.facilityType} disabled={purpose === "view"}
+                                                 onChange={(event) => handleChange(event, "facilityType")}
                                                  className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select facility type</option>
                                              {type && type?.map((option) => (
-                                                 <option key={option.uniqueId} value={option.uniqueId}>
+                                                 <option key={option.uniqueId} value={option.docName}>
                                                      {option.docName}
                                                  </option>
                                              ))}
@@ -334,12 +334,12 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTe
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                        Documentation Status
                                       </h3>
-                                         <select id="select" value={selectedStatus} disabled={purpose === "view"}
-                                                 onChange={handleStatusChange}
+                                         <select id="select" value={inputs.docStatus} disabled={purpose === "view"}
+                                                 onChange={(event) => handleChange(event, "docStatus")}
                                                  className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select status</option>
                                              {status && status?.map((option) => (
-                                                 <option key={option.uniqueId} value={option.uniqueId}>
+                                                 <option key={option.uniqueId} value={option.docName}>
                                                      {option.docName}
                                                  </option>
                                              ))}

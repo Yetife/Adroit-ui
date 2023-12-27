@@ -124,7 +124,7 @@ export const bridgeLoanApi = createApi({
         }),
         deleteTenor: builder.mutation({
             query:(id)=>({
-                url:`/GeneralSetUp/deletebankbyid/id?id=${id}`,
+                url:`/GeneralSetUp/deleteTenorbyid/id?id=${id}`,
                 method:"DELETE"
             }),
             invalidatesTags:["DelTenor"]

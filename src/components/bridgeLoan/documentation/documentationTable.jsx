@@ -95,13 +95,15 @@ export function TableData({data, no}) {
             obName: data?.obligorName,
             dateOfBirth: data?.obligorDob,
             valueDate: data?.valueDate,
-            houseNo: data?.houseNo,
             maturityDate: data?.maturityDate,
-            city: data?.city,
+            tenor: data?.tenor,
+            facilityType: data?.facilityType,
+            docStatus: data?.documentationStatus,
+            interestRate: data?.interestRate,
+            amount: data?.amount,
+            comment: data?.comment,
         })
-        setSelectedStatus(data?.documentationStatus)
-        setSelectedType(data?.facilityType)
-    }
+           }
     const handleOpenEdit = (data) => {
         setOpen(true)
         setPurpose("edit")
@@ -112,14 +114,14 @@ export function TableData({data, no}) {
             obName: data?.obligorName,
             dateOfBirth: data?.obligorDob,
             valueDate: data?.valueDate,
-            houseNo: data?.houseNo,
             maturityDate: data?.maturityDate,
-            city: data?.city,
+            tenor: data?.tenor,
+            facilityType: data?.facilityType,
+            docStatus: data?.documentationStatus,
+            interestRate: data?.interestRate,
+            amount: data?.amount,
+            comment: data?.comment,
         })
-        setSelectedStatus(data?.documentationStatus)
-        setSelectedType(data?.facilityType)
-        setSelectedTenor(data?.tenor)
-        setSelectedRate(data?.interestRate)
     }
 
     const download = (e) => {

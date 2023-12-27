@@ -3,7 +3,6 @@ import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
-import DocumentationSetupTable from "../../components/bridgeLoan/documentationSetup/DocumentationSetupTable.jsx";
 import AddDocumentModal from "../../components/bridgeLoan/documentation/AddDocumentModal.jsx";
 import DocumentationTable from "../../components/bridgeLoan/documentation/documentationTable.jsx";
 
@@ -21,6 +20,11 @@ const Documentation = () => {
         valueDate: null,
         maturityDate: null,
         comment: "",
+        tenor: "",
+        interestRate: "",
+        facilityType: "",
+        docStatus: "",
+        amount: "",
     }
     const [inputs, setInputs] = useState(initialState)
 
