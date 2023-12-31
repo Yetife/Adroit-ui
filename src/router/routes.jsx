@@ -52,6 +52,10 @@ import LoanTenor from "../pages/administration/LoanTenor.jsx";
 import Level from "../pages/administration/underwritter/Level.jsx";
 import Manage from "../pages/administration/underwritter/Manage.jsx";
 import RegularLoan from "../pages/administration/underwritter/RegularLoan.jsx";
+import Loan from "../pages/administration/staff/Loan.jsx";
+import DisbursedLoan from "../pages/administration/staff/DisbursedLoan.jsx";
+import LoanCollection from "../pages/administration/staff/LoanCollection.jsx";
+import ViewStaffPage from "../pages/administration/staff/ViewStaffPage.jsx";
 
 const ROUTES = [
     {
@@ -319,6 +323,36 @@ const ROUTES = [
                         key: "regularLoan",
                         exact: true,
                         element: <RegularLoan />,
+                    },
+                ]
+            },
+            {
+                path: "staff",
+                exact: true,
+                children: [
+                    {
+                        path: "loan",
+                        key: "loan",
+                        exact: true,
+                        element: <Loan />,
+                    },
+                    {
+                        path: "disbursedLoan",
+                        key: "disbursedLoan",
+                        exact: true,
+                        element: <DisbursedLoan />,
+                    },
+                    {
+                        path: "loanCollection",
+                        key: "loanCollection",
+                        exact: true,
+                        element: <LoanCollection />,
+                    },
+                    {
+                        path: "view",
+                        key: "viewStaff",
+                        exact: true,
+                        element: <ViewStaffPage />,
                     },
                 ]
             },

@@ -1,6 +1,6 @@
 import   {useState} from 'react';
 import {useDispatch} from "react-redux";
-import {useAddLevelMutation} from "../../../store/features/administration/api.js";
+import { useAddManageMutation} from "../../../store/features/administration/api.js";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import Layout from "../../Layout.jsx";
 import Search from "../../../components/reusables/Search.jsx";
@@ -13,13 +13,15 @@ import ManageTable from "../../../components/administration/underwritter/manage/
 const Manage = () => {
     const [open, setOpen] = useState(false)
     const dispatch = useDispatch()
-    const [addLevel] = useAddLevelMutation()
+    const [addLevel] =  useAddManageMutation()
     const [searchTerm, setSearchTerm] = useState("");
     const initialState = {
         staff: "",
         firstName: "",
         lastName: "",
         emailAddress: "",
+        middleName: "",
+        phoneNumber: "",
         level: "",
     }
     const [inputs, setInputs] = useState(initialState)
@@ -38,13 +40,23 @@ const Manage = () => {
             body: {
                 firstName: inputs.firstName,
                 lastName: inputs.lastName,
-                emailAddress: inputs.email,
+                emailAddress: inputs.emailAddress,
+                middleName: inputs.middleName,
+                phoneNumber: inputs.phoneNumber,
                 level: inputs.level,
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
-            setInputs({})
+            setInputs({
+                staff: "",
+                firstName: "",
+                lastName: "",
+                emailAddress: "",
+                middleName: "",
+                phoneNumber: "",
+                level: "",
+            })
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })

@@ -216,7 +216,7 @@ export function TableData({data, no}) {
                               setSelectedType={setSelectedType} selectedType={selectedType}
                               selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} selectedTenor={selectedTenor}
                               setSelectedTenor={setSelectedTenor} selectedFiles={selectedFiles}
-                              setSelectedFiles={setSelectedFiles} selectedRate={selectedRate} setSelectedRate={setSelectedRate} purpose={purpose}/>
+                              setSelectedFiles={setSelectedFiles} selectedRate={selectedRate} setSelectedRate={setSelectedRate} purpose={purpose} id={id}/>
         </tr>
     )
 }

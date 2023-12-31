@@ -18,7 +18,7 @@ const ManageTable = ({searchTerm}) => {
     );
 
     return (
-        <div className="flex overflow-x-auto  rounded-3xl lg:overflow-hidden flex-col mt-8">
+        <div className="scroll-container flex rounded-3xl lg:overflow-hidden flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2">
                 <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
                     {isFetching && <ThemeProvider theme={themes}>
@@ -67,6 +67,8 @@ export function TableData({data, no}) {
         firstName: "",
         lastName: "",
         emailAddress: "",
+        middleName: "",
+        phoneNumber: "",
         level: "",
     }
     const [inputs, setInputs] = useState(initialState)
@@ -107,11 +109,13 @@ export function TableData({data, no}) {
     const handleEdit = ()=> {
         editManage({
             body: {
-                irstName: inputs.firstName,
+                firstName: inputs.firstName,
                 lastName: inputs.lastName,
-                emailAddress: inputs.email,
+                emailAddress: inputs.emailAddress,
+                middleName: inputs.middleName,
+                phoneNumber: inputs.phoneNumber,
                 level: inputs.level,
-                id: id
+                uniqueId: id
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
@@ -129,6 +133,8 @@ export function TableData({data, no}) {
             firstName: data.firstName,
             lastName: data.lastName,
             emailAddress: data.emailAddress,
+            middleName: data?.middleName,
+            phoneNumber: data?.phoneNumber,
             level: data.level,
         })
         setId(data.uniqueId)

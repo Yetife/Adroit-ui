@@ -13,8 +13,8 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
-        if (fieldName === "staff"){
-            const selectedStaff = staff.find((s) => s.id === value);
+        if (fieldName === "firstName"){
+            const selectedStaff = staff.find((s) => s.firstName === value);
 
             setInputs((values) => ({
                 ...values,
@@ -90,13 +90,13 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                         Tenor
                                       </h3>
-                                      <select id="select" value={inputs.staff}
+                                      <select id="select" value={inputs.firstName}
                                               disabled={purpose === "view"}
-                                              onChange={(event) => handleChange(event, "staff")}
+                                              onChange={(event) => handleChange(event, "firstName")}
                                               className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select staff</option>
                                           {staff && staff?.map((option) => (
-                                              <option key={option.id} value={option.id}>
+                                              <option key={option.id} value={option.firstName}>
                                                   {option.firstName} {option.lastName}
                                               </option>
                                           ))}

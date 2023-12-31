@@ -189,8 +189,26 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
                 },
                 {
                     applicationPageName: 'Staff',
-                    href: '/administration/staff',
+                    href: '/administration/staff/loan',
                     route: '/administration',
+                    hasDropdown: true,
+                    dropdown: [
+                        {
+                            applicationPageName: 'Loan',
+                            href: '/administration/staff/loan',
+                            route: '/administration',
+                        },
+                        {
+                            applicationPageName: 'Disbursed Loan',
+                            href: '/administration/staff/disbursedLoan',
+                            route: '/administration',
+                        },
+                        {
+                            applicationPageName: 'Loan Collection',
+                            href: '//administration/staff/loanCollection',
+                            route: '/administration',
+                        },
+                    ]
                 },
                 {
                     applicationPageName: 'Loan Tenor',

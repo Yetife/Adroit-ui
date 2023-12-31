@@ -5,11 +5,11 @@ import axios from "axios";
 import {getUserToken} from "../../../services/storage/index.js";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
-import {useAddDocumentationMutation} from "../../../store/features/bridgeLoan/api.js";
+import {useEditDocumentationMutation} from "../../../store/features/bridgeLoan/api.js";
 import {fetchDocumentation} from "../../../store/documentationSlice.js";
 
 
-const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTenor, setSelectedTenor,selectedType, setSelectedType, selectedStatus, setSelectedStatus, selectedRate, setSelectedRate, selectedFiles, setSelectedFiles, id}) => {
+const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFiles, setSelectedFiles, id}) => {
     const [type, setType] = useState([]);
     const [status, setStatus] = useState([]);
     const [tenor, setTenor] = useState([]);
@@ -18,7 +18,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTe
     // const [selectedLoan, setSelectedLoan] = useState('');
     const [selectedId, setSelectedId] = useState('');
     const dispatch = useDispatch()
-    const [addDoc]  = useAddDocumentationMutation()
+    const [editDoc]  = useEditDocumentationMutation()
     const token = getUserToken();
 
     const handleChange = (e, fieldName) => {
@@ -55,35 +55,6 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTe
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         setSelectedFiles(file);
-    };
-
-    const handleTypeChange = (event) => {
-        const selectedOption = event.target.value;
-        const selectedOptionObject = type.find((option) => option.docName === selectedOption);
-
-        setSelectedType(selectedOption);
-        setSelectedId(selectedOptionObject ? selectedOptionObject.uniqueId : '');
-    };
-    const handleLoanChange = (event) => {
-        const selectedOption = event.target.value;
-        const selectedOptionObject = tenor.find((option) => option.docName === selectedOption);
-
-        setSelectedTenor(selectedOption);
-        setSelectedId(selectedOptionObject ? selectedOptionObject.uniqueId : '');
-    };
-    const handleStatusChange = (event) => {
-        const selectedOption = event.target.value;
-        const selectedOptionObject = tenor.find((option) => option.docName === selectedOption);
-
-        setSelectedStatus(selectedOption);
-        setSelectedId(selectedOptionObject ? selectedOptionObject.uniqueId : '');
-    };
-    const handleRateChange = (event) => {
-        const selectedOption = event.target.value;
-        const selectedOptionObject = interest.find((option) => option.interestRate === selectedOption);
-
-        setSelectedRate(selectedOption);
-        setSelectedId(selectedOptionObject ? selectedOptionObject.id : '');
     };
 
     const fetchData = async () => {
@@ -160,44 +131,113 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedTe
     }, []);
 
     const handleAdd = async ()=> {
-        try {
-            const user = JSON.parse(sessionStorage.getItem("userData"));
-            const formData = new FormData();
-            formData.append('Lender', inputs.lender);
-            formData.append('ObligorName', inputs.obName);
-            formData.append('ObligorDob', inputs.dateOfBirth);
-            formData.append('FacilityType', inputs.facilityType)
-            formData.append('InterestRate', inputs.interestRate);
-            formData.append('DocumentationStatus', inputs.docStatus);
-            formData.append('ValueDate', inputs.valueDate);
-            formData.append('MaturityDate', inputs.maturityDate);
-            formData.append('Comment', inputs.comment);
-            formData.append('CreatedBy', user.UserName);
-            formData.append('DocumentationDoc', selectedFiles);
-            formData.append('Tenor', inputs.tenor);
-            formData.append('Amount', inputs.amount);
-            // ... other form data
-            const token = getUserToken();
-            const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+        if (!id){
+            try {
+                const user = JSON.parse(sessionStorage.getItem("userData"));
+                const formData = new FormData();
+                formData.append('Lender', inputs.lender);
+                formData.append('ObligorName', inputs.obName);
+                formData.append('ObligorDob', inputs.dateOfBirth);
+                formData.append('FacilityType', inputs.facilityType)
+                formData.append('InterestRate', inputs.interestRate);
+                formData.append('DocumentationStatus', inputs.docStatus);
+                formData.append('ValueDate', inputs.valueDate);
+                formData.append('MaturityDate', inputs.maturityDate);
+                formData.append('Comment', inputs.comment);
+                formData.append('CreatedBy', user.UserName);
+                formData.append('DocumentationDoc', selectedFiles);
+                formData.append('Tenor', inputs.tenor);
+                formData.append('Amount', inputs.amount);
+                // ... other form data
+                const token = getUserToken();
+                const baseUrl = import.meta.env.VITE_APP_BASE_URL;
 
-            const res = await fetch(`${baseUrl}/BridgeLoan/Documentation/add`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'multipart/form-data',
-                    'XApiKey': import.meta.env.VITE_APP_ENCRYPTION_KEY,
-                    // 'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`
-                },
-            });
-           console.log(res.status, "resssssss")
-            if (res.status === 200) {
-                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record saved successfully", success:true}));
-                setOpen(!open)
-                dispatch(fetchDocumentation())
+                const res = await fetch(`${baseUrl}/BridgeLoan/Documentation/add`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'multipart/form-data',
+                        'XApiKey': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                        // 'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    },
+                });
+                console.log(res.status, "resssssss")
+                if (res.status === 200) {
+                    dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record saved successfully", success:true}));
+                    setOpen(!open)
+                    setInputs({
+                        lender: "",
+                        obName: "",
+                        dateOfBirth: null,
+                        valueDate: null,
+                        maturityDate: null,
+                        comment: "",
+                        tenor: "",
+                        interestRate: "",
+                        facilityType: "",
+                        docStatus: "",
+                        amount: "",
+                    })
+                    dispatch(fetchDocumentation())
+                }
+            } catch (error) {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
             }
-        } catch (error) {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
+        }else {
+            try {
+                const user = JSON.parse(sessionStorage.getItem("userData"));
+                const formData = new FormData();
+                formData.append('Lender', inputs.lender);
+                formData.append('ObligorName', inputs.obName);
+                formData.append('ObligorDob', inputs.dateOfBirth);
+                formData.append('FacilityType', inputs.facilityType)
+                formData.append('InterestRate', inputs.interestRate);
+                formData.append('DocumentationStatus', inputs.docStatus);
+                formData.append('ValueDate', inputs.valueDate);
+                formData.append('MaturityDate', inputs.maturityDate);
+                formData.append('Comment', inputs.comment);
+                formData.append('CreatedBy', user.UserName);
+                formData.append('DocumentationDoc', selectedFiles);
+                formData.append('Tenor', inputs.tenor);
+                formData.append('Amount', inputs.amount);
+                formData.append('UniqueId', id)
+                // ... other form data
+                const token = getUserToken();
+                const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+
+                const res = await fetch(`${baseUrl}/BridgeLoan/Documentation/Update`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'multipart/form-data',
+                        'XApiKey': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                        // 'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    },
+                });
+                console.log(res.status, "resssssss")
+                if (res.status === 200) {
+                    dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record saved successfully", success:true}));
+                    setOpen(!open)
+                    setInputs({
+                        lender: "",
+                        obName: "",
+                        dateOfBirth: null,
+                        valueDate: null,
+                        maturityDate: null,
+                        comment: "",
+                        tenor: "",
+                        interestRate: "",
+                        facilityType: "",
+                        docStatus: "",
+                        amount: "",
+                    })
+                    dispatch(fetchDocumentation())
+                }
+            } catch (error) {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
+            }
         }
     }
 

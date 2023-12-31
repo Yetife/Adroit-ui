@@ -19,7 +19,7 @@ const ProductsTable = ({searchTerm}) => {
     );
 
     return (
-        <div className="flex overflow-x-auto rounded-3xl flex-col mt-8">
+        <div className="scroll-container flex rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2">
                 <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
                     {isFetching && <ThemeProvider theme={themes}>

@@ -110,7 +110,7 @@ export const administrationApi = createApi({
         }),
         deleteManage: builder.mutation({
             query:(id)=>({
-                url:`/Administration/Manage/deleteManagebyid/id?id=${id}`,
+                url:`/Administration/Manage/deleteManagebyuniqueid/id?id=${id}`,
                 method:"DELETE"
             }),
             invalidatesTags:["DelManage"]
@@ -139,7 +139,7 @@ export const administrationApi = createApi({
         }),
         deleteRegularLoanInterest: builder.mutation({
             query:(id)=>({
-                url:`/Administration/UnderRegularLoan/deleteRegularLoanInterestRatebyid/id?id=${id}`,
+                url:`/Administration/UnderRegularLoan/deleteRegularLoanInterestRatebyuniqueid/id?id=${id}`,
                 method:"DELETE"
             }),
             invalidatesTags:["DelRegularLoanInterest"]
@@ -168,7 +168,7 @@ export const administrationApi = createApi({
         }),
         deleteRegularLoanCharges: builder.mutation({
             query:(id)=>({
-                url:`/Administration/UnderRegularLoan/deleteRegularLoanChargebyid/id?id=${id}`,
+                url:`/Administration/UnderRegularLoan/deleteRegularLoanChargebyuniqueid/id?id=${id}`,
                 method:"DELETE"
             }),
             invalidatesTags:["DelRegularLoanCharges"]
@@ -180,6 +180,19 @@ export const administrationApi = createApi({
                 body
             }),
             invalidatesTags: ["EditRegularLoanCharges"]
+        }),
+        getStaffLoan: builder.query({
+            query: () => ({
+                url: `/Administration/StaffLoan/GetStaffLoan`,
+            }),
+            providesTags: []
+        }),
+        getStaffLoanById: builder.query({
+            query:(id)=>({
+                url:`/Administration/StaffLoan/ViewStaffLoan/${id}`,
+                method:"GET"
+            }),
+            invalidatesTags:[]
         }),
     })
 })
@@ -209,4 +222,6 @@ export const {
     useGetAllRegularLoanChargesQuery,
     useDeleteRegularLoanChargesMutation,
     useEditRegularLoanChargesMutation,
+    useGetStaffLoanQuery,
+    useGetStaffLoanByIdQuery,
 } = administrationApi

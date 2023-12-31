@@ -84,8 +84,8 @@ export function TableData({data, no}) {
         setPurpose("view")
         setInputs({
             name: data.name,
-            minimumAmount: data.minimuimamount,
-            maximumAmount: data.maximuimamount
+            minimumAmount: data.minimuimAmount,
+            maximumAmount: data.maximuimAmount,
         })
     }
     const handleRemove = (id)=>{
@@ -121,8 +121,8 @@ export function TableData({data, no}) {
         setPurpose("edit")
         setInputs({
             name: data.name,
-            minimumAmount: data.minimuimamount,
-            maximumAmount: data.maximuimamount
+            minimumAmount: data.minimuimAmount,
+            maximumAmount: data.maximuimAmount
         })
         setId(data.id)
     }
@@ -137,15 +137,11 @@ export function TableData({data, no}) {
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data.minimuimamount} - {data?.maximuimAmount}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data.minimuimAmount} - {data?.maximuimAmount}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.datecreated).format("YYYY/MM/DD")}</span>
-            </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === 1 ? "Active" : "Inactive"}</span>
             </td>
             <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <a onClick={handleshowDropDown}
