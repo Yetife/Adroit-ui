@@ -1,18 +1,27 @@
-import Layout from "../Layout.jsx";
-import {Link as ReactLink} from "react-router-dom";
-import {useState} from "react";
+import {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {useAddGenderMutation} from "../../store/features/generalSetup/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import AddLoanStatusModal from "../../components/loanApplication/loanStatus/AddLoanStatusModal.jsx";
+import {Link as ReactLink} from "react-router-dom";
 import LoanStatusTable from "../../components/loanApplication/loanStatus/LoanStatusTable.jsx";
+import AddLoanStatusModal from "../../components/loanApplication/loanStatus/AddLoanStatusModal.jsx";
+import FilterLoanModal from "../../components/loanApplication/loanRestructuring/FilterLoanModal.jsx";
 
-const LoanStatus = () => {
+const LoanRestructuring = () => {
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
-    const [status, setStatus] = useState("")
+    const initialState = {
+        customerRef: "",
+        email: "",
+        bvn: "",
+        status: "",
+        startDate: "",
+        endDate: "",
+    }
+    const [inputs, setInputs] = useState(initialState)
     const dispatch = useDispatch()
     const [addStatus] = useAddGenderMutation()
     const [searchTerm, setSearchTerm] = useState("");
@@ -45,17 +54,17 @@ const LoanStatus = () => {
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
                         <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
-                            <Text color="white">Add New</Text>
+                            <Text color="white">Filter</Text>
                         </Button>
                     </div>
                 </div>
                 <div>
                     <LoanStatusTable searchTerm={searchTerm} />
                 </div>
-                <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked} setChecked={setChecked} handleAdd={handleAdd}/>
+                <FilterLoanModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}  handleAdd={handleAdd}/>
             </div>
         </Layout>
     );
 };
 
-export default LoanStatus;
+export default LoanRestructuring;

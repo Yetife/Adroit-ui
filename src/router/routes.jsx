@@ -56,6 +56,8 @@ import Loan from "../pages/administration/staff/Loan.jsx";
 import DisbursedLoan from "../pages/administration/staff/DisbursedLoan.jsx";
 import LoanCollection from "../pages/administration/staff/LoanCollection.jsx";
 import ViewStaffPage from "../pages/administration/staff/ViewStaffPage.jsx";
+import LoanRestructuring from "../pages/LoanApplication/LoanRestructuring.jsx";
+import LoanTopUp from "../pages/LoanApplication/LoanTopUp.jsx";
 
 const ROUTES = [
     {
@@ -78,7 +80,6 @@ const ROUTES = [
     },
     {
         path: "/loanApp",
-        key: "LOAN APPLICATION",
         exact: true,
         children: [
             {
@@ -87,19 +88,28 @@ const ROUTES = [
                 element: <Customer />
             },
             {
-                path: "/loanApp/adjust",
+                path: "adjust",
                 exact: true,
                 element: <AdjustApplication />
             },
             {
-                path: "/loanApp/declined",
+                path: "declined",
                 exact: true,
                 element: <DeclinedApplication />
             },
             {
-                path: "/loanApp/loanStatus",
+                path: "loanStatus",
                 exact: true,
                 element: <LoanStatus />
+            },
+            {
+                path: "loanRestructuring",
+                exact: true,
+                element: <LoanRestructuring />
+            },{
+                path: "loanTopUp",
+                exact: true,
+                element: <LoanTopUp />
             },
 
         ]

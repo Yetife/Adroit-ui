@@ -51,7 +51,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
                     route: '/loanApp',
                 },{
                     applicationPageName: 'Loan Top-up',
-                    href: '/loanApp/loanStatus',
+                    href: '/loanApp/loanTopUp',
                     route: '/loanApp',
                 },
             ]

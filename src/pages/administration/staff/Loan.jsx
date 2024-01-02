@@ -1,29 +1,19 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useAddLoanTenorMutation} from "../../../store/features/administration/api.js";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import Layout from "../../Layout.jsx";
-import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import LoanTenorTable from "../../../components/administration/loanTenor/LoanTenorTable.jsx";
 import AddLoanTenorModal from "../../../components/administration/loanTenor/AddLoanTenorModal.jsx";
 import StaffLoanTable from "../../../components/administration/staff/StaffLoanTable.jsx";
 
 const Loan = () => {
-    const router = useNavigate()
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
     const [tenor, setTenor] = useState("")
     const dispatch = useDispatch()
     const [addTenor] = useAddLoanTenorMutation()
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const handleSearch = (searchValue) => {
-        setSearchTerm(searchValue);
-    };
-
-
     const handleOpen = () => {
         setOpen(true)
     }
