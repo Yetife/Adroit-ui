@@ -8,13 +8,14 @@ import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import AddLoanStatusModal from "../../components/loanApplication/loanStatus/AddLoanStatusModal.jsx";
 import LoanStatusTable from "../../components/loanApplication/loanStatus/LoanStatusTable.jsx";
+import {useAddStatusMutation} from "../../store/features/loanApplication/api.js";
 
 const LoanStatus = () => {
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
     const [status, setStatus] = useState("")
     const dispatch = useDispatch()
-    const [addStatus] = useAddGenderMutation()
+    const [addStatus] = useAddStatusMutation()
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = (searchValue) => {
@@ -25,10 +26,13 @@ const LoanStatus = () => {
         setOpen(true)
     }
     const handleAdd = ()=> {
+        const user = JSON.parse(sessionStorage.getItem("userData"));
+
         addStatus({
             body: {
                 name: status,
-                statusID: checked ? 1 : 0
+                status: checked ? "1" : "0",
+                createdBy: user.FirstName
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));

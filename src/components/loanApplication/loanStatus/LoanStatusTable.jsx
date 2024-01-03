@@ -1,17 +1,15 @@
 import {useState} from 'react';
 import {useDispatch} from "react-redux";
-import {
-    useDeleteGenderMutation,
-    useEditGenderMutation,
-    useGetAllValidBanksQuery
-} from "../../../store/features/generalSetup/api.js";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import AddLoanStatusModal from "./AddLoanStatusModal.jsx";
+import {useNavigate} from "react-router-dom";
+import {useEditStatusMutation, useGetAllStatusQuery} from "../../../store/features/loanApplication/api.js";
+import dayjs from "dayjs";
 
 const LoanStatusTable = ({searchTerm}) => {
-    const {data, isFetching, error} = useGetAllValidBanksQuery()
+    const {data, isFetching, error} = useGetAllStatusQuery()
     if (error) return <p>Network error</p>
 
     const filteredData = data?.data?.filter((item) =>
@@ -19,7 +17,7 @@ const LoanStatusTable = ({searchTerm}) => {
     );
 
     return (
-        <div className="flex overflow-x-auto  rounded-3xl lg:overflow-hidden flex-col mt-8">
+        <div className="scroll-container flex rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2">
                 <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
                     {isFetching && <ThemeProvider theme={themes}>
@@ -68,8 +66,8 @@ export function TableData({data, no}) {
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
     const dispatch = useDispatch()
-    const [deleteStatus] = useDeleteGenderMutation()
-    const [editStatus] = useEditGenderMutation()
+    const [editStatus] = useEditStatusMutation()
+    const router = useNavigate()
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -79,33 +77,21 @@ export function TableData({data, no}) {
         setOpen(true)
         setPurpose("view")
         setStatus(data.name)
-        setChecked(data.status === 1 ? true : false )
+        setChecked(data.status === "1" ? true : false )
     }
     const handleOpenEdit = (data) =>{
         setOpen(true)
         setPurpose("edit")
         setStatus(data.name)
-        setId(data.id)
-        setChecked(data.status === 1 ? true : false )
+        setId(data.uniqueId)
+        setChecked(data.status === "1" ? true : false )
     }
-    const handleRemove = (id)=>{
-        deleteStatus(id).then((res) => {
-            dispatch(
-                updateSnackbar({
-                    type: "TOGGLE_SNACKBAR_OPEN",
-                    message: res?.data?.message,
-                    success: true,
-                })
-            );
-        });
-    }
-
     const handleEdit = ()=> {
         editStatus({
             body: {
                 name: status,
-                statusID: checked ? 1 : 0,
-                id: id
+                status: checked ? "1" : "0",
+                uniqueId: id
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
@@ -126,13 +112,13 @@ export function TableData({data, no}) {
             </td>
             <td className="px-20 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === 1 ? "True" : "False"}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === "1" ? "True" : "False"}</span>
             </td>
             <td className="px-20 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.createdBy}</span>
             </td>
             <td className="px-20 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dateCreated}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.dateCreated).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-20 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <a onClick={handleshowDropDown}
@@ -152,10 +138,10 @@ export function TableData({data, no}) {
                         onClick={() => handleOpenView(data)}>View</span>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => handleOpenEdit(data)}>Edit</span>
+                        onClick={()=>handleOpenEdit(data)}>Edit</span>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => handleRemove(data.id)}>Remove</span>
+                        onClick={()=>router(`/loanApp/customerDetails?id=${data.id}`)}>Remove</span>
         </span>
             </td>
             <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked}
