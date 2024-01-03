@@ -10,11 +10,8 @@ const ViewStaffPage = () => {
     const staffId = queryParams.get("id");
     const [totalRepaymentAmount, setTotalRepaymentAmount] = useState(0);
     const {data, isFetching, error} = useGetStaffLoanByIdQuery(staffId)
-
-    // console.log("dataaaaa", data.data.repaymentSchedule)
-
-
     const router = useNavigate()
+
     const staff = {
         staffDetails: {
             name: "Adekunle Samuel Adebona",

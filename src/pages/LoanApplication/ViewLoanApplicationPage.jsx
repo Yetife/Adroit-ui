@@ -1,0 +1,89 @@
+import {useState} from 'react';
+import {Button, Text} from "@chakra-ui/react";
+import {Link as ReactLink, useNavigate} from "react-router-dom";
+import Layout from '../Layout.jsx'
+import LoanInformation from "./LoanInformation.jsx";
+import LoanNanoReport from "./LoanNanoReport.jsx";
+import LoanBankStatement from "./LoanBankStatement.jsx";
+import LoanActivity from "./LoanActivity.jsx";
+import LoanRepaymentDetails from "./LoanRepaymentDetails.jsx";
+import LoanSupportingDocument from "./LoanSupportingDocument.jsx";
+import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
+import {TabContext} from "@mui/lab";
+
+const ViewLoanApplicationPage = () => {
+    const tabMenu = [
+        {id:0, name:'Information'},
+        {id:1, name:'CRC Nano Report'},
+        {id:2, name:'Bank Statement'},
+        {id:3, name:'Activity'},
+        {id:4, name:'Repayment Details'},
+        {id:5, name:'Supporting Documents'},
+    ];
+
+    const components = {
+        'information':{
+            component: <LoanInformation />,
+            step: 0
+        },
+        'crc nano report':{
+            component: <LoanNanoReport/>,
+            step: 1
+        },
+        'bank statement':{
+            component: <LoanBankStatement />,
+            step: 2
+        },
+        'activity':{
+            component: <LoanActivity />,
+            step: 3
+        },
+        'repayment details':{
+            component: <LoanRepaymentDetails />,
+            step: 3
+        },
+        'supporting documents':{
+            component: <LoanSupportingDocument />,
+            step: 3
+        },
+    }
+
+    const [currentTab, setActiveTab] = useState(0);
+    const [item, setItem] = useState('information');
+    const router = useNavigate()
+
+    const handleChange = (event,newValue) => {
+        if (newValue >= 0 && newValue < tabMenu.length) {
+            setItem(tabMenu[newValue].name);
+            setActiveTab(newValue);
+        } else {
+            console.error('Invalid tab index:', newValue);
+        }
+    };
+
+    return (
+        <Layout>
+            <div className="min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 px-20">
+                <div>
+                    <TabContext value={currentTab.toString()}>
+                        <HorizontalMenu activeTab={currentTab} handleChange={handleChange} tabMenu={tabMenu}/>
+                    </TabContext>
+                </div>
+                <div className={'mt-8 pb-12'}>
+                    {components[item.toLowerCase()].component}
+                </div>
+            </div>
+            <div className="flex justify-between px-0 py-4  pb-2 md:pt-3 overflow-x-auto">
+                <div></div>
+                <div>
+                    <Button variant="primary" onClick={() => router(-1)} bgColor="#4A5D58" borderRadius="4px"
+                            height="37px" size='md' as={ReactLink} w={'109px'}>
+                        <Text color="white">Back</Text>
+                    </Button>
+                </div>
+            </div>
+        </Layout>
+    );
+};
+
+export default ViewLoanApplicationPage;

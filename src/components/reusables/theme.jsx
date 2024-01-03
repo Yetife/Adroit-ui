@@ -16,6 +16,9 @@ const themes = createTheme({
         },
         waveGreen:{
             main: '#00C796'
+        },
+        waveBlack:{
+            main: '#072320'
         }
     }
 })

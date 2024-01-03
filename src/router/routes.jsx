@@ -58,6 +58,7 @@ import LoanCollection from "../pages/administration/staff/LoanCollection.jsx";
 import ViewStaffPage from "../pages/administration/staff/ViewStaffPage.jsx";
 import LoanRestructuring from "../pages/LoanApplication/LoanRestructuring.jsx";
 import LoanTopUp from "../pages/LoanApplication/LoanTopUp.jsx";
+import ViewLoanApplicationPage from "../pages/LoanApplication/ViewLoanApplicationPage.jsx";
 
 const ROUTES = [
     {
@@ -110,6 +111,12 @@ const ROUTES = [
                 path: "loanTopUp",
                 exact: true,
                 element: <LoanTopUp />
+            },
+            {
+                path: "customerDetails",
+                key: "viewLoan",
+                exact: true,
+                element: <ViewLoanApplicationPage />,
             },
 
         ]
