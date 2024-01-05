@@ -141,7 +141,7 @@ export function TableData({data, no}) {
                         onClick={()=>handleOpenEdit(data)}>Edit</span>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={()=>router(`/loanApp/customerDetails?id=${data.id}`)}>Remove</span>
+                        onClick={()=>router(`/loanApp/customerDetails?id=${data.uniqueId}`)}>Remove</span>
         </span>
             </td>
             <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked}
