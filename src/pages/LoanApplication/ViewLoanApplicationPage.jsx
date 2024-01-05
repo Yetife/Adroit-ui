@@ -73,8 +73,18 @@ const ViewLoanApplicationPage = () => {
                     {components[item.toLowerCase()].component}
                 </div>
             </div>
-            <div className="flex justify-between px-0 py-4  pb-2 md:pt-3 overflow-x-auto">
-                <div></div>
+            <div className="flex justify-between items-center px-0 py-4  pb-2 md:pt-3 overflow-x-auto">
+                <div className="flex space-x-3 my-8">
+                    <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
+                            as={ReactLink} w={'110px'}>
+                        <Text color="white">Review</Text>
+                    </Button>
+                    <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                            border={"1px solid #FF0909"} borderRadius="4px" height="37px"
+                            size='md' as={ReactLink} w={'110px'}>
+                        <Text color="#FF0909">Decline</Text>
+                    </Button>
+                </div>
                 <div>
                     <Button variant="primary" onClick={() => router(-1)} bgColor="#4A5D58" borderRadius="4px"
                             height="37px" size='md' as={ReactLink} w={'109px'}>

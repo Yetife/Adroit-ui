@@ -19,7 +19,7 @@ const HorizontalMenu = ({activeTab, handleChange, tabMenu }) => {
                         indicatorColor={"transparent"}
                         value={currentTab}
                         onChange={(event, newValue) => handleChange(event,newValue)}
-                        style={{ display: 'block', cursor:'pointer',  marginLeft:'-25px' }}
+                        style={{ display: 'block', cursor:'pointer' }}
                         orientation="horizontal"
                         // variant="scrollable"
                     >
