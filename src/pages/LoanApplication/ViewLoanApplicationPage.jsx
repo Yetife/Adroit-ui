@@ -10,8 +10,10 @@ import LoanRepaymentDetails from "./LoanRepaymentDetails.jsx";
 import LoanSupportingDocument from "./LoanSupportingDocument.jsx";
 import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
 import {TabContext} from "@mui/lab";
+import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
 
 const ViewLoanApplicationPage = () => {
+    const [open, setOpen] = useState(false)
     const queryParams = new URLSearchParams(location.search);
     const status = queryParams.get("status");
     const tabMenu = [
@@ -63,6 +65,10 @@ const ViewLoanApplicationPage = () => {
         }
     };
 
+    const handleOpen = () => {
+        setOpen(true)
+    }
+
     return (
         <Layout>
             <div className="min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 px-20">
@@ -99,7 +105,7 @@ const ViewLoanApplicationPage = () => {
                             <div className="flex space-x-3 my-8 float-right">
                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"
                                         border={"1px solid #FF0909"} borderRadius="4px" height="37px"
-                                        size='md' as={ReactLink} w={'150px'}>
+                                        size='md' as={ReactLink} w={'150px'} onClick={handleOpen}>
                                     <Text color="#FF0909">Decline Loan</Text>
                                 </Button>
                                 <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
@@ -122,6 +128,7 @@ const ViewLoanApplicationPage = () => {
                     }
                 </div>
             </div>
+            <DeclineApplicationModal open={open} setOpen={setOpen}/>
         </Layout>
     );
 };
