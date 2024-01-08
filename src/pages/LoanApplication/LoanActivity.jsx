@@ -35,7 +35,7 @@ const LoanActivity = () => {
                       </h3>
                          <select id="select" value={inputs.oldStatus}
                                  onChange={(event) => handleChange(event, "oldStatus")}
-                                 className="font-medium w-[320px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                 className="font-medium w-[320px] h-[50px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                              <option value={true}>All</option>
                              <option value={false}>False</option>
                         </select>
@@ -46,13 +46,13 @@ const LoanActivity = () => {
                       </h3>
                          <select id="select" value={inputs.newStatus}
                                  onChange={(event) => handleChange(event, "newStatus")}
-                                 className="font-medium w-[320px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                 className="font-medium w-[320px] h-[50px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                               <option value={true}>All</option>
                              <option value={false}>False</option>
                         </select>
                     </span>
-                    <div className="mt-10 ml-6">
-                        <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="39px" size='md' as={ReactLink} w={'109px'}>
+                    <div className="mt-9 ml-6">
+                        <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="49px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Search</Text>
                         </Button>
                     </div>

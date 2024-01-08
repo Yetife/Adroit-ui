@@ -7,7 +7,6 @@ import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import LoanStatusTable from "../../components/loanApplication/loanStatus/LoanStatusTable.jsx";
-import AddLoanStatusModal from "../../components/loanApplication/loanStatus/AddLoanStatusModal.jsx";
 import FilterLoanModal from "../../components/loanApplication/loanRestructuring/FilterLoanModal.jsx";
 
 const LoanRestructuring = () => {

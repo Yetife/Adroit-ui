@@ -12,6 +12,8 @@ import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
 import {TabContext} from "@mui/lab";
 
 const ViewLoanApplicationPage = () => {
+    const queryParams = new URLSearchParams(location.search);
+    const status = queryParams.get("status");
     const tabMenu = [
         {id:0, name:'Information'},
         {id:1, name:'CRC Nano Report'},
@@ -74,22 +76,50 @@ const ViewLoanApplicationPage = () => {
                 </div>
             </div>
             <div className="flex justify-between items-center px-0 py-4  pb-2 md:pt-3 overflow-x-auto">
-                <div className="flex space-x-3 my-8">
-                    <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                            as={ReactLink} w={'110px'}>
-                        <Text color="white">Review</Text>
-                    </Button>
-                    <Button variant="outline" borderColor="#FF0909" marginRight="10px"
-                            border={"1px solid #FF0909"} borderRadius="4px" height="37px"
-                            size='md' as={ReactLink} w={'110px'}>
-                        <Text color="#FF0909">Decline</Text>
-                    </Button>
+                <div>
+                    {
+                        status === "adjust" && (
+                            <div className="flex space-x-3 my-8">
+                                <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
+                                        as={ReactLink} w={'110px'}>
+                                    <Text color="white">Review</Text>
+                                </Button>
+                                <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                                        border={"1px solid #FF0909"} borderRadius="4px" height="37px"
+                                        size='md' as={ReactLink} w={'110px'}>
+                                    <Text color="#FF0909">Decline</Text>
+                                </Button>
+                            </div>
+                        )
+                    }
                 </div>
                 <div>
-                    <Button variant="primary" onClick={() => router(-1)} bgColor="#4A5D58" borderRadius="4px"
-                            height="37px" size='md' as={ReactLink} w={'109px'}>
-                        <Text color="white">Back</Text>
-                    </Button>
+                    {
+                        status === "cust" && (
+                            <div className="flex space-x-3 my-8 float-right">
+                                <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                                        border={"1px solid #FF0909"} borderRadius="4px" height="37px"
+                                        size='md' as={ReactLink} w={'150px'}>
+                                    <Text color="#FF0909">Decline Loan</Text>
+                                </Button>
+                                <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
+                                        as={ReactLink} w={'180px'}>
+                                    <Text color="white">Complete Review</Text>
+                                </Button>
+
+                            </div>
+                        )
+                    }
+                    {
+                        status !== "cust" && (
+                            <div>
+                                <Button variant="primary" onClick={() => router(-1)} bgColor="#4A5D58" borderRadius="4px"
+                                        height="37px" size='md' as={ReactLink} w={'109px'}>
+                                    <Text color="white">Back</Text>
+                                </Button>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
         </Layout>
