@@ -12,8 +12,14 @@ const AddFixedDepositInterestRateModal = ({open, setOpen, checked, setChecked, d
     const handleToChange = (e) => {
         setDepositTo(e.target.value)
     };
+    const numbersOnlyRegex =  /^[0-9]+(\.[0-9]*)?$/;
+
     const handleRateChange = (e) => {
-        setRate(e.target.value)
+        const userInput = e.target.value;
+
+        if (numbersOnlyRegex.test(userInput) || userInput === "") {
+            setRate(userInput);
+        }
     };
 
     return (

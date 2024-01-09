@@ -22,7 +22,8 @@ const CustomerTable = ({searchTerm}) => {
             lastName: "Adebona",
             phoneNumber: "08101234567",
             applicationDate: "01/08/2023",
-            amount: "200,000"
+            amount: "200,000",
+            channel: "USSD"
         }
     ]
 
@@ -71,7 +72,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'Loan Amount', 'Email Address', 'First Name', 'Middle Name', 'Last Name', 'Application Date', 'Actions' ]
+const header = ['S/N', 'Channel', 'Customer Ref.', 'Loan Amount', 'Email Address', 'First Name', 'Middle Name', 'Last Name', 'Application Date', 'Actions' ]
 
 export function TableData({data, no}) {
     const [open, setOpen] = useState(false);
@@ -103,6 +104,9 @@ export function TableData({data, no}) {
         <tr>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.channel}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>

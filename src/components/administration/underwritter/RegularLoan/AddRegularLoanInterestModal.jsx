@@ -22,8 +22,14 @@ const AddRegularLoanInterestModal = ({open, setOpen, rate, setRate, depositFrom,
     const handleToChange = (e) => {
         setDepositTo(e.target.value)
     };
+    const numbersOnlyRegex =  /^[0-9]+(\.[0-9]*)?$/;
+
     const handleRateChange = (e) => {
-        setRate(e.target.value)
+        const userInput = e.target.value;
+
+        if (numbersOnlyRegex.test(userInput) || userInput === "") {
+            setRate(userInput);
+        }
     };
 
     const handleSelectChange = (event) => {

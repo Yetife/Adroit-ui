@@ -65,3 +65,14 @@
 .percent-input {
     padding-left: 50px; /* Space for the percent sign */
 }
+.custom-scroll-bar::-webkit-scrollbar {
+    background: transparent !important;
+    width: 10px;
+    height: 8px;
+}
+
+.custom-scroll-bar::-webkit-scrollbar-thumb {
+    background: #eaecf0 !important;
+    max-height: 20px !important;
+    border-radius: 32px;
+}

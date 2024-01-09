@@ -6,8 +6,8 @@ import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
-import LoanStatusTable from "../../components/loanApplication/loanStatus/LoanStatusTable.jsx";
 import FilterLoanModal from "../../components/loanApplication/loanRestructuring/FilterLoanModal.jsx";
+import LoanRestructuringTable from "../../components/loanApplication/loanRestructuring/LoanRestructuringTable.jsx";
 
 const LoanRestructuring = () => {
     const [open, setOpen] = useState(false)
@@ -58,7 +58,7 @@ const LoanRestructuring = () => {
                     </div>
                 </div>
                 <div>
-                    <LoanStatusTable searchTerm={searchTerm} />
+                    <LoanRestructuringTable searchTerm={searchTerm} />
                 </div>
                 <FilterLoanModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}  handleAdd={handleAdd}/>
             </div>
