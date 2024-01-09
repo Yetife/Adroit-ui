@@ -60,6 +60,7 @@ import LoanRestructuring from "../pages/LoanApplication/LoanRestructuring.jsx";
 import LoanTopUp from "../pages/LoanApplication/LoanTopUp.jsx";
 import ViewLoanApplicationPage from "../pages/LoanApplication/ViewLoanApplicationPage.jsx";
 import ViewLoanRestructuringPage from "../pages/LoanApplication/ViewLoanRestructuringPage.jsx";
+import ViewLoanTopUpPage from "../pages/LoanApplication/ViewLoanTopUpPage.jsx";
 
 const ROUTES = [
     {
@@ -129,14 +130,29 @@ const ROUTES = [
                 exact: true,
                 element: <ViewLoanRestructuringPage />
             },
+            {
+                path: "loanTopUp/view",
+                exact: true,
+                element: <ViewLoanTopUpPage />
+            },
+            {
+                path: "loanTopUp/edit",
+                exact: true,
+                element: <ViewLoanTopUpPage />
+            },
 
         ]
     },
     {
-        path: "/underwriting",
-        key: "LOAN UNDERWRITING",
+        path: "/loanUnderwriting",
         exact: true,
-        element: <LoanUnderwriting />,
+        children: [
+            {
+                path: "",
+                exact: true,
+                element: <LoanUnderwriting />,
+            }
+        ]
     },
     {
         path: "/collection",

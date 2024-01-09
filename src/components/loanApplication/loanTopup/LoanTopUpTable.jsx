@@ -154,10 +154,10 @@ export function TableData({data, no}) {
                       style={{display: showDropdown ? "block" : "none"}}>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
-                        onClick={() => router(`/loanApp/loanRestructuring/view?id=${data.uniqueId}&status=view`)}>View</span>
+                        onClick={() => router(`/loanApp/loanTopUp/view?id=${data.uniqueId}&status=view`)}>View</span>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => router(`/loanApp/loanRestructuring/edit?id=${data.uniqueId}&status=edit`)}>Edit</span>
+                        onClick={() => router(`/loanApp/loanTopUp/edit?id=${data.uniqueId}&status=edit`)}>Edit</span>
                 </span>
             </td>
         </tr>

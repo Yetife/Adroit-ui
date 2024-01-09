@@ -60,28 +60,28 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             name: 'Loan Underwriting',
             hasDropdown: true,
             icon: receipt,
-            route: '/underwriting',
+            route: '/loanUnderwriting',
             iconClosed: arrowUp,
             iconOpened: arrowDown,
             dropdown: [
                 {
                     applicationPageName: 'Review',
-                    href: '/underwriting/review',
+                    href: '/loanUnderwriting',
                     route: '/underwriting',
                 },
                 {
                     applicationPageName: 'Approval',
-                    href: '/underwriting/approval',
+                    href: '/loanUnderwriting/approval',
                     route: '/underwriting',
                 },
                 {
                     applicationPageName: 'Disbursement',
-                    href: '/underwriting/disbursement',
+                    href: '/loanUnderwriting/disbursement',
                     route: '/underwriting',
                 },
                 {
                     applicationPageName: 'Loan Re-assignment',
-                    href: '/underwriting/userRole',
+                    href: '/loanUnderwriting/userRole',
                     route: '/underwriting',
                 }
             ]
