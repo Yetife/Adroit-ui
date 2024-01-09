@@ -71,7 +71,7 @@ const ViewLoanApplicationPage = () => {
 
     return (
         <Layout>
-            <div className="min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 px-20">
+            <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto px-20 h-[613px]">
                 <div>
                     <TabContext value={currentTab.toString()}>
                         <HorizontalMenu activeTab={currentTab} handleChange={handleChange} tabMenu={tabMenu}/>
