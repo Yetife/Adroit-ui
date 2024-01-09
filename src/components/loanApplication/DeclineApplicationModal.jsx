@@ -1,7 +1,6 @@
 import {useState} from "react";
 import {getUserToken} from "../../services/storage/index.js";
 import * as Dialog from "@radix-ui/react-dialog";
-import {Close} from "@mui/icons-material";
 import {Checkbox, Divider} from "@mui/material";
 
 const DeclineApplicationModal = ({open, setOpen, handleAdd}) => {
@@ -60,7 +59,7 @@ const DeclineApplicationModal = ({open, setOpen, handleAdd}) => {
             >
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
-                    <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[49%] left-[50%] max-h-[95vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                    <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[49%] left-[50%] max-h-[98vh] overflow-x w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                         <Dialog.Title className="text-[24px] text-[#343434] font-extrabold -mt-8 mb-3 text-center">Review Application</Dialog.Title>
                         <Divider />
                         <div className="mt-6">
@@ -82,7 +81,7 @@ const DeclineApplicationModal = ({open, setOpen, handleAdd}) => {
                                   <h3 className="font-semibold text-[#4A5D58] text-[16px] whitespace-nowrap pb-3">
                                     Please select one or more reasons for decline
                                   </h3>
-                                   <div className="flex flex-col space-y-2">
+                                   <div className="flex flex-col space-y-1">
                                     {items.map((option) => (
                                         <div key={option.uniqueId} className="flex items-center">
                                             <Checkbox

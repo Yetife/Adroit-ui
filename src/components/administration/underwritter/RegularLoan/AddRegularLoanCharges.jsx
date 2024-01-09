@@ -3,7 +3,6 @@ import {useDispatch} from "react-redux";
 import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
 import axios from "axios";
 import * as Dialog from "@radix-ui/react-dialog";
-import {Checkbox} from "@mui/material";
 import {Close} from "@mui/icons-material";
 import {
     useAddRegularLoanChargesMutation,
@@ -166,7 +165,9 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
                                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                             Employment Type
                                           </h3>
-                                             <select id="select" value={selectedValue} disabled={purpose === "view"} onChange={handleSelectChange}
+                                             <select id="select" value={selectedValue} disabled={purpose === "view"}
+                                                     onChange={handleSelectChange}
+                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                                      style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                                 <option value="" disabled>Select type</option>
                                                  {type && type?.map((option) => (
@@ -209,6 +210,7 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
                                            Loan Tenor
                                           </h3>
                                              <select id="select" value={selectedLoan} disabled={purpose === "view"}
+                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                                      onChange={handleLoanChange}
                                                      style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                                 <option value="" disabled>Select loan tenor</option>
@@ -225,6 +227,7 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
                                             IsPercentage
                                           </h3>
                                              <select id="select" disabled={purpose === "view"} value={selectedPer} onChange={handlePercentageChange}
+                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                                      style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                                  <option value={true}>True</option>
                                                  <option value={false}>False</option>

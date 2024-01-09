@@ -3,7 +3,6 @@ import {useDispatch} from "react-redux";
 import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
 import axios from "axios";
 import * as Dialog from "@radix-ui/react-dialog";
-import {Checkbox} from "@mui/material";
 import {Close} from "@mui/icons-material";
 import {
     useAddRegularLoanInterestMutation,
@@ -122,7 +121,9 @@ const AddRegularLoanInterestModal = ({open, setOpen, rate, setRate, depositFrom,
                                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                             Employment Type
                                           </h3>
-                                             <select id="select" value={selectedValue} onChange={handleSelectChange} disabled={purpose === "view"}
+                                             <select id="select" value={selectedValue}
+                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                     onChange={handleSelectChange} disabled={purpose === "view"}
                                                      style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                                 <option value="" disabled>Select employment type</option>
                                                  {type && type?.map((option) => (
