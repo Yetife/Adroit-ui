@@ -81,7 +81,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
                 },
                 {
                     applicationPageName: 'Loan Re-assignment',
-                    href: '/loanUnderwriting/userRole',
+                    href: '/loanUnderwriting/loanRe-assignment',
                     route: '/underwriting',
                 }
             ]
@@ -205,7 +205,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
                         },
                         {
                             applicationPageName: 'Loan Collection',
-                            href: '//administration/staff/loanCollection',
+                            href: '/administration/staff/loanCollection',
                             route: '/administration',
                         },
                     ]

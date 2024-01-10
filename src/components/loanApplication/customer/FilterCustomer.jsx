@@ -150,6 +150,23 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                         </div>
                                     </div>
                                 </div>
+                                <div className='mt-4'>
+                                    <div>
+                                        <span>
+                                          <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                            Channel
+                                          </h3>
+                                          <input
+                                              type="text"
+                                              value={inputs.channel}
+                                              disabled={purpose === "view"}
+                                              onChange={(event) => handleChange(event, "channel")}
+                                              placeholder="Enter channel"
+                                              className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          />
+                                        </span>
+                                    </div>
+                                 </div>
                             </div>
                             <div className="flex space-x-3 float-right">
                                 {/*<button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8"*/}
