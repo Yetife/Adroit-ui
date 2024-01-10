@@ -92,8 +92,8 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
             </td>
             <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
-            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
-        </td>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
+            </td>
             <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
             </td>
@@ -129,9 +129,10 @@ export function TableData({data, no}) {
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.amount}</span>
             </td>
             <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.applicationDate).format("YYYY/MM/DD")}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.applicationDate).format("YYYY/MM/DD")}</span>
             </td>
-            <td className="relative px-12 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-12 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <a onClick={handleshowDropDown}
                    className="text-2xl cursor-pointer pt-0 leading-5 text-indigo-00 hover:text-indigo-900">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="7" viewBox="0 0 30 7" fill="none">
@@ -142,7 +143,7 @@ export function TableData({data, no}) {
                     </svg>
                 </a>
                 <span onMouseLeave={handleBlurDropdown}
-                      className="absolute z-20 w-32  mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer"
+                      className="absolute z-10 w-32 right--1 md:right-10 mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {Link as ReactLink} from "react-router-dom";
 import {Button, Text} from "@chakra-ui/react";
 
@@ -82,6 +82,13 @@ const LoanActivity = () => {
                     <h3 className="font-semibold text-[#4A5D58] text-[16px] whitespace-nowrap pb-3">
                         View Rule Breakdown
                     </h3>
+                    <div>
+                        <Button variant="outline" borderColor="#4A5D58" marginRight="10px"
+                                border={"1px solid #4A5D58"} borderRadius="4px" height="37px"
+                                size='md' as={ReactLink} w={'239px'} >
+                            <Text color="#4A5D58">Add Comment</Text>
+                        </Button>
+                    </div>
                     <div className="mt-4">
                         {
                             activity.map((step, index) => (

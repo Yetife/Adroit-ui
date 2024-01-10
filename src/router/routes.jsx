@@ -1,7 +1,6 @@
 import Login from "../pages/auth/Login.jsx";
 import Otp from "../pages/auth/Otp.jsx";
 import Dashboard from "../pages/Dashboard.jsx";
-import LoanUnderwriting from "../pages/LoanUnderwriting.jsx";
 import Collection from "../pages/Collection.jsx";
 import Customer from "../pages/LoanApplication/Customer.jsx";
 import AdjustApplication from "../pages/LoanApplication/AdjustApplication.jsx";
@@ -61,6 +60,11 @@ import LoanTopUp from "../pages/LoanApplication/LoanTopUp.jsx";
 import ViewLoanApplicationPage from "../pages/LoanApplication/ViewLoanApplicationPage.jsx";
 import ViewLoanRestructuringPage from "../pages/LoanApplication/ViewLoanRestructuringPage.jsx";
 import ViewLoanTopUpPage from "../pages/LoanApplication/ViewLoanTopUpPage.jsx";
+import Review from "../pages/loanUnderwriting/Review.jsx";
+import LoanReassignment from "../pages/loanUnderwriting/LoanReassignment.jsx";
+import Disbursement from "../pages/loanUnderwriting/Disbursement.jsx";
+import Approval from "../pages/loanUnderwriting/Approval.jsx";
+import ViewLoanUnderwritingPage from "../pages/loanUnderwriting/ViewLoanUnderwritingPage.jsx";
 
 const ROUTES = [
     {
@@ -150,8 +154,27 @@ const ROUTES = [
             {
                 path: "",
                 exact: true,
-                element: <LoanUnderwriting />,
-            }
+                element: <Review />,
+            },
+            {
+                path: "approval",
+                exact: true,
+                element: <Approval />,
+            }, {
+                path: "disbursement",
+                exact: true,
+                element: <Disbursement />,
+            },
+            {
+                path: "loanRe-assignment",
+                exact: true,
+                element: <LoanReassignment />,
+            },
+            {
+                path: "customerDetails",
+                exact: true,
+                element: <ViewLoanUnderwritingPage />,
+            },
         ]
     },
     {

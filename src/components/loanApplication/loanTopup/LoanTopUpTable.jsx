@@ -29,6 +29,25 @@ const LoanTopUpTable = ({searchTerm}) => {
             newTenor: 3,
             status: "Pending",
             dateSubmitted: "01/08/2023"
+        },{
+            uniqueId: "5556678889",
+            customerRef: "Ref123456",
+            email: "adebona@creditWave.ng",
+            firstName: "Adekunle",
+            middleName: "Samuel",
+            lastName: "Adebona",
+            phoneNumber: "08101234567",
+            applicationDate: "01/08/2023",
+            amount: "200,000",
+            gender: "Male",
+            dateOfBirth: "01/08/2023",
+            bvn: "012345678",
+            topUpAmount: "N300,000.00",
+            newAmount: "N500,000.00",
+            initialTenor: 6,
+            newTenor: 3,
+            status: "Pending",
+            dateSubmitted: "01/08/2023"
         }
     ]
 
@@ -71,7 +90,7 @@ export default LoanTopUpTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-12 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-6 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
             {name}
         </th>
     )
@@ -88,58 +107,58 @@ export function TableData({data, no}) {
 
     return (
         <tr>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.email}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.phoneNumber}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.gender}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dateOfBirth}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.amount}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.topUpAmount}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.newAmount}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.initialTenor}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status}</span>
             </td>
-            <td className="px-12 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dateSubmitted}</span>
             </td>
-            <td className="relative px-12 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <a onClick={handleshowDropDown}
                    className="text-2xl cursor-pointer pt-0 leading-5 text-indigo-00 hover:text-indigo-900">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="7" viewBox="0 0 30 7" fill="none">
@@ -150,10 +169,10 @@ export function TableData({data, no}) {
                     </svg>
                 </a>
                 <span onMouseLeave={handleBlurDropdown}
-                      className="absolute z-20 w-32  mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer"
+                      className="absolute right--1 md:right-10 z-10 w-32  mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
                     <span
-                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
+                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
                         onClick={() => router(`/loanApp/loanTopUp/view?id=${data.uniqueId}&status=view`)}>View</span>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
