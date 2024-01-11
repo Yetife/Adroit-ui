@@ -98,6 +98,7 @@ const Login = () => {
                                     <OutlinedInput
                                         id="outlined-adornment-password"
                                         value={inputs.password}
+                                        placeholder="Password"
                                         onChange={(e)=>handleChange(e, "password")}
                                         type={showPassword ? 'text' : 'password'}
                                         endAdornment={

@@ -347,7 +347,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             {/*        <div className={currentRoute === '/loanApp' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}>*/}
             {/*            <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/loanApp'}>*/}
             {/*                <img alt={'Dashboard_icon'} src={receipt} width={20} height={20}/>*/}
-            {/*                <span className={"mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]"}>Loan Application</span>*/}
+            {/*                <span className={"mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]"}>StaffLoan Application</span>*/}
             {/*            </a>*/}
             {/*        </div>*/}
             {/*    </div>*/}
@@ -361,7 +361,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             {/*                <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/underwriting'}>*/}
             {/*                    <img alt={`application_icon`} src={receipt} width={20} height={20}/>*/}
             {/*                    <span*/}
-            {/*                        className="mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]">Loan Underwriting</span>*/}
+            {/*                        className="mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]">StaffLoan Underwriting</span>*/}
             {/*                </a>*/}
             {/*                <img*/}
             {/*                    className='pl-2 mr-10'*/}
@@ -388,7 +388,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             {/*                        </a>*/}
             {/*                       <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
             {/*                                                               href={'/application/permission'}>*/}
-            {/*                            <span className={`mx-3 text-sm font-normal text-[#0C3A35]`}>Loan Re-assignment</span>*/}
+            {/*                            <span className={`mx-3 text-sm font-normal text-[#0C3A35]`}>StaffLoan Re-assignment</span>*/}
             {/*                        </a>*/}
             {/*                    </div>*/}
             {/*                </div>}*/}
@@ -427,7 +427,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             {/*                        </a>*/}
             {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
             {/*                           href={'/collection/re-assignment'}>*/}
-            {/*                            <span className={`${ location.pathname === '/collection/re-assignment' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/collection/re-assignment' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>Loan Re-assignment</span>*/}
+            {/*                            <span className={`${ location.pathname === '/collection/re-assignment' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/collection/re-assignment' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>StaffLoan Re-assignment</span>*/}
             {/*                        </a>*/}
             {/*                    </div>*/}
             {/*                </div>}*/}

@@ -52,7 +52,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N','Employment Type', 'Charge Amount', 'Is Percentage', 'Loan Amount From', 'Loan Amount To', 'Loan Tenor', 'Actions' ]
+const header = ['S/N','Employment Type', 'Charge Amount', 'Is Percentage', 'StaffLoan Amount From', 'StaffLoan Amount To', 'StaffLoan Tenor', 'Actions' ]
 
 export function TableData({data, no}) {
     const [showDropdown, setShowDropdown] = useState(false)
