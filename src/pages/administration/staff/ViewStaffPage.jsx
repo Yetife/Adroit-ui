@@ -8,6 +8,7 @@ import {useState, useEffect} from "react";
 const ViewStaffPage = () => {
     const queryParams = new URLSearchParams(location.search);
     const staffId = queryParams.get("id");
+    const status = queryParams.get("status");
     const [totalRepaymentAmount, setTotalRepaymentAmount] = useState(0);
     const {data, isFetching, error} = useGetStaffLoanByIdQuery(staffId)
     const router = useNavigate()
@@ -155,16 +156,20 @@ const ViewStaffPage = () => {
                                 <p className="text-[16px] leading-5 text-[#3A3A3A] font-[400]">{data?.data.purpose}</p>
                             </div>
                         </div>
-                        <div className="flex space-x-3 float-right my-8">
-                            <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'180px'}>
-                                <Text color="white">Approve & Disburse</Text>
-                            </Button>
-                            <Button variant="outline" borderColor="#FF0909" marginRight="10px"
-                                    border={"1px solid #FF0909"}  borderRadius="4px" height="37px"
-                                    size='md' as={ReactLink} w={'109px'}>
-                                <Text color="#FF0909">Decline</Text>
-                            </Button>
-                        </div>
+                        {
+                            status !== "loan" && (
+                                <div className="flex space-x-3 float-right my-8">
+                                    <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'180px'}>
+                                        <Text color="white">Approve & Disburse</Text>
+                                    </Button>
+                                    <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                                            border={"1px solid #FF0909"}  borderRadius="4px" height="37px"
+                                            size='md' as={ReactLink} w={'109px'}>
+                                        <Text color="#FF0909">Decline</Text>
+                                    </Button>
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
 

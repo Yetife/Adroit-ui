@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import LoanInformation from "../LoanApplication/LoanInformation.jsx";
 import LoanNanoReport from "../LoanApplication/LoanNanoReport.jsx";
 import LoanBankStatement from "../LoanApplication/LoanBankStatement.jsx";
@@ -11,9 +11,23 @@ import {TabContext} from "@mui/lab";
 import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
+import AddCommentModal from "../../components/loanUnderwritting/review/AddCommentModal.jsx";
+import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoanModal.jsx";
+import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
+import DecisionModal from "../../components/loanUnderwritting/approval/DecisionModal.jsx";
 
 const ViewLoanUnderwritingPage = () => {
+    const [comment, setComment] = useState("")
+    const [openComment, setOpenComment] = useState(false)
+    const [openAdjust, setOpenAdjust] = useState(false)
     const [open, setOpen] = useState(false)
+    const [openDisburse, setOpenDisburse] = useState(false)
+    const [openDecision, setOpenDecision] = useState(false)
+    const [inputs, setInputs] = useState({
+        amount: "",
+        tenor: "",
+        description: ""
+    })
     const queryParams = new URLSearchParams(location.search);
     const status = queryParams.get("status");
     const tabMenu = [
@@ -72,11 +86,11 @@ const ViewLoanUnderwritingPage = () => {
     return (
         <Layout>
             {
-                status === "review" && <div className="flex justify-between px-0 pb-2 md:pt-1 overflow-auto">
+                status === "review" && <div className="flex justify-between px-0 pb-1 md:pt-1 overflow-auto">
                     <div></div>
                     <div>
-                        <Button variant="primary" onClick={() => router(-1)} bgColor="#00C795" borderRadius="4px"
-                                height="37px" size='md' as={ReactLink} w={'129px'}>
+                        <Button variant="primary" bgColor="#00C795" borderRadius="4px"
+                                height="37px" size='md' as={ReactLink} w={'129px'} onClick={()=>setOpenComment(true)}>
                             <Text color="white">Add Comment</Text>
                         </Button>
                     </div>
@@ -86,8 +100,8 @@ const ViewLoanUnderwritingPage = () => {
                 status === "approve" && <div className="flex justify-between px-0 pb-2 md:pt-1 overflow-auto">
                     <div></div>
                     <div>
-                        <Button variant="primary" onClick={() => router(-1)} bgColor="#00C795" borderRadius="4px"
-                                height="37px" size='md' as={ReactLink} w={'129px'}>
+                        <Button variant="primary" bgColor="#FF0909" borderRadius="4px"
+                                height="37px" size='md' as={ReactLink} w={'119px'} onClick={()=>setOpenDecision(true)}>
                             <Text color="white">Decide</Text>
                         </Button>
                     </div>
@@ -114,7 +128,7 @@ const ViewLoanUnderwritingPage = () => {
                                     <Text color="white">Approve</Text>
                                 </Button>
                                 <Button variant="primary" bgColor="#1781BC" borderRadius="4px" height="37px" size='md'
-                                        as={ReactLink} w={'110px'}>
+                                        as={ReactLink} w={'110px'} onClick={()=>setOpenAdjust(true)}>
                                     <Text color="white">Adjust</Text>
                                 </Button>
                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"
@@ -148,7 +162,7 @@ const ViewLoanUnderwritingPage = () => {
                         status === "disburse" && (
                             <div className="my-4">
                                 <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                        as={ReactLink} w={'190px'}>
+                                        as={ReactLink} w={'190px'} onClick={()=>setOpenDisburse(true)}>
                                     <Text color="white">Stop Disbursement</Text>
                                 </Button>
                             </div>
@@ -175,6 +189,10 @@ const ViewLoanUnderwritingPage = () => {
                 </div>
             </div>
             <DeclineApplicationModal open={open} setOpen={setOpen}/>
+            <AddCommentModal open={openComment} setOpen={setOpenComment} comment={comment} setComment={setComment}/>
+            <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs}/>
+            <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse}/>
+            <DecisionModal open={openDecision} setOpen={setOpenDecision}/>
         </Layout>
     );
 };

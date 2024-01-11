@@ -7,7 +7,6 @@ import {getUserToken} from "../../../../services/storage/index.js";
 const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd}) => {
     const [staff, setStaff] = useState([])
     const [level, setLevel] = useState([])
-    const [ page, setpage ] = useState(1)
     const token = getUserToken();
 
 
@@ -19,7 +18,7 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
             setInputs((values) => ({
                 ...values,
                 [fieldName]: selectedStaff,
-                emailAddress: selectedStaff?.email || '', // Replace 'email' and 'phone' with the actual field names
+                emailAddress: selectedStaff?.email || '',
                 firstName: selectedStaff.firstName || '',
                 lastName: selectedStaff.lastName || '',
             }));
@@ -30,7 +29,7 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
 
     const fetchStaff = async () => {
         try {
-            const response = await axios.get(`http://prananettech-001-site28.ftempurl.com/api/Users/get?page=${page}`, {
+            const response = await axios.get(`http://prananettech-001-site28.ftempurl.com/api/Users/get_all_active_users`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -38,8 +37,7 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
                     'authorization': `Bearer ${token}`
                 }
             });
-            setStaff(response.data.data.data);
-            console.log('Fetched state:', response.data.data.data);
+            setStaff(response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -56,16 +54,11 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
                 }
             });
             setLevel(response.data.data);
-            console.log('Fetched state:', response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
-    console.log(inputs.staff)
-    console.log(inputs.firstName)
-    console.log(inputs.lastName)
-    console.log(inputs.emailAddress)
     useEffect(() => {
         fetchStaff()
         fetchLevel()

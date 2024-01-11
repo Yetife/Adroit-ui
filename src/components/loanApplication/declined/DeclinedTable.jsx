@@ -71,7 +71,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'Loan Amount', 'Email Address', 'First Name', 'Middle Name', 'Last Name', 'Application Date', 'Actions' ]
+const header = ['S/N', 'Customer Ref.', 'StaffLoan Amount', 'Email Address', 'First Name', 'Middle Name', 'Last Name', 'Application Date', 'Actions' ]
 
 export function TableData({data, no}) {
     const [open, setOpen] = useState(false);

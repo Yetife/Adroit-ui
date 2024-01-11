@@ -27,7 +27,8 @@ const Submenu = ({data}) => {
                         <img alt={`${data.name?.toLowerCase()}_icon`} src={`${data.icon}`} width={20} height={20} />
                         <span className="mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]">{data.name}</span>
                     </div>
-                    {data.hasDropdown  && <img src={ showDropdown ? data.iconClosed : data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> }
+                    {/*{data.hasDropdown && showDropdown ? <img src={data.iconClosed} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> : data.hasDropdown ? <img src={data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> : null}*/}
+                    {data.hasDropdown  && <img src={ showDropdown ?data.iconClosed : data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> }
                 </div>
                 {
                     data.hasDropdown && showDropdown && (

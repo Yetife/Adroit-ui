@@ -1,8 +1,11 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import {Link as ReactLink} from "react-router-dom";
 import {Button, Text} from "@chakra-ui/react";
+import AddCommentModal from "../../components/loanUnderwritting/review/AddCommentModal.jsx";
 
 const LoanActivity = () => {
+    const [comment, setComment] = useState("")
+    const [open, setOpen] = useState("")
     const initialState = {
         comment: "",
         newStatus: "All",
@@ -85,7 +88,7 @@ const LoanActivity = () => {
                     <div>
                         <Button variant="outline" borderColor="#4A5D58" marginRight="10px"
                                 border={"1px solid #4A5D58"} borderRadius="4px" height="37px"
-                                size='md' as={ReactLink} w={'239px'} >
+                                size='md' as={ReactLink} w={'239px'} onClick={()=>setOpen(true)} >
                             <Text color="#4A5D58">Add Comment</Text>
                         </Button>
                     </div>
@@ -119,6 +122,7 @@ const LoanActivity = () => {
                     </div>
                 </div>
             </div>
+            <AddCommentModal open={open} setOpen={setOpen} comment={comment} setComment={setComment}/>
         </div>
     );
 };

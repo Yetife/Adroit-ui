@@ -1,10 +1,9 @@
+import {useGetStaffLoanQuery} from "../../store/features/administration/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
-import themes from "../../reusables/theme.jsx";
+import themes from "../reusables/theme.jsx";
 import {useNavigate} from "react-router-dom";
-import {useGetStaffLoanQuery} from "../../../store/features/administration/api.js";
-import dayjs from "dayjs";
 
-const StaffLoanTable = () => {
+const StaffTable = () => {
     const {data, isFetching, error} = useGetStaffLoanQuery()
     // if (error) return <p>Network error</p>
 
@@ -42,7 +41,8 @@ const StaffLoanTable = () => {
     );
 };
 
-export default StaffLoanTable;
+export default StaffTable;
+
 
 
 export function TableHeader({name}) {
@@ -53,7 +53,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Staff ID', 'StaffLoan Amount', 'Official Email Address', 'First Name', 'Last Name', 'Application Date', 'Actions' ]
+const header = ['S/N', 'Staff ID', 'Official Email Address', 'First Name', 'Last Name', 'StaffLoan Amount', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const router = useNavigate()
@@ -67,26 +67,23 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.staffId}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanAmount}</span>
-            </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.officialEmail}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.staffName}</span>
             </td>
-            {/*<td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">*/}
-            {/*    <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>*/}
-            {/*</td>*/}
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.dateCreated).format("YYYY/MM/DD")}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanAmount}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.statusName}</span>
             </td>
             <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <span className="w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer">
-                    <span className="block px-4 w-full py-2 text-[16px] font-medium text-[#007BEC]" onClick={()=>router(`/administration/staff/view?id=${data.uniqueId}`)}>View</span>
+                    <span className="block px-4 w-full py-2 text-[16px] font-medium text-[#007BEC]" onClick={()=>router(`/administration/staff/view?id=${data.uniqueId}&status=loan`)}>View</span>
                 </span>
             </td>
         </tr>

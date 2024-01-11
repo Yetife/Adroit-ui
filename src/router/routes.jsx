@@ -65,6 +65,7 @@ import LoanReassignment from "../pages/loanUnderwriting/LoanReassignment.jsx";
 import Disbursement from "../pages/loanUnderwriting/Disbursement.jsx";
 import Approval from "../pages/loanUnderwriting/Approval.jsx";
 import ViewLoanUnderwritingPage from "../pages/loanUnderwriting/ViewLoanUnderwritingPage.jsx";
+import StaffLoan from "../pages/staff/StaffLoan.jsx";
 
 const ROUTES = [
     {
@@ -182,6 +183,12 @@ const ROUTES = [
         key: "COLLECTION",
         exact: true,
         element: <Collection />,
+    },
+    {
+        path: "/staff/loan",
+        key: "Staff",
+        exact: true,
+        element: <StaffLoan />,
     },
     {
         path: "/generalSetup",
