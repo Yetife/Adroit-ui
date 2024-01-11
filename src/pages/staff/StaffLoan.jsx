@@ -8,11 +8,21 @@ import {Link as ReactLink} from "react-router-dom";
 import AddLoanTenorModal from "../../components/administration/loanTenor/AddLoanTenorModal.jsx";
 import StaffTable from "../../components/staff/StaffTable.jsx";
 import Search from "../../components/reusables/Search.jsx";
+import StaffRequestLoanModal from "../../components/staff/StaffRequestLoanModal.jsx";
 
 const StaffLoan = () => {
     const [open, setOpen] = useState(false)
+    const [openStaff, setOpenStaff] = useState(false)
     const [checked, setChecked] = useState(true);
     const [tenor, setTenor] = useState("")
+    const [inputs, setInputs] = useState({
+        tenor: "",
+        type: "",
+        amount: 0,
+        interestRate: 0,
+        startDate: null,
+        endDate: null,
+    })
     const dispatch = useDispatch()
     const [addTenor] = useAddLoanTenorMutation()
     const handleOpen = () => {
@@ -42,8 +52,8 @@ const StaffLoan = () => {
                         <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Filter</Text>
                         </Button>
-                        <div className="mr-3">
-                            <Button variant="primary" onClick={handleOpen} bgColor="#FF0909" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'170px'}>
+                        <div className="ml-3">
+                            <Button variant="primary" onClick={()=>setOpenStaff(true)} bgColor="#FFC327" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'170px'}>
                                 <Text color="white">Request a Loan</Text>
                             </Button>
                         </div>
@@ -52,6 +62,7 @@ const StaffLoan = () => {
                 <div>
                     <StaffTable />
                 </div>
+                <StaffRequestLoanModal open={openStaff} setOpen={setOpenStaff} setInputs={setInputs} inputs={inputs}/>
                 <AddLoanTenorModal open={open} setOpen={setOpen} handleAdd={handleAdd} tenor={tenor} setTenor={setTenor} checked={checked} setChecked={setChecked}/>
             </div>
         </Layout>

@@ -75,7 +75,7 @@ const ViewStaffPage = () => {
                              style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
                             <div className="pb-4">
                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Name:</p>
-                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data.name}</p>
+                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data.firstname + " " + data?.data.lastname }</p>
                             </div>
                             <div className="py-4">
                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Personal Email
