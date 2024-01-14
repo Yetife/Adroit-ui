@@ -16,9 +16,6 @@ const State = () => {
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
     const [state, setState] = useState("")
-    // const [selectedId, setSelectedId] = useState('');
-    const dispatch = useDispatch()
-    const [addState] = useAddStateMutation()
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedValue, setSelectedValue] = useState('');
 
@@ -31,22 +28,6 @@ const State = () => {
         setOpen(true)
     }
 
-    // const handleAdd = ()=> {
-    //     addState({
-    //         body: {
-    //             name: state,
-    //             statusID: checked ? 1 : 0,
-    //             detId: selectedValue
-    //         }
-    //     }).then(res => {
-    //         dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-    //         setOpen(!open)
-    //         setState("")
-    //         setSelectedValue("")
-    //     }).catch(err =>{
-    //         dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-    //     })
-    // }
     return (
         <Layout>
             <div className="px-2">
@@ -66,7 +47,7 @@ const State = () => {
                 <div>
                     <StateTable searchTerm={searchTerm}/>
                 </div>
-                <AddStateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} state={state} setState={setState}/>
+                <AddStateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} state={state} setSelectedValue={setSelectedValue} selectedValue={selectedValue} setState={setState}/>
             </div>
         </Layout>
     );

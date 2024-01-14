@@ -60,6 +60,7 @@ export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
     const [open, setOpen] = useState(false);
     const [checked, setChecked] = useState(true);
+    const [selectedValue, setSelectedValue] = useState('');
     const [state, setState] = useState("")
     const dispatch = useDispatch()
     const [purpose, setPurpose] = useState("")
@@ -73,6 +74,7 @@ export function TableData({data, no}) {
         setOpen(true)
         setPurpose("view")
         setState(data.name)
+        setSelectedValue(data.countryid)
         setId(data.id)
         setChecked(data.status === 1 ? true : false )
     }
@@ -80,6 +82,7 @@ export function TableData({data, no}) {
         setOpen(true)
         setPurpose("edit")
         setState(data.name)
+        setSelectedValue(data.countryid)
         setId(data.id)
         setChecked(data.status === 1 ? true : false )
     }
@@ -121,7 +124,7 @@ export function TableData({data, no}) {
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.id)}>Remove</span>
         </span>
             </td>
-            <AddStateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} purpose={purpose} state={state} setState={setState} id={id}/>
+            <AddStateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} purpose={purpose} state={state} setState={setState} selectedValue={selectedValue} setSelectedValue={setSelectedValue} id={id}/>
         </tr>
     )
 }

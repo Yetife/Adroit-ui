@@ -3,7 +3,7 @@ import {Link as ReactLink, useNavigate} from "react-router-dom";
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import AddRegularLoanChargeModal from "../../components/generalSetup/AddRegularLoanChargeModal.jsx";
+import AddRegularLoanChargeModal from "../../components/generalSetup/regularLoanCharges/AddRegularLoanChargeModal.jsx";
 import RegularLoanChargesTable from "../../components/generalSetup/RegularLoanChargesTable.jsx";
 
 const RegularLoanCharges = () => {
@@ -11,6 +11,8 @@ const RegularLoanCharges = () => {
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
     const [depositFrom, setDepositFrom] = useState("")
+    const [selectedValue, setSelectedValue] = useState('');
+    const [selectedLoan, setSelectedLoan] = useState('');
     const [depositTo, setDepositTo] = useState("")
     const [cAmount, setCAmount] = useState('')
 
@@ -37,7 +39,9 @@ const RegularLoanCharges = () => {
                 <div>
                     <RegularLoanChargesTable />
                 </div>
-                <AddRegularLoanChargeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} cAmount={cAmount} setCAmount={setCAmount} />
+                <AddRegularLoanChargeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom}
+                                           depositTo={depositTo} setDepositTo={setDepositTo} cAmount={cAmount} setCAmount={setCAmount}
+                                           selectedValue={selectedValue} setSelectedValue={setSelectedValue} selectedLoan={selectedLoan} setSelectedLoan={setSelectedLoan}/>
             </div>
         </Layout>
     );

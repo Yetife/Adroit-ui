@@ -3,14 +3,15 @@ import {useState} from "react";
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import AddRegularLoanInterestRateModal from "../../components/generalSetup/AddRegularLoanInterestRateModal.jsx";
-import RegularLoanInterestRateTable from "../../components/generalSetup/RegularLoanInterestRateTable.jsx";
+import AddRegularLoanInterestRateModal from "../../components/generalSetup/regularLoanInterestRate/AddRegularLoanInterestRateModal.jsx";
+import RegularLoanInterestRateTable from "../../components/generalSetup/regularLoanInterestRate/RegularLoanInterestRateTable.jsx";
 
 const RegularLoanInterestRate = () => {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
     const [depositFrom, setDepositFrom] = useState("")
+    const [selectedValue, setSelectedValue] = useState('');
     const [depositTo, setDepositTo] = useState("")
     const [rate, setRate] = useState("")
 
@@ -37,7 +38,8 @@ const RegularLoanInterestRate = () => {
                 <div>
                     <RegularLoanInterestRateTable />
                 </div>
-                <AddRegularLoanInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} rate={rate} setRate={setRate} />
+                <AddRegularLoanInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo}
+                                                 rate={rate} setRate={setRate} selectedValue={selectedValue} setSelectedValue={setSelectedValue}/>
             </div>
         </Layout>
     );

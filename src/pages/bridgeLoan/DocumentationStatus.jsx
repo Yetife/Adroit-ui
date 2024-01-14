@@ -26,9 +26,11 @@ const DocumentationStatus = () => {
     }
 
     const handleAdd = ()=> {
+        const user = JSON.parse(sessionStorage.getItem("userData"));
         addSetup({
             body: {
                 name: docStatus,
+                createdBy: user.FirstName,
                 status: checked ? "1" : "0"
             }
         }).then(res => {

@@ -1,8 +1,9 @@
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {
-    useDeleteFixedDepositAmountRangeMutation,
-    useEditFixedDepositAmountRangeMutation, useGetAllFixedDepositAmountRangeQuery
+    useDeleteFixedDepositInterestRateMutation,
+    useEditFixedDepositInterestRateMutation,
+    useGetAllFixedDepositInterestRateQuery
 } from "../../store/features/generalSetup/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import AddFixedDepositAmountRangeModal
@@ -11,7 +12,7 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../reusables/theme.jsx";
 
 const FixedDepositInterestRateTable = ({searchTerm}) => {
-    const {data, isFetching, error} = useGetAllFixedDepositAmountRangeQuery()
+    const {data, isFetching, error} = useGetAllFixedDepositInterestRateQuery()
 
     const filteredData = data?.data?.filter((item) =>
         item?.fromAmount?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -57,7 +58,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'From Amount', 'To Amount', 'Status', 'Actions' ]
+const header = ['S/N', 'Loan Amount From', 'Loan Amount To', 'Interest Rate', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
@@ -69,8 +70,8 @@ export function TableData({data, no}) {
     const [rate, setRate] = useState("")
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
-    const [deleteRange] = useDeleteFixedDepositAmountRangeMutation()
-    const [editRange] = useEditFixedDepositAmountRangeMutation()
+    const [deleteInterestRate] = useDeleteFixedDepositInterestRateMutation()
+    const [editInterestRate] = useEditFixedDepositInterestRateMutation()
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -93,7 +94,7 @@ export function TableData({data, no}) {
         setChecked(data.status === 1 ? true : false )
     }
     const handleRemove = (id)=>{
-        deleteRange(id).then((res) => {
+        deleteInterestRate(id).then((res) => {
             dispatch(
                 updateSnackbar({
                     type: "TOGGLE_SNACKBAR_OPEN",
@@ -105,7 +106,7 @@ export function TableData({data, no}) {
     }
 
     const handleEdit = ()=> {
-        editRange({
+        editInterestRate({
             body: {
                 fromAmount: depositFrom,
                 toAmount: depositTo,
@@ -132,6 +133,9 @@ export function TableData({data, no}) {
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.toAmount}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.interestRate}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === 1 ? "Active" : "Inactive"}</span>

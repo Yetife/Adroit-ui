@@ -49,39 +49,39 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
         fetchGender();
     }, []);
 
-    const handleAdd = () => {
-        const user = JSON.parse(sessionStorage.getItem("userData"));
-
-        returnDisbursement({
-            body: {
-                surname: inputs.surname,
-                firstname: inputs.firstName,
-                middlename: inputs.middleName,
-                emailAddress: inputs.emailAddress,
-                gender: selectedGender,
-                houseNo: inputs.houseNo,
-                streetName: inputs.streetName,
-                city: inputs.city,
-                state: inputs.state,
-                dob: inputs.date,
-                bvn: inputs.bvn,
-                idNo: inputs.idNo,
-                idDateIssued: inputs.idDateIssued,
-                transferAmount: inputs.transferAmount,
-                preferredNaration: inputs.preferredNaration,
-                repaymentDate: inputs.repayment,
-                createdBy: user.FirstName,
-                status: status,
-                uniqueId: id,
-
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
+    // const handleAdd = () => {
+    //     const user = JSON.parse(sessionStorage.getItem("userData"));
+    //
+    //     returnDisbursement({
+    //         body: {
+    //             surname: inputs.surname,
+    //             firstname: inputs.firstName,
+    //             middlename: inputs.middleName,
+    //             emailAddress: inputs.emailAddress,
+    //             gender: selectedGender,
+    //             houseNo: inputs.houseNo,
+    //             streetName: inputs.streetName,
+    //             city: inputs.city,
+    //             state: inputs.state,
+    //             dob: inputs.date,
+    //             bvn: inputs.bvn,
+    //             idNo: inputs.idNo,
+    //             idDateIssued: inputs.idDateIssued,
+    //             transferAmount: inputs.transferAmount,
+    //             preferredNaration: inputs.preferredNaration,
+    //             repaymentDate: inputs.repayment,
+    //             createdBy: user.FirstName,
+    //             status: status,
+    //             uniqueId: id,
+    //
+    //         }
+    //     }).then(res => {
+    //         dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+    //         setOpen(!open)
+    //     }).catch(err =>{
+    //         dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+    //     })
+    // }
     return (
         <div>
             <Dialog.Root
@@ -317,7 +317,7 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
                             </div>
                             <div className="flex space-x-3 float-right">
                                 <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-2" onClick={()=>setOpen(!open)}>Close</button>
-                                <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-2" onClick={handleAdd}>Send</button>
+                                <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-2" onClick={()=>setOpen(!open)}>Save</button>
                             </div>
                         </div>
 

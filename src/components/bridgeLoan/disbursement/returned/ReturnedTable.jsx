@@ -155,7 +155,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.repaymentDate}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200 cursor-pointer">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium" onClick={()=>handleOpenReturn(data)}>Edit</span>
+                <span className="text-[16px] leading-5 text-[#FF4B12] font-semibold" onClick={()=>handleOpenReturn(data)}>Edit</span>
             </td>
 
             <ReturnedModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} id={id} status={status} selectedGender={selectedGender} setSelectedGender={setSelectedGender}/>

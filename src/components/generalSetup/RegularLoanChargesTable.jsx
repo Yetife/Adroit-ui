@@ -5,7 +5,7 @@ import {
     useDeleteRegularLoanInterestRateMutation, useGetAllRegularLoanChargeQuery,
 } from "../../store/features/generalSetup/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import AddRegularLoanChargeModal from "./AddRegularLoanChargeModal.jsx";
+import AddRegularLoanChargeModal from "./regularLoanCharges/AddRegularLoanChargeModal.jsx";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../reusables/theme.jsx";
 
@@ -13,7 +13,7 @@ const RegularLoanChargesTable = () => {
     const {data, isFetching, error} = useGetAllRegularLoanChargeQuery()
 
     return (
-        <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">
+        <div className="scroll-container flex overflow-x-auto rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2">
                 <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
                     {isFetching && <ThemeProvider theme={themes}>
@@ -52,7 +52,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Charge Amount', 'Is Percentage', 'StaffLoan Amount From', 'StaffLoan Amount To', 'Status', 'Actions' ]
+const header = ['S/N', 'Employment Type', 'Loan Tenor', 'Charge Amount', 'Is Percentage', 'Loan Amount From', 'Loan Amount To', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const [showDropdown, setShowDropdown] = useState(false)
@@ -60,6 +60,8 @@ export function TableData({data, no}) {
     const [checked, setChecked] = useState(true);
     const [depositFrom, setDepositFrom] = useState("")
     const [depositTo, setDepositTo] = useState("")
+    const [selectedValue, setSelectedValue] = useState('');
+    const [selectedLoan, setSelectedLoan] = useState('');
     const [cAmount, setCAmount] = useState('')
     const dispatch = useDispatch()
     const [purpose, setPurpose] = useState("")
@@ -76,6 +78,8 @@ export function TableData({data, no}) {
         setDepositFrom(data.loanAmountFrom)
         setDepositTo(data.loanAmountTo)
         setCAmount(data.chargeAmount)
+        setSelectedValue(data.employmentTypeId)
+        setSelectedLoan(data.loanTenorid)
         setChecked(data.status === 1 ? true : false)
         setId(data.id)
     }
@@ -85,6 +89,8 @@ export function TableData({data, no}) {
         setDepositFrom(data.loanAmountFrom)
         setDepositTo(data.loanAmountTo)
         setCAmount(data.chargeAmount)
+        setSelectedValue(data.employmentTypeId)
+        setSelectedLoan(data.loanTenorid)
         setId(data.id)
         setChecked(data.status === 1 ? true : false)
     }
@@ -105,6 +111,12 @@ export function TableData({data, no}) {
         <tr>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.employmentTypeId}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanTenorid}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.chargeAmount}</span>
@@ -133,7 +145,7 @@ export function TableData({data, no}) {
                     </svg>
                 </a>
                 <span onMouseLeave={handleBlurDropdown}
-                      className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer"
+                      className="absolute z-10 w-32 right--1 md:right-10 mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
@@ -147,7 +159,8 @@ export function TableData({data, no}) {
         </span>
             </td>
             <AddRegularLoanChargeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom}
-                                             depositTo={depositTo} setDepositTo={setDepositTo} cAmount={cAmount} setCAmount={setCAmount} purpose={purpose} id={id}/>
+                                             depositTo={depositTo} setDepositTo={setDepositTo} cAmount={cAmount} setCAmount={setCAmount} purpose={purpose}
+                                       selectedValue={selectedValue} setSelectedValue={setSelectedValue} selectedLoan={selectedLoan} setSelectedLoan={setSelectedLoan} id={id}/>
         </tr>
     )
 }

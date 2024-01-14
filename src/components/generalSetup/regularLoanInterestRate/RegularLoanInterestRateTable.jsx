@@ -2,10 +2,10 @@ import {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {useDeleteRegularLoanInterestRateMutation,
     useGetAllRegularLoanInterestRateQuery
-} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
+} from "../../../store/features/generalSetup/api.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
-import themes from "../reusables/theme.jsx";
+import themes from "../../reusables/theme.jsx";
 import AddRegularLoanInterestRateModal from "./AddRegularLoanInterestRateModal.jsx";
 
 const RegularLoanInterestRateTable = () => {
@@ -52,7 +52,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Interest Rate', 'StaffLoan Amount From', 'StaffLoan Amount To', 'Status', 'Actions' ]
+const header = ['S/N', 'Employment Type', 'Interest Rate(%)', 'Loan Amount From', 'Loan Amount To', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const [showDropdown, setShowDropdown] = useState(false)
@@ -61,6 +61,7 @@ export function TableData({data, no}) {
     const [depositFrom, setDepositFrom] = useState("")
     const [depositTo, setDepositTo] = useState("")
     const [rate, setRate] = useState("")
+    const [selectedValue, setSelectedValue] = useState('');
     const dispatch = useDispatch()
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
@@ -76,6 +77,7 @@ export function TableData({data, no}) {
         setDepositFrom(data.loanAmountFrom)
         setDepositTo(data.loanAmountTo)
         setRate(data.interestRate)
+        setSelectedValue(data.employmentTypeId)
         setChecked(data.status === 1 ? true : false)
         setId(data.id)
     }
@@ -85,6 +87,7 @@ export function TableData({data, no}) {
         setDepositFrom(data.loanAmountFrom)
         setDepositTo(data.loanAmountTo)
         setRate(data.interestRate)
+        setSelectedValue(data.employmentTypeId)
         setId(data.id)
         setChecked(data.status === 1 ? true : false)
     }
@@ -107,7 +110,10 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.interestRate}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.employmentTypeId}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.interestRate}%</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanAmountFrom}</span>
@@ -144,7 +150,7 @@ export function TableData({data, no}) {
         </span>
             </td>
             <AddRegularLoanInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom}
-                                             depositTo={depositTo} setDepositTo={setDepositTo} rate={rate} setRate={setRate} purpose={purpose} id={id}/>
+                                             depositTo={depositTo} setDepositTo={setDepositTo} rate={rate} setRate={setRate} purpose={purpose} selectedValue={selectedValue} setSelectedValue={setSelectedValue} id={id}/>
         </tr>
     )
 }

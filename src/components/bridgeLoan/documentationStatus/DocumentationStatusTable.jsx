@@ -6,6 +6,7 @@ import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import AddDocumentationStatusModal from "./AddDocumentationStatusModal.jsx";
+import dayjs from "dayjs";
 
 const DocumentationStatusTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllValidDocumentStatusQuery()
@@ -55,7 +56,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Documentation Status', 'Status', 'Actions' ]
+const header = ['S/N', 'Documentation Status', 'Status', 'Created By', 'Date Created', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
@@ -110,21 +111,39 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.docName}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === "1" ? "Active" : "Inactive"}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === "1" ? "Active" : "Inactive"}</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.createdBy}</span>
+            </td>
+            <td className="px-10 py-4 border-b border-gray-200">
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.dateCreated).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
-                <a  onClick={handleshowDropDown } className="text-2xl cursor-pointer pt-0 leading-5 text-indigo-00 hover:text-indigo-900">
+                <a onClick={handleshowDropDown}
+                   className="text-2xl cursor-pointer pt-0 leading-5 text-indigo-00 hover:text-indigo-900">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="7" viewBox="0 0 30 7" fill="none">
-                        <path d="M2 3.625C2 4.05598 2.17121 4.4693 2.47595 4.77405C2.7807 5.07879 3.19402 5.25 3.625 5.25C4.05598 5.25 4.4693 5.07879 4.77405 4.77405C5.07879 4.4693 5.25 4.05598 5.25 3.625C5.25 3.19402 5.07879 2.7807 4.77405 2.47595C4.4693 2.17121 4.05598 2 3.625 2C3.19402 2 2.7807 2.17121 2.47595 2.47595C2.17121 2.7807 2 3.19402 2 3.625ZM13.375 3.625C13.375 4.05598 13.5462 4.4693 13.851 4.77405C14.1557 5.07879 14.569 5.25 15 5.25C15.431 5.25 15.8443 5.07879 16.149 4.77405C16.4538 4.4693 16.625 4.05598 16.625 3.625C16.625 3.19402 16.4538 2.7807 16.149 2.47595C15.8443 2.17121 15.431 2 15 2C14.569 2 14.1557 2.17121 13.851 2.47595C13.5462 2.7807 13.375 3.19402 13.375 3.625ZM24.75 3.625C24.75 4.05598 24.9212 4.4693 25.226 4.77405C25.5307 5.07879 25.944 5.25 26.375 5.25C26.806 5.25 27.2193 5.07879 27.524 4.77405C27.8288 4.4693 28 4.05598 28 3.625C28 3.19402 27.8288 2.7807 27.524 2.47595C27.2193 2.17121 26.806 2 26.375 2C25.944 2 25.5307 2.17121 25.226 2.47595C24.9212 2.7807 24.75 3.19402 24.75 3.625Z"
-                              stroke="#4A5D58" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path
+                            d="M2 3.625C2 4.05598 2.17121 4.4693 2.47595 4.77405C2.7807 5.07879 3.19402 5.25 3.625 5.25C4.05598 5.25 4.4693 5.07879 4.77405 4.77405C5.07879 4.4693 5.25 4.05598 5.25 3.625C5.25 3.19402 5.07879 2.7807 4.77405 2.47595C4.4693 2.17121 4.05598 2 3.625 2C3.19402 2 2.7807 2.17121 2.47595 2.47595C2.17121 2.7807 2 3.19402 2 3.625ZM13.375 3.625C13.375 4.05598 13.5462 4.4693 13.851 4.77405C14.1557 5.07879 14.569 5.25 15 5.25C15.431 5.25 15.8443 5.07879 16.149 4.77405C16.4538 4.4693 16.625 4.05598 16.625 3.625C16.625 3.19402 16.4538 2.7807 16.149 2.47595C15.8443 2.17121 15.431 2 15 2C14.569 2 14.1557 2.17121 13.851 2.47595C13.5462 2.7807 13.375 3.19402 13.375 3.625ZM24.75 3.625C24.75 4.05598 24.9212 4.4693 25.226 4.77405C25.5307 5.07879 25.944 5.25 26.375 5.25C26.806 5.25 27.2193 5.07879 27.524 4.77405C27.8288 4.4693 28 4.05598 28 3.625C28 3.19402 27.8288 2.7807 27.524 2.47595C27.2193 2.17121 26.806 2 26.375 2C25.944 2 25.5307 2.17121 25.226 2.47595C24.9212 2.7807 24.75 3.19402 24.75 3.625Z"
+                            stroke="#4A5D58" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                 </a>
-                <span  onMouseLeave={handleBlurDropdown} className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer" style={{ display: showDropdown ? "block" : "none"}}>
-                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white" onClick={()=>handleOpenView(data)}>View</span>
-                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleOpenEdit(data)}>Edit</span>
+                <span onMouseLeave={handleBlurDropdown}
+                      className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer"
+                      style={{display: showDropdown ? "block" : "none"}}>
+                    <span
+                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
+                        onClick={() => handleOpenView(data)}>View</span>
+                    <span
+                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
+                        onClick={() => handleOpenEdit(data)}>Edit</span>
         </span>
             </td>
-            <AddDocumentationStatusModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} docStatus={docStatus} setDocStatus={setDocStatus} handleAdd={handleEdit} purpose={purpose}/>
+            <AddDocumentationStatusModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked}
+                                         docStatus={docStatus} setDocStatus={setDocStatus} handleAdd={handleEdit}
+                                         purpose={purpose}/>
         </tr>
     )
 }
