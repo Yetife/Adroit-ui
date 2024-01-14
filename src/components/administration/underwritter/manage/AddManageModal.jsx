@@ -3,6 +3,8 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import axios from "axios";
 import {getUserToken} from "../../../../services/storage/index.js";
+import {Autocomplete} from "@mui/lab";
+import {FormControl, TextField} from "@mui/material";
 
 const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd}) => {
     const [staff, setStaff] = useState([])
@@ -79,6 +81,31 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-2">
                             <div>
+                                {/*<span>*/}
+                                {/*    <FormControl size="medium" className="md:w-full">*/}
+                                {/*      <Autocomplete*/}
+                                {/*          name="industry"*/}
+                                {/*          options={staff}*/}
+                                {/*          size="small"*/}
+                                {/*          freeSolo*/}
+                                {/*          value={inputs.firstName}*/}
+                                {/*          sx={{ width: 450 }}*/}
+                                {/*          onChange={(event, newValue) => {*/}
+                                {/*              setInputs((values) => ({*/}
+                                {/*                  ...values,*/}
+                                {/*                  firstName: newValue,*/}
+                                {/*              }));*/}
+                                {/*          }}*/}
+                                {/*          renderInput={(params) => (*/}
+                                {/*              <TextField*/}
+                                {/*                  {...params}*/}
+                                {/*                  name={"industry"}*/}
+                                {/*                  placeholder="Select staff"*/}
+                                {/*              />*/}
+                                {/*          )}*/}
+                                {/*      />*/}
+                                {/*    </FormControl>*/}
+                                {/*</span>*/}
                                  <span>
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                         Tenor

@@ -9,6 +9,7 @@ import AddLoanTenorModal from "../../components/administration/loanTenor/AddLoan
 import StaffTable from "../../components/staff/StaffTable.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import StaffRequestLoanModal from "../../components/staff/StaffRequestLoanModal.jsx";
+import FilterStaff from "../../components/staff/FilterStaff.jsx";
 
 const StaffLoan = () => {
     const [open, setOpen] = useState(false)
@@ -23,6 +24,15 @@ const StaffLoan = () => {
         startDate: null,
         endDate: null,
     })
+    const initialState = {
+        applicationId: "",
+        email: "",
+        bvn: "",
+        status: "",
+        startDate: "",
+        endDate: "",
+    }
+    const [input, setInput] = useState(initialState)
     const dispatch = useDispatch()
     const [addTenor] = useAddLoanTenorMutation()
     const handleOpen = () => {
@@ -63,7 +73,7 @@ const StaffLoan = () => {
                     <StaffTable />
                 </div>
                 <StaffRequestLoanModal open={openStaff} setOpen={setOpenStaff} setInputs={setInputs} inputs={inputs}/>
-                <AddLoanTenorModal open={open} setOpen={setOpen} handleAdd={handleAdd} tenor={tenor} setTenor={setTenor} checked={checked} setChecked={setChecked}/>
+                <FilterStaff open={open} setOpen={setOpen} handleAdd={handleAdd} inputs={input} setInputs={setInput}/>
             </div>
         </Layout>
     );
