@@ -68,7 +68,14 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, selectedV
     }
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidStates');
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidStates', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
             setState(response.data.data);
             console.log('Fetched state:', response.data.data);
         } catch (error) {
@@ -130,7 +137,7 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, selectedV
                                              style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                         <option value="" disabled>Select a state</option>
                                          {state && state?.map((option) => (
-                                             <option key={option.id} value={option.id}>
+                                             <option key={option.id} value={option.name}>
                                                  {option.name}
                                              </option>
                                          ))}

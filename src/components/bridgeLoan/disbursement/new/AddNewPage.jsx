@@ -117,7 +117,7 @@ const AddNewPage = () => {
                     </Button>
                 </div>
             </div>
-            <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg mt-8 px-20">
+            <div className="scroll-container inline-block min-w-full align-middle c-border shadow sm:rounded-lg mt-8 px-20">
                <div className="py-12">
                    <div className="flex">
                     <span>
@@ -178,7 +178,7 @@ const AddNewPage = () => {
                           </h3>
                              <select id="select" value={selectedGender}
                                      onChange={handleGenderChange}
-                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 h-[52px] rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                 <option value="" disabled>Select gender</option>
                                  {gender && gender?.map((option) => (
                                      <option key={option.uniqueId} value={option.id}>
@@ -328,11 +328,12 @@ const AddNewPage = () => {
                           />
                         </span>
                     </div>
+                    <div className="flex space-x-3 float-right mb-6">
+                        <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-8"
+                                onClick={handleAdd}>Add
+                        </button>
+                    </div>
                 </div>
-                <div className="flex space-x-3 float-right mb-6">
-                     <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-8" onClick={handleAdd}>Add</button>
-                </div>
-
             </div>
 
         </Layout>

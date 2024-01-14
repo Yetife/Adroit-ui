@@ -9,14 +9,16 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
+import {getUserToken} from "../../../services/storage/index.js";
 
-const AddStateModal = ({open, setOpen, checked, setChecked, state, setState, purpose, id}) => {
+const AddStateModal = ({open, setOpen, checked, setChecked, state, setState, purpose, selectedValue, setSelectedValue, id}) => {
     const [country, setCountry] = useState([]);
-    const [selectedValue, setSelectedValue] = useState('');
     const [selectedId, setSelectedId] = useState('');
     const dispatch = useDispatch()
     const [addState] = useAddStateMutation()
     const [editState] = useEditStateMutation()
+    const token = getUserToken();
+
 
     const handleAdd = ()=> {
         if (!id){
@@ -46,6 +48,7 @@ const AddStateModal = ({open, setOpen, checked, setChecked, state, setState, pur
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
                 setOpen(!open)
                 setState("")
+                setSelectedValue("")
             }).catch(err =>{
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
             })
@@ -54,10 +57,10 @@ const AddStateModal = ({open, setOpen, checked, setChecked, state, setState, pur
 
     const handleSelectChange = (event) => {
         const selectedOption = event.target.value;
-        const selectedOptionObject = country.find((option) => option.name === selectedOption);
+        // const selectedOptionObject = country.find((option) => option.name === selectedOption);
 
         setSelectedValue(selectedOption);
-        setSelectedId(selectedOptionObject ? selectedOptionObject.id : ''); // Use the corresponding ID
+        // setSelectedId(selectedOptionObject ? selectedOptionObject.id : ''); // Use the corresponding ID
     };
 
     const handleChange = (event) => {
@@ -70,7 +73,14 @@ const AddStateModal = ({open, setOpen, checked, setChecked, state, setState, pur
 
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidCountry');
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidCountry', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
             setCountry(response.data.data);
             console.log('Fetched Country:', response.data.data);
         } catch (error) {
@@ -82,20 +92,20 @@ const AddStateModal = ({open, setOpen, checked, setChecked, state, setState, pur
         fetchData();
     }, []);
 
-    const fetchState = async () => {
-        try {
-            const response = await axios.get(`http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getStatebyid/id?id=${id}`);
-            setSelectedValue(response.data?.data.countryid)
-            console.log(response?.data.data.countryid)
-            console.log('Fetched Country:', response.data.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
-
-    if (id && open){
-        fetchState()
-    }
+    // const fetchState = async () => {
+    //     try {
+    //         const response = await axios.get(`http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getStatebyid/id?id=${id}`);
+    //         setSelectedValue(response.data?.data.countryid)
+    //         console.log(response?.data.data.countryid)
+    //         console.log('Fetched Country:', response.data.data);
+    //     } catch (error) {
+    //         console.error('Error fetching data:', error);
+    //     }
+    // };
+    //
+    // if (id && open){
+    //     fetchState()
+    // }
 
     return (
         <div>
@@ -133,7 +143,7 @@ const AddStateModal = ({open, setOpen, checked, setChecked, state, setState, pur
                                              style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                         <option value="" disabled>Select a country</option>
                                              {country.map((option) => (
-                                             <option key={option.id} value={option.id}>
+                                             <option key={option.id} value={option.name}>
                                                  {option.name}
                                              </option>
                                          ))}

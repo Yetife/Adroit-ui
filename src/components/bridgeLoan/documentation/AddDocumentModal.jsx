@@ -14,9 +14,6 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
     const [status, setStatus] = useState([]);
     const [tenor, setTenor] = useState([]);
     const [interest, setInterest] = useState([])
-    // const [selectedValue, setSelectedValue] = useState('');
-    // const [selectedLoan, setSelectedLoan] = useState('');
-    const [selectedId, setSelectedId] = useState('');
     const dispatch = useDispatch()
     const [editDoc]  = useEditDocumentationMutation()
     const token = getUserToken();
@@ -422,7 +419,8 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                              type="file"
                                              id="fileInput"
                                              name="files"
-                                             accept="image/*, .csv, .xlsx"
+                                             // accept="image/*, .csv, .xlsx"
+                                             accept="*/*"
                                              multiple
                                              onChange={handleFileChange}
                                          />

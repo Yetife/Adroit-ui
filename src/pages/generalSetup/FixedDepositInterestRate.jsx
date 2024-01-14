@@ -1,7 +1,9 @@
 import {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {useAddFixedDepositAmountRangeMutation} from "../../store/features/generalSetup/api.js";
+import {
+    useAddFixedDepositInterestRateMutation
+} from "../../store/features/generalSetup/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
@@ -17,7 +19,7 @@ const FixedDepositInterestRate = () => {
     const [depositTo, setDepositTo] = useState("")
     const [rate, setRate] = useState("")
     const dispatch = useDispatch()
-    const [addRange] = useAddFixedDepositAmountRangeMutation()
+    const [addInterestRate] = useAddFixedDepositInterestRateMutation()
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = (searchValue) => {
@@ -29,7 +31,7 @@ const FixedDepositInterestRate = () => {
     }
 
     const handleAdd = ()=> {
-        addRange({
+        addInterestRate({
             body: {
                 fromAmount: depositFrom,
                 toAmount: depositTo,

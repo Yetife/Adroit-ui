@@ -24,9 +24,9 @@ console.log(doc, "doccccc")
         <div className="scroll-container flex rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2">
                 <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
-                    {/*{loading && <ThemeProvider theme={themes}>*/}
-                    {/*    <LinearProgress color={"waveGreen"}/>*/}
-                    {/*</ThemeProvider>}*/}
+                    {loading && <ThemeProvider theme={themes}>
+                        <LinearProgress color={"waveGreen"}/>
+                    </ThemeProvider>}
                     <table className="table-auto md:w-full px-20">
                         <thead>
                         <tr>
@@ -201,7 +201,7 @@ export function TableData({data, no}) {
                     </svg>
                 </a>
                 <span onMouseLeave={handleBlurDropdown}
-                      className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer"
+                      className="absolute z-10 w-32 right--1 md:right-10 mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"

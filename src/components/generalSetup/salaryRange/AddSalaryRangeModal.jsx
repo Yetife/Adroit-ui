@@ -34,7 +34,7 @@ const AddSalaryRangeModal = ({open, setOpen, checked, setChecked, range, setRang
                                       value={range}
                                       disabled={purpose === "view"}
                                       onChange={handleRangeChange}
-                                      placeholder="Enter lga"
+                                      placeholder="Enter salary range"
                                       className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                   />
                                 </span>

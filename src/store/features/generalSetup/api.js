@@ -56,7 +56,7 @@ export const generalSetUpApi = createApi({
             query: () => ({
                 url: `/GeneralSetUp/getallvalidEducationalLevels`,
             }),
-            providesTags: ["AddEducationLevel", "DelEducationalLevel", "EditEducationalLevel"]
+            providesTags: ["AddEducationalLevel", "DelEducationalLevel", "EditEducationalLevel"]
         }),
         deleteEducationalLevel: builder.mutation({
             query:(id)=>({
@@ -578,6 +578,35 @@ export const generalSetUpApi = createApi({
             }),
             invalidatesTags: ["EditFixedDepositAmountRange"]
         }),
+        addFixedDepositInterestRate: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/addFixedDepositInterestRate`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddFixedDepositInterestRate"]
+        }),
+        getAllFixedDepositInterestRate: builder.query({
+            query: () => ({
+                url: `/GeneralSetUp/getallvalidFixedDepositInterestRate`,
+            }),
+            providesTags: ["AddFixedDepositInterestRate", "DelFixedDepositInterestRate", "EditFixedDepositInterestRate"]
+        }),
+        deleteFixedDepositInterestRate: builder.mutation({
+            query:(id)=>({
+                url:`/GeneralSetUp/deleteFixedDepositInterestRatebyid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelFixedDepositInterestRate"]
+        }),
+        editFixedDepositInterestRate: builder.mutation({
+            query: ({body}) => ({
+                url: `/GeneralSetUp/updateFixedDepositInterestRate`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["EditFixedDepositInterestRate"]
+        }),
         addFixedDepositPreliquidationCharges: builder.mutation({
             query: ({body}) => ({
                 url: `/GeneralSetUp/addFixedDepositPreliquidationCharges`,
@@ -834,6 +863,10 @@ export const {
     useGetAllFixedDepositAmountRangeQuery,
     useDeleteFixedDepositAmountRangeMutation,
     useEditFixedDepositAmountRangeMutation,
+    useAddFixedDepositInterestRateMutation,
+    useGetAllFixedDepositInterestRateQuery,
+    useDeleteFixedDepositInterestRateMutation,
+    useEditFixedDepositInterestRateMutation,
     useAddRegularLoanInterestRateMutation,
     useGetAllRegularLoanInterestRateQuery,
     useDeleteRegularLoanInterestRateMutation,
