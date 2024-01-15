@@ -124,7 +124,7 @@ export const bridgeLoanApi = createApi({
         }),
         deleteTenor: builder.mutation({
             query:(id)=>({
-                url:`/GeneralSetUp/deleteTenorbyid/id?id=${id}`,
+                url:`/BridgeLoan/GeneralSetUpTenor/deletebyuniqueid/id?id=${id}`,
                 method:"DELETE"
             }),
             invalidatesTags:["DelTenor"]
@@ -153,7 +153,7 @@ export const bridgeLoanApi = createApi({
         }),
         deleteFacilityType: builder.mutation({
             query:(id)=>({
-                url:`/GeneralSetUp/GeneralSetUpFacilityTypebyid/id?id=${id}`,
+                url:`/BridgeLoan/GeneralSetUpFacilityType/deletebyuniqueid/id?id=${id}`,
                 method:"DELETE"
             }),
             invalidatesTags:["DelFacilityType"]
@@ -182,7 +182,7 @@ export const bridgeLoanApi = createApi({
         }),
         deleteDocumentationStage: builder.mutation({
             query:(id)=>({
-                url:`/GeneralSetUp/GeneralSetUpDocumentationStage/id?id=${id}`,
+                url:`/BridgeLoan/GeneralSetUpDocumentationStage/deletebyuniqueid/id?id=${id}`,
                 method:"DELETE"
             }),
             invalidatesTags:["DelDocumentationStage"]
@@ -211,7 +211,7 @@ export const bridgeLoanApi = createApi({
         }),
         deleteDisbursementStatus: builder.mutation({
             query:(id)=>({
-                url:`/GeneralSetUp/GeneralSetUpDisbursementStatus/id?id=${id}`,
+                url:`/BridgeLoan/GeneralSetUpDisbursementStatus/deletebyuniqueid/id?id=${id}`,
                 method:"DELETE"
             }),
             invalidatesTags:["DelDisbursementStatus"]

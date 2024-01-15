@@ -32,9 +32,11 @@ const DocumentStages = () => {
         setSearchTerm(searchValue);
     };
     const handleAdd = ()=> {
+        const user = JSON.parse(sessionStorage.getItem("userData"));
         addStages({
             body: {
                 name: stages,
+                createdBy: user.FirstName + " " +  user.LastName,
                 status: checked ? "1" : "0"
             }
         }).then(res => {

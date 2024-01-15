@@ -1,10 +1,10 @@
-import {useGetStaffLoanQuery} from "../../store/features/administration/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../reusables/theme.jsx";
 import {useNavigate} from "react-router-dom";
+import {useGetAllStaffLoanQuery} from "../../store/features/staff/api.js";
 
 const StaffTable = () => {
-    const {data, isFetching, error} = useGetStaffLoanQuery()
+    const {data, isFetching, error} = useGetAllStaffLoanQuery()
     // if (error) return <p>Network error</p>
 
     const filteredData = data?.data?.filter((item) =>

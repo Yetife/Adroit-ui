@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useAddLoanTenorMutation} from "../../../store/features/administration/api.js";
@@ -7,6 +7,7 @@ import Layout from "../../Layout.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import AddLoanTenorModal from "../../../components/administration/loanTenor/AddLoanTenorModal.jsx";
 import StaffLoanTable from "../../../components/administration/staff/StaffLoanTable.jsx";
+import FilterStaff from "../../../components/staff/FilterStaff.jsx";
 
 const Loan = () => {
     const [open, setOpen] = useState(false)
@@ -14,6 +15,15 @@ const Loan = () => {
     const [tenor, setTenor] = useState("")
     const dispatch = useDispatch()
     const [addTenor] = useAddLoanTenorMutation()
+    const initialState = {
+        applicationId: "",
+        email: "",
+        bvn: "",
+        status: "",
+        startDate: "",
+        endDate: "",
+    }
+    const [input, setInput] = useState(initialState)
     const handleOpen = () => {
         setOpen(true)
     }
@@ -46,7 +56,7 @@ const Loan = () => {
                 <div>
                     <StaffLoanTable />
                 </div>
-                <AddLoanTenorModal open={open} setOpen={setOpen} handleAdd={handleAdd} tenor={tenor} setTenor={setTenor} checked={checked} setChecked={setChecked}/>
+                <FilterStaff open={open} setOpen={setOpen} handleAdd={handleAdd} inputs={input} setInputs={setInput}/>
             </div>
         </Layout>
     );

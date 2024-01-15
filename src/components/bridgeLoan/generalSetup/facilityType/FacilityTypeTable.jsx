@@ -136,7 +136,7 @@ export function TableData({data, no}) {
                 <span  onMouseLeave={handleBlurDropdown} className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer" style={{ display: showDropdown ? "block" : "none"}}>
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white" onClick={()=>handleOpenView(data)}>View</span>
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleOpenEdit(data)}>Edit</span>
-                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.id)}>Remove</span>
+                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.uniqueId)}>Remove</span>
         </span>
             </td>
             <AddFacilityTypeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} type={type} setType={setType} handleAdd={handleEdit} purpose={purpose}/>

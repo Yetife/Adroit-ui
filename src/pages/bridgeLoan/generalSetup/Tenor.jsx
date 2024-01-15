@@ -30,7 +30,7 @@ const Tenor = () => {
         addTenor({
             body: {
                 name: tenor,
-                createdBy: user.FirstName + "" +  user.LastName,
+                createdBy: user.FirstName + " " +  user.LastName,
                 status: checked ? "1" : "0"
             }
         }).then(res => {

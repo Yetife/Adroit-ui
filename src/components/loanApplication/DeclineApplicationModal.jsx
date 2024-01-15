@@ -59,7 +59,7 @@ const DeclineApplicationModal = ({open, setOpen, handleAdd}) => {
             >
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
-                    <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[49%] left-[50%] max-h-[98vh] overflow-x w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                    <Dialog.Content className="custom-scroll-bar overflow-auto data-[state=open]:animate-contentShow z-[200] fixed top-[49%] left-[50%] max-h-[100vh] overflow-x w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                         <Dialog.Title className="text-[24px] text-[#343434] font-extrabold -mt-8 mb-3 text-center">Review Application</Dialog.Title>
                         <Divider />
                         <div className="mt-6">

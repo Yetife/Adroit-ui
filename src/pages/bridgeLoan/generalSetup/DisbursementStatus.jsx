@@ -32,9 +32,12 @@ const DisbursementStatus = () => {
         setSearchTerm(searchValue);
     };
     const handleAdd = ()=> {
+        const user = JSON.parse(sessionStorage.getItem("userData"));
+
         addStatus({
             body: {
                 name: status,
+                createdBy: user.FirstName + " " +  user.LastName,
                 status: checked ? "1" : "0"
             }
         }).then(res => {

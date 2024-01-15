@@ -10,6 +10,7 @@ import StaffTable from "../../components/staff/StaffTable.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import StaffRequestLoanModal from "../../components/staff/StaffRequestLoanModal.jsx";
 import FilterStaff from "../../components/staff/FilterStaff.jsx";
+import {useAddStaffLoanMutation} from "../../store/features/staff/api.js";
 
 const StaffLoan = () => {
     const [open, setOpen] = useState(false)
@@ -23,7 +24,9 @@ const StaffLoan = () => {
         interestRate: 0,
         startDate: null,
         endDate: null,
+        purpose: ""
     })
+
     const initialState = {
         applicationId: "",
         email: "",
@@ -34,21 +37,41 @@ const StaffLoan = () => {
     }
     const [input, setInput] = useState(initialState)
     const dispatch = useDispatch()
-    const [addTenor] = useAddLoanTenorMutation()
+    const [addStaffLoan] = useAddStaffLoanMutation()
     const handleOpen = () => {
         setOpen(true)
     }
 
     const handleAdd = ()=> {
-        addTenor({
+        const user = JSON.parse(sessionStorage.getItem("userData"));
+        addStaffLoan({
             body: {
-                name: tenor,
-                statusID: checked ? 1 : 0
+                staffId: user.UserId,
+                personalEmail: user.email,
+                officialEmail: user.email,
+                firstName: user.FirstName,
+                lastName: user.LastName,
+                phoneNumber: "",
+                interestRate: inputs.interestRate,
+                loanType: inputs.type,
+                loanAmount: inputs.amount,
+                loanTenorid: inputs.tenor,
+                startDate: inputs.startDate,
+                endDate: inputs.endDate,
+                purpose: inputs.purpose
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-            setTenor("")
+            setOpenStaff(!openStaff)
+            setInputs({
+                tenor: 0,
+                type: "",
+                amount: 0,
+                interestRate: 0,
+                startDate: null,
+                endDate: null,
+                purpose: ""
+            })
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
@@ -72,8 +95,8 @@ const StaffLoan = () => {
                 <div>
                     <StaffTable />
                 </div>
-                <StaffRequestLoanModal open={openStaff} setOpen={setOpenStaff} setInputs={setInputs} inputs={inputs}/>
-                <FilterStaff open={open} setOpen={setOpen} handleAdd={handleAdd} inputs={input} setInputs={setInput}/>
+                <StaffRequestLoanModal open={openStaff} setOpen={setOpenStaff} setInputs={setInputs} inputs={inputs} handleAdd={handleAdd}/>
+                <FilterStaff open={open} setOpen={setOpen} inputs={input} setInputs={setInput}/>
             </div>
         </Layout>
     );

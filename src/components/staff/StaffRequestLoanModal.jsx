@@ -7,7 +7,7 @@ import {Divider} from "@mui/material";
 
 const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => {
     const [tenor, setTenor] = useState([]);
-    const [type, setType] = useState(["Staff loan"]);
+    const [type, setType] = useState([]);
     const token = getUserToken();
 
 
@@ -38,9 +38,26 @@ const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, purpose, handl
             console.error('Error fetching data:', error);
         }
     };
+    const fetchLoanType = async () => {
+        try {
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/StaffLoan/GetStaffLoanType', {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*',
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setType(response.data.data);
+            console.log('Fetched state:', response.data.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     useEffect(() => {
         fetchTenor()
+        fetchLoanType()
     }, []);
 
     return (
@@ -69,8 +86,8 @@ const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, purpose, handl
                                                      className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
                                                 <option value="" disabled>Select loan type</option>
                                                  {type && type?.map((option) => (
-                                                     <option key={option} value={option}>
-                                                         {option}
+                                                     <option key={option.key} value={option.key}>
+                                                         {option.value}
                                                      </option>
                                                  ))}
                                             </select>

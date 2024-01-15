@@ -67,7 +67,7 @@ const ViewStaffPage = () => {
                     </Button>
                 </div>
             </div>
-            <div className="min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-8 px-20">
+            <div className="custom-scroll-bar overflow-auto min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-8 px-20">
                 <div className="flex">
                     <div className="w-4/12">
                         <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]"> Staff Details</p>

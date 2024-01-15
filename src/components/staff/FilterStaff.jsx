@@ -7,9 +7,6 @@ import {Close} from "@mui/icons-material";
 
 const FilterStaff = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => {
     const [status, setStatus] = useState([]);
-    const currentDate = dayjs(new Date()).format("YYYY-MM-DD");
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
     const token = getUserToken();
 
 
@@ -18,13 +15,13 @@ const FilterStaff = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => 
         setInputs((values) => ({...values, [fieldName]: value}))
     };
 
-    const allOption = { uniqueId: 'all', name: 'All' };
+    const allOption = { key: 'all', value: 'All' };
 
     // ... (other code)
 
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/LoanApplication/LoanStatus/getallvalid', {
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/StaffLoan/GetStaffLoanApprovalStatus', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -82,8 +79,8 @@ const FilterStaff = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => 
                                                      className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
                                                 <option value="" disabled>Select loan status</option>
                                                  {status && status?.map((option) => (
-                                                     <option key={option.uniqueId} value={option.name}>
-                                                         {option.name}
+                                                     <option key={option.key} value={option.value}>
+                                                         {option.value}
                                                      </option>
                                                  ))}
                                             </select>

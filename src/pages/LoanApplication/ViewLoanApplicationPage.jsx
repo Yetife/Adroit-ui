@@ -92,7 +92,7 @@ const ViewLoanApplicationPage = () => {
                                 </Button>
                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"
                                         border={"1px solid #FF0909"} borderRadius="4px" height="37px"
-                                        size='md' as={ReactLink} w={'110px'}>
+                                        size='md' as={ReactLink} w={'110px'} onClick={handleOpen}>
                                     <Text color="#FF0909">Decline</Text>
                                 </Button>
                             </div>

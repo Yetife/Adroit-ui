@@ -16,7 +16,7 @@ export const staffLoanApi = createApi({
         }),
         getAllStaffLoan: builder.query({
             query: () => ({
-                url: `/StaffLoan/addStaffLoan`,
+                url: `/Administration/StaffLoan/GetStaffLoan`,
             }),
             providesTags: ["AddStaffLoan"]
         }),
@@ -34,6 +34,4 @@ export const {
     useAddStaffLoanMutation,
     useGetAllStaffLoanQuery,
     useGetLoanByIdQuery,
-    useEditStatusMutation,
-
 } = staffLoanApi
