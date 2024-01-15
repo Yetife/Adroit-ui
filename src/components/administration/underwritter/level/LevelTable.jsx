@@ -57,7 +57,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Level', 'StaffLoan Range', 'Date Created', 'Actions' ]
+const header = ['S/N', 'Level', 'Loan Range', 'Date Created', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
