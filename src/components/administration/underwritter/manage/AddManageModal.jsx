@@ -50,22 +50,6 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
     };
 
 
-    // const fetchStaff = async () => {
-    //     try {
-    //         const response = await axios.get(`http://prananettech-001-site28.ftempurl.com/api/Users/get_all_active_users`, {
-    //             headers: {
-    //                 'Content-Type': "application/json",
-    //                 'Accept': "application/json",
-    //                 'XAPIKEY': "_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*",
-    //                 'authorization': `Bearer ${token}`
-    //             }
-    //         });
-    //         setStaff(response.data.data);
-    //     } catch (error) {
-    //         console.error('Error fetching data:', error);
-    //     }
-    // };
-
     const fetchStaff = async () => {
         try {
             const response = await axios.get(`http://prananettech-001-site28.ftempurl.com/api/Users/get_all_active_users`, {
@@ -76,17 +60,34 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
                     'authorization': `Bearer ${token}`
                 }
             });
-            const formattedStaff = response.data.data.map(item => ({
-                id: item.id, // Make sure to use the actual property names
-                firstName: item.firstName,
-                lastName: item.lastName,
-                // ... other properties you may want to include
-            }));
-            setStaff(formattedStaff);
+            setStaff(response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
+
+    // const fetchStaff = async () => {
+    //     try {
+    //         const response = await axios.get(`http://prananettech-001-site28.ftempurl.com/api/Users/get_all_active_users`, {
+    //             headers: {
+    //                 'Content-Type': "application/json",
+    //                 'Accept': "application/json",
+    //                 'XAPIKEY': "_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*",
+    //                 'authorization': `Bearer ${token}`
+    //             }
+    //         });
+    //         const formattedStaff = response.data.data.map(item => ({
+    //             id: item.id, // Make sure to use the actual property names
+    //             firstName: item.firstName,
+    //             lastName: item.lastName,
+    //             emailAddress: item.email
+    //             // ... other properties you may want to include
+    //         }));
+    //         setStaff(formattedStaff);
+    //     } catch (error) {
+    //         console.error('Error fetching data:', error);
+    //     }
+    // };
     const fetchLevel = async () => {
         try {
             const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/Administration/UnderwriterLevel/getallvalidUnderwriterLevels', {
