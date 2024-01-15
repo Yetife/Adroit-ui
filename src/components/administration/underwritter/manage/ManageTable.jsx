@@ -88,7 +88,7 @@ export function TableData({data, no}) {
         setPurpose("view")
         setInputs({
             staff: data.firstName,
-            firstName: data.firstName,
+            firstName: data.firstName + " " + data.lastName ,
             lastName: data.lastName,
             emailAddress: data.emailAddress,
             level: data.level,
@@ -130,7 +130,7 @@ export function TableData({data, no}) {
         setPurpose("edit")
         setInputs({
             staff: data.firstName,
-            firstName: data.firstName,
+            firstName: data.firstName + " " + data.lastName ,
             lastName: data.lastName,
             emailAddress: data.emailAddress,
             middleName: data?.middleName,

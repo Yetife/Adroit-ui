@@ -66,6 +66,8 @@ import Disbursement from "../pages/loanUnderwriting/Disbursement.jsx";
 import Approval from "../pages/loanUnderwriting/Approval.jsx";
 import ViewLoanUnderwritingPage from "../pages/loanUnderwriting/ViewLoanUnderwritingPage.jsx";
 import StaffLoan from "../pages/staff/StaffLoan.jsx";
+import ViewAdjustLoanPage from "../pages/LoanApplication/ViewAdjustLoanPage.jsx";
+import ReassignedLoan from "../pages/loanUnderwriting/ReassignedLoan.jsx";
 
 const ROUTES = [
     {
@@ -126,6 +128,12 @@ const ROUTES = [
                 element: <ViewLoanApplicationPage />,
             },
             {
+                path: "adjust/customerDetails",
+                key: "viewLoanAdjust",
+                exact: true,
+                element: <ViewAdjustLoanPage />,
+            },
+            {
                 path: "loanRestructuring/view",
                 exact: true,
                 element: <ViewLoanRestructuringPage />
@@ -170,6 +178,11 @@ const ROUTES = [
                 path: "loanRe-assignment",
                 exact: true,
                 element: <LoanReassignment />,
+            },
+            {
+                path: "reassignedLoan",
+                exact: true,
+                element: <ReassignedLoan />,
             },
             {
                 path: "customerDetails",

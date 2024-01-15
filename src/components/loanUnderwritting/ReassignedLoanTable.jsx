@@ -1,12 +1,13 @@
-import {useState} from 'react';
+import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {useEditStatusMutation, useGetAllStatusQuery} from "../../../store/features/loanApplication/api.js";
+import {useEditStatusMutation, useGetAllStatusQuery} from "../../store/features/loanApplication/api.js";
 import {useNavigate} from "react-router-dom";
-import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import AddLoanStatusModal from "../loanApplication/loanStatus/AddLoanStatusModal.jsx";
 import {LinearProgress, ThemeProvider} from "@mui/material";
-import themes from "../../reusables/theme.jsx";
+import themes from "../reusables/theme.jsx";
 
-const AdjustTable = ({searchTerm}) => {
+const ReassignedLoanTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllStatusQuery()
     if (error) return <p>Network error</p>
 
@@ -22,7 +23,7 @@ const AdjustTable = ({searchTerm}) => {
             applicationDate: "01/08/2023",
             amount: "200,000",
             tenor: 6,
-            status: "Pending"
+            channel: "USSD"
         }
     ]
 
@@ -61,17 +62,17 @@ const AdjustTable = ({searchTerm}) => {
     );
 };
 
-export default AdjustTable;
+export default ReassignedLoanTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-6 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
             {name}
         </th>
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Middle Name', 'Last Name', 'Phone Number', 'Amount', 'Tenor', 'Status', 'Actions' ]
+const header = ['S/N', 'Channel', 'Customer Ref.', 'Email Address', 'First Name', 'Middle Name', 'Last Name', 'Phone Number', 'Amount', 'Tenor', 'Actions' ]
 
 export function TableData({data, no}) {
     const [open, setOpen] = useState(false);
@@ -101,46 +102,47 @@ export function TableData({data, no}) {
 
     return (
         <tr>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.channel}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.email}</span>
             </td>
             <
-                td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.phoneNumber}</span>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data.phoneNumber}</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.amount}</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.tenor}</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status}</span>
-            </td>
-            <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/loanApp/adjust/customerDetails?id=${data.uniqueId}&status=adjust`)}>View
+                     onClick={() => router(`/loanUnderwriting/customerDetails?id=${data.uniqueId}&status=review`)}>View
                  </span>
             </td>
+            <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked}
+                                setChecked={setChecked} purpose={purpose} handleAdd={handleEdit}/>
         </tr>
     )
 }

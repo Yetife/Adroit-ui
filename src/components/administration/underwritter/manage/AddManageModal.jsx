@@ -3,31 +3,68 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import axios from "axios";
 import {getUserToken} from "../../../../services/storage/index.js";
-import {Autocomplete} from "@mui/lab";
-import {FormControl, TextField} from "@mui/material";
+// import { Autocomplete } from '@mui/material';
+import {FormControl, TextField, Autocomplete} from "@mui/material";
+import CustomAutocomplete from "../../../reusables/CustomAutocomplete.jsx";
 
 const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd}) => {
     const [staff, setStaff] = useState([])
     const [level, setLevel] = useState([])
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const token = getUserToken();
 
+    //
+    // const handleChange = (e, fieldName) => {
+    //     const value = e.target.value;
+    //     if (fieldName === "firstName"){
+    //         const selectedStaff = staff.find((s) => s.firstName === value);
+    //
+    //         setInputs((values) => ({
+    //             ...values,
+    //             [fieldName]: selectedStaff,
+    //             emailAddress: selectedStaff?.email || '',
+    //             firstName: selectedStaff.firstName || '',
+    //             lastName: selectedStaff.lastName || '',
+    //         }));
+    //     }else {
+    //         setInputs((values) => ({...values, [fieldName]: value}))
+    //     }
+    // };
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
-        if (fieldName === "firstName"){
+
+        if (fieldName === "firstName") {
             const selectedStaff = staff.find((s) => s.firstName === value);
 
             setInputs((values) => ({
                 ...values,
-                [fieldName]: selectedStaff,
+                [fieldName]: value,
                 emailAddress: selectedStaff?.email || '',
                 firstName: selectedStaff.firstName || '',
                 lastName: selectedStaff.lastName || '',
             }));
-        }else {
-            setInputs((values) => ({...values, [fieldName]: value}))
+        } else {
+            setInputs((values) => ({...values, [fieldName]: value}));
         }
     };
+
+
+    // const fetchStaff = async () => {
+    //     try {
+    //         const response = await axios.get(`http://prananettech-001-site28.ftempurl.com/api/Users/get_all_active_users`, {
+    //             headers: {
+    //                 'Content-Type': "application/json",
+    //                 'Accept': "application/json",
+    //                 'XAPIKEY': "_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*",
+    //                 'authorization': `Bearer ${token}`
+    //             }
+    //         });
+    //         setStaff(response.data.data);
+    //     } catch (error) {
+    //         console.error('Error fetching data:', error);
+    //     }
+    // };
 
     const fetchStaff = async () => {
         try {
@@ -39,12 +76,17 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
                     'authorization': `Bearer ${token}`
                 }
             });
-            setStaff(response.data.data);
+            const formattedStaff = response.data.data.map(item => ({
+                id: item.id, // Make sure to use the actual property names
+                firstName: item.firstName,
+                lastName: item.lastName,
+                // ... other properties you may want to include
+            }));
+            setStaff(formattedStaff);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
-
     const fetchLevel = async () => {
         try {
             const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/Administration/UnderwriterLevel/getallvalidUnderwriterLevels', {
@@ -66,6 +108,10 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
         fetchLevel()
     }, []);
 
+    const updateInputs = (updatedValues) => {
+        setInputs((prevInputs) => ({ ...prevInputs, ...updatedValues }));
+    };
+
     return (
         <div>
             <Dialog.Root
@@ -81,46 +127,38 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-2">
                             <div>
-                                {/*<span>*/}
-                                {/*    <FormControl size="medium" className="md:w-full">*/}
-                                {/*      <Autocomplete*/}
-                                {/*          name="industry"*/}
-                                {/*          options={staff}*/}
-                                {/*          size="small"*/}
-                                {/*          freeSolo*/}
-                                {/*          value={inputs.firstName}*/}
-                                {/*          sx={{ width: 450 }}*/}
-                                {/*          onChange={(event, newValue) => {*/}
-                                {/*              setInputs((values) => ({*/}
-                                {/*                  ...values,*/}
-                                {/*                  firstName: newValue,*/}
-                                {/*              }));*/}
-                                {/*          }}*/}
-                                {/*          renderInput={(params) => (*/}
-                                {/*              <TextField*/}
-                                {/*                  {...params}*/}
-                                {/*                  name={"industry"}*/}
-                                {/*                  placeholder="Select staff"*/}
-                                {/*              />*/}
-                                {/*          )}*/}
-                                {/*      />*/}
-                                {/*    </FormControl>*/}
-                                {/*</span>*/}
                                  <span>
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                        Tenor
+                                        Staff
                                       </h3>
-                                      <select id="select" value={inputs.firstName}
-                                              disabled={purpose === "view"}
-                                              onChange={(event) => handleChange(event, "firstName")}
-                                              className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
-                                            <option value="" disabled>Select staff</option>
-                                          {staff && staff?.map((option) => (
-                                              <option key={option.id} value={option.firstName}>
-                                                  {option.firstName} {option.lastName}
-                                              </option>
-                                          ))}
-                                        </select>
+                                     <CustomAutocomplete
+                                         options={staff}
+                                         disabled={purpose === "view"}
+                                         onSelect={(selectedStaff) => {
+                                             setInputs((values) => ({
+                                                 ...values,
+                                                 firstName: selectedStaff.firstName,
+                                                 emailAddress: selectedStaff.email || '',
+                                                 lastName: selectedStaff.lastName || '',
+                                             }));
+                                         }}
+                                         isDropdownOpen={isDropdownOpen}
+                                         setIsDropdownOpen={setIsDropdownOpen}
+                                         updateInputs={updateInputs}
+                                         // inputValue={inputs.firstName}
+                                         // setInputValue={setInputs}
+                                     />
+                                      {/*<select id="select" value={inputs.firstName}*/}
+                                      {/*        disabled={purpose === "view"}*/}
+                                      {/*        onChange={(event) => handleChange(event, "firstName")}*/}
+                                      {/*        className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">*/}
+                                      {/*      <option value="" disabled>Select staff</option>*/}
+                                      {/*    {staff && staff?.map((option) => (*/}
+                                      {/*        <option key={option.id} value={option.firstName}>*/}
+                                      {/*            {option.firstName} {option.lastName}*/}
+                                      {/*        </option>*/}
+                                      {/*    ))}*/}
+                                      {/*  </select>*/}
                                 </span>
                                 <div className="pt-8">
                                     <span>

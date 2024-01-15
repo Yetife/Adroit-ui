@@ -12,8 +12,6 @@ const Submenu = ({data}) => {
 
     const handleShowDropdown = () => {
         setShowDropdown((initValue) => !initValue)
-        // setShowDropdown(!showDropdown);
-        // setShowSubDropdown(false);
     };
     const handleShowSubDropdown = () => {
         setShowSubDropdown((initValue) => !initValue);
@@ -36,7 +34,7 @@ const Submenu = ({data}) => {
                             {data.dropdown?.map((each, ind) => (
                                     <div key={ind}>
                                         <div className="flex cursor-pointer" onClick={handleShowSubDropdown}>
-                                            <div className="flex font-bold items-center px-12 py-3  text-gray-100 bg-white bg-opacity-25" onClick={()=>router(each.href)} >
+                                            <div className="flex font-bold items-center px-12 py-1  text-gray-100 bg-white bg-opacity-25" onClick={()=>router(each.href)} >
                                                 <span className={`${ location.pathname === each.href && 'medium'} mx-3 text-sm font-normal ${ location.pathname === each.href ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>{each.applicationPageName}</span>
                                             </div>
                                             {each.hasDropdown &&  <img src={showSubDropdown ? data.iconClosed : data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/>}
