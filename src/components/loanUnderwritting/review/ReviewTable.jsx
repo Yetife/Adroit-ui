@@ -7,9 +7,10 @@ import {useNavigate} from "react-router-dom";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import dayjs from "dayjs";
 import AddLoanStatusModal from "../../loanApplication/loanStatus/AddLoanStatusModal.jsx";
+import {useGetAllReviewQuery} from "../../../store/features/loanUnderwriting/api.js";
 
 const ReviewTable = ({searchTerm}) => {
-    const {data, isFetching, error} = useGetAllStatusQuery()
+    const {data, isFetching, error} = useGetAllReviewQuery()
     if (error) return <p>Network error</p>
 
     const customer = [
@@ -28,10 +29,9 @@ const ReviewTable = ({searchTerm}) => {
         }
     ]
 
-    const filteredData = customer.filter((item) =>
+    const filteredData = data?.data.filter((item) =>
         item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
 
     return (
         <div className="scroll-container flex rounded-3xl flex-col mt-8">
@@ -73,7 +73,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Channel', 'Customer Ref.', 'Email Address', 'First Name', 'Middle Name', 'Last Name', 'Phone Number', 'Amount', 'Tenor', 'Actions' ]
+const header = ['S/N', 'Channel', 'Customer Ref.', 'Email Address', 'First Name', 'Last Name', 'Amount', 'Tenor', 'Actions' ]
 
 export function TableData({data, no}) {
     const [open, setOpen] = useState(false);
@@ -107,39 +107,33 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.channel}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.applicationChannel}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.email}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.workEmail}</span>
             </td>
             <
                 td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data.phoneNumber}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanAmount}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.amount}</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.tenor}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanDuration}</span>
             </td>
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/loanUnderwriting/customerDetails?id=${data.uniqueId}&status=review`)}>View
+                     onClick={() => router(`/loanUnderwriting/customerDetails?id=${data.customerId}&status=review`)}>View
                  </span>
             </td>
             <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked}

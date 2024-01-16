@@ -8,6 +8,7 @@ import {bridgeLoanApi} from "./features/bridgeLoan/api.js";
 import {administrationApi} from "./features/administration/api.js";
 import {loanApplicationApi} from "./features/loanApplication/api.js";
 import {staffLoanApi} from "./features/staff/api.js";
+import {loanUnderwritingApi} from "./features/loanUnderwriting/api.js";
 
 export const store = configureStore({
     reducer: rootReducer,
@@ -18,6 +19,7 @@ export const store = configureStore({
             bridgeLoanApi.middleware,
             administrationApi.middleware,
             loanApplicationApi.middleware,
+            loanUnderwritingApi.middleware,
             staffLoanApi.middleware,
         ]),
 });
