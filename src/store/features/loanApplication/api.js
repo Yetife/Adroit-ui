@@ -57,5 +57,6 @@ export const {
     useEditStatusMutation,
     useGetAllCustomerQuery,
     useGetCustomerDetailsQuery,
+    useAddCommentMutation,
 
 } = loanApplicationApi

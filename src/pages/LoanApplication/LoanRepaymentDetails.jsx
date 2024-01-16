@@ -10,7 +10,6 @@ const LoanRepaymentDetails = () => {
     useEffect(() => {
         repaymentDetail({loanApplicationId: appId}).then(res=>{
             setData(res.data)
-            console.log(data.interest)
         })
     }, []);
 

@@ -2,11 +2,34 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import {Close} from "@mui/icons-material";
+import {useAddCommentMutation} from "../../../store/features/loanApplication/api.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
 
 const AddCommentModal = ({open, setOpen, comment, setComment}) => {
+    const queryParams = new URLSearchParams(location.search);
+    const appId = queryParams.get("aid");
+    const [addComment] = useAddCommentMutation()
+    const dispatch = useDispatch()
+
     const handleChange = (e) => {
         setComment(e.target.value)
     };
+
+    const handleAdd = () => {
+        addComment({
+            body: {
+                loanApplicationId: appId,
+                description: comment
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpen(!open)
+            setComment("")
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
     return (
         <div>
             <Dialog.Root
@@ -37,7 +60,7 @@ const AddCommentModal = ({open, setOpen, comment, setComment}) => {
                                     <Text color="#4A5D58">Close</Text>
                                 </Button>
                                 <Button className="ml-2" variant="primary" bgColor="#00C795" borderRadius="4px"
-                                        height="37px" size='md' as={ReactLink} w={'109px'}>
+                                        height="37px" size='md' as={ReactLink} w={'109px'} onClick={handleAdd}>
                                     <Text color="white">Submit</Text>
                                 </Button>
                             </div>
