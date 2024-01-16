@@ -48,6 +48,14 @@ export const loanApplicationApi = createApi({
             }),
             invalidatesTags: ["AddComment"]
         }),
+        completeReview: builder.mutation({
+            query: ({body}) => ({
+                url: `/LoanApplication/Customer/Update`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["completeReview"]
+        }),
     })
 })
 
@@ -58,5 +66,6 @@ export const {
     useGetAllCustomerQuery,
     useGetCustomerDetailsQuery,
     useAddCommentMutation,
+    useCompleteReviewMutation,
 
 } = loanApplicationApi

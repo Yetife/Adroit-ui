@@ -13,9 +13,10 @@ const LoanSupportingDocument = () => {
     };
     return (
         <div className="flex">
-            <div onClick={openExplorer} style={{border: '1px solid rgba(105, 119, 115, 0.50', background: '#F3F3F3'}} className="flex flex-col items-center cursor-pointer py-12 w-[271px] h-[171px]">
+            <div onClick={openExplorer()} style={{border: '1px solid rgba(105, 119, 115, 0.50', background: '#F3F3F3'}} className="flex flex-col items-center cursor-pointer py-12 w-[271px] h-[171px]">
                 <input
-                    className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                    ref={fileInputRef}
+                    // className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                     type="file"
                     id="fileInput"
                     name="files"

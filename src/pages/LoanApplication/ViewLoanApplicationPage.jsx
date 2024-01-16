@@ -11,14 +11,17 @@ import LoanSupportingDocument from "./LoanSupportingDocument.jsx";
 import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
 import {TabContext} from "@mui/lab";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
-import {useGetCustomerDetailsQuery} from "../../store/features/loanApplication/api.js";
+import {useCompleteReviewMutation, useGetCustomerDetailsQuery} from "../../store/features/loanApplication/api.js";
 
 const ViewLoanApplicationPage = () => {
     const [open, setOpen] = useState(false)
     const queryParams = new URLSearchParams(location.search);
     const custId = queryParams.get("id");
+    const appId = queryParams.get("aid");
     const {data, isFetching, error} = useGetCustomerDetailsQuery(custId)
     const status = queryParams.get("status");
+    const [completeReview] = useCompleteReviewMutation()
+    
     const tabMenu = [
         {id:0, name:'Information'},
         {id:1, name:'CRC Nano Report'},
@@ -72,6 +75,19 @@ const ViewLoanApplicationPage = () => {
         setOpen(true)
     }
 
+    const handleComplete = () => {
+        completeReview({
+            body: {
+                loanApplicationId: appId,
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            router(-1)
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
+
     return (
         <Layout>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto px-20 h-[613px]">
@@ -112,7 +128,7 @@ const ViewLoanApplicationPage = () => {
                                     <Text color="#FF0909">Decline Loan</Text>
                                 </Button>
                                 <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                        as={ReactLink} w={'180px'}>
+                                        as={ReactLink} w={'180px'} onClick={handleComplete}>
                                     <Text color="white">Complete Review</Text>
                                 </Button>
 

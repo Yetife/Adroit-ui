@@ -4,11 +4,9 @@ import themes from "./theme.jsx";
 
 const HorizontalMenu = ({activeTab, handleChange, tabMenu }) => {
     const [currentTab, setActiveTab] = useState(0);
-    console.log('menu', tabMenu)
 
     useEffect(() => {
         setActiveTab(activeTab)
-        console.log('true', setActiveTab(activeTab))
     }, [activeTab]);
     return (
         <div>
