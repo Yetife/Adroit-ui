@@ -12,9 +12,9 @@ export const loanUnderwritingApi = createApi({
             }),
             providesTags: []
         }),
-        getCustomerDetails: builder.query({
+        getReviewCustomerDetails: builder.query({
             query: (id) => ({
-                url: `/LoanApplication/Customer/getbyCusId/${id}`,
+                url: `/LoanUnderwriting/Review/getbyCusId/${id}`,
             }),
             providesTags: []
         }),
@@ -41,7 +41,7 @@ export const {
     useGetAllReviewQuery,
     useEditStatusMutation,
     useGetAllCustomerQuery,
-    useGetCustomerDetailsQuery,
+    useGetReviewCustomerDetailsQuery,
     useAddCommentMutation,
     useCompleteReviewMutation,
 

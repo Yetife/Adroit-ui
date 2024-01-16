@@ -12,6 +12,7 @@ import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
 import {TabContext} from "@mui/lab";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
 import {useCompleteReviewMutation, useGetCustomerDetailsQuery} from "../../store/features/loanApplication/api.js";
+import StopDisbursementModal from '../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx';
 
 const ViewLoanApplicationPage = () => {
     const [open, setOpen] = useState(false)
@@ -20,8 +21,9 @@ const ViewLoanApplicationPage = () => {
     const appId = queryParams.get("aid");
     const {data, isFetching, error} = useGetCustomerDetailsQuery(custId)
     const status = queryParams.get("status");
+    const [openComplete, setOpenComplete] = useState(false)
     const [completeReview] = useCompleteReviewMutation()
-    
+
     const tabMenu = [
         {id:0, name:'Information'},
         {id:1, name:'CRC Nano Report'},
@@ -82,7 +84,7 @@ const ViewLoanApplicationPage = () => {
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            router(-1)
+            setOpenComplete(true)
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
@@ -148,6 +150,7 @@ const ViewLoanApplicationPage = () => {
                 </div>
             </div>
             <DeclineApplicationModal open={open} setOpen={setOpen}/>
+            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"} handleRoute={()=>router('/loanApp')}/>
         </Layout>
     );
 };

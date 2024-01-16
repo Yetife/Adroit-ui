@@ -3,7 +3,7 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import {Close} from "@mui/icons-material";
 
-const StopDisbursementModal = ({open, setOpen}) => {
+const StopDisbursementModal = ({open, setOpen, title, handleRoute}) => {
     return (
         <div>
             <Dialog.Root
@@ -19,12 +19,12 @@ const StopDisbursementModal = ({open, setOpen}) => {
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-4">
                             <div>
-                                <p className="text-[24px] leading-5 text-[#4A5D58] text-center font-[500] pt-2">Disbursement Cancelled</p>
+                                <p className="text-[24px] leading-5 text-[#4A5D58] text-center font-[500] pt-2">{title}</p>
                             </div>
 
                             <div className="flex tw-items-center m-auto tw-text-center mt-8 ml-10 leading-8">
                                 <Button className="ml-4" variant="primary" bgColor="#00C795" borderRadius="4px"
-                                        height="37px" size='md' as={ReactLink} w={'109px'} onClick={()=>setOpen(!open)}>
+                                        height="37px" size='md' as={ReactLink} w={'109px'} onClick={handleRoute}>
                                     <Text color="white">Okay</Text>
                                 </Button>
                             </div>

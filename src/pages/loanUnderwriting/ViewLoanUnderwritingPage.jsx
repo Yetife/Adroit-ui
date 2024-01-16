@@ -15,6 +15,7 @@ import AddCommentModal from "../../components/loanUnderwritting/review/AddCommen
 import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoanModal.jsx";
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
 import DecisionModal from "../../components/loanUnderwritting/approval/DecisionModal.jsx";
+import { useGetReviewCustomerDetailsQuery } from '../../store/features/loanUnderwriting/api.js';
 
 const ViewLoanUnderwritingPage = () => {
     const [comment, setComment] = useState("")
@@ -29,6 +30,9 @@ const ViewLoanUnderwritingPage = () => {
         description: ""
     })
     const queryParams = new URLSearchParams(location.search);
+    const custId = queryParams.get("id");
+    const appId = queryParams.get("aid");
+    const {data, isFetching, error} = useGetReviewCustomerDetailsQuery(custId)
     const status = queryParams.get("status");
     const tabMenu = [
         {id:0, name:'Information'},
@@ -41,7 +45,7 @@ const ViewLoanUnderwritingPage = () => {
 
     const components = {
         'information':{
-            component: <LoanInformation />,
+            component: <LoanInformation data={data}/>,
             step: 0
         },
         'crc nano report':{
@@ -191,7 +195,7 @@ const ViewLoanUnderwritingPage = () => {
             <DeclineApplicationModal open={open} setOpen={setOpen}/>
             <AddCommentModal open={openComment} setOpen={setOpenComment} comment={comment} setComment={setComment}/>
             <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs}/>
-            <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse}/>
+            <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"}/>
             <DecisionModal open={openDecision} setOpen={setOpenDecision}/>
         </Layout>
     );
