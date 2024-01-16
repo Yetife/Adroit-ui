@@ -28,6 +28,26 @@ export const loanApplicationApi = createApi({
             }),
             invalidatesTags: ["EditStatus"]
         }),
+        getAllCustomer: builder.query({
+            query: () => ({
+                url: `/LoanApplication/Customer/get`,
+            }),
+            providesTags: []
+        }),
+        getCustomerDetails: builder.query({
+            query: (id) => ({
+                url: `/LoanApplication/Customer/getbyCusId/${id}`,
+            }),
+            providesTags: []
+        }),
+        addComment: builder.mutation({
+            query: ({body}) => ({
+                url: `/LoanApplication/Customer/addComment`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddComment"]
+        }),
     })
 })
 
@@ -35,5 +55,7 @@ export const {
     useAddStatusMutation,
     useGetAllStatusQuery,
     useEditStatusMutation,
+    useGetAllCustomerQuery,
+    useGetCustomerDetailsQuery,
 
 } = loanApplicationApi

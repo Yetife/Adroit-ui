@@ -1,6 +1,19 @@
 import dayjs from "dayjs";
+import {useEffect, useState} from "react";
+import {repaymentDetail} from "../../services/api/authApiService.js";
 
 const LoanRepaymentDetails = () => {
+    const queryParams = new URLSearchParams(location.search);
+    const appId = queryParams.get("aid");
+    const [data, setData] = useState({})
+
+    useEffect(() => {
+        repaymentDetail({loanApplicationId: appId}).then(res=>{
+            setData(res.data)
+            console.log(data.interest)
+        })
+    }, []);
+
     return (
         <div>
             <div>
@@ -23,16 +36,16 @@ const LoanRepaymentDetails = () => {
                     <tbody className="bg-white">
                     <tr>
                         <td className="px-10 pb-8 pt-4 whitespace-no-wrap  border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">Sep 30th, 2023</span>
+                            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.repaymentDate).format("MMMM D[th], YYYY")}</span>
                         </td>
                         <td className="px-10 pb-8 pt-4 whitespace-no-wrap  border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">N50,000</span>
+                            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.principal}</span>
                         </td>
                         <td className="px-10 pb-8 pt-4 whitespace-no-wrap  border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">N10,000</span>
+                            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.interest}</span>
                         </td>
                         <td className="px-10 pb-8 pt-4 whitespace-no-wrap  border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">N60,000</span>
+                            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.totalPayment}</span>
                         </td>
                     </tr>
                     <tr>
@@ -40,13 +53,13 @@ const LoanRepaymentDetails = () => {
                             <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">Total</span>
                         </td>
                         <td className="px-10 py-4 whitespace-no-wrap border-b border-t border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">N50,000</span>
+                            <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">{data?.principal}</span>
                         </td>
                         <td className="px-10 py-4 whitespace-no-wrap border-b border-t border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">N10,000</span>
+                            <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">{data?.interest}</span>
                         </td>
                         <td className="px-10 py-4 whitespace-no-wrap border-b border-t border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">N60,000</span>
+                            <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">{data?.totalPayment}</span>
                         </td>
                     </tr>
                     </tbody>

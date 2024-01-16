@@ -1,4 +1,5 @@
-const LoanInformation = () => {
+const LoanInformation = ({data}) => {
+
     return (
         <div className="flex justify-between">
             <div>
@@ -14,16 +15,16 @@ const LoanInformation = () => {
                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">Submission Date</p>
             </div>
             <div className="text-right">
-                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">CUS20230904-122</p>
-                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">N50,000.00</p>
-                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">N10,000.00</p>
-                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">N60,000.00</p>
-                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">N/A</p>
-                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">Under Review</p>
-                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">30 Days</p>
-                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">N/A</p>
-                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">Sept 04, 2023  2:12PM</p>
-                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">Sept 04, 2023  2:12PM</p>
+                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">{data?.data.information.applicationId}</p>
+                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.amountRequested}</p>
+                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.interest}</p>
+                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.totalAmount}</p>
+                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.processingFee}</p>
+                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.status}</p>
+                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.duration}</p>
+                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.assignedLoanOfficer}</p>
+                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.applicationDate}</p>
+                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.submissionDate}</p>
             </div>
         </div>
     );

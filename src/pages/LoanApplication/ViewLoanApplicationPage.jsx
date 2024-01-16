@@ -11,10 +11,13 @@ import LoanSupportingDocument from "./LoanSupportingDocument.jsx";
 import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
 import {TabContext} from "@mui/lab";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
+import {useGetCustomerDetailsQuery} from "../../store/features/loanApplication/api.js";
 
 const ViewLoanApplicationPage = () => {
     const [open, setOpen] = useState(false)
     const queryParams = new URLSearchParams(location.search);
+    const custId = queryParams.get("id");
+    const {data, isFetching, error} = useGetCustomerDetailsQuery(custId)
     const status = queryParams.get("status");
     const tabMenu = [
         {id:0, name:'Information'},
@@ -27,7 +30,7 @@ const ViewLoanApplicationPage = () => {
 
     const components = {
         'information':{
-            component: <LoanInformation />,
+            component: <LoanInformation data={data}/>,
             step: 0
         },
         'crc nano report':{
