@@ -781,6 +781,12 @@ export const generalSetUpApi = createApi({
             }),
             invalidatesTags: ["EditFeeFrequency"]
         }),
+        getAllDeclineReason: builder.query({
+            query: () => ({
+                url: `/GeneralSetUp/getallvalidDeclineReasons`,
+            }),
+            providesTags: []
+        }),
     })
 })
 
@@ -891,4 +897,5 @@ export const {
     useGetAllFixedDepositPreliquidationChargesQuery,
     useDeleteFixedDepositPreliquidationChargesMutation,
     useEditFixedDepositPreliquidationChargesMutation,
+    useGetAllDeclineReasonQuery,
 } = generalSetUpApi

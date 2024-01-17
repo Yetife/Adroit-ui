@@ -75,7 +75,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Channel', 'Customer Ref.', 'Loan Amount', 'Email Address', 'First Name', 'Middle Name', 'Last Name', 'Application Date', 'Actions' ]
+const header = ['S/N', 'Channel', 'Customer Ref.', 'Loan Amount', 'Email Address', 'First Name', 'Last Name', 'Application Date', 'Actions' ]
 
 export function TableData({data, no}) {
     const [open, setOpen] = useState(false);
@@ -123,9 +123,6 @@ export function TableData({data, no}) {
             </td><
             td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>

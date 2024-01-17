@@ -68,6 +68,20 @@ export const loanApplicationApi = createApi({
             }),
             providesTags: []
         }),
+        declineApplication: builder.mutation({
+            query: ({body}) => ({
+                url: `/LoanApplication/Customer/Decline`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["declineApplication"]
+        }),
+        getAllDeclined: builder.query({
+            query: () => ({
+                url: `/LoanApplication/Declined/get`,
+            }),
+            providesTags: ["declineApplication"]
+        }),
     })
 })
 
@@ -78,7 +92,9 @@ export const {
     useEditStatusMutation,
     useGetAllCustomerQuery,
     useGetAllAdjustQuery,
+    useGetAllDeclinedQuery,
     useGetCustomerDetailsQuery,
     useAddCommentMutation,
+    useDeclineApplicationMutation,
     useCompleteReviewMutation,
 } = loanApplicationApi

@@ -1,53 +1,98 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {getUserToken} from "../../services/storage/index.js";
 import * as Dialog from "@radix-ui/react-dialog";
 import {Checkbox, Divider} from "@mui/material";
+import {
+    useDeclineApplicationMutation,
+} from "../../store/features/loanApplication/api.js";
+import axios from "axios";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
-const DeclineApplicationModal = ({open, setOpen, handleAdd}) => {
+const DeclineApplicationModal = ({open, setOpen, handleAdd, id}) => {
     const [selectedItems, setSelectedItems] = useState([]);
+    const [reasons, setReasons] = useState([]);
     const [inputs, setInputs] = useState({
         comment: "",
-        applicationId: ""
+        applicationId: id,
+        customReason: ""
     })
-
-
-    const items= [
-        {
-            id: 1,
-            name: "State of residence not supported"
-        },{
-            id: 2,
-            name: "Outstanding unpaid loan"
-        },{
-            id: 3,
-            name: "Debt-service ratio exceeded"
-        },{
-            id: 4,
-            name: "Salary not sufficient"
-        },{
-            id: 5,
-            name: "Unverified Documents"
-        },{
-            id: 6,
-            name: "Others"
-        },
-    ]
+    const [others, setOthers] = useState(false)
+    const [customReason, setCustomReason] = useState("");
+    const [addReasons] = useDeclineApplicationMutation()
     const token = getUserToken();
-
+    const dispatch = useDispatch()
+    const router = useNavigate()
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
-        setInputs((values) => ({...values, [fieldName]: value}))
+        setInputs((values) => ({ ...values, [fieldName]: value }));
     };
+
+    const allOption = { uniqueId: 'all', name: 'Others' };
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidDeclineReasons', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            // Include the "ALL" option in the status dropdown
+            setReasons([...response.data.data, allOption,]);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     const handleStatusSelect = (statusName) => {
-        setSelectedItems((prevSelectedStatus) => {
-            if (prevSelectedStatus.includes(statusName)) {
-                return prevSelectedStatus.filter((name) => name !== statusName);
-            } else {
-                return [...prevSelectedStatus, statusName];
-            }
-        });
+        if (statusName === 'Others') {
+            setOthers(!others);
+        } else {
+            setSelectedItems((prevPermissions) => {
+                const isAlreadySelected = prevPermissions.some(
+                    (p) => p.name === statusName
+                );
+                if (isAlreadySelected) {
+                    return prevPermissions.filter((p) => p.name !== statusName);
+                } else {
+                    return [...prevPermissions, { name: statusName }];
+                }
+            });
+        }
     };
+
+   const handleDecline = () => {
+       if (others && customReason.trim() !== '') {
+           setSelectedItems((prevPermissions) => [
+               ...prevPermissions,
+               { name: customReason },
+           ]);
+       }
+           addReasons({
+               body: {
+                   loanApplicationId: inputs.applicationId,
+                   reasons: selectedItems,
+                   comment: inputs.comment
+               }
+           }).then(res => {
+               dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+               setOpen(!open)
+               router('/loanApp/declined')
+           }).catch(err =>{
+               dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+           })
+   }
+
+    useEffect(() => {
+        fetchData()
+        console.log(selectedItems);
+    }, [selectedItems]);
+
 
     return (
         <div>
@@ -82,19 +127,35 @@ const DeclineApplicationModal = ({open, setOpen, handleAdd}) => {
                                     Please select one or more reasons for decline
                                   </h3>
                                    <div className="flex flex-col space-y-1">
-                                    {items.map((option) => (
+                                    {reasons.map((option) => (
                                         <div key={option.uniqueId} className="flex items-center">
                                             <Checkbox
-                                                checked={selectedItems.includes(option.name)}
-                                                sx={{'&.Mui-checked': {
+                                                checked={
+                                                    selectedItems.some((item) => item.name === option.name) ||
+                                                    (option.name === "Others" && inputs.customReason !== "")
+                                                }
+                                                sx={{
+                                                    "&.Mui-checked": {
                                                         color: "#00C796",
-                                                    },}}
+                                                    },
+                                                }}
                                                 onChange={() => handleStatusSelect(option.name)}
                                                 color="primary"
                                             />
-                                            <span className="font-[500] text-[#4A5D58] text-[15px] whitespace-nowrap">{option.name}</span>
+                                            <span className="font-[500] text-[#4A5D58] text-[15px] whitespace-nowrap">
+                                              {option.name}
+                                            </span>
                                         </div>
                                     ))}
+                                       {others && (
+                                           <input
+                                               type="text"
+                                               value={customReason}
+                                               onChange={(e) => setCustomReason(e.target.value)}
+                                               placeholder="Enter your custom reason"
+                                               className="font-medium text-black leading-relaxed px-4 py-3 rounded border border-neutral-300"
+                                           />
+                                       )}
                                   </div>
                                 </span>
                                 <span className="ml-8 mt-8">
@@ -114,7 +175,7 @@ const DeclineApplicationModal = ({open, setOpen, handleAdd}) => {
                                         onClick={() => setOpen(!open)}>Close
                                 </button>
                                 <button className="bg-[#FF6060] rounded py-2 px-6 flex text-white mt-8"
-                                        onClick={handleAdd}>Decline</button>
+                                        onClick={handleDecline}>Decline</button>
                             </div>
                         </div>
                         {/*<Dialog.Close asChild>*/}
