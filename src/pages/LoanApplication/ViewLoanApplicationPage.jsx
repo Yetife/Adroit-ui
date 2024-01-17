@@ -83,10 +83,9 @@ const ViewLoanApplicationPage = () => {
                 loanApplicationId: appId,
             }
         }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpenComplete(true)
         }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+            setOpenComplete(false)
         })
     }
 

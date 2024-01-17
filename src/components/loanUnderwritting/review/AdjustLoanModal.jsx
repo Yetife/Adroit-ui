@@ -4,8 +4,8 @@ import {Link as ReactLink} from "react-router-dom";
 import {Close} from "@mui/icons-material";
 import {useState} from "react";
 
-const AdjustLoanModal = ({open, setOpen, inputs, setInputs}) => {
-    const [tenor, setStatus] = useState([3, 6, 9, 12]);
+const AdjustLoanModal = ({open, setOpen, inputs, setInputs, handleSubmit}) => {
+    const tenor = [3, 6, 9, 12]
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
@@ -33,7 +33,7 @@ const AdjustLoanModal = ({open, setOpen, inputs, setInputs}) => {
                                       type="text"
                                       value={inputs.amount}
                                       onChange={(event) => handleChange(event, "amount")}
-                                      placeholder="Enter status"
+                                      placeholder="Enter amount"
                                       className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                   />
                                 </span>
@@ -71,7 +71,7 @@ const AdjustLoanModal = ({open, setOpen, inputs, setInputs}) => {
                                     <Text color="#4A5D58">Close</Text>
                                 </Button>
                                 <Button className="ml-2" variant="primary" bgColor="#00C795" borderRadius="4px"
-                                        height="37px" size='md' as={ReactLink} w={'109px'}>
+                                        height="37px" size='md' as={ReactLink} w={'109px'} onClick={handleSubmit}>
                                     <Text color="white">Submit</Text>
                                 </Button>
                             </div>

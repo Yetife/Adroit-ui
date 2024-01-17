@@ -32,7 +32,7 @@ export const loanApplicationApi = createApi({
             query: () => ({
                 url: `/LoanApplication/Customer/get`,
             }),
-            providesTags: []
+            providesTags: ["completeReview"]
         }),
         getCustomerDetails: builder.query({
             query: (id) => ({
@@ -48,6 +48,12 @@ export const loanApplicationApi = createApi({
             }),
             invalidatesTags: ["AddComment"]
         }),
+        getAllComment: builder.query({
+            query: (id) => ({
+                url: `/LoanApplication/Customer/getComments/${id}`,
+            }),
+            providesTags: ["AddComment"]
+        }),
         completeReview: builder.mutation({
             query: ({body}) => ({
                 url: `/LoanApplication/Customer/Update`,
@@ -56,16 +62,23 @@ export const loanApplicationApi = createApi({
             }),
             invalidatesTags: ["completeReview"]
         }),
+        getAllAdjust: builder.query({
+            query: () => ({
+                url: `/LoanApplication/Adjust/get`,
+            }),
+            providesTags: []
+        }),
     })
 })
 
 export const {
     useAddStatusMutation,
     useGetAllStatusQuery,
+    useGetAllCommentQuery,
     useEditStatusMutation,
     useGetAllCustomerQuery,
+    useGetAllAdjustQuery,
     useGetCustomerDetailsQuery,
     useAddCommentMutation,
     useCompleteReviewMutation,
-
 } = loanApplicationApi

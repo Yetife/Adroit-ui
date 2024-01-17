@@ -2,7 +2,8 @@ import {useEffect, useState} from "react";
 import {Link as ReactLink} from "react-router-dom";
 import {Button, Text} from "@chakra-ui/react";
 import AddCommentModal from "../../components/loanUnderwritting/review/AddCommentModal.jsx";
-import {getComment} from "../../services/api/authApiService.js";
+import {useGetAllCommentQuery} from "../../store/features/loanApplication/api.js";
+import dayjs from "dayjs";
 
 const LoanActivity = () => {
     const [comment, setComment] = useState("")
@@ -12,21 +13,10 @@ const LoanActivity = () => {
         newStatus: "All",
         oldStatus: "All"
     }
-    const [inputs, setInputs] = useState(initialState)
-    const handleChange = (e, fieldName) => {
-        const value = e.target.value;
-        setInputs((values) => ({...values, [fieldName]: value}))
-    };
-
     const queryParams = new URLSearchParams(location.search);
     const appId = queryParams.get("aid");
-    const [data, setData] = useState({})
+    const {data, isFetching, error} = useGetAllCommentQuery(appId)
 
-    useEffect(() => {
-        getComment({loanApplicationId: appId}).then(res=>{
-            setData(res.data)
-        })
-    }, []);
 
     const activity = [
         {
@@ -105,13 +95,13 @@ const LoanActivity = () => {
                     </div>
                     <div className="mt-4">
                         {
-                            activity.map((step, index) => (
+                            data?.data.map((step, index) => (
                                 <div className={'flex'} key={index}>
                                     <div className={'flex-col'}>
                                         <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect x="0.5" y="0.5" width="18" height="18" stroke="#4A5D58"/>
                                         </svg>
-                                        {index !== activity.length - 1 ? (
+                                        {index !== data?.data.length - 1 ? (
                                             <span className={'flex justify-center'}>
                                                 <svg width="1" height="61" viewBox="0 0 1 61" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <line x1="0.5" y1="-2.18557e-08" x2="0.500003" y2="61" stroke="#4A5D58"/>
@@ -120,10 +110,10 @@ const LoanActivity = () => {
                                         ) : null}
                                     </div>
                                     <div className={'ml-6'}>
-                                        <span className="font-semibold text-[#4A5D58] text-[15px] whitespace-nowrap pt-1">{step.name}</span>
+                                        <span className="font-semibold text-[#4A5D58] text-[15px] whitespace-nowrap pt-1">{step.description}</span>
                                         <div className="flex space-x-3">
-                                            <p className="font-medium text-[#4A5D58] text-[14px] whitespace-nowrap pt-1">Date: {step.date}</p>
-                                            <p className="font-medium text-[#4A5D58] text-[14px] whitespace-nowrap pt-1">Action: {step.action}</p>
+                                            <p className="font-medium text-[#4A5D58] text-[14px] whitespace-nowrap pt-1">Date: {dayjs(step.dateCreated).format('MMM DD, YYYY h:mmA')}</p>
+                                            <p className="font-medium text-[#4A5D58] text-[14px] whitespace-nowrap pt-1">Action: System</p>
                                             <p className="font-medium text-[#4A5D58] text-[14px] whitespace-nowrap pt-1">Status: {step.status}</p>
                                         </div>
                                     </div>

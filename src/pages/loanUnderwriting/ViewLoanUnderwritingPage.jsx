@@ -15,7 +15,13 @@ import AddCommentModal from "../../components/loanUnderwritting/review/AddCommen
 import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoanModal.jsx";
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
 import DecisionModal from "../../components/loanUnderwritting/approval/DecisionModal.jsx";
-import { useGetReviewCustomerDetailsQuery } from '../../store/features/loanUnderwriting/api.js';
+import {
+    useAdjustApplicationMutation,
+    useApproveApplicationMutation, useDisburseApplicationMutation,
+    useGetReviewCustomerDetailsQuery, useReturnApplicationMutation, useStopDisbursementMutation
+} from '../../store/features/loanUnderwriting/api.js';
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
 
 const ViewLoanUnderwritingPage = () => {
     const [comment, setComment] = useState("")
@@ -34,6 +40,13 @@ const ViewLoanUnderwritingPage = () => {
     const appId = queryParams.get("aid");
     const {data, isFetching, error} = useGetReviewCustomerDetailsQuery(custId)
     const status = queryParams.get("status");
+    const [approve] = useApproveApplicationMutation()
+    const [adjust] = useAdjustApplicationMutation()
+    const [returnApp] = useReturnApplicationMutation()
+    const [disburseApp] = useDisburseApplicationMutation()
+    const [stopDisburse] = useStopDisbursementMutation()
+    const dispatch = useDispatch()
+
     const tabMenu = [
         {id:0, name:'Information'},
         {id:1, name:'CRC Nano Report'},
@@ -73,6 +86,7 @@ const ViewLoanUnderwritingPage = () => {
     const [currentTab, setActiveTab] = useState(0);
     const [item, setItem] = useState('information');
     const router = useNavigate()
+    const [openComplete, setOpenComplete] = useState(false)
 
     const handleChange = (event,newValue) => {
         if (newValue >= 0 && newValue < tabMenu.length) {
@@ -85,6 +99,69 @@ const ViewLoanUnderwritingPage = () => {
 
     const handleOpen = () => {
         setOpen(true)
+    }
+
+    const handleApprove = () => {
+        approve({
+            body: {
+                loanApplicationId: appId,
+            }
+        }).then(res => {
+            setOpenComplete(true)
+        }).catch(err =>{
+            setOpenComplete(false)
+        })
+    }
+
+    const handleStop = () => {
+        stopDisburse({
+            body: {
+                loanApplicationId: appId,
+            }
+        }).then(res => {
+            setOpenDisburse(true)
+        }).catch(err =>{
+            setOpenDisburse(false)
+        })
+    }
+    const handleReturn = () => {
+        returnApp({
+            body: {
+                loanApplicationId: appId,
+            }
+        }).then(res => {
+            router('/loanUnderwriting')
+        }).catch(err =>{
+            setOpenComplete(false)
+        })
+    }
+    const handleDisburse = () => {
+        disburseApp({
+            body: {
+                loanApplicationId: appId,
+            }
+        }).then(res => {
+            router('/loanUnderwriting/disbursement')
+        }).catch(err =>{
+            setOpenComplete(false)
+        })
+    }
+
+    const handleAdjust = () => {
+        adjust({
+            body: {
+                loanApplicationId: appId,
+                description: inputs.description,
+                adjustedTenor: inputs.tenor,
+                adjustedAmount: inputs.amount
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpenAdjust(!open)
+            router('/loanApp/adjust')
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
     }
 
     return (
@@ -128,7 +205,7 @@ const ViewLoanUnderwritingPage = () => {
                         status === "review" && (
                             <div className="flex space-x-3 my-4">
                                 <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                        as={ReactLink} w={'110px'}>
+                                        as={ReactLink} w={'110px'} onClick={handleApprove}>
                                     <Text color="white">Approve</Text>
                                 </Button>
                                 <Button variant="primary" bgColor="#1781BC" borderRadius="4px" height="37px" size='md'
@@ -147,11 +224,11 @@ const ViewLoanUnderwritingPage = () => {
                         status === "approve" && (
                             <div className="flex space-x-3 my-4">
                                 <Button variant="primary" bgColor="#00C796" borderRadius="4px" height="37px" size='md'
-                                        as={ReactLink} w={'110px'}>
+                                        as={ReactLink} w={'110px'} onClick={handleDisburse}>
                                     <Text color="white">Disburse</Text>
                                 </Button>
                                 <Button variant="primary" bgColor="#005F47" borderRadius="4px" height="37px" size='md'
-                                        as={ReactLink} w={'110px'}>
+                                        as={ReactLink} w={'110px'} onClick={handleReturn}>
                                     <Text color="white">Return</Text>
                                 </Button>
                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"
@@ -166,7 +243,7 @@ const ViewLoanUnderwritingPage = () => {
                         status === "disburse" && (
                             <div className="my-4">
                                 <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                        as={ReactLink} w={'190px'} onClick={()=>setOpenDisburse(true)}>
+                                        as={ReactLink} w={'190px'} onClick={handleStop}>
                                     <Text color="white">Stop Disbursement</Text>
                                 </Button>
                             </div>
@@ -194,8 +271,9 @@ const ViewLoanUnderwritingPage = () => {
             </div>
             <DeclineApplicationModal open={open} setOpen={setOpen}/>
             <AddCommentModal open={openComment} setOpen={setOpenComment} comment={comment} setComment={setComment}/>
-            <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs}/>
-            <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"}/>
+            <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs} handleSubmit={handleAdjust}/>
+            <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"} handleRoute={()=>router('/loanUnderwriting/disbursement')}/>
+            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/approval')}/>
             <DecisionModal open={openDecision} setOpen={setOpenDecision}/>
         </Layout>
     );

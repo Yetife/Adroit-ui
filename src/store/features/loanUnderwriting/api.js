@@ -10,7 +10,7 @@ export const loanUnderwritingApi = createApi({
             query: () => ({
                 url: `/LoanUnderwriting/Review/get`,
             }),
-            providesTags: []
+            providesTags: ["returnApplication"]
         }),
         getReviewCustomerDetails: builder.query({
             query: (id) => ({
@@ -26,23 +26,71 @@ export const loanUnderwritingApi = createApi({
             }),
             invalidatesTags: ["AddComment"]
         }),
-        completeReview: builder.mutation({
+        approveApplication: builder.mutation({
             query: ({body}) => ({
-                url: `/LoanApplication/Customer/Update`,
+                url: `/LoanUnderwriting/Review/Update`,
                 method: "PUT",
                 body
             }),
-            invalidatesTags: ["completeReview"]
+            invalidatesTags: ["approveApplication"]
+        }),
+        getAllApproval: builder.query({
+            query: () => ({
+                url: `/Approval/get`,
+            }),
+            providesTags: []
+        }),
+        adjustApplication: builder.mutation({
+            query: ({body}) => ({
+                url: `/LoanUnderwriting/Review/Adjust`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["adjustApplication"]
+        }),
+        returnApplication: builder.mutation({
+            query: ({body}) => ({
+                url: `/Approval/Return`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["returnApplication"]
+        }),
+        disburseApplication: builder.mutation({
+            query: ({body}) => ({
+                url: `/Approval/Disburse`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["disburseApplication"]
+        }),
+        getAllDisbursement: builder.query({
+            query: () => ({
+                url: `/Disbursement/get`,
+            }),
+            providesTags: ["disburseApplication"]
+        }),
+        stopDisbursement: builder.mutation({
+            query: ({body}) => ({
+                url: `/Disbursement/StopDisbursement`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["stopDisbursement"]
         }),
     })
 })
 
 export const {
     useGetAllReviewQuery,
+    useGetAllApprovalQuery,
     useEditStatusMutation,
-    useGetAllCustomerQuery,
+    useGetAllDisbursementQuery,
     useGetReviewCustomerDetailsQuery,
-    useAddCommentMutation,
-    useCompleteReviewMutation,
+    useStopDisbursementMutation,
+    useAdjustApplicationMutation,
+    useApproveApplicationMutation,
+    useReturnApplicationMutation,
+    useDisburseApplicationMutation,
 
 } = loanUnderwritingApi
