@@ -13,6 +13,8 @@ import {TabContext} from "@mui/lab";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
 import {useCompleteReviewMutation, useGetCustomerDetailsQuery} from "../../store/features/loanApplication/api.js";
 import StopDisbursementModal from '../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx';
+import {CircularProgress, ThemeProvider} from "@mui/material";
+import themes from "../../components/reusables/theme.jsx";
 
 const ViewLoanApplicationPage = () => {
     const [open, setOpen] = useState(false)
@@ -91,62 +93,70 @@ const ViewLoanApplicationPage = () => {
 
     return (
         <Layout>
-            <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto px-20 h-[613px]">
-                <div>
-                    <TabContext value={currentTab.toString()}>
-                        <HorizontalMenu activeTab={currentTab} handleChange={handleChange} tabMenu={tabMenu}/>
-                    </TabContext>
-                </div>
-                <div className={'mt-8 pb-12'}>
-                    {components[item.toLowerCase()].component}
-                </div>
-            </div>
-            <div className="flex justify-between items-center px-0 py-4  pb-2 md:pt-3 overflow-x-auto">
-                <div>
-                    {
-                        status === "adjust" && (
-                            <div className="flex space-x-3 my-8">
-                                <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                        as={ReactLink} w={'110px'}>
-                                    <Text color="white">Review</Text>
-                                </Button>
-                                <Button variant="outline" borderColor="#FF0909" marginRight="10px"
-                                        border={"1px solid #FF0909"} borderRadius="4px" height="37px"
-                                        size='md' as={ReactLink} w={'110px'} onClick={handleOpen}>
-                                    <Text color="#FF0909">Decline</Text>
-                                </Button>
-                            </div>
-                        )
-                    }
-                </div>
-                <div>
-                    {
-                        status === "cust" && (
-                            <div className="flex space-x-3 my-8 float-right">
-                                <Button variant="outline" borderColor="#FF0909" marginRight="10px"
-                                        border={"1px solid #FF0909"} borderRadius="4px" height="37px"
-                                        size='md' as={ReactLink} w={'150px'} onClick={handleOpen}>
-                                    <Text color="#FF0909">Decline Loan</Text>
-                                </Button>
-                                <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                        as={ReactLink} w={'180px'} onClick={handleComplete}>
-                                    <Text color="white">Complete Review</Text>
-                                </Button>
-
-                            </div>
-                        )
-                    }
-                    {
-                        status !== "cust" && (
+            <div>
+                {
+                    isFetching ? <ThemeProvider theme={themes}>
+                        <CircularProgress color={"waveGreen"} sx={{display: "flex", margin: "auto", justifyContent: "center" }}/>
+                    </ThemeProvider> : <div>
+                        <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto px-20 h-[613px]">
                             <div>
-                                <Button variant="primary" onClick={() => router(-1)} bgColor="#4A5D58" borderRadius="4px"
-                                        height="37px" size='md' as={ReactLink} w={'109px'}>
-                                    <Text color="white">Back</Text>
-                                </Button>
+                                <TabContext value={currentTab.toString()}>
+                                    <HorizontalMenu activeTab={currentTab} handleChange={handleChange} tabMenu={tabMenu}/>
+                                </TabContext>
                             </div>
-                        )
-                    }
-                </div>
+                            <div className={'mt-8 pb-12'}>
+                                {components[item.toLowerCase()].component}
+                            </div>
+                        </div>
+                        <div className="flex justify-between items-center px-0 py-4  pb-2 md:pt-3 overflow-x-auto">
+                            <div>
+                                {
+                                    status === "adjust" && (
+                                        <div className="flex space-x-3 my-8">
+                                            <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
+                                                    as={ReactLink} w={'110px'}>
+                                                <Text color="white">Review</Text>
+                                            </Button>
+                                            <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                                                    border={"1px solid #FF0909"} borderRadius="4px" height="37px"
+                                                    size='md' as={ReactLink} w={'110px'} onClick={handleOpen}>
+                                                <Text color="#FF0909">Decline</Text>
+                                            </Button>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                            <div>
+                                {
+                                    status === "cust" && (
+                                        <div className="flex space-x-3 my-8 float-right">
+                                            <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                                                    border={"1px solid #FF0909"} borderRadius="4px" height="37px"
+                                                    size='md' as={ReactLink} w={'150px'} onClick={handleOpen}>
+                                                <Text color="#FF0909">Decline Loan</Text>
+                                            </Button>
+                                            <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
+                                                    as={ReactLink} w={'180px'} onClick={handleComplete}>
+                                                <Text color="white">Complete Review</Text>
+                                            </Button>
+
+                                        </div>
+                                    )
+                                }
+                                {
+                                    status !== "cust" && (
+                                        <div>
+                                            <Button variant="primary" onClick={() => router(-1)} bgColor="#4A5D58" borderRadius="4px"
+                                                    height="37px" size='md' as={ReactLink} w={'109px'}>
+                                                <Text color="white">Back</Text>
+                                            </Button>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
             <DeclineApplicationModal open={open} setOpen={setOpen} id={appId}/>
             <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"} handleRoute={()=>router('/loanApp')}/>

@@ -68,7 +68,7 @@ export const loanUnderwritingApi = createApi({
             query: () => ({
                 url: `/Disbursement/get`,
             }),
-            providesTags: ["disburseApplication"]
+            providesTags: ["disburseApplication", "stopDisbursement"]
         }),
         stopDisbursement: builder.mutation({
             query: ({body}) => ({

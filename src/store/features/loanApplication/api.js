@@ -40,6 +40,12 @@ export const loanApplicationApi = createApi({
             }),
             providesTags: []
         }),
+        getAdjustCustomerDetails: builder.query({
+            query: (id) => ({
+                url: `/LoanApplication/Adjust/getbyCusId/${id}`,
+            }),
+            providesTags: []
+        }),
         addComment: builder.mutation({
             query: ({body}) => ({
                 url: `/LoanApplication/Customer/addComment`,
@@ -94,6 +100,7 @@ export const {
     useGetAllAdjustQuery,
     useGetAllDeclinedQuery,
     useGetCustomerDetailsQuery,
+    useGetAdjustCustomerDetailsQuery,
     useAddCommentMutation,
     useDeclineApplicationMutation,
     useCompleteReviewMutation,

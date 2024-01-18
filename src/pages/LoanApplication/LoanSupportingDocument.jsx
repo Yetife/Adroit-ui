@@ -96,15 +96,7 @@ const LoanSupportingDocument = () => {
                         </p>
                     </div>
                 )}
-            </div>
-            <div style={{border: '1px solid rgba(105, 119, 115, 0.50', background: '#F3F3F3'}} className="flex flex-col items-center py-12 w-[271px] h-[171px] ml-12">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
-                        <circle cx="19.5" cy="19.5" r="18.8558" fill="#D9D9D9" stroke="#4A5D58" strokeWidth="0.711538" strokeDasharray="2.85 2.85"/>
-                    </svg>
-                </div>
-                <p className="font-medium text-[#4A5D58] text-[14px] whitespace-nowrap pt-4">Request for New Document</p>
-            </div>
+         </div>
             <div onClick={openGuarantorExplorer} style={{border: '1px solid rgba(105, 119, 115, 0.50', background: '#F3F3F3'}} className="flex flex-col items-center cursor-pointer py-12 w-[271px] h-[171px] ml-12">
                 <input
                     ref={fileGuarantorInputRef}
@@ -134,7 +126,15 @@ const LoanSupportingDocument = () => {
                     </>
                 )}
             </div>
-        </div>
+            <div style={{border: '1px solid rgba(105, 119, 115, 0.50', background: '#F3F3F3'}} className="flex flex-col items-center py-12 w-[271px] h-[171px] ml-12">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
+                        <circle cx="19.5" cy="19.5" r="18.8558" fill="#D9D9D9" stroke="#4A5D58" strokeWidth="0.711538" strokeDasharray="2.85 2.85"/>
+                    </svg>
+                </div>
+                <p className="font-medium text-[#4A5D58] text-[14px] whitespace-nowrap pt-4">Request for New Document</p>
+            </div>
+    </div>
     );
 };
 
