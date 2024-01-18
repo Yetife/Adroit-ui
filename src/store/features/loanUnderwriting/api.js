@@ -38,7 +38,7 @@ export const loanUnderwritingApi = createApi({
             query: () => ({
                 url: `/Approval/get`,
             }),
-            providesTags: []
+            providesTags: ["approveApplication"]
         }),
         adjustApplication: builder.mutation({
             query: ({body}) => ({

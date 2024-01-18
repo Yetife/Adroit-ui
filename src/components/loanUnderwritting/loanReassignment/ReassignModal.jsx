@@ -5,7 +5,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import CustomAutocomplete from "../../reusables/CustomAutocomplete.jsx";
 import {Close} from "@mui/icons-material";
 
-const ReassignModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd}) => {
+const ReassignModal = ({open, setOpen, inputs, setInputs,  purpose}) => {
     const [staff, setStaff] = useState([])
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const token = getUserToken();
@@ -24,6 +24,10 @@ const ReassignModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd}) 
             console.error('Error fetching data:', error);
         }
     };
+
+    const handleAdd = () => {
+        console.log(inputs)
+    }
 
 
     useEffect(() => {

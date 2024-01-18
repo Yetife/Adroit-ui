@@ -24,12 +24,14 @@ import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
+import ReassignModal from '../../components/loanUnderwritting/loanReassignment/ReassignModal.jsx';
 
 const ViewLoanUnderwritingPage = () => {
     const [comment, setComment] = useState("")
     const [openComment, setOpenComment] = useState(false)
     const [openAdjust, setOpenAdjust] = useState(false)
     const [open, setOpen] = useState(false)
+    const [openReassign, setOpenReassign] = useState(false)
     const [openDisburse, setOpenDisburse] = useState(false)
     const [openDecision, setOpenDecision] = useState(false)
     const [inputs, setInputs] = useState({
@@ -260,7 +262,7 @@ const ViewLoanUnderwritingPage = () => {
                                     status === "reassign" && (
                                         <div className="my-4">
                                             <Button variant="primary" bgColor="#FF0909" borderRadius="4px" height="37px" size='md'
-                                                    as={ReactLink} w={'130px'}>
+                                                    as={ReactLink} w={'130px'} onClick={()=>setOpenReassign(true)}>
                                                 <Text color="white">Re-assign</Text>
                                             </Button>
                                         </div>
@@ -286,6 +288,7 @@ const ViewLoanUnderwritingPage = () => {
             <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"} handleRoute={()=>router('/loanUnderwriting/disbursement')}/>
             <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/approval')}/>
             <DecisionModal open={openDecision} setOpen={setOpenDecision}/>
+            <ReassignModal open={openReassign} setOpen={setOpenReassign}/>
         </Layout>
     );
 };
