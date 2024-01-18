@@ -88,6 +88,14 @@ export const loanApplicationApi = createApi({
             }),
             providesTags: ["declineApplication"]
         }),
+        requestDocument: builder.mutation({
+            query: ({body}) => ({
+                url: `/LoanApplication/Customer/addRequestedDocument`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["requestDocument"]
+        }),
     })
 })
 
@@ -104,4 +112,5 @@ export const {
     useAddCommentMutation,
     useDeclineApplicationMutation,
     useCompleteReviewMutation,
+    useRequestDocumentMutation,
 } = loanApplicationApi
