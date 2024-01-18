@@ -1,8 +1,8 @@
 import {Divider} from "@mui/material";
 import {CSVLink} from "react-csv";
 
-const LoanNanoReport = () => {
-    const data = [
+const LoanNanoReport = ({data}) => {
+    const item = [
         { applicationId: 'CUS20230904-122', amountRequested: 'N50,000.00', interest: 'N10,000.00' },
     ];
 
@@ -12,12 +12,13 @@ const LoanNanoReport = () => {
         { label: 'Amount Requested', key: 'amountRequested' },
         { label: 'Interest', key: 'interest' },
     ];
+    console.log(data)
     return (
         <div>
             <div className="flex justify-between">
                 <div></div>
                 <div style={{border: "1px solid #4A5D58", padding: "10px 15px"}}>
-                    <CSVLink data={data} headers={headers} filename="loan_report.csv">
+                    <CSVLink data={item} headers={headers} filename="loan_report.csv">
                         <div className="flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
                                  fill="none">
@@ -44,9 +45,9 @@ const LoanNanoReport = () => {
                         <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">Interest</p>
                     </div>
                     <div className="text-right">
-                        <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">CUS20230904-122</p>
-                        <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">N50,000.00</p>
-                        <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">N10,000.00</p>
+                        <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">{data?.data.information.applicationId}</p>
+                        <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.amountRequested}</p>
+                        <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.interest ? data?.data.information.interest : "null" }</p>
                     </div>
                 </div>
             </div>

@@ -41,7 +41,7 @@ const ViewLoanApplicationPage = () => {
             step: 0
         },
         'crc nano report':{
-            component: <LoanNanoReport/>,
+            component: <LoanNanoReport data={data}/>,
             step: 1
         },
         'bank statement':{
@@ -114,7 +114,7 @@ const ViewLoanApplicationPage = () => {
                                     status === "adjust" && (
                                         <div className="flex space-x-3 my-8">
                                             <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                                    as={ReactLink} w={'110px'}>
+                                                    as={ReactLink} w={'110px'} onClick={handleComplete}>
                                                 <Text color="white">Review</Text>
                                             </Button>
                                             <Button variant="outline" borderColor="#FF0909" marginRight="10px"

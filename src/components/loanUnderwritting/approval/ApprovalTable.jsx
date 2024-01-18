@@ -117,7 +117,7 @@ export function TableData({data, no}) {
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/loanUnderwriting/customerDetails?id=${data.customerId}&aid=${data.applicantNumber}&status=approve`)}>View
+                     onClick={() => router(`/loanUnderwriting/approval/customerDetails?id=${data.customerId}&aid=${data.applicantNumber}&status=approve`)}>View
                  </span>
             </td>
             <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked}

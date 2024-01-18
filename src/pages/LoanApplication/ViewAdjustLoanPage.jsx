@@ -41,7 +41,7 @@ const ViewAdjustLoanPage = () => {
             step: 0
         },
         'crc nano report':{
-            component: <LoanNanoReport/>,
+            component: <LoanNanoReport data={data}/>,
             step: 1
         },
         'bank statement':{

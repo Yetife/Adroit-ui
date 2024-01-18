@@ -1,32 +1,31 @@
-import {useState} from 'react';
-import LoanInformation from "../LoanApplication/LoanInformation.jsx";
-import LoanNanoReport from "../LoanApplication/LoanNanoReport.jsx";
-import LoanBankStatement from "../LoanApplication/LoanBankStatement.jsx";
-import LoanActivity from "../LoanApplication/LoanActivity.jsx";
-import LoanRepaymentDetails from "../LoanApplication/LoanRepaymentDetails.jsx";
-import LoanSupportingDocument from "../LoanApplication/LoanSupportingDocument.jsx";
+import React, {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import Layout from "../Layout.jsx";
 import {TabContext} from "@mui/lab";
 import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
-import AddCommentModal from "../../components/loanUnderwritting/review/AddCommentModal.jsx";
-import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoanModal.jsx";
-import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
-import DecisionModal from "../../components/loanUnderwritting/approval/DecisionModal.jsx";
 import {
-    useAdjustApplicationMutation,
-    useApproveApplicationMutation, useDisburseApplicationMutation,
-    useGetReviewCustomerDetailsQuery, useReturnApplicationMutation, useStopDisbursementMutation
-} from '../../store/features/loanUnderwriting/api.js';
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import {useDispatch} from "react-redux";
+    useGetAdjustCustomerDetailsQuery,
+} from "../../store/features/loanApplication/api.js";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
+import LoanInformation from '../LoanApplication/LoanInformation.jsx';
+import LoanNanoReport from '../LoanApplication/LoanNanoReport.jsx';
+import LoanBankStatement from '../LoanApplication/LoanBankStatement.jsx';
+import LoanActivity from '../LoanApplication/LoanActivity.jsx';
+import LoanRepaymentDetails from '../LoanApplication/LoanRepaymentDetails.jsx';
+import LoanSupportingDocument from '../LoanApplication/LoanSupportingDocument.jsx';
+import LoanComments from './LoanComments.jsx';
+import AddCommentModal from '../../components/loanUnderwritting/review/AddCommentModal.jsx';
+import AdjustLoanModal from '../../components/loanUnderwritting/review/AdjustLoanModal.jsx';
+import StopDisbursementModal from '../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx';
+import DecisionModal from '../../components/loanUnderwritting/approval/DecisionModal.jsx';
 import ReassignModal from '../../components/loanUnderwritting/loanReassignment/ReassignModal.jsx';
+import { useAdjustApplicationMutation, useApproveApplicationMutation, useDisburseApplicationMutation, useGetReviewCustomerDetailsQuery, useReturnApplicationMutation, useStopDisbursementMutation } from '../../store/features/loanUnderwriting/api.js';
+import { useDispatch } from 'react-redux';
 
-const ViewLoanUnderwritingPage = () => {
+const ViewApprovalLoanPage = () => {
     const [comment, setComment] = useState("")
     const [openComment, setOpenComment] = useState(false)
     const [openAdjust, setOpenAdjust] = useState(false)
@@ -34,6 +33,7 @@ const ViewLoanUnderwritingPage = () => {
     const [openReassign, setOpenReassign] = useState(false)
     const [openDisburse, setOpenDisburse] = useState(false)
     const [openDecision, setOpenDecision] = useState(false)
+    const [openComplete, setOpenComplete] = useState(false)
     const [inputs, setInputs] = useState({
         amount: "",
         tenor: "",
@@ -49,8 +49,8 @@ const ViewLoanUnderwritingPage = () => {
     const [returnApp] = useReturnApplicationMutation()
     const [disburseApp] = useDisburseApplicationMutation()
     const [stopDisburse] = useStopDisbursementMutation()
-    const dispatch = useDispatch()
 
+    const dispatch = useDispatch()
     const tabMenu = [
         {id:0, name:'Information'},
         {id:1, name:'CRC Nano Report'},
@@ -58,6 +58,7 @@ const ViewLoanUnderwritingPage = () => {
         {id:3, name:'Activity'},
         {id:4, name:'Repayment Details'},
         {id:5, name:'Supporting Documents'},
+        {id:6, name:'Comments'},
     ];
 
     const components = {
@@ -79,18 +80,21 @@ const ViewLoanUnderwritingPage = () => {
         },
         'repayment details':{
             component: <LoanRepaymentDetails />,
-            step: 3
+            step: 4
         },
         'supporting documents':{
             component: <LoanSupportingDocument />,
-            step: 3
+            step: 5
+        },
+        'comments':{
+            component: <LoanComments />,
+            step: 6
         },
     }
 
     const [currentTab, setActiveTab] = useState(0);
     const [item, setItem] = useState('information');
     const router = useNavigate()
-    const [openComplete, setOpenComplete] = useState(false)
 
     const handleChange = (event,newValue) => {
         if (newValue >= 0 && newValue < tabMenu.length) {
@@ -104,7 +108,6 @@ const ViewLoanUnderwritingPage = () => {
     const handleOpen = () => {
         setOpen(true)
     }
-
     const handleApprove = () => {
         approve({
             body: {
@@ -170,7 +173,7 @@ const ViewLoanUnderwritingPage = () => {
 
     return (
         <Layout>
-            <div>
+             <div>
                 {
                     isFetching ? <ThemeProvider theme={themes}>
                         <CircularProgress color={"waveGreen"} sx={{display: "flex", margin: "auto", justifyContent: "center" }}/>
@@ -293,4 +296,4 @@ const ViewLoanUnderwritingPage = () => {
     );
 };
 
-export default ViewLoanUnderwritingPage;
+export default ViewApprovalLoanPage;
