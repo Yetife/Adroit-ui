@@ -72,7 +72,7 @@ export const loanApplicationApi = createApi({
             query: () => ({
                 url: `/LoanApplication/Adjust/get`,
             }),
-            providesTags: []
+            providesTags: ["completeReview", "declineApplication"]
         }),
         declineApplication: builder.mutation({
             query: ({body}) => ({

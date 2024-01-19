@@ -10,7 +10,7 @@ export const loanUnderwritingApi = createApi({
             query: () => ({
                 url: `/LoanUnderwriting/Review/get`,
             }),
-            providesTags: ["returnApplication"]
+            providesTags: ["returnApplication", "adjustApplication"]
         }),
         getReviewCustomerDetails: builder.query({
             query: (id) => ({

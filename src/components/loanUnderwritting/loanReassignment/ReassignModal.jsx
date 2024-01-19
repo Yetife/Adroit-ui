@@ -5,9 +5,14 @@ import * as Dialog from "@radix-ui/react-dialog";
 import CustomAutocomplete from "../../reusables/CustomAutocomplete.jsx";
 import {Close} from "@mui/icons-material";
 
-const ReassignModal = ({open, setOpen, inputs, setInputs,  purpose}) => {
+const ReassignModal = ({open, setOpen,  purpose}) => {
     const [staff, setStaff] = useState([])
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [inputs, setInputs] = useState({
+        firstName: "",
+        lastName: "",
+        email: ""
+    })
     const token = getUserToken();
     const fetchStaff = async () => {
         try {
@@ -26,9 +31,11 @@ const ReassignModal = ({open, setOpen, inputs, setInputs,  purpose}) => {
     };
 
     const handleAdd = () => {
-        console.log(inputs)
+        console.log(inputs.firstName + " " + inputs.lastName)
     }
-
+    const updateInputs = (updatedValues) => {
+        setInputs((prevInputs) => ({ ...prevInputs, ...updatedValues }));
+    };
 
     useEffect(() => {
         fetchStaff()
@@ -65,6 +72,7 @@ const ReassignModal = ({open, setOpen, inputs, setInputs,  purpose}) => {
                                          }}
                                          isDropdownOpen={isDropdownOpen} // Pass the isDropdownOpen state to the CustomAutocomplete
                                          setIsDropdownOpen={setIsDropdownOpen}
+                                         updateInputs={updateInputs}
                                      />
                                      {/*<select id="select" value={inputs.firstName}*/}
                                      {/*        disabled={purpose === "view"}*/}

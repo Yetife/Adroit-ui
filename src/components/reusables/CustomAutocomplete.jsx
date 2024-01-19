@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import {ChevronDown} from "react-feather"; // Replace with the actual path to your SVG icon
+import {ChevronDown} from "react-feather";
 
 const CustomAutocomplete = ({ options, onSelect, isDropdownOpen, setIsDropdownOpen, updateInputs }) => {
     const [inputValue, setInputValue] = useState('');

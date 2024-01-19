@@ -13,10 +13,12 @@ import {Button, Text} from "@chakra-ui/react";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
 import LoanAdjustDetails from "./LoanAdjustDetails.jsx";
 import {
+    useCompleteReviewMutation,
     useGetAdjustCustomerDetailsQuery,
 } from "../../store/features/loanApplication/api.js";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
+import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
 
 const ViewAdjustLoanPage = () => {
     const [open, setOpen] = useState(false)
@@ -25,6 +27,8 @@ const ViewAdjustLoanPage = () => {
     const appId = queryParams.get("aid");
     const {data, isFetching, error} = useGetAdjustCustomerDetailsQuery(custId)
     const status = queryParams.get("status");
+    const [openComplete, setOpenComplete] = useState(false)
+    const [completeReview] = useCompleteReviewMutation()
     const tabMenu = [
         {id:0, name:'Information'},
         {id:1, name:'CRC Nano Report'},
@@ -78,7 +82,17 @@ const ViewAdjustLoanPage = () => {
             console.error('Invalid tab index:', newValue);
         }
     };
-
+    const handleComplete = () => {
+        completeReview({
+            body: {
+                loanApplicationId: appId,
+            }
+        }).then(res => {
+            setOpenComplete(true)
+        }).catch(err =>{
+            setOpenComplete(false)
+        })
+    }
     const handleOpen = () => {
         setOpen(true)
     }
@@ -106,7 +120,7 @@ const ViewAdjustLoanPage = () => {
                                 status === "adjust" && (
                                     <div className="flex space-x-3 my-8">
                                         <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                                as={ReactLink} w={'110px'}>
+                                                as={ReactLink} w={'110px'} onClick={handleComplete}>
                                             <Text color="white">Review</Text>
                                         </Button>
                                         <Button variant="outline" borderColor="#FF0909" marginRight="10px"
@@ -151,6 +165,7 @@ const ViewAdjustLoanPage = () => {
             }
             </div>
             <DeclineApplicationModal open={open} setOpen={setOpen}/>
+            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"} handleRoute={()=>router('/loanApp/adjust')}/>
         </Layout>
     );
 };
