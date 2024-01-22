@@ -69,6 +69,7 @@ import StaffLoan from "../pages/staff/StaffLoan.jsx";
 import ViewAdjustLoanPage from "../pages/LoanApplication/ViewAdjustLoanPage.jsx";
 import ReassignedLoan from "../pages/loanUnderwriting/ReassignedLoan.jsx";
 import ViewApprovalLoanPage from "../pages/loanUnderwriting/ViewApprovalLoanPage.jsx";
+import NewClient from "../pages/crm/NewClient.jsx";
 
 const ROUTES = [
     {
@@ -94,7 +95,7 @@ const ROUTES = [
         exact: true,
         children: [
             {
-                path: "",
+                path: "customer",
                 exact: true,
                 element: <Customer />
             },
@@ -162,7 +163,7 @@ const ROUTES = [
         exact: true,
         children: [
             {
-                path: "",
+                path: "review",
                 exact: true,
                 element: <Review />,
             },
@@ -202,6 +203,17 @@ const ROUTES = [
         key: "COLLECTION",
         exact: true,
         element: <Collection />,
+    },
+    {
+        path: "/crm",
+        exact: true,
+        children: [
+            {
+                path: "addClient",
+                exact: true,
+                element: <NewClient />,
+            },
+        ]
     },
     {
         path: "/staff/loan",

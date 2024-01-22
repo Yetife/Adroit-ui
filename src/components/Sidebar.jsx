@@ -27,7 +27,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             dropdown: [
                 {
                     applicationPageName: 'Customer',
-                    href: '/loanApp',
+                    href: '/loanApp/customer',
                     route: '/loanApp',
                 },
                 {
@@ -66,7 +66,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             dropdown: [
                 {
                     applicationPageName: 'Review',
-                    href: '/loanUnderwriting',
+                    href: '/loanUnderwriting/review',
                     route: '/underwriting',
                 },
                 {

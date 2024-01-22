@@ -65,7 +65,6 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                 }
             });
             setType(response.data.data);
-            console.log('Fetched state:', response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -81,7 +80,6 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                 }
             });
             setTenor(response.data.data);
-            console.log('Fetched state:', response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -98,7 +96,6 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                 }
             });
             setStatus(response.data.data);
-            console.log('Fetched state:', response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -114,7 +111,6 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                 }
             });
             setInterest(response.data.data);
-            console.log('Fetched state:', response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
