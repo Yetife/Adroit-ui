@@ -14,7 +14,7 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
     const [type, setType] = useState([]);
     const [tenor, setTenor] = useState([]);
     const per = [{name: true}, {name: false}]
-    const [selectedPer, setSelectedPer] = useState(false);
+    const [selectedPer, setSelectedPer] = useState("");
     const [selectedId, setSelectedId] = useState('');
     const dispatch = useDispatch()
     const [addLoan] = useAddRegularLoanChargeMutation()
@@ -231,6 +231,7 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
                                           </h3>
                                              <select id="select" disabled={purpose === "view"} value={selectedPer} onChange={handlePercentageChange}
                                                      style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
+                                                 <option value="" disabled>Is Percentage</option>
                                                  <option value={true}>True</option>
                                                  <option value={false}>False</option>
                                             </select>

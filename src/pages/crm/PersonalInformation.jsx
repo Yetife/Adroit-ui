@@ -216,7 +216,7 @@ const PersonalInformation = () => {
                         <div className="flex space-x-6 mt-4">
                             <span>
                                 <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                Value Date
+                                Date Of Birth
                                 </h3>
                                     <input
                                         type="date"
