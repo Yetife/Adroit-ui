@@ -249,7 +249,7 @@ export const generalSetUpApi = createApi({
         }),
         addResidency: builder.mutation({
             query: ({body}) => ({
-                url: `/GeneralSetUp/addNoofdependants`,
+                url: `/GeneralSetUp/addNoofyearofresidences`,
                 method: "POST",
                 body
             }),
@@ -257,20 +257,20 @@ export const generalSetUpApi = createApi({
         }),
         getAllResidency: builder.query({
             query: () => ({
-                url: `/GeneralSetUp/getallvalidNoofdependants`,
+                url: `/GeneralSetUp/getallvalidNoofyearofresidences`,
             }),
             providesTags: ["AddResidency", "DelResidency", "EditResidency"]
         }),
         deleteResidency: builder.mutation({
             query:(id)=>({
-                url:`/GeneralSetUp/deleteNoofdependantbyid/id?id=${id}`,
+                url:`/GeneralSetUp/deleteNoofyearofresidencesbyid/id?id=${id}`,
                 method:"DELETE"
             }),
             invalidatesTags:["DelResidency"]
         }),
         editResidency: builder.mutation({
             query: ({body}) => ({
-                url: `/GeneralSetUp/updateNoofdependant`,
+                url: `/GeneralSetUp/updateNoofyearofresidence`,
                 method: "PUT",
                 body
             }),

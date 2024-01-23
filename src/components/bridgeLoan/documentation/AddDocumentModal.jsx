@@ -387,7 +387,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                              value={inputs.valueDate}
                                              disabled={purpose === "view"}
                                              onChange={(event) => handleChange(event, "valueDate")}
-                                             placeholder="Enter amount"
+                                             placeholder="Enter value date"
                                              className="font-medium w-[250px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                          />
                                     </span>
@@ -402,7 +402,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                              value={inputs.maturityDate}
                                              disabled={purpose === "view"}
                                              onChange={(event) => handleChange(event, "maturityDate")}
-                                             placeholder="Enter amount"
+                                             placeholder="Enter maturity date"
                                              className="font-medium w-[250px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                          />
                                     </span>

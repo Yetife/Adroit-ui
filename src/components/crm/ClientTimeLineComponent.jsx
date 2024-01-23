@@ -88,7 +88,7 @@ const ClientTimeLineComponent = ({steps, index, placement}) => {
                     <Step key={i} completed={completed[i < index]}>
                         <ThemeProvider theme={themeStyle}>
                             <StepButton onClick={()=>gotoStep(label.name)}>
-                                <p className={`${index ? "text-[#00C795]" : ""}`}>
+                                <p className={`${i < index ? "text-[#00C795]" : ""}`}>
                                     {label.name}
                                 </p>
                             </StepButton>
