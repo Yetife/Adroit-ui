@@ -20,13 +20,13 @@ const Navbar = ({openSidebar, name, email}) => {
                 </button>
             </div>
             <div className="flex items-center">
-                <div className="relative mx-3 md:mx-0 px-2 border-x border-width">
+                {/* <div className="relative mx-3 md:mx-0 px-2 border-x border-width">
                     <IconButton color="waveWhite">
                         <Badge badgeContent={4} color="secondary">
                             <NotificationsNoneIcon sx={{color: 'white'}} />
                         </Badge>
                     </IconButton>
-                </div>
+                </div> */}
 
                 <div className="flex relative">
                     <div className='px-2 hidden md:px-4  sm:block'>

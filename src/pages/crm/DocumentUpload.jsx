@@ -34,23 +34,23 @@ const DocumentUpload = () => {
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto pl-12">
                 <div className="mt-4 mb-20">
                     <p className="text-[20px] leading-5 text-[#4A5D58] font-bold">Document Upload</p>
-                    <p className="text-[13px] leading-5 text-[#979797] font-medium py-4">Ensure you enter the correct information, some of the information here will <br/> later be match with your BVN details</p>
-                    <div>
-                    <span className="ml-8">
-                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                        Document Upload
-                      </h3>
-                         <input
-                             className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                             type="file"
-                             id="fileInput"
-                             name="files"
-                             accept="image/*, .pdf"
-                             // accept="*/*"
-                             multiple
-                             onChange={(event) => handleFileChange(event, "passport")}
-                         />
-                    </span>
+                    <p className="text-[14px] leading-5 bg-[#EAFFFA] text-[#007970] px-3 font-medium w-[680px] py-2 my-4">Ensure all documents are uploaded and tagged properly. Files should be in .jpg, .png or .pdf formats</p>
+                    <div className="mt-8">
+                        <span>
+                        <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                            Document Upload
+                        </h3>
+                            <input
+                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                type="file"
+                                id="fileInput"
+                                name="files"
+                                accept="image/*, .pdf"
+                                // accept="*/*"
+                                multiple
+                                onChange={(event) => handleFileChange(event, "passport")}
+                            />
+                        </span>
                     </div>
                 </div>
             </div>
