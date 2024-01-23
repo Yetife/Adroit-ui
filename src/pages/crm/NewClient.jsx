@@ -3,14 +3,15 @@ import {useEffect, useState} from "react";
 import {Switch, ThemeProvider} from "@mui/material";
 import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
-import {Link as ReactLink} from "react-router-dom";
+import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {Button, Text} from "@chakra-ui/react";
 import themes from "../../components/reusables/theme.jsx";
 
 const NewClient = () => {
     const [sector, setSector] = useState([]);
-    const [checked, setChecked] = useState(true);
-    const [employSector, setEmploysector] = useState("")
+    const [checked, setChecked] = useState(false);
+    const [employSector, setEmploySector] = useState("")
+    const router = useNavigate()
     const token = getUserToken();
 
     const fetchData = async () => {
@@ -46,19 +47,22 @@ const NewClient = () => {
                         <div className="flex items-center mt-12">
                             <p className="text-[16px] leading-5 text-[#4A5D58] font-medium pr-20">Does Client has a BVN</p>
                             <ThemeProvider theme={themes}>
-                                <Switch
-                                    className="mr-20"
-                                    checked={checked}
-                                    onChange={handleChange}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    color={"waveGreen"}
-                                />
+                                <div className="flex items-center">
+                                    <p className="text-[18px] leading-5 text-[#4A5D58] font-bold">Yes</p>
+                                    <Switch
+                                        checked={checked}
+                                        onChange={handleChange}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        color={"waveGreen"}
+                                    />
+                                    <p className="text-[18px] leading-5 text-[#4A5D58] font-bold">No</p>
+                                </div>
                             </ThemeProvider>
                         </div>
                         <div className="flex items-center">
                             <p className="text-[16px] leading-5 text-[#4A5D58] font-medium">What Employment Sector do you work in</p>
                             <select id="select" value={employSector}
-                                    onChange={(event) => setEmploysector(event.target.value)}
+                                    onChange={(event) => setEmploySector(event.target.value)}
                                     className="font-medium w-[240px] text-black leading-relaxed ml-12 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                 <option value="" disabled>Select sector</option>
                                 {sector && sector?.map((option) => (
@@ -71,7 +75,7 @@ const NewClient = () => {
                     </div>
                 </div>
                 <div className="float-right my-4">
-                    <Button variant="primary" bgColor="#00C795" borderRadius="4px"
+                    <Button variant="primary" bgColor="#00C795" borderRadius="4px" onClick={()=>router('/crm/addNewClient?step=one')}
                             height="37px" size='md' as={ReactLink} w={'109px'}>
                         <Text color="white">Proceed</Text>
                     </Button>

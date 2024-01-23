@@ -70,6 +70,7 @@ import ViewAdjustLoanPage from "../pages/LoanApplication/ViewAdjustLoanPage.jsx"
 import ReassignedLoan from "../pages/loanUnderwriting/ReassignedLoan.jsx";
 import ViewApprovalLoanPage from "../pages/loanUnderwriting/ViewApprovalLoanPage.jsx";
 import NewClient from "../pages/crm/NewClient.jsx";
+import AddNewClientLayout from "../pages/crm/AddNewClientLayout.jsx";
 
 const ROUTES = [
     {
@@ -212,6 +213,11 @@ const ROUTES = [
                 path: "addClient",
                 exact: true,
                 element: <NewClient />,
+            },
+            {
+                path: "addNewClient",
+                exact: true,
+                element: <AddNewClientLayout />,
             },
         ]
     },
