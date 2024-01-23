@@ -287,7 +287,7 @@ const EmploymentInformation = () => {
                                 </h3>
                                 <select id="select" value={inputs.employmentType}
                                         onChange={(event) => handleChange(event, "employmentType")}
-                                        className="font-medium w-[240px] text-black leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                        className="font-medium w-[240px] text-black h-[50px] leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                     <option value="" disabled>Select employment Type</option>
                                     {employmentType && employmentType?.map((option) => (
                                         <option key={option.uniqueId} value={option.name}>
@@ -328,7 +328,7 @@ const EmploymentInformation = () => {
                                 </h3>
                                 <select id="select" value={inputs.salaryRange}
                                         onChange={(event) => handleChange(event, "salaryRange")}
-                                        className="font-medium w-[240px] text-black leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                        className="font-medium w-[240px] text-black leading-relaxed h-[50px] py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                     <option value="" disabled>Select salary range</option>
                                     {range && range?.map((option) => (
                                         <option key={option.uniqueId} value={option.name}>
@@ -343,7 +343,7 @@ const EmploymentInformation = () => {
                                 </h3>
                                 <select id="select" value={inputs.paymentDay}
                                         onChange={(event) => handleChange(event, "paymentDay")}
-                                        className="font-medium w-[240px] text-black leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                        className="font-medium w-[240px] text-black leading-relaxed py-3 h-[50px] rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                     <option value="" disabled>Select payment day</option>
                                     {paymentDay && paymentDay?.map((option) => (
                                         <option key={option.uniqueId} value={option.name}>

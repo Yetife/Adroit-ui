@@ -23,17 +23,6 @@ const BankDetails = () => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
     };
-
-    const handlePhone = (e) => {
-        const name = "phoneNumber"
-        setInputs((values)=>({ ...values, [name]: e }))
-    }
-
-    const handleAlternatePhone = (e) => {
-        const name = "alternatePhoneNumber"
-        setInputs((values)=>({ ...values, [name]: e }))
-    }
-
     const handleGoBack = () => {
         queryParams.set("step", "four");
         navigate({
@@ -70,7 +59,7 @@ const BankDetails = () => {
         <div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto pl-12">
                 <div className="mt-4 mb-20">
-                    <p className="text-[20px] leading-5 text-[#4A5D58] font-bold">Next of Kin</p>
+                    <p className="text-[20px] leading-5 text-[#4A5D58] font-bold">Bank Details</p>
                     <p className="text-[13px] leading-5 text-[#979797] font-medium py-4">Ensure you enter the correct information, some of the information here will <br/> later be match with your BVN details</p>
                     <div>
                         <span>

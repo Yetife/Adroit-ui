@@ -3,7 +3,6 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
-import { MuiTelInput } from 'mui-tel-input'
 
 const ResidentialInformation = () => {
     const [status, setStatus] = useState([])
@@ -24,21 +23,10 @@ const ResidentialInformation = () => {
     queryParams.set("step", "four");
     const token = getUserToken();
 
-
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
     };
-
-    const handlePhone = (e) => {
-        const name = "phoneNumber"
-        setInputs((values)=>({ ...values, [name]: e }))
-    }
-
-    const handleAlternatePhone = (e) => {
-        const name = "alternatePhoneNumber"
-        setInputs((values)=>({ ...values, [name]: e }))
-    }
 
     const handleGoBack = () => {
         queryParams.set("step", "two");
@@ -124,9 +112,9 @@ const ResidentialInformation = () => {
     }, []);
     return (
         <div>
-            <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto pl-12 h-[450px]">
+            <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto pl-12 h-[540px]">
                 <div className="mt-4 mb-12">
-                    <p className="text-[20px] leading-5 text-[#4A5D58] font-bold">Employer’s Information</p>
+                    <p className="text-[20px] leading-5 text-[#4A5D58] font-bold">Residential's Information</p>
                     <p className="text-[14px] leading-5 text-[#979797] font-medium py-3">Ensure you enter the correct information, some of the information here will <br/> later be match with your BVN details</p>
                     <div>
                         <div className="flex space-x-8 mt-4">
@@ -134,7 +122,7 @@ const ResidentialInformation = () => {
                                 <p className="text-[14px] leading-5 text-[#4A5D58] font-[500] pb-3">Permanent Residential State</p>
                                 <select id="select" value={inputs.state}
                                         onChange={(event) => handleChange(event, "state")}
-                                        className="font-medium w-[240px] text-black leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                        className="font-medium w-[240px] text-black h-[50px] leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                     <option value="" disabled>Select state</option>
                                     {state && state?.map((option) => (
                                         <option key={option.uniqueId} value={option.name}>
@@ -147,7 +135,7 @@ const ResidentialInformation = () => {
                                 <p className="text-[14px] leading-5 text-[#4A5D58] font-[500] pb-3">LGA</p>
                                 <select id="select" value={inputs.lga}
                                         onChange={(event) => handleChange(event, "lga")}
-                                        className="font-medium w-[240px] text-black leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                        className="font-medium w-[240px] text-black h-[50px]  leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                     <option value="" disabled>Select lga</option>
                                     {lga && lga?.map((option) => (
                                         <option key={option.uniqueId} value={option.name}>
@@ -186,7 +174,7 @@ const ResidentialInformation = () => {
                                 <p className="text-[14px] leading-5 text-[#4A5D58] font-[500] pb-3">Residential Status</p>
                                 <select id="select" value={inputs.status}
                                         onChange={(event) => handleChange(event, "status")}
-                                        className="font-medium w-[240px] text-black leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                        className="font-medium w-[240px] text-black leading-relaxed py-3 rounded h-[50px] border border-neutral-300 justify-between items-center gap-4 flex">
                                     <option value="" disabled>Select status</option>
                                     {status && status?.map((option) => (
                                         <option key={option.uniqueId} value={option.name}>
@@ -201,7 +189,7 @@ const ResidentialInformation = () => {
                                 </h3>
                                 <select id="select" value={inputs.residency}
                                         onChange={(event) => handleChange(event, "residenct")}
-                                        className="font-medium w-[240px] text-black leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                        className="font-medium w-[240px] text-black leading-relaxed py-3 h-[50px] rounded border border-neutral-300 justify-between items-center gap-4 flex">
                                     <option value="" disabled>Select no of years</option>
                                     {residency && residency?.map((option) => (
                                         <option key={option.uniqueId} value={option.name}>

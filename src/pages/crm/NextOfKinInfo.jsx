@@ -75,7 +75,7 @@ const NextOfKinInfo = () => {
     return (
         <div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto pl-12">
-                <div className="mt-4 mb-8">
+                <div className="mt-4 mb-12">
                     <p className="text-[20px] leading-5 text-[#4A5D58] font-bold">Next of Kin</p>
                     <p className="text-[13px] leading-5 text-[#979797] font-medium py-4">Ensure you enter the correct information, some of the information here will <br/> later be match with your BVN details</p>
                     <div>

@@ -203,7 +203,7 @@ const PersonalInformation = () => {
                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pb-3">Gender</p>
                                 <select id="select" value={inputs.gender}
                                         onChange={(event) => handleChange(event, "gender")}
-                                        className="font-medium w-[240px] text-black leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                        className="font-medium w-[240px] text-black leading-relaxed py-3 h-[50px] rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                     <option value="" disabled>Select gender</option>
                                     {gender && gender?.map((option) => (
                                         <option key={option.uniqueId} value={option.name}>
@@ -223,7 +223,7 @@ const PersonalInformation = () => {
                                         value={inputs.dateOfBirth}
                                         onChange={(event) => handleChange(event, "dateOfBirth")}
                                         placeholder="Enter date of birth"
-                                        className="font-medium w-[232px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                        className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                     />
                             </span>
                             <span>
@@ -232,7 +232,7 @@ const PersonalInformation = () => {
                                 </h3>
                                 <select id="select" value={inputs.maritalStatus}
                                         onChange={(event) => handleChange(event, "maritalStatus")}
-                                        className="font-medium w-[232px] text-black leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                        className="font-medium w-[240px] text-black leading-relaxed h-[50px] py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                     <option value="" disabled>Select marital status</option>
                                     {maritalStatus && maritalStatus?.map((option) => (
                                         <option key={option.uniqueId} value={option.name}>
@@ -247,7 +247,7 @@ const PersonalInformation = () => {
                                 </h3>
                                 <select id="select" value={inputs.noOfDependant}
                                         onChange={(event) => handleChange(event, "noOfDependant")}
-                                        className="font-medium w-[232px] text-black leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                        className="font-medium w-[250px] text-black leading-relaxed py-3  h-[50px] rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                     <option value="" disabled>Select Dependent</option>
                                     {noOfDependant && noOfDependant?.map((option) => (
                                         <option key={option.uniqueId} value={option.name}>
@@ -260,7 +260,7 @@ const PersonalInformation = () => {
                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pb-3">Educational Level</p>
                                 <select id="select" value={inputs.educationalLevel}
                                         onChange={(event) => handleChange(event, "educationalLevel")}
-                                        className="font-medium w-[238px] text-black leading-relaxed py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                        className="font-medium w-[240px] text-black leading-relaxed py-3 rounded  h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
                                     <option value="" disabled>Select Educational Level</option>
                                     {educationalLevel && educationalLevel?.map((option) => (
                                         <option key={option.uniqueId} value={option.name}>
