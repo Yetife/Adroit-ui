@@ -37,6 +37,15 @@ const NewClient = () => {
     useEffect(() => {
         fetchData();
     }, []);
+
+    const handleAdd = () => {
+        const inputs = {
+            checked: checked,
+            sector: employSector
+        }
+        sessionStorage.setItem("client", JSON.stringify(inputs));
+        router('/crm/addNewClient?step=one')
+    }
     return (
         <Layout>
             <div className="mt-8">
@@ -75,7 +84,7 @@ const NewClient = () => {
                     </div>
                 </div>
                 <div className="float-right my-4">
-                    <Button variant="primary" bgColor="#00C795" borderRadius="4px" onClick={()=>router('/crm/addNewClient?step=one')}
+                    <Button variant="primary" bgColor="#00C795" borderRadius="4px" onClick={handleAdd}
                             height="37px" size='md' as={ReactLink} w={'109px'}>
                         <Text color="white">Proceed</Text>
                     </Button>

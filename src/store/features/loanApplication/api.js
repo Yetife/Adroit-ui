@@ -110,6 +110,12 @@ export const loanApplicationApi = createApi({
             }),
             invalidatesTags: []
         }),
+        getReassignedLoan: builder.query({
+            query: (id) => ({
+                url: `/LoanApplication/Customer/getReassignmentByUserId/${id}`,
+            }),
+            providesTags: []
+        }),
     })
 })
 
@@ -129,4 +135,5 @@ export const {
     useCompleteReviewMutation,
     useRequestDocumentMutation,
     useReassignLoanMutation,
+    useGetReassignedLoanQuery,
 } = loanApplicationApi

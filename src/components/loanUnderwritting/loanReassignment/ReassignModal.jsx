@@ -5,6 +5,9 @@ import * as Dialog from "@radix-ui/react-dialog";
 import CustomAutocomplete from "../../reusables/CustomAutocomplete.jsx";
 import {Close} from "@mui/icons-material";
 import {useReassignLoanMutation} from "../../../store/features/loanApplication/api.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
 
 const ReassignModal = ({open, setOpen,  purpose}) => {
     const [staff, setStaff] = useState([])
@@ -15,7 +18,11 @@ const ReassignModal = ({open, setOpen,  purpose}) => {
         userId: ""
     })
     const token = getUserToken();
+    const queryParams = new URLSearchParams(location.search);
+    const appId = queryParams.get("aid");
     const [reassignLoan] = useReassignLoanMutation()
+    const router = useNavigate()
+    const dispatch = useDispatch()
     const fetchStaff = async () => {
         try {
             const response = await axios.get(`http://prananettech-001-site28.ftempurl.com/api/Users/get_all_active_users`, {
@@ -33,14 +40,20 @@ const ReassignModal = ({open, setOpen,  purpose}) => {
     };
 
     const handleAdd = () => {
+        const user = JSON.parse(sessionStorage.getItem("userData"));
         reassignLoan({
             body: {
-                loanApplicationId: null,
-                assignerUserId: null,
+                loanApplicationId: appId,
+                assignerUserId: user.UserId,
                 assigneeUserId: inputs.userId
             }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            router('/loanUnderwriting/review')
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
-        console.log(inputs.firstName + " " + inputs.lastName)
+        // console.log(inputs.firstName + " " + inputs.lastName)
     }
     const updateInputs = (updatedValues) => {
         setInputs((prevInputs) => ({ ...prevInputs, ...updatedValues }));

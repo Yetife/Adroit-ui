@@ -55,7 +55,6 @@ const LoanSupportingDocument = () => {
         try {
             const formData = new FormData();
             formData.append('GuarantorForm', guarantorFile);
-            formData.append('OtherForms', selectedFiles);
             formData.append('LoanApplicationId', appId);
             const token = getUserToken();
             const baseUrl = import.meta.env.VITE_APP_BASE_URL;
@@ -82,19 +81,49 @@ const LoanSupportingDocument = () => {
             setGuarantorFile(null)
         }
     };
+    const handleOtherFormUpload = async () => {
+        console.log("Uploading files:", selectedFiles);
+        try {
+            // // const fileNames = selectedFiles.map(file => file.name); // Extract file names
+            // const formData = new FormData();
+            // // formData.append('OtherForms', JSON.stringify(fileNames)); // Convert array to JSON string
+            // formData.append('OtherForms', newFiles); // Convert array to JSON string
+            // formData.append('LoanApplicationId', appId);
+            // const token = getUserToken();
+            // const baseUrl = import.meta.env.VITE_APP_BASE_URL;
 
-    // const onFileChange = ({ target: { files } }) => {
-    //     const [file] = files;
-    //     const fr = new FileReader();
-    //     fr.onload = ({ target: { result: value } }) => {
-    //         const { size, type, name } = file;
-    //         setImage({ size, type, name, value });
-    //         // Handle change or emit event here
-    //     };
-    //     fr.readAsDataURL(file);
-    //     setImageFile(file)
-    //
-    // };
+            const formData = new FormData();
+
+            // Append all files as a single field
+            selectedFiles.forEach((file, index) => {
+                formData.append(`OtherForms[${index}]`, file);
+            });
+
+            formData.append('LoanApplicationId', appId);
+            const token = getUserToken();
+            const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+
+            const res = await fetch(`${baseUrl}/LoanApplication/Customer/addSupportingDocumentOtherForms`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'multipart/form-data',
+                    'XApiKey': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+
+            if (res.status === 200) {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record saved successfully", success:true}));
+                setSelectedFiles([]);
+            }
+        } catch (error) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
+            setSelectedFiles([]);
+            setGuarantorFile(null)
+        }
+    };
+
     return (
         <div className="flex">
             <div className="flex">
@@ -142,7 +171,7 @@ const LoanSupportingDocument = () => {
                 </div>
                 <div className="mt-8 flex justify-center">
                     <Button className="ml-2" variant="primary" bgColor="#00C795" borderRadius="4px"
-                            height="37px" size='md' as={ReactLink} w={'109px'}>
+                            height="37px" size='md' as={ReactLink} w={'109px'} onClick={handleOtherFormUpload}>
                         <Text color="white">Upload</Text>
                     </Button>
             </div>

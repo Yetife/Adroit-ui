@@ -42,11 +42,12 @@ const Otp = () => {
 
     const handleLogin = async()=> {
        const otp = JSON.parse(sessionStorage.getItem("userOtp"));
+       const userName = JSON.parse(sessionStorage.getItem("userName"));
         setLoading(true)
         try {
             const user =  await axios.post('http://prananettech-001-site27.ftempurl.com/api/Adroit/Login/UserLogin', {
                 otp: otp,
-                username: "adroituser",
+                username: userName,
                 userPassword: "1234",
                 ipAddress: "192.168.1.100",
                 latitude: "-123.4567",

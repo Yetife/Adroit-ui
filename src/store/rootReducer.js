@@ -8,6 +8,7 @@ import {administrationApi} from "./features/administration/api.js";
 import {loanApplicationApi} from "./features/loanApplication/api.js";
 import {staffLoanApi} from "./features/staff/api.js";
 import {loanUnderwritingApi} from "./features/loanUnderwriting/api.js";
+import {crmApi} from "./features/crm/api.js";
 const appReducers = combineReducers({
     snackBar: snackReducer,
     [userApi.reducerPath]: userApi.reducer,
@@ -17,6 +18,7 @@ const appReducers = combineReducers({
     [loanApplicationApi.reducerPath]: loanApplicationApi.reducer,
     [loanUnderwritingApi.reducerPath]: loanUnderwritingApi.reducer,
     [staffLoanApi.reducerPath]: staffLoanApi.reducer,
+    [crmApi.reducerPath]: crmApi.reducer,
     documentation: documentationReducer,
 
 })

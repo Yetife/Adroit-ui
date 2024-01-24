@@ -65,6 +65,7 @@ const Login = () => {
             }
         }).then(res => {
             sessionStorage.setItem("userOtp", JSON.stringify(res.data.id));
+            sessionStorage.setItem("userName", JSON.stringify(inputs.username));
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
             route('/verify')
         }).catch(err =>{
