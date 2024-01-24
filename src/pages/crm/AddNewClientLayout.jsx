@@ -7,41 +7,39 @@ import NextOfKinInfo from "./NextOfKinInfo.jsx";
 import BankDetails from "./BankDetails.jsx";
 import DocumentUpload from "./DocumentUpload.jsx";
 import PreviewPage from "./PreviewPage.jsx";
+import {useLocation} from "react-router-dom";
 
 const AddNewClientLayout = () => {
+    const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-    console.log(location);
-    console.log(searchParams);
     let step = searchParams.get("step");
-    console.log("STEP>>>", step);
-
 
     const component = {
-        one: {
+        'one': {
             component: <PersonalInformation />,
             step: 0
         },
-        two: {
+        'two': {
             component: <EmploymentInformation />,
             step: 1
         },
-        three: {
+        'three': {
             component: <ResidentialInformation />,
             step: 2
         },
-        four: {
+        'four': {
             component: <NextOfKinInfo />,
             step: 3
         },
-        five: {
+        'five': {
             component: <BankDetails />,
             step: 4
         },
-        six: {
+        'six': {
             component: <DocumentUpload />,
             step: 5
         },
-        seven: {
+        'seven': {
                 component: <PreviewPage />,
                 step: 6
             },
@@ -81,9 +79,9 @@ const AddNewClientLayout = () => {
     return (
         <Layout>
             <div>
-                <ClientTimeLineComponent index={component[step].step} steps={steps} placement={placement}/>
+                <ClientTimeLineComponent index={component[step]?.step} steps={steps} placement={placement}/>
             </div>
-            <div>{component[step].component}</div>
+            <div>{component[step]?.component}</div>
         </Layout>
     );
 };

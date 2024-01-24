@@ -57,8 +57,9 @@ const ClientTimeLineComponent = ({steps, index, placement}) => {
         setCompleted({});
     };
 
-    const gotoStep = (step) => {
+    const gotoStep = (step, index) => {
         // step === `Create form` || step === `Create interview` ? step = `Create assessment` : step
+        setActiveStep(index)
         searchParams.set('step', placement[step]);
         router({
             search:searchParams.toString()
@@ -76,6 +77,9 @@ const ClientTimeLineComponent = ({steps, index, placement}) => {
                         '&.Mui-active': {
                             color: '#00C795',
                         },
+                        '&.Mui-completed':{
+                            color: '#00C795'
+                        }
                     },
                 },
             },
@@ -85,10 +89,10 @@ const ClientTimeLineComponent = ({steps, index, placement}) => {
         <div>
             <Stepper nonLinear activeStep={index}>
                 {steps.map((label, i) => (
-                    <Step key={i} completed={completed[i < index]}>
+                    <Step key={i} completed={i < index}>
                         <ThemeProvider theme={themeStyle}>
-                            <StepButton onClick={()=>gotoStep(label.name)}>
-                                <p className={`${i < index ? "text-[#00C795]" : ""}`}>
+                            <StepButton onClick={()=>gotoStep(label.name, i)}>
+                                <p className={`${i <= index ? "text-[#00C795]" : ""}`}>
                                     {label.name}
                                 </p>
                             </StepButton>

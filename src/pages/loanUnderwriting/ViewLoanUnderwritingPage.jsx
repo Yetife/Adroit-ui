@@ -162,7 +162,7 @@ const ViewLoanUnderwritingPage = () => {
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpenAdjust(!open)
-            router('/loanUnderwriting')
+            router('/loanUnderwriting/review')
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })

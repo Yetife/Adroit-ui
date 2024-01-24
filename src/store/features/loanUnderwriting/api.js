@@ -78,6 +78,12 @@ export const loanUnderwritingApi = createApi({
             }),
             invalidatesTags: ["stopDisbursement"]
         }),
+        getAdjustmentDetails: builder.query({
+            query: (id) => ({
+                url: `/LoanUnderwriting/Review/getAdjustbyCusId/${id}`,
+            }),
+            providesTags: []
+        }),
     })
 })
 
@@ -92,5 +98,6 @@ export const {
     useApproveApplicationMutation,
     useReturnApplicationMutation,
     useDisburseApplicationMutation,
+    useGetAdjustmentDetailsQuery,
 
 } = loanUnderwritingApi

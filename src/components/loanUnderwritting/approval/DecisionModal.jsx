@@ -3,8 +3,13 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import {Close} from "@mui/icons-material";
 import {Divider} from "@mui/material";
+import {useGetReviewCustomerDetailsQuery} from "../../../store/features/loanUnderwriting/api.js";
+import {useGetCustomerDataQuery} from "../../../store/features/loanApplication/api.js";
 
 const DecisionModal = ({open, setOpen}) => {
+    const queryParams = new URLSearchParams(location.search);
+    const custId = queryParams.get("id");
+    const {data, isFetching, error} = useGetCustomerDataQuery(custId)
     const decide = {
         fullName: "Franca Olayinka",
         phoneNumber: "+2346789231423",

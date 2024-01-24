@@ -14,24 +14,8 @@ const AdjustTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllAdjustQuery()
     if (error) return <p>Network error</p>
 
-    const customer = [
-        {
-            uniqueId: "5556678889",
-            customerRef: "Ref123456",
-            email: "adebona@creditWave.ng",
-            firstName: "Adekunle",
-            middleName: "Samuel",
-            lastName: "Adebona",
-            phoneNumber: "08101234567",
-            applicationDate: "01/08/2023",
-            amount: "200,000",
-            tenor: 6,
-            status: "Pending"
-        }
-    ]
-
     const filteredData = data?.data.filter((item) =>
-        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+        item.applicantNumber.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
 

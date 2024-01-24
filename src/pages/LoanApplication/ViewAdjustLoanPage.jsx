@@ -19,6 +19,7 @@ import {
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
+import {useGetAdjustmentDetailsQuery} from "../../store/features/loanUnderwriting/api.js";
 
 const ViewAdjustLoanPage = () => {
     const [open, setOpen] = useState(false)
@@ -26,6 +27,7 @@ const ViewAdjustLoanPage = () => {
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
     const {data, isFetching, error} = useGetAdjustCustomerDetailsQuery(custId)
+    const {dataa} = useGetAdjustmentDetailsQuery(custId)
     const status = queryParams.get("status");
     const [openComplete, setOpenComplete] = useState(false)
     const [completeReview] = useCompleteReviewMutation()

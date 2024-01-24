@@ -49,7 +49,7 @@ const LoanSupportingDocument = () => {
         setSelectedFiles(newFiles);
     };
 
-    const handleUpload = async () => {
+    const handleGuarantorUpload = async () => {
         console.log("Uploading files:", selectedFiles);
         console.log("Uploading files:", guarantorFile);
         try {
@@ -60,7 +60,7 @@ const LoanSupportingDocument = () => {
             const token = getUserToken();
             const baseUrl = import.meta.env.VITE_APP_BASE_URL;
 
-            const res = await fetch(`${baseUrl}/LoanApplication/Customer/addSupportingDocument`, {
+            const res = await fetch(`${baseUrl}/LoanApplication/Customer/addSupportingDocumentGuarantorForm`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -142,7 +142,7 @@ const LoanSupportingDocument = () => {
                 </div>
                 <div className="mt-8 flex justify-center">
                     <Button className="ml-2" variant="primary" bgColor="#00C795" borderRadius="4px"
-                            height="37px" size='md' as={ReactLink} w={'109px'} onClick={ handleUpload}>
+                            height="37px" size='md' as={ReactLink} w={'109px'}>
                         <Text color="white">Upload</Text>
                     </Button>
             </div>
@@ -179,7 +179,7 @@ const LoanSupportingDocument = () => {
                 </div>
                 <div className="mt-8 flex justify-center">
                         <Button className="ml-12" variant="primary" bgColor="#00C795" borderRadius="4px"
-                                height="37px" size='md' as={ReactLink} w={'109px'} onClick={ handleUpload}>
+                                height="37px" size='md' as={ReactLink} w={'109px'} onClick={ handleGuarantorUpload}>
                             <Text color="white">Upload</Text>
                         </Button>
                 </div>

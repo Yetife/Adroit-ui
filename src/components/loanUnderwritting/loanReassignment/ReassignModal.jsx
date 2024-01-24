@@ -4,6 +4,7 @@ import axios from "axios";
 import * as Dialog from "@radix-ui/react-dialog";
 import CustomAutocomplete from "../../reusables/CustomAutocomplete.jsx";
 import {Close} from "@mui/icons-material";
+import {useReassignLoanMutation} from "../../../store/features/loanApplication/api.js";
 
 const ReassignModal = ({open, setOpen,  purpose}) => {
     const [staff, setStaff] = useState([])
@@ -11,9 +12,10 @@ const ReassignModal = ({open, setOpen,  purpose}) => {
     const [inputs, setInputs] = useState({
         firstName: "",
         lastName: "",
-        email: ""
+        userId: ""
     })
     const token = getUserToken();
+    const [reassignLoan] = useReassignLoanMutation()
     const fetchStaff = async () => {
         try {
             const response = await axios.get(`http://prananettech-001-site28.ftempurl.com/api/Users/get_all_active_users`, {
@@ -31,6 +33,13 @@ const ReassignModal = ({open, setOpen,  purpose}) => {
     };
 
     const handleAdd = () => {
+        reassignLoan({
+            body: {
+                loanApplicationId: null,
+                assignerUserId: null,
+                assigneeUserId: inputs.userId
+            }
+        })
         console.log(inputs.firstName + " " + inputs.lastName)
     }
     const updateInputs = (updatedValues) => {
@@ -66,7 +75,7 @@ const ReassignModal = ({open, setOpen,  purpose}) => {
                                              setInputs((values) => ({
                                                  ...values,
                                                  firstName: selectedStaff.firstName,
-                                                 emailAddress: selectedStaff.email || '',
+                                                 userId: selectedStaff.userId || '',
                                                  lastName: selectedStaff.lastName || '',
                                              }));
                                          }}

@@ -96,6 +96,20 @@ export const loanApplicationApi = createApi({
             }),
             invalidatesTags: ["requestDocument"]
         }),
+        getCustomerData: builder.query({
+            query: (id) => ({
+                url: `/LoanApplication/Customer/getCustomerLoanDecision/${id}`,
+            }),
+            providesTags: []
+        }),
+        reassignLoan: builder.mutation({
+            query: ({body}) => ({
+                url: `/LoanApplication/Customer/Reassignment`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: []
+        }),
     })
 })
 
@@ -108,9 +122,11 @@ export const {
     useGetAllAdjustQuery,
     useGetAllDeclinedQuery,
     useGetCustomerDetailsQuery,
+    useGetCustomerDataQuery,
     useGetAdjustCustomerDetailsQuery,
     useAddCommentMutation,
     useDeclineApplicationMutation,
     useCompleteReviewMutation,
     useRequestDocumentMutation,
+    useReassignLoanMutation,
 } = loanApplicationApi
