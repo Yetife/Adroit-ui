@@ -71,6 +71,7 @@ import ReassignedLoan from "../pages/loanUnderwriting/ReassignedLoan.jsx";
 import ViewApprovalLoanPage from "../pages/loanUnderwriting/ViewApprovalLoanPage.jsx";
 import NewClient from "../pages/crm/NewClient.jsx";
 import AddNewClientLayout from "../pages/crm/AddNewClientLayout.jsx";
+import ClientPage from "../pages/crm/ClientPage.jsx";
 
 const ROUTES = [
     {
@@ -218,6 +219,11 @@ const ROUTES = [
                 path: "addNewClient",
                 exact: true,
                 element: <AddNewClientLayout />,
+            },
+            {
+                path: "clients",
+                exact: true,
+                element: <ClientPage />,
             },
         ]
     },

@@ -3,6 +3,9 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
+import {useAddResidentialMutation} from "../../store/features/crm/api.js";
 
 const ResidentialInformation = () => {
     const [status, setStatus] = useState([])
@@ -22,7 +25,8 @@ const ResidentialInformation = () => {
     const queryParams = new URLSearchParams(location.search);
     queryParams.set("step", "four");
     const token = getUserToken();
-
+    const dispatch = useDispatch()
+    const [addResident] = useAddResidentialMutation()
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
@@ -36,9 +40,25 @@ const ResidentialInformation = () => {
     };
     const handleNext = async (e) => {
         e.preventDefault();
-        navigate({
-            search: queryParams.toString(),
-        });
+        const cusId = JSON.parse(sessionStorage.getItem("cusId"));
+        addResident({
+            body: {
+                stateId: inputs.state,
+                customerId: cusId.toString(),
+                lgaId: inputs.lga,
+                permanentAddress: inputs.address,
+                nearestLandmark: inputs.landmark,
+                residentialStatus: inputs.status,
+                noOfYearsAtResidence: inputs.residency
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            navigate({
+                search: queryParams.toString(),
+            });
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
     };
     const fetchStatus = async () => {
         try {

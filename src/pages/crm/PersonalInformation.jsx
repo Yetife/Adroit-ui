@@ -4,6 +4,9 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
 import { MuiTelInput } from 'mui-tel-input'
+import {useAddClientMutation} from "../../store/features/crm/api.js";
+import {useDispatch} from "react-redux";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
 
 const PersonalInformation = () => {
     const [titles, setTitles] = useState([])
@@ -11,16 +14,22 @@ const PersonalInformation = () => {
     const [maritalStatus, setMaritalStatus] = useState([])
     const [noOfDependant, setNoOfDependant] = useState([])
     const [educationalLevel, setEducationalLevel] = useState([])
+    const dispatch = useDispatch()
     const [inputs, setInputs] = useState({
         title: "",
+        titleId: 0,
         firstName: "",
         middleName: "",
         lastName: "",
         gender: "",
+        genderId: "",
         dateOfBirth: "",
         maritalStatus: "",
+        maritalStatusId: "",
         noOfDependant: "",
+        noOfDependantId: "",
         educationalLevel: "",
+        educationalLevelId: "",
         email: "",
         phoneNumber: "",
         alternatePhoneNumber: "",
@@ -30,11 +39,55 @@ const PersonalInformation = () => {
     const queryParams = new URLSearchParams(location.search);
     queryParams.set("step", "two");
     const token = getUserToken();
+    const [addClient] = useAddClientMutation()
 
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
-        setInputs((values) => ({...values, [fieldName]: value}))
+        if (fieldName === "title") {
+            const selected = titles.find((s) => s.name === value);
+            setInputs((values) => ({
+                ...values,
+                [fieldName]: value,
+                title: selected.name,
+                titleId: selected.id || 0,
+            }));
+        } else if (fieldName === "gender") {
+            const selected = gender.find((s) => s.name === value);
+            setInputs((values) => ({
+                ...values,
+                [fieldName]: value,
+                gender: selected?.name,
+                genderId: selected.id || 0,
+            }));
+        } else if (fieldName === "maritalStatus") {
+            const selected = maritalStatus.find((s) => s.name === value);
+            setInputs((values) => ({
+                ...values,
+                [fieldName]: value,
+                maritalStatus: selected.name,
+                maritalStatusId: selected.id || 0,
+            }));
+        }else if (fieldName === "noOfDependant") {
+            const selected = noOfDependant.find((s) => s.name === value);
+            setInputs((values) => ({
+                ...values,
+                [fieldName]: value,
+                noOfDependant: selected.name,
+                noOfDependantId: selected.id || 0,
+            }));
+        }else if (fieldName === "educationalLevel") {
+            const selected = educationalLevel.find((s) => s.name === value);
+            setInputs((values) => ({
+                ...values,
+                [fieldName]: value,
+                educationalLevel: selected.name,
+                educationalLevelId: selected.id || 0,
+            }));
+        }else {
+            setInputs((values) => ({...values, [fieldName]: value}));
+        }
+        // setInputs((values) => ({...values, [fieldName]: value}))
     };
 
     const handlePhone = (e) => {
@@ -52,9 +105,34 @@ const PersonalInformation = () => {
     };
     const handleNext = async (e) => {
         e.preventDefault();
-        navigate({
-            search: queryParams.toString(),
-        });
+        const input = JSON.parse(sessionStorage.getItem("client"));
+        addClient({
+            body: {
+                hasBVN: input.checked.toString(),
+                employmentSector: input.sector,
+                titleId: inputs.titleId,
+                firstName: inputs.firstName,
+                middleName: inputs.middleName,
+                lastName: inputs.lastName,
+                genderId: inputs.genderId,
+                dob: inputs.dateOfBirth,
+                maritalStatusId: inputs.maritalStatusId,
+                noOfDependantId: inputs.noOfDependantId,
+                educationLevelId: inputs.educationalLevelId,
+                phoneNumber: inputs.phoneNumber,
+                altPhoneNumber: inputs.alternatePhoneNumber,
+                email: inputs.email
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            sessionStorage.setItem("clientInfo", JSON.stringify({...inputs}));
+            sessionStorage.setItem("cusId", JSON.stringify(res.data.data.id));
+            navigate({
+                search: queryParams.toString(),
+            });
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
     };
     const fetchTitle = async () => {
         try {
@@ -103,6 +181,15 @@ const PersonalInformation = () => {
         }
     };
 
+    const [tit, setTit] = useState("")
+    // const handleSelectChange = (event) => {
+    //     const selectedOption = event.target.value;
+    //     const selectedOptionObject = titles.find((option) => option.name === selectedOption);
+    //
+    //     setTit(selectedOption);
+    //     setSelectedId(selectedOptionObject ? selectedOptionObject.id : ''); // Use the corresponding ID
+    // };
+
     const fetchDependant = async () => {
         try {
             const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/GeneralSetUp/getallvalidNoofdependants`, {
@@ -141,6 +228,13 @@ const PersonalInformation = () => {
         fetchMaritalStatus();
         fetchDependant();
         fetchLevel();
+    }, []);
+
+    useEffect(() => {
+        const clientInfo = JSON.parse(sessionStorage.getItem("clientInfo"));
+        if(clientInfo){
+            setInputs({...clientInfo})
+        }
     }, []);
     return (
         <div>

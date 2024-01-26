@@ -3,6 +3,9 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
+import {useAddBankDetailsMutation} from "../../store/features/crm/api.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
 
 const BankDetails = () => {
     const [bank, setBank] = useState([])
@@ -17,6 +20,8 @@ const BankDetails = () => {
     const queryParams = new URLSearchParams(location.search);
     queryParams.set("step", "six");
     const token = getUserToken();
+    const [addBank] = useAddBankDetailsMutation()
+    const dispatch = useDispatch()
 
 
     const handleChange = (e, fieldName) => {
@@ -32,9 +37,22 @@ const BankDetails = () => {
 
     const handleNext = async (e) => {
         e.preventDefault();
-        navigate({
-            search: queryParams.toString(),
-        });
+        const cusId = JSON.parse(sessionStorage.getItem("cusId"));
+        addBank({
+            body: {
+                bankId: inputs.bank,
+                customerId: cusId.toString(),
+                accountNumber: inputs.accNumber,
+                accountName: inputs.accName
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            navigate({
+                search: queryParams.toString(),
+            });
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
     };
     const fetchTitle = async () => {
         try {
@@ -78,7 +96,7 @@ const BankDetails = () => {
                         <div className="flex space-x-6 mt-4">
                             <span>
                                 <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                Account Nummber
+                                Account Number
                                 </h3>
                                 <input
                                     type="text"

@@ -209,7 +209,7 @@ export function TableData({data, no}) {
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
                         onClick={() => handleOpenEdit(data)}>Edit</span>
-        </span>
+                </span>
             </td>
 
             <AddDocumentModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}

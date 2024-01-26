@@ -4,6 +4,9 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
 import { MuiTelInput } from 'mui-tel-input'
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useAddNextOfKinMutation} from "../../store/features/crm/api.js";
+import {useDispatch} from "react-redux";
 
 const NextOfKinInfo = () => {
     const [titles, setTitles] = useState([])
@@ -23,6 +26,8 @@ const NextOfKinInfo = () => {
     const queryParams = new URLSearchParams(location.search);
     queryParams.set("step", "five");
     const token = getUserToken();
+    const dispatch = useDispatch()
+    const [addNOK] = useAddNextOfKinMutation()
 
 
     const handleChange = (e, fieldName) => {
@@ -49,9 +54,27 @@ const NextOfKinInfo = () => {
 
     const handleNext = async (e) => {
         e.preventDefault();
-        navigate({
-            search: queryParams.toString(),
-        });
+        const cusId = JSON.parse(sessionStorage.getItem("cusId"));
+        addNOK({
+            body: {
+                customerId: cusId.toString(),
+                titleId: inputs.title,
+                firstName: inputs.firstName,
+                middleName: inputs.middleName,
+                lastName: inputs.lastName,
+                phoneNumber: inputs.phoneNumber,
+                altPhoneNumber: inputs.alternatePhoneNumber,
+                emailAddress: inputs.email,
+                permanentAddress: inputs.address
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            navigate({
+                search: queryParams.toString(),
+            });
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
     };
     const fetchTitle = async () => {
         try {

@@ -4,6 +4,9 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
 import { MuiTelInput } from 'mui-tel-input'
+import {useAddEmploymentMutation} from "../../store/features/crm/api.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
 
 const EmploymentInformation = () => {
     const [organization, setOrganization] = useState([])
@@ -25,18 +28,20 @@ const EmploymentInformation = () => {
         address: "",
         phoneNumber: "",
         salaryRange: "",
-        paymentDay: ""
+        paymentDay: "",
     })
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     queryParams.set("step", "three");
     const token = getUserToken();
+    const [addEmployment] = useAddEmploymentMutation()
+    const dispatch = useDispatch()
 
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
-        setInputs((values) => ({...values, [fieldName]: value}))
+        setInputs((values) => ({...values, [fieldName]: value}));
     };
 
     const handlePhone = (e) => {
@@ -57,9 +62,33 @@ const EmploymentInformation = () => {
     };
     const handleNext = async (e) => {
         e.preventDefault();
-        navigate({
-            search: queryParams.toString(),
-        });
+        const cusId = JSON.parse(sessionStorage.getItem("cusId"));
+        addEmployment({
+            body: {
+                organizationId: inputs.organization,
+                customerId: cusId.toString(),
+                stateId: inputs.state,
+                lgaId: inputs.lga,
+                address: inputs.address,
+                nearestLandmark: inputs.landmark,
+                phoneNumber: inputs.phoneNumber,
+                staffId: inputs.staffId,
+                jobRole: inputs.jobRole,
+                employmentTypeId: inputs.employmentType,
+                dateOfEmployment: inputs.dateOfEmployment,
+                emailAddress: inputs.email,
+                salaryRange: inputs.salaryRange,
+                salaryPaymentDay: inputs.paymentDay
+
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            navigate({
+                search: queryParams.toString(),
+            });
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
     };
     const fetchOrganization = async () => {
         try {
@@ -168,7 +197,7 @@ const EmploymentInformation = () => {
         <div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto pl-12">
                 <div className="mt-4 mb-12">
-                    <p className="text-[20px] leading-5 text-[#4A5D58] font-bold">Employer’s Information</p>
+                    <p className="text-[20px] leading-5 text-[#4A5D58] font-bold">Employment Information</p>
                     <p className="text-[14px] leading-5 text-[#979797] font-medium py-3">Ensure you enter the correct information, some of the information here will <br/> later be match with your BVN details</p>
                     <div>
                         <div className="flex space-x-6 mt-4">
