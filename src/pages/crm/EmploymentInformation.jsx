@@ -4,7 +4,11 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
 import { MuiTelInput } from 'mui-tel-input'
-import {useAddEmploymentMutation} from "../../store/features/crm/api.js";
+import {
+    useAddEmploymentMutation,
+    useEditEmploymentMutation,
+    useGetClientByIdQuery
+} from "../../store/features/crm/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 
@@ -36,7 +40,11 @@ const EmploymentInformation = () => {
     queryParams.set("step", "three");
     const token = getUserToken();
     const [addEmployment] = useAddEmploymentMutation()
+    const [editEmployment] = useEditEmploymentMutation()
     const dispatch = useDispatch()
+    const custId = queryParams.get("cid");
+    const clientId = JSON.parse(sessionStorage.getItem("cusId"));
+    // const {data, isFetching, error} = useGetClientByIdQuery(custId || clientId )
 
 
     const handleChange = (e, fieldName) => {
@@ -62,33 +70,63 @@ const EmploymentInformation = () => {
     };
     const handleNext = async (e) => {
         e.preventDefault();
-        const cusId = JSON.parse(sessionStorage.getItem("cusId"));
-        addEmployment({
-            body: {
-                organizationId: inputs.organization,
-                customerId: cusId.toString(),
-                stateId: inputs.state,
-                lgaId: inputs.lga,
-                address: inputs.address,
-                nearestLandmark: inputs.landmark,
-                phoneNumber: inputs.phoneNumber,
-                staffId: inputs.staffId,
-                jobRole: inputs.jobRole,
-                employmentTypeId: inputs.employmentType,
-                dateOfEmployment: inputs.dateOfEmployment,
-                emailAddress: inputs.email,
-                salaryRange: inputs.salaryRange,
-                salaryPaymentDay: inputs.paymentDay
+        if (custId || clientId){
+            const cusId = JSON.parse(sessionStorage.getItem("cusId"));
+            editEmployment({
+                body: {
+                    organizationId: inputs.organization,
+                    customerId: custId.toString(),
+                    stateId: inputs.state,
+                    lgaId: inputs.lga,
+                    address: inputs.address,
+                    nearestLandmark: inputs.landmark,
+                    phoneNumber: inputs.phoneNumber,
+                    staffId: inputs.staffId,
+                    jobRole: inputs.jobRole,
+                    employmentTypeId: inputs.employmentType,
+                    dateOfEmployment: inputs.dateOfEmployment,
+                    emailAddress: inputs.email,
+                    salaryRange: inputs.salaryRange,
+                    salaryPaymentDay: inputs.paymentDay,
+                    uniqueId: data?.data.employerInformation?.uniqueId
+                }
+            }).then(res => {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+                navigate({
+                    search: queryParams.toString(),
+                });
+            }).catch(err =>{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+            })
+        }else {
+            const cusId = JSON.parse(sessionStorage.getItem("cusId"));
+            addEmployment({
+                body: {
+                    organizationId: inputs.organization,
+                    customerId: cusId.toString(),
+                    stateId: inputs.state,
+                    lgaId: inputs.lga,
+                    address: inputs.address,
+                    nearestLandmark: inputs.landmark,
+                    phoneNumber: inputs.phoneNumber,
+                    staffId: inputs.staffId,
+                    jobRole: inputs.jobRole,
+                    employmentTypeId: inputs.employmentType,
+                    dateOfEmployment: inputs.dateOfEmployment,
+                    emailAddress: inputs.email,
+                    salaryRange: inputs.salaryRange,
+                    salaryPaymentDay: inputs.paymentDay
 
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            navigate({
-                search: queryParams.toString(),
-            });
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
+                }
+            }).then(res => {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+                navigate({
+                    search: queryParams.toString(),
+                });
+            }).catch(err =>{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+            })
+        }
     };
     const fetchOrganization = async () => {
         try {
@@ -185,7 +223,39 @@ const EmploymentInformation = () => {
         }
     };
 
+    const fetchClient = async () => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/CRM/Client/getbycustId/${custId || clientId}`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            console.log(response.data?.data.personalandcontactInformation)
+            setInputs({
+                organization: response.data?.data.employerInformation?.organizationId,
+                state: response.data?.data.employerInformation?.stateId,
+                staffId: response.data?.data.employerInformation?.staffId,
+                landmark: response.data?.data.employerInformation?.nearestLandmark,
+                lga: response.data?.data.employerInformation?.lgaId,
+                dateOfEmployment: response.data?.data.employerInformation?.dateOfEmployment,
+                jobRole: response.data?.data.employerInformation?.jobRole,
+                employmentType: response.data?.data.employerInformation?.employmentTypeId,
+                email: response.data?.data.employerInformation?.emailAddress,
+                address: response.data?.data.employerInformation?.address,
+                phoneNumber: response.data?.data.employerInformation?.phoneNumber,
+                salaryRange: response.data?.data.employerInformation?.salaryRange,
+                paymentDay: response.data?.data.employerInformation?.salaryPaymentDay,
+            })
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     useEffect(() => {
+        fetchClient();
         fetchOrganization();
         fetchState();
         fetchLga();
@@ -193,6 +263,7 @@ const EmploymentInformation = () => {
         fetchSalaryRange();
         fetchPaymentDay()
     }, []);
+
     return (
         <div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto pl-12">

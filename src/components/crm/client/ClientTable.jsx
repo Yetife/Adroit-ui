@@ -6,11 +6,11 @@ import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import AddLoanStatusModal from "../../loanApplication/loanStatus/AddLoanStatusModal.jsx";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
+import {useGetAllClientQuery} from "../../../store/features/crm/api.js";
 
 const ClientTable = ({searchTerm}) => {
-    const user = JSON.parse(sessionStorage.getItem("userData"));
 
-    const {data, isFetching, error} =  useGetReassignedLoanQuery(user.UserId)
+    const {data, isFetching, error} =  useGetAllClientQuery()
     if (error) return <p>Network error</p>
 
     const customer = [
@@ -29,7 +29,7 @@ const ClientTable = ({searchTerm}) => {
         }
     ]
 
-    const filteredData = customer.filter((item) =>
+    const filteredData = data?.data.filter((item) =>
         item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -88,6 +88,17 @@ export function TableData({data, no}) {
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
     const handleBlurDropdown = () => setShowDropdown(false)
 
+    const convertPhoneNumber = (inputNumber) => {
+        const cleanedNumber = inputNumber.replace(/\+234\s*/g, '');
+        const numberWithoutSpaces = cleanedNumber.replace(/\s/g, '');
+        if (numberWithoutSpaces.startsWith('0')) {
+            return numberWithoutSpaces;
+        } else {
+            return `0${numberWithoutSpaces}`;
+        }
+    };
+
+//
     const handleEdit = ()=> {
         editStatus({
             body: {
@@ -119,10 +130,10 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.email}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.emailAddress}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.phoneNumber}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{convertPhoneNumber(data?.phoneNumber)}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <a
@@ -161,7 +172,7 @@ export function TableData({data, no}) {
                         onClick={() =>  router('/crm/addNewClient?step=one')}>View</span>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() =>  router(`/crm/addNewClient?step=one&cid=${data.customerId}`)}>Edit</span>
+                        onClick={() =>  router(`/crm/addNewClient?step=one&cid=${data.id}`)}>Edit</span>
                 </span>
             </td>
             <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked}

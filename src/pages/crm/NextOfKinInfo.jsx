@@ -5,7 +5,11 @@ import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
 import { MuiTelInput } from 'mui-tel-input'
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import {useAddNextOfKinMutation} from "../../store/features/crm/api.js";
+import {
+    useAddNextOfKinMutation,
+    useEditNextOfKinMutation,
+    useGetClientByIdQuery
+} from "../../store/features/crm/api.js";
 import {useDispatch} from "react-redux";
 
 const NextOfKinInfo = () => {
@@ -28,6 +32,10 @@ const NextOfKinInfo = () => {
     const token = getUserToken();
     const dispatch = useDispatch()
     const [addNOK] = useAddNextOfKinMutation()
+    const [editNOK] = useEditNextOfKinMutation()
+    const custId = queryParams.get("cid");
+    const clientId = JSON.parse(sessionStorage.getItem("cusId"));
+    const {data, isFetching, error} = useGetClientByIdQuery(custId || clientId )
 
 
     const handleChange = (e, fieldName) => {
@@ -55,26 +63,50 @@ const NextOfKinInfo = () => {
     const handleNext = async (e) => {
         e.preventDefault();
         const cusId = JSON.parse(sessionStorage.getItem("cusId"));
-        addNOK({
-            body: {
-                customerId: cusId.toString(),
-                titleId: inputs.title,
-                firstName: inputs.firstName,
-                middleName: inputs.middleName,
-                lastName: inputs.lastName,
-                phoneNumber: inputs.phoneNumber,
-                altPhoneNumber: inputs.alternatePhoneNumber,
-                emailAddress: inputs.email,
-                permanentAddress: inputs.address
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            navigate({
-                search: queryParams.toString(),
-            });
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
+        if (cusId || clientId) {
+            editNOK({
+                body: {
+                    customerId: custId.toString(),
+                    titleId: inputs.title,
+                    firstName: inputs.firstName,
+                    middleName: inputs.middleName,
+                    lastName: inputs.lastName,
+                    phoneNumber: inputs.phoneNumber,
+                    altPhoneNumber: inputs.alternatePhoneNumber,
+                    emailAddress: inputs.email,
+                    permanentAddress: inputs.address,
+                    uniqueId: data?.data.nextOfKin?.uniqueId
+                }
+            }).then(res => {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+                navigate({
+                    search: queryParams.toString(),
+                });
+            }).catch(err =>{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+            })
+        }else {
+            addNOK({
+                body: {
+                    customerId: cusId.toString(),
+                    titleId: inputs.title,
+                    firstName: inputs.firstName,
+                    middleName: inputs.middleName,
+                    lastName: inputs.lastName,
+                    phoneNumber: inputs.phoneNumber,
+                    altPhoneNumber: inputs.alternatePhoneNumber,
+                    emailAddress: inputs.email,
+                    permanentAddress: inputs.address
+                }
+            }).then(res => {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+                navigate({
+                    search: queryParams.toString(),
+                });
+            }).catch(err =>{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+            })
+        }
     };
     const fetchTitle = async () => {
         try {
@@ -94,6 +126,27 @@ const NextOfKinInfo = () => {
 
     useEffect(() => {
         fetchTitle();
+    }, []);
+
+    useEffect(() => {
+        const response = axios.get(`${import.meta.env.VITE_APP_BASE_URL}/CRM/Client/getbycustId/${custId || clientId}`, {
+            headers: {
+                'Content-Type': "application/json",
+                'Accept': "application/json",
+                'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                'authorization': `Bearer ${token}`
+            }
+        });
+        setInputs({
+            title: response.data?.data.nextOfKin?.titleId,
+            firstName: response.data?.data.nextOfKin?.firstName,
+            middleName: response.data?.data.nextOfKin?.middleName,
+            lastName: response.data?.data.nextOfKin?.lastName,
+            email: response.data?.data.nextOfKin?.emailAddress,
+            phoneNumber: response.data?.data.nextOfKin?.phoneNumber,
+            alternatePhoneNumber: response.data?.data.nextOfKin?.altPhoneNumber,
+            address: response.data?.data.nextOfKin?.permanentAddress,
+        })
     }, []);
     return (
         <div>

@@ -5,7 +5,11 @@ import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
-import {useAddResidentialMutation} from "../../store/features/crm/api.js";
+import {
+    useAddResidentialMutation,
+    useEditResidentialMutation,
+    useGetClientByIdQuery
+} from "../../store/features/crm/api.js";
 
 const ResidentialInformation = () => {
     const [status, setStatus] = useState([])
@@ -27,6 +31,10 @@ const ResidentialInformation = () => {
     const token = getUserToken();
     const dispatch = useDispatch()
     const [addResident] = useAddResidentialMutation()
+    const [editResident] = useEditResidentialMutation()
+    const custId = queryParams.get("cid");
+    const clientId = JSON.parse(sessionStorage.getItem("cusId"));
+    const {data, isFetching, error} = useGetClientByIdQuery(custId || clientId )
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
@@ -41,24 +49,46 @@ const ResidentialInformation = () => {
     const handleNext = async (e) => {
         e.preventDefault();
         const cusId = JSON.parse(sessionStorage.getItem("cusId"));
-        addResident({
-            body: {
-                stateId: inputs.state,
-                customerId: cusId.toString(),
-                lgaId: inputs.lga,
-                permanentAddress: inputs.address,
-                nearestLandmark: inputs.landmark,
-                residentialStatus: inputs.status,
-                noOfYearsAtResidence: inputs.residency
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            navigate({
-                search: queryParams.toString(),
-            });
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
+        if (custId || clientId){
+            editResident({
+                body: {
+                    stateId: inputs.state,
+                    customerId: custId.toString(),
+                    lgaId: inputs.lga,
+                    permanentAddress: inputs.address,
+                    nearestLandmark: inputs.landmark,
+                    residentialStatus: inputs.status,
+                    noOfYearsAtResidence: inputs.residency,
+                    uniqueId: data?.data.residentialInformation?.uniqueId,
+                }
+            }).then(res => {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+                navigate({
+                    search: queryParams.toString(),
+                });
+            }).catch(err =>{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+            })
+        }else {
+            addResident({
+                body: {
+                    stateId: inputs.state,
+                    customerId: cusId.toString(),
+                    lgaId: inputs.lga,
+                    permanentAddress: inputs.address,
+                    nearestLandmark: inputs.landmark,
+                    residentialStatus: inputs.status,
+                    noOfYearsAtResidence: inputs.residency
+                }
+            }).then(res => {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+                navigate({
+                    search: queryParams.toString(),
+                });
+            }).catch(err =>{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+            })
+        }
     };
     const fetchStatus = async () => {
         try {
@@ -129,6 +159,17 @@ const ResidentialInformation = () => {
         fetchState();
         fetchLga();
         fetchResidency()
+    }, []);
+
+    useEffect(() => {
+        setInputs({
+            state: data?.data.residentialInformation?.stateId,
+            status: data?.data.residentialInformation?.residentialStatus,
+            landmark: data?.data.residentialInformation?.nearestLandmark,
+            lga: data?.data.residentialInformation?.lgaId,
+            address: data?.data.residentialInformation?.permanentAddress,
+            residency: data?.data.residentialInformation?.noOfYearsAtResidence,
+        })
     }, []);
     return (
         <div>
@@ -208,7 +249,7 @@ const ResidentialInformation = () => {
                                      No. Of Years At Residence
                                 </h3>
                                 <select id="select" value={inputs.residency}
-                                        onChange={(event) => handleChange(event, "residenct")}
+                                        onChange={(event) => handleChange(event, "residency")}
                                         className="font-medium w-[240px] text-black leading-relaxed py-3 h-[50px] rounded border border-neutral-300 justify-between items-center gap-4 flex">
                                     <option value="" disabled>Select no of years</option>
                                     {residency && residency?.map((option) => (

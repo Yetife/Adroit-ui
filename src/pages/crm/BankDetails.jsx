@@ -3,13 +3,16 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
-import {useAddBankDetailsMutation} from "../../store/features/crm/api.js";
+import {
+    useAddBankDetailsMutation,
+    useEditBankDetailsMutation,
+    useGetClientByIdQuery
+} from "../../store/features/crm/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 
 const BankDetails = () => {
     const [bank, setBank] = useState([])
-
     const [inputs, setInputs] = useState({
         bank: "",
         accNumber: "",
@@ -21,7 +24,11 @@ const BankDetails = () => {
     queryParams.set("step", "six");
     const token = getUserToken();
     const [addBank] = useAddBankDetailsMutation()
+    const [editBank] = useEditBankDetailsMutation()
     const dispatch = useDispatch()
+    const custId = queryParams.get("cid");
+    const clientId = JSON.parse(sessionStorage.getItem("cusId"));
+    const {data, isFetching, error} = useGetClientByIdQuery(custId || clientId )
 
 
     const handleChange = (e, fieldName) => {
@@ -38,21 +45,40 @@ const BankDetails = () => {
     const handleNext = async (e) => {
         e.preventDefault();
         const cusId = JSON.parse(sessionStorage.getItem("cusId"));
-        addBank({
-            body: {
-                bankId: inputs.bank,
-                customerId: cusId.toString(),
-                accountNumber: inputs.accNumber,
-                accountName: inputs.accName
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            navigate({
-                search: queryParams.toString(),
-            });
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
+        if (custId || clientId){
+            editBank({
+                body: {
+                    bankId: inputs.bank,
+                    customerId: cusId.toString(),
+                    accountNumber: inputs.accNumber,
+                    accountName: inputs.accName,
+                    uniqueId: data?.bankDetail?.uniqueId
+                }
+            }).then(res => {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+                navigate({
+                    search: queryParams.toString(),
+                });
+            }).catch(err =>{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+            })
+        }else {
+            addBank({
+                body: {
+                    bankId: inputs.bank,
+                    customerId: cusId.toString(),
+                    accountNumber: inputs.accNumber,
+                    accountName: inputs.accName
+                }
+            }).then(res => {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+                navigate({
+                    search: queryParams.toString(),
+                });
+            }).catch(err =>{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+            })
+        }
     };
     const fetchTitle = async () => {
         try {
@@ -72,6 +98,14 @@ const BankDetails = () => {
 
     useEffect(() => {
         fetchTitle();
+    }, []);
+
+    useEffect(() => {
+        setInputs({
+            bank: data?.bankDetail?.bankId,
+            accNumber: data?.bankDetail?.accountNumber,
+            accName: data?.bankDetail?.accountName,
+        })
     }, []);
     return (
         <div>

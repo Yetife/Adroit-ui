@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
 import { MuiTelInput } from 'mui-tel-input'
-import {useAddClientMutation} from "../../store/features/crm/api.js";
+import {useAddClientMutation, useEditClientMutation, useGetClientByIdQuery} from "../../store/features/crm/api.js";
 import {useDispatch} from "react-redux";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 
@@ -40,6 +40,10 @@ const PersonalInformation = () => {
     queryParams.set("step", "two");
     const token = getUserToken();
     const [addClient] = useAddClientMutation()
+    const [editClient] = useEditClientMutation()
+    const custId = queryParams.get("cid");
+    const clientId = JSON.parse(sessionStorage.getItem("cusId"));
+    // const {data, isFetching, error} = useGetClientByIdQuery(custId || clientId )
 
 
     const handleChange = (e, fieldName) => {
@@ -106,33 +110,62 @@ const PersonalInformation = () => {
     const handleNext = async (e) => {
         e.preventDefault();
         const input = JSON.parse(sessionStorage.getItem("client"));
-        addClient({
-            body: {
-                hasBVN: input.checked.toString(),
-                employmentSector: input.sector,
-                titleId: inputs.titleId,
-                firstName: inputs.firstName,
-                middleName: inputs.middleName,
-                lastName: inputs.lastName,
-                genderId: inputs.genderId,
-                dob: inputs.dateOfBirth,
-                maritalStatusId: inputs.maritalStatusId,
-                noOfDependantId: inputs.noOfDependantId,
-                educationLevelId: inputs.educationalLevelId,
-                phoneNumber: inputs.phoneNumber,
-                altPhoneNumber: inputs.alternatePhoneNumber,
-                email: inputs.email
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            sessionStorage.setItem("clientInfo", JSON.stringify({...inputs}));
-            sessionStorage.setItem("cusId", JSON.stringify(res.data.data.id));
-            navigate({
-                search: queryParams.toString(),
-            });
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
+        if (custId || clientId){
+            editClient({
+                body: {
+                    // hasBVN: input.checked.toString(),
+                    // employmentSector: input.sector,
+                    titleId: inputs.titleId,
+                    firstName: inputs.firstName,
+                    middleName: inputs.middleName,
+                    lastName: inputs.lastName,
+                    genderId: inputs.genderId,
+                    dob: inputs.dateOfBirth,
+                    maritalStatusId: inputs.maritalStatusId,
+                    noOfDependantId: inputs.noOfDependantId,
+                    educationLevelId: inputs.educationalLevelId,
+                    phoneNumber: inputs.phoneNumber,
+                    altPhoneNumber: inputs.alternatePhoneNumber,
+                    email: inputs.email,
+                    cusId: clientId || custId
+                }
+            }).then(res => {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+                navigate({
+                    search: queryParams.toString(),
+                });
+            }).catch(err =>{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+            })
+        }else{
+            const input = JSON.parse(sessionStorage.getItem("client"));
+            addClient({
+                body: {
+                    hasBVN: input.checked.toString(),
+                    employmentSector: input.sector,
+                    titleId: inputs.titleId,
+                    firstName: inputs.firstName,
+                    middleName: inputs.middleName,
+                    lastName: inputs.lastName,
+                    genderId: inputs.genderId,
+                    dob: inputs.dateOfBirth,
+                    maritalStatusId: inputs.maritalStatusId,
+                    noOfDependantId: inputs.noOfDependantId,
+                    educationLevelId: inputs.educationalLevelId,
+                    phoneNumber: inputs.phoneNumber,
+                    altPhoneNumber: inputs.alternatePhoneNumber,
+                    email: inputs.email
+                }
+            }).then(res => {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+                sessionStorage.setItem("cusId", JSON.stringify(res.data.data.id));
+                navigate({
+                    search: queryParams.toString(),
+                });
+            }).catch(err =>{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+            })
+        }
     };
     const fetchTitle = async () => {
         try {
@@ -180,16 +213,6 @@ const PersonalInformation = () => {
             console.error('Error fetching data:', error);
         }
     };
-
-    const [tit, setTit] = useState("")
-    // const handleSelectChange = (event) => {
-    //     const selectedOption = event.target.value;
-    //     const selectedOptionObject = titles.find((option) => option.name === selectedOption);
-    //
-    //     setTit(selectedOption);
-    //     setSelectedId(selectedOptionObject ? selectedOptionObject.id : ''); // Use the corresponding ID
-    // };
-
     const fetchDependant = async () => {
         try {
             const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/GeneralSetUp/getallvalidNoofdependants`, {
@@ -216,13 +239,45 @@ const PersonalInformation = () => {
                     'authorization': `Bearer ${token}`
                 }
             });
+            console.log(response.data.data)
             setEducationalLevel(response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
+    const fetchClient = async () => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/CRM/Client/getbycustId/${custId || clientId}`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            console.log(response.data?.data.personalandcontactInformation)
+            setInputs({
+                title: response.data?.data.personalandcontactInformation?.title,
+                firstName: response.data?.data.personalandcontactInformation?.firstName,
+                middleName: response.data?.data.personalandcontactInformation?.middleName,
+                lastName: response.data?.data.personalandcontactInformation?.lastName,
+                gender: response.data?.data.personalandcontactInformation?.gender,
+                dateOfBirth: response.data?.data.personalandcontactInformation?.dob,
+                maritalStatus: response.data?.data.personalandcontactInformation?.marritalStatus,
+                noOfDependant: response.data?.data.personalandcontactInformation?.noOfde,
+                educationalLevel: response.data?.data.personalandcontactInformation?.eduLevel,
+                email: response.data?.data.personalandcontactInformation?.email,
+                phoneNumber: response.data?.data.personalandcontactInformation?.phone,
+                alternatePhoneNumber: response.data?.data.personalandcontactInformation?.altPhone,
+            })
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     useEffect(() => {
+        fetchClient();
         fetchTitle();
         fetchGender();
         fetchMaritalStatus();
@@ -230,12 +285,31 @@ const PersonalInformation = () => {
         fetchLevel();
     }, []);
 
-    useEffect(() => {
-        const clientInfo = JSON.parse(sessionStorage.getItem("clientInfo"));
-        if(clientInfo){
-            setInputs({...clientInfo})
-        }
-    }, []);
+    // useEffect(() => {
+    //     const response = axios.get(`${import.meta.env.VITE_APP_BASE_URL}/CRM/Client/getbycustId/${custId || clientId}`, {
+    //         headers: {
+    //             'Content-Type': "application/json",
+    //             'Accept': "application/json",
+    //             'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+    //             'authorization': `Bearer ${token}`
+    //         }
+    //     });
+    //     console.log(response.data?.data.personalandcontactInformation)
+    //     setInputs({
+    //         title: response.data?.data.personalandcontactInformation?.title,
+    //         firstName: response.data?.data.personalandcontactInformation?.firstName,
+    //         middleName: response.data?.data.personalandcontactInformation?.middleName,
+    //         lastName: response.data?.data.personalandcontactInformation?.lastName,
+    //         gender: response.data?.data.personalandcontactInformation?.gender,
+    //         dateOfBirth: response.data?.data.personalandcontactInformation?.dob,
+    //         maritalStatus: response.data?.data.personalandcontactInformation?.marritalStatus,
+    //         noOfDependant: response.data?.data.personalandcontactInformation?.noOfde,
+    //         educationalLevel: response.data?.data.personalandcontactInformation?.eduLevel,
+    //         email: response.data?.data.personalandcontactInformation?.email,
+    //         phoneNumber: response.data?.data.personalandcontactInformation?.phone,
+    //         alternatePhoneNumber: response.data?.data.personalandcontactInformation?.altPhone,
+    //     })
+    // }, []);
     return (
         <div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto pl-12">
