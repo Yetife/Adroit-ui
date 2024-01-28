@@ -33,6 +33,7 @@ const EmploymentInformation = () => {
         phoneNumber: "",
         salaryRange: "",
         paymentDay: "",
+        uniqueId: ""
     })
     const navigate = useNavigate();
     const location = useLocation();
@@ -88,7 +89,7 @@ const EmploymentInformation = () => {
                     emailAddress: inputs.email,
                     salaryRange: inputs.salaryRange,
                     salaryPaymentDay: inputs.paymentDay,
-                    uniqueId: data?.data.employerInformation?.uniqueId
+                    uniqueId: inputs.uniqueId
                 }
             }).then(res => {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
@@ -233,7 +234,6 @@ const EmploymentInformation = () => {
                     'authorization': `Bearer ${token}`
                 }
             });
-            console.log(response.data?.data.personalandcontactInformation)
             setInputs({
                 organization: response.data?.data.employerInformation?.organizationId,
                 state: response.data?.data.employerInformation?.stateId,
@@ -248,6 +248,7 @@ const EmploymentInformation = () => {
                 phoneNumber: response.data?.data.employerInformation?.phoneNumber,
                 salaryRange: response.data?.data.employerInformation?.salaryRange,
                 paymentDay: response.data?.data.employerInformation?.salaryPaymentDay,
+                uniqueId: response.data?.data.employerInformation?.uniqueId,
             })
         } catch (error) {
             console.error('Error fetching data:', error);

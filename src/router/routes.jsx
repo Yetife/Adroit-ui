@@ -72,6 +72,7 @@ import ViewApprovalLoanPage from "../pages/loanUnderwriting/ViewApprovalLoanPage
 import NewClient from "../pages/crm/NewClient.jsx";
 import AddNewClientLayout from "../pages/crm/AddNewClientLayout.jsx";
 import ClientPage from "../pages/crm/ClientPage.jsx";
+import ViewPage from "../pages/crm/ViewPage.jsx";
 
 const ROUTES = [
     {
@@ -224,6 +225,11 @@ const ROUTES = [
                 path: "clients",
                 exact: true,
                 element: <ClientPage />,
+            },
+            {
+                path: "clients/view",
+                exact: true,
+                element: <ViewPage />,
             },
         ]
     },

@@ -13,22 +13,6 @@ const ClientTable = ({searchTerm}) => {
     const {data, isFetching, error} =  useGetAllClientQuery()
     if (error) return <p>Network error</p>
 
-    const customer = [
-        {
-            customerId: "5556678889",
-            customerRef: "Ref123456",
-            email: "adebona@creditWave.ng",
-            firstName: "Adekunle",
-            middleName: "Samuel",
-            lastName: "Adebona",
-            phoneNumber: "08101234567",
-            applicationDate: "01/08/2023",
-            amount: "200,000",
-            tenor: 6,
-            channel: "USSD"
-        }
-    ]
-
     const filteredData = data?.data.filter((item) =>
         item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -76,13 +60,6 @@ export function TableHeader({name}) {
 
 const header = ['S/N', 'First Name','Mid. Name', 'Last Name', 'Email Address', 'Phone Number', 'Non-indebtedness Letter', 'Demand Letter', 'Actions' ]
 export function TableData({data, no}) {
-    const [open, setOpen] = useState(false);
-    const [checked, setChecked] = useState(true);
-    const [status, setStatus] = useState("")
-    const [purpose, setPurpose] = useState("")
-    const [id, setId] = useState(0)
-    const dispatch = useDispatch()
-    const [editStatus] = useEditStatusMutation()
     const router = useNavigate()
     const [ showDropdown, setShowDropdown ] = useState(false)
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -98,22 +75,6 @@ export function TableData({data, no}) {
         }
     };
 
-//
-    const handleEdit = ()=> {
-        editStatus({
-            body: {
-                name: status,
-                status: checked ? "1" : "0",
-                uniqueId: id
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-            setStatus("")
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
 
     return (
         <tr>
@@ -169,14 +130,12 @@ export function TableData({data, no}) {
                       style={{display: showDropdown ? "block" : "none"}}>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
-                        onClick={() =>  router('/crm/addNewClient?step=one')}>View</span>
+                        onClick={() =>  router(`/crm/clients/view?step=one&cid=${data.id}`)}>View</span>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
                         onClick={() =>  router(`/crm/addNewClient?step=one&cid=${data.id}`)}>Edit</span>
                 </span>
             </td>
-            <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked}
-                                setChecked={setChecked} purpose={purpose} handleAdd={handleEdit}/>
         </tr>
     )
 }

@@ -23,7 +23,8 @@ const NextOfKinInfo = () => {
         email: "",
         phoneNumber: "",
         alternatePhoneNumber: "",
-        address: ""
+        address: "",
+        uniqueId: ""
     })
     const navigate = useNavigate();
     const location = useLocation();
@@ -35,8 +36,6 @@ const NextOfKinInfo = () => {
     const [editNOK] = useEditNextOfKinMutation()
     const custId = queryParams.get("cid");
     const clientId = JSON.parse(sessionStorage.getItem("cusId"));
-    const {data, isFetching, error} = useGetClientByIdQuery(custId || clientId )
-
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
@@ -63,7 +62,7 @@ const NextOfKinInfo = () => {
     const handleNext = async (e) => {
         e.preventDefault();
         const cusId = JSON.parse(sessionStorage.getItem("cusId"));
-        if (cusId || clientId) {
+        if (custId || clientId) {
             editNOK({
                 body: {
                     customerId: custId.toString(),
@@ -75,7 +74,7 @@ const NextOfKinInfo = () => {
                     altPhoneNumber: inputs.alternatePhoneNumber,
                     emailAddress: inputs.email,
                     permanentAddress: inputs.address,
-                    uniqueId: data?.data.nextOfKin?.uniqueId
+                    uniqueId: inputs.uniqueId
                 }
             }).then(res => {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
@@ -123,31 +122,38 @@ const NextOfKinInfo = () => {
             console.error('Error fetching data:', error);
         }
     };
+    const fetchClient = async () => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/CRM/Client/getbycustId/${custId || clientId}`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setInputs({
+                title: response.data?.data.nextOfKin?.titleId,
+                firstName: response.data?.data.nextOfKin?.firstName,
+                middleName: response.data?.data.nextOfKin?.middleName,
+                lastName: response.data?.data.nextOfKin?.lastName,
+                email: response.data?.data.nextOfKin?.emailAddress,
+                phoneNumber: response.data?.data.nextOfKin?.phoneNumber,
+                alternatePhoneNumber: response.data?.data.nextOfKin?.altPhoneNumber,
+                address: response.data?.data.nextOfKin?.permanentAddress,
+                uniqueId: response.data?.data.nextOfKin?.uniqueId,
+            })
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
 
     useEffect(() => {
+        fetchClient()
         fetchTitle();
     }, []);
 
-    useEffect(() => {
-        const response = axios.get(`${import.meta.env.VITE_APP_BASE_URL}/CRM/Client/getbycustId/${custId || clientId}`, {
-            headers: {
-                'Content-Type': "application/json",
-                'Accept': "application/json",
-                'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
-                'authorization': `Bearer ${token}`
-            }
-        });
-        setInputs({
-            title: response.data?.data.nextOfKin?.titleId,
-            firstName: response.data?.data.nextOfKin?.firstName,
-            middleName: response.data?.data.nextOfKin?.middleName,
-            lastName: response.data?.data.nextOfKin?.lastName,
-            email: response.data?.data.nextOfKin?.emailAddress,
-            phoneNumber: response.data?.data.nextOfKin?.phoneNumber,
-            alternatePhoneNumber: response.data?.data.nextOfKin?.altPhoneNumber,
-            address: response.data?.data.nextOfKin?.permanentAddress,
-        })
-    }, []);
     return (
         <div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto pl-12">

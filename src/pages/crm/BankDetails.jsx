@@ -6,7 +6,6 @@ import {getUserToken} from "../../services/storage/index.js";
 import {
     useAddBankDetailsMutation,
     useEditBankDetailsMutation,
-    useGetClientByIdQuery
 } from "../../store/features/crm/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
@@ -17,6 +16,7 @@ const BankDetails = () => {
         bank: "",
         accNumber: "",
         accName: "",
+        uniqueId: ""
     })
     const navigate = useNavigate();
     const location = useLocation();
@@ -28,7 +28,6 @@ const BankDetails = () => {
     const dispatch = useDispatch()
     const custId = queryParams.get("cid");
     const clientId = JSON.parse(sessionStorage.getItem("cusId"));
-    const {data, isFetching, error} = useGetClientByIdQuery(custId || clientId )
 
 
     const handleChange = (e, fieldName) => {
@@ -49,10 +48,10 @@ const BankDetails = () => {
             editBank({
                 body: {
                     bankId: inputs.bank,
-                    customerId: cusId.toString(),
+                    customerId: custId.toString(),
                     accountNumber: inputs.accNumber,
                     accountName: inputs.accName,
-                    uniqueId: data?.bankDetail?.uniqueId
+                    uniqueId: inputs.uniqueId
                 }
             }).then(res => {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
@@ -95,18 +94,32 @@ const BankDetails = () => {
             console.error('Error fetching data:', error);
         }
     };
+    const fetchClient = async () => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/CRM/Client/getbycustId/${custId || clientId}`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setInputs({
+                bank: response.data?.data.bankDetail?.bankId,
+                accNumber: response.data?.data.bankDetail?.accountNumber,
+                accName: response.data?.data.bankDetail?.accountName,
+                uniqueId: response.data?.data.bankDetail?.uniqueId,
+            })
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     useEffect(() => {
+        fetchClient();
         fetchTitle();
     }, []);
 
-    useEffect(() => {
-        setInputs({
-            bank: data?.bankDetail?.bankId,
-            accNumber: data?.bankDetail?.accountNumber,
-            accName: data?.bankDetail?.accountName,
-        })
-    }, []);
     return (
         <div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto pl-12">

@@ -23,6 +23,7 @@ const ResidentialInformation = () => {
         lga: "",
         address: "",
         residency: "",
+        uniqueId: ""
     })
     const navigate = useNavigate();
     const location = useLocation();
@@ -34,7 +35,6 @@ const ResidentialInformation = () => {
     const [editResident] = useEditResidentialMutation()
     const custId = queryParams.get("cid");
     const clientId = JSON.parse(sessionStorage.getItem("cusId"));
-    const {data, isFetching, error} = useGetClientByIdQuery(custId || clientId )
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
@@ -59,7 +59,7 @@ const ResidentialInformation = () => {
                     nearestLandmark: inputs.landmark,
                     residentialStatus: inputs.status,
                     noOfYearsAtResidence: inputs.residency,
-                    uniqueId: data?.data.residentialInformation?.uniqueId,
+                    uniqueId: inputs.uniqueId,
                 }
             }).then(res => {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
@@ -153,24 +153,38 @@ const ResidentialInformation = () => {
         }
     };
 
+    const fetchClient = async () => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/CRM/Client/getbycustId/${custId || clientId}`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setInputs({
+                state: response.data?.data.residentialInformation?.stateId,
+                status: response.data?.data.residentialInformation?.residentialStatus,
+                landmark: response.data?.data.residentialInformation?.nearestLandmark,
+                lga: response.data?.data.residentialInformation?.lgaId,
+                address: response.data?.data.residentialInformation?.permanentAddress,
+                residency: response.data?.data.residentialInformation?.noOfYearsAtResidence,
+                uniqueId: response.data?.data.residentialInformation?.uniqueId,
+            })
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     useEffect(() => {
+        fetchClient();
         fetchStatus();
         fetchState();
         fetchLga();
         fetchResidency()
     }, []);
 
-    useEffect(() => {
-        setInputs({
-            state: data?.data.residentialInformation?.stateId,
-            status: data?.data.residentialInformation?.residentialStatus,
-            landmark: data?.data.residentialInformation?.nearestLandmark,
-            lga: data?.data.residentialInformation?.lgaId,
-            address: data?.data.residentialInformation?.permanentAddress,
-            residency: data?.data.residentialInformation?.noOfYearsAtResidence,
-        })
-    }, []);
     return (
         <div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto pl-12 h-[540px]">

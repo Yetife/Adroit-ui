@@ -4,7 +4,8 @@ import customFetchBase from "../../../services/api/customFetchBaseQuery.js";
 export const crmApi = createApi({
     reducerPath: "crmApi",
     baseQuery: customFetchBase,
-    tagTypes: [],
+    tagTypes: ["addClient", "editClient", "addEmployment", "editEmployment", " addResidential", "editResidential", "addNextOfKin", "editNextOfKin", "addBankDetails",
+        "editBankDetails", "addDocument"],
     endpoints: (builder) => ({
         addClient: builder.mutation({
             query: ({body}) => ({
@@ -104,7 +105,8 @@ export const crmApi = createApi({
             query: () => ({
                 url: `/CRM/Client/getall`,
             }),
-            providesTags: []
+            providesTags: ["addClient", "editClient", "addEmployment", "editEmployment", " addResidential", "editResidential", "addNextOfKin",
+                "editNextOfKin", "addBankDetails", "editBankDetails", "addDocument"]
         }),
     })
 })
@@ -118,7 +120,6 @@ export const {
     useEditResidentialMutation,
     useAddNextOfKinMutation,
     useEditNextOfKinMutation,
-    useAddEditOfKinMutation,
     useAddBankDetailsMutation,
     useEditBankDetailsMutation,
     useGetClientByIdQuery,
