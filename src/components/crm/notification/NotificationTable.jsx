@@ -1,0 +1,116 @@
+import {useNavigate} from "react-router-dom";
+import {useState} from "react";
+import {useGetAllClientQuery} from "../../../store/features/crm/api.js";
+import {LinearProgress, ThemeProvider} from "@mui/material";
+import themes from "../../reusables/theme.jsx";
+
+const NotificationTable = ({searchTerm}) => {
+    const {data, isFetching, error} =  useGetAllClientQuery()
+    if (error) return <p>Network error</p>
+
+    const filteredData = data?.data.filter((item) =>
+        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+
+    return (
+        <div className="scroll-container flex rounded-3xl flex-col mt-8">
+            <div className="py-2 md:px-2 sm:px-2">
+                <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+                    {isFetching && <ThemeProvider theme={themes}>
+                        <LinearProgress color={"waveGreen"}/>
+                    </ThemeProvider>}
+                    <table className="table-auto md:w-full px-20">
+                        <thead>
+                        <tr>
+                            { header?.map((val, ind) => <TableHeader key={ind + val} name={val} />)}
+                        </tr>
+                        </thead>
+                        <tbody className="bg-white">
+                        { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
+                        </tbody>
+                    </table>
+                    {/*{ data?.data?.length > 0 && <Pagination totalCount={data?.resultCount} getPage={getPage} /> }*/}
+                    {/*{ err || data?.data?.length === 0 && <div className='w-full flex align-center'>*/}
+                    {/*    <div className="m-auto py-5">*/}
+                    {/*        <Image src={'../img/no-data.svg'} width="150" height="150" alt="no data" />*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*}*/}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default NotificationTable;
+
+export function TableHeader({name}) {
+    return (
+        <th className="px-6 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+            {name}
+        </th>
+    )
+}
+
+const header = ['S/N', 'Customer Ref', 'Email Address', 'First Name','Mid. Name', 'Last Name', 'Phone Number', 'Age' ]
+export function TableData({data, no}) {
+    const convertPhoneNumber = (inputNumber) => {
+        const cleanedNumber = inputNumber.replace(/\+234\s*/g, '');
+        const numberWithoutSpaces = cleanedNumber.replace(/\s/g, '');
+        if (numberWithoutSpaces.startsWith('0')) {
+            return numberWithoutSpaces;
+        } else {
+            return `0${numberWithoutSpaces}`;
+        }
+    };
+
+    const calculateAge = (dob) => {
+        // Parse the date of birth string to a Date object
+        const birthDate = new Date(dob);
+        // Get the current date
+        const currentDate = new Date();
+        // Calculate the difference in years
+        const age = currentDate.getFullYear() - birthDate.getFullYear();
+        // Check if the birthday has occurred this year
+        if (
+            currentDate.getMonth() < birthDate.getMonth() ||
+            (currentDate.getMonth() === birthDate.getMonth() && currentDate.getDate() < birthDate.getDate())
+        ) {
+            // Subtract 1 from the age if the birthday hasn't occurred yet
+            return age - 1;
+        }
+
+        return age;
+    };
+
+
+    return (
+        <tr>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.emailAddress}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{convertPhoneNumber(data?.phoneNumber)}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{calculateAge(data?.dateOfBirth)}</span>
+            </td>
+        </tr>
+    )
+}

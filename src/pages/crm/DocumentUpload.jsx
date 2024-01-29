@@ -30,6 +30,8 @@ const DocumentUpload = () => {
     const identityInputRef = useRef(null);
     const employmentInputRef = useRef(null);
     const dispatch = useDispatch()
+    const custId = queryParams.get("cid");
+    const clientId = JSON.parse(sessionStorage.getItem("cusId"));
 
     const openExplorer = () => {
         fileInputRef.current.click();
@@ -81,7 +83,7 @@ const DocumentUpload = () => {
             const token = getUserToken();
             const baseUrl = import.meta.env.VITE_APP_BASE_URL;
 
-            const res = await fetch(`${baseUrl}/Document/add`, {
+            const res = await fetch(`${baseUrl}/CRM/Document/add`, {
                 method: 'POST',
                 body: formData,
                 headers: {

@@ -73,6 +73,7 @@ import NewClient from "../pages/crm/NewClient.jsx";
 import AddNewClientLayout from "../pages/crm/AddNewClientLayout.jsx";
 import ClientPage from "../pages/crm/ClientPage.jsx";
 import ViewPage from "../pages/crm/ViewPage.jsx";
+import Notification from "../pages/crm/Notification.jsx";
 
 const ROUTES = [
     {
@@ -230,6 +231,11 @@ const ROUTES = [
                 path: "clients/view",
                 exact: true,
                 element: <ViewPage />,
+            },
+            {
+                path: "notification",
+                exact: true,
+                element: <Notification />,
             },
         ]
     },
