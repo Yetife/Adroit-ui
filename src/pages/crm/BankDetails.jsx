@@ -44,7 +44,7 @@ const BankDetails = () => {
     const handleNext = async (e) => {
         e.preventDefault();
         const cusId = JSON.parse(sessionStorage.getItem("cusId"));
-        if (custId || clientId){
+        if (inputs.uniqueId){
             editBank({
                 body: {
                     bankId: inputs.bank,

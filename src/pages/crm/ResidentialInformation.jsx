@@ -49,11 +49,11 @@ const ResidentialInformation = () => {
     const handleNext = async (e) => {
         e.preventDefault();
         const cusId = JSON.parse(sessionStorage.getItem("cusId"));
-        if (custId || clientId){
+        if (inputs.uniqueId){
             editResident({
                 body: {
                     stateId: inputs.state,
-                    customerId: custId.toString(),
+                    customerId: cusId.toString(),
                     lgaId: inputs.lga,
                     permanentAddress: inputs.address,
                     nearestLandmark: inputs.landmark,

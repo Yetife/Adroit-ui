@@ -71,12 +71,12 @@ const EmploymentInformation = () => {
     };
     const handleNext = async (e) => {
         e.preventDefault();
-        if (custId || clientId){
+        if (inputs.uniqueId){
             const cusId = JSON.parse(sessionStorage.getItem("cusId"));
             editEmployment({
                 body: {
                     organizationId: inputs.organization,
-                    customerId: custId.toString(),
+                    customerId: cusId.toString(),
                     stateId: inputs.state,
                     lgaId: inputs.lga,
                     address: inputs.address,

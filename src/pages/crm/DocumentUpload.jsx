@@ -1,9 +1,10 @@
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import ClientButton from "../../components/crm/ClientButton.jsx";
 import {getUserToken} from "../../services/storage/index.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
+import axios from "axios";
 
 const DocumentUpload = () => {
     const [inputs, setInputs] = useState({
@@ -32,6 +33,7 @@ const DocumentUpload = () => {
     const dispatch = useDispatch()
     const custId = queryParams.get("cid");
     const clientId = JSON.parse(sessionStorage.getItem("cusId"));
+    const token = getUserToken();
 
     const openExplorer = () => {
         fileInputRef.current.click();
@@ -66,43 +68,114 @@ const DocumentUpload = () => {
 
     const handleNext = async (e) => {
         e.preventDefault();
-        try {
-            const cusId = JSON.parse(sessionStorage.getItem("cusId"));
-            const formData = new FormData();
-            formData.append('CustomerId', cusId.toString());
-            formData.append('PassportPhotograph', inputs.passport);
-            formData.append('ESignature', inputs.signature);
-            formData.append('ProofOfResidence', inputs.residence)
-            formData.append('ProofOfResidenceType', type.residenceType);
-            formData.append('ProofOfIdentity', inputs.identity);
-            formData.append('ProofOfIdentityType', type.identityType);
-            formData.append('ProofOfIdentityExpiryDate', type.expiryDate);
-            formData.append('ProofOfEmployment', inputs.employment);
-            formData.append('ProofOfEmploymentType', type.employmentType);
-            // ... other form data
-            const token = getUserToken();
-            const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+        if (inputs.uniqueId){
+            try {
+                const cusId = JSON.parse(sessionStorage.getItem("cusId"));
+                const formData = new FormData();
+                formData.append('CustomerId', cusId.toString());
+                formData.append('PassportPhotograph', inputs.passport);
+                formData.append('ESignature', inputs.signature);
+                formData.append('ProofOfResidence', inputs.residence)
+                formData.append('ProofOfResidenceType', type.residenceType);
+                formData.append('ProofOfIdentity', inputs.identity);
+                formData.append('ProofOfIdentityType', type.identityType);
+                formData.append('ProofOfIdentityExpiryDate', type.expiryDate);
+                formData.append('ProofOfEmployment', inputs.employment);
+                formData.append('ProofOfEmploymentType', type.employmentType);
+                // ... other form data
+                const token = getUserToken();
+                const baseUrl = import.meta.env.VITE_APP_BASE_URL;
 
-            const res = await fetch(`${baseUrl}/CRM/Document/add`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'multipart/form-data',
-                    'XApiKey': import.meta.env.VITE_APP_ENCRYPTION_KEY,
-                    // 'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`
-                },
-            });
-            if (res.status === 200) {
-                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record saved successfully", success:true}));
-                navigate({
-                    search: queryParams.toString(),
+                const res = await fetch(`${baseUrl}/CRM/Document/Update`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'multipart/form-data',
+                        'XApiKey': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                        // 'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    },
                 });
+                if (res.status === 200) {
+                    dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record saved successfully", success:true}));
+                    navigate({
+                        search: queryParams.toString(),
+                    });
+                }
+            } catch (error) {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
             }
-        } catch (error) {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
+        }else {
+            try {
+                const cusId = JSON.parse(sessionStorage.getItem("cusId"));
+                const formData = new FormData();
+                formData.append('CustomerId', cusId.toString());
+                formData.append('PassportPhotograph', inputs.passport);
+                formData.append('ESignature', inputs.signature);
+                formData.append('ProofOfResidence', inputs.residence)
+                formData.append('ProofOfResidenceType', type.residenceType);
+                formData.append('ProofOfIdentity', inputs.identity);
+                formData.append('ProofOfIdentityType', type.identityType);
+                formData.append('ProofOfIdentityExpiryDate', type.expiryDate);
+                formData.append('ProofOfEmployment', inputs.employment);
+                formData.append('ProofOfEmploymentType', type.employmentType);
+                // ... other form data
+                const token = getUserToken();
+                const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+
+                const res = await fetch(`${baseUrl}/CRM/Document/add`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'multipart/form-data',
+                        'XApiKey': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                        // 'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    },
+                });
+                if (res.status === 200) {
+                    dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record saved successfully", success:true}));
+                    navigate({
+                        search: queryParams.toString(),
+                    });
+                }
+            } catch (error) {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
+            }
         }
     };
+
+    const fetchClient = async () => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/CRM/Client/getbycustId/${custId || clientId}`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setInputs({
+                passport: response.data?.data?.documentUpload.passportPhotographFileName,
+                signature: response.data?.data?.documentUpload.eSignatureFileName,
+                residence: response.data?.data?.documentUpload.proofOfResidenceFileName,
+                identity: response.data?.data?.documentUpload.proofOfIdentityFileName,
+                employment: response.data?.data?.documentUpload.proofOfEmploymentFileName,
+            })
+            setType({
+                residenceType: response.data?.data?.documentUpload.passportPhotographFileName,
+                identityType: response.data?.data?.documentUpload.proofOfIdentityType,
+                employmentType: response.data?.data?.documentUpload.proofOfEmploymentType,
+                expiryDate: response.data?.data?.documentUpload.proofOfIdentityExpiryDate,
+            })
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchClient()
+    }, []);
     return (
         <div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto pl-12">

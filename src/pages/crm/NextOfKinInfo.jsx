@@ -62,10 +62,10 @@ const NextOfKinInfo = () => {
     const handleNext = async (e) => {
         e.preventDefault();
         const cusId = JSON.parse(sessionStorage.getItem("cusId"));
-        if (custId || clientId) {
+        if (inputs.uniqueId) {
             editNOK({
                 body: {
-                    customerId: custId.toString(),
+                    customerId: cusId.toString(),
                     titleId: inputs.title,
                     firstName: inputs.firstName,
                     middleName: inputs.middleName,
@@ -85,6 +85,7 @@ const NextOfKinInfo = () => {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
             })
         }else {
+            console.log(inputs)
             addNOK({
                 body: {
                     customerId: cusId.toString(),

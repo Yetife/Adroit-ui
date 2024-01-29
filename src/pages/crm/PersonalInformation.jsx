@@ -111,32 +111,32 @@ const PersonalInformation = () => {
         e.preventDefault();
         const input = JSON.parse(sessionStorage.getItem("client"));
         if (custId || clientId){
-            editClient({
-                body: {
-                    // hasBVN: input.checked.toString(),
-                    // employmentSector: input.sector,
-                    titleId: inputs.titleId,
-                    firstName: inputs.firstName,
-                    middleName: inputs.middleName,
-                    lastName: inputs.lastName,
-                    genderId: inputs.genderId,
-                    dob: inputs.dateOfBirth,
-                    maritalStatusId: inputs.maritalStatusId,
-                    noOfDependantId: inputs.noOfDependantId,
-                    educationLevelId: inputs.educationalLevelId,
-                    phoneNumber: inputs.phoneNumber,
-                    altPhoneNumber: inputs.alternatePhoneNumber,
-                    email: inputs.email,
-                    cusId: clientId || custId
-                }
-            }).then(res => {
-                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-                navigate({
-                    search: queryParams.toString(),
-                });
-            }).catch(err =>{
-                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-            })
+            console.log(inputs)
+            // editClient({
+            //     body: {
+            //         titleId: inputs.titleId,
+            //         firstName: inputs.firstName,
+            //         middleName: inputs.middleName,
+            //         lastName: inputs.lastName,
+            //         genderId: inputs.genderId,
+            //         dob: inputs.dateOfBirth,
+            //         maritalStatusId: inputs.maritalStatusId,
+            //         noOfDependantId: inputs.noOfDependantId,
+            //         educationLevelId: inputs.educationalLevelId,
+            //         phoneNumber: inputs.phoneNumber,
+            //         altPhoneNumber: inputs.alternatePhoneNumber,
+            //         email: inputs.email,
+            //         cusId: clientId || custId
+            //     }
+            // }).then(res => {
+            //     dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            //     sessionStorage.setItem("cusId", JSON.stringify(res.data.data.id));
+            //     navigate({
+            //         search: queryParams.toString(),
+            //     });
+            // }).catch(err =>{
+            //     dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+            // })
         }else{
             const input = JSON.parse(sessionStorage.getItem("client"));
             addClient({
@@ -259,14 +259,19 @@ const PersonalInformation = () => {
             console.log(response.data?.data.personalandcontactInformation)
             setInputs({
                 title: response.data?.data.personalandcontactInformation?.title,
+                titleId: response.data?.data.personalandcontactInformation?.title,
                 firstName: response.data?.data.personalandcontactInformation?.firstName,
                 middleName: response.data?.data.personalandcontactInformation?.middleName,
                 lastName: response.data?.data.personalandcontactInformation?.lastName,
                 gender: response.data?.data.personalandcontactInformation?.gender,
+                genderId: response.data?.data.personalandcontactInformation?.gender,
                 dateOfBirth: response.data?.data.personalandcontactInformation?.dob,
                 maritalStatus: response.data?.data.personalandcontactInformation?.marritalStatus,
+                maritalStatusId: response.data?.data.personalandcontactInformation?.marritalStatus,
                 noOfDependant: response.data?.data.personalandcontactInformation?.noOfde,
+                noOfDependantId: response.data?.data.personalandcontactInformation?.noOfde,
                 educationalLevel: response.data?.data.personalandcontactInformation?.eduLevel,
+                educationalLevelId: response.data?.data.personalandcontactInformation?.eduLevel,
                 email: response.data?.data.personalandcontactInformation?.email,
                 phoneNumber: response.data?.data.personalandcontactInformation?.phone,
                 alternatePhoneNumber: response.data?.data.personalandcontactInformation?.altPhone,
