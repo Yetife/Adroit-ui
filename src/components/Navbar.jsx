@@ -3,14 +3,20 @@ import IconButton from '@mui/material/IconButton';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import userImg from '../assets/avatar.svg'
 import {Link, NavLink, useLocation} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 // eslint-disable-next-line react/prop-types
 const Navbar = ({openSidebar, name, email}) => {
     const location = useLocation()
-    const [activeTab, setActiveTab] = useState('home');
+    const [activeTab, setActiveTab] = useState('fixed');
 
+    useEffect(() => {
+        // Extract the tab name from the current URL and set it in the state
+        const tabName = location.pathname.split('/').pop();
+        setActiveTab(tabName || 'fixed'); // Default to 'fixed' if no tab name in the URL
+    }, [location.pathname]);
     const handleTabClick = (tab) => {
+        console.log(activeTab)
         setActiveTab(tab);
     };
 
@@ -32,32 +38,42 @@ const Navbar = ({openSidebar, name, email}) => {
                 location.pathname.includes('customerCentric') && (
                     <div className="flex items-center justify-between">
                         {/*<Link to="/" className="text-white text-lg font-bold">Your App</Link>*/}
-                        <div className="flex space-x-4">
+                        <div className="flex space-x-12">
                             <NavLink
-                                to="/"
+                                to="/customerCentric/fixedDeposit"
                                 exact
-                                className={`text-white ${activeTab === 'home' ? 'border-b-2 border-white' : ''}`}
-                                onClick={() => handleTabClick('home')}
+                                className={`text-white ${activeTab === 'fixedDeposit' ? 'border-b-2 border-white' : ''}`}
+                                // onClick={() => handleTabClick('fixed')}
                             >
-                                Home
+                                Fixed Deposit
                             </NavLink>
                             <NavLink
-                                to="/about"
-                                className={`text-white ${activeTab === 'about' ? 'border-b-2 border-white' : ''}`}
-                                onClick={() => handleTabClick('about')}
+                                to="/customerCentric/savings"
+                                className={`text-white ${activeTab === 'savings' ? 'border-b-2 border-white' : ''}`}
+                                // onClick={() => handleTabClick('savings')}
                             >
-                                About
+                                Savings
+                            </NavLink>
+                            <NavLink
+                                to="/customerCentric/billsPayment"
+                                className={`text-white ${activeTab === 'billsPayment' ? 'border-b-2 border-white' : ''}`}
+                                // onClick={() => handleTabClick('bills')}
+                            >
+                                Bills Payment
                             </NavLink>
                             {/* Dropdown */}
                             <div className="relative inline-block text-left">
-                                <button className="text-white" onClick={() => handleTabClick('dropdown')}>
-                                    Dropdown
+                                <button className="text-white" onClick={() => handleTabClick('others')}>
+                                    Others
                                 </button>
-                                <div className={`origin-top-right absolute right-0 mt-2 w-32 ${activeTab === 'dropdown' ? 'block' : 'hidden'}`}>
+                                <div className={`origin-top-right absolute right-0 mt-2 w-40 ${activeTab === 'others' ? 'block' : 'hidden'}`}>
                                     {/* Dropdown items */}
                                     <div className="bg-white rounded-md shadow-lg py-1">
-                                        <Link to="/item1" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Item 1</Link>
-                                        <Link to="/item2" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Item 2</Link>
+                                        <Link to="/customerCentric/transfer" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Transfer</Link>
+                                        <Link to="/customerCentric/airtime" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Airtime</Link>
+                                        <Link to="/customerCentric/data" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Data</Link>
+                                        <Link to="/customerCentric/loanRepayment" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Loan Repayment</Link>
+                                        <Link to="/customerCentric/escrow" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Escrow</Link>
                                     </div>
                                 </div>
                             </div>

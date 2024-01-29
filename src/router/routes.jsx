@@ -74,6 +74,14 @@ import AddNewClientLayout from "../pages/crm/AddNewClientLayout.jsx";
 import ClientPage from "../pages/crm/ClientPage.jsx";
 import ViewPage from "../pages/crm/ViewPage.jsx";
 import Notification from "../pages/crm/Notification.jsx";
+import CustomerFixedDeposit from "../pages/customerCentric/CustomerFixedDeposit.jsx";
+import CustomerSavings from "../pages/customerCentric/CustomerSavings.jsx";
+import CustomerBillPayment from "../pages/customerCentric/CustomerBillPayment.jsx";
+import CustomerTransfer from "../pages/customerCentric/CustomerTransfer.jsx";
+import CustomerData from "../pages/customerCentric/CustomerData.jsx";
+import CustomerAirtime from "../pages/customerCentric/CustomerAirtime.jsx";
+import CustomerLoanRepayment from "../pages/customerCentric/CustomerLoanRepayment.jsx";
+import CustomerEscrow from "../pages/customerCentric/CustomerEscrow.jsx";
 
 const ROUTES = [
     {
@@ -207,6 +215,45 @@ const ROUTES = [
         key: "COLLECTION",
         exact: true,
         element: <Collection />,
+    },
+    {
+        path: "/customerCentric",
+        exact: true,
+       children: [
+           {
+               path: "fixedDeposit",
+               exact: true,
+               element: <CustomerFixedDeposit />,
+           }, {
+               path: "savings",
+               exact: true,
+               element: <CustomerSavings />,
+           }, {
+               path: "billsPayment",
+               exact: true,
+               element: <CustomerBillPayment />,
+           }, {
+               path: "transfer",
+               exact: true,
+               element: <CustomerTransfer />,
+           }, {
+               path: "data",
+               exact: true,
+               element: <CustomerData />,
+           }, {
+               path: "airtime",
+               exact: true,
+               element: <CustomerAirtime />,
+           }, {
+               path: "loanRepayment",
+               exact: true,
+               element: <CustomerLoanRepayment />,
+           },{
+               path: "escrow",
+               exact: true,
+               element: <CustomerEscrow/>,
+           },
+       ]
     },
     {
         path: "/crm",

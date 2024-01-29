@@ -295,7 +295,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
         {
             name: 'Customer Centric',
             hasDropdown: false,
-            href: '/customerCentric',
+            href: '/customerCentric/fixedDeposit',
             route: '/customerCentric',
             icon: dashboard,
         },
