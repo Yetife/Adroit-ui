@@ -14,15 +14,16 @@ const HorizontalMenu = ({activeTab, handleChange, tabMenu }) => {
                 <ThemeProvider theme={themes}>
                     <Tabs
                         textColor="inherit"
+                        variant="scrollable"
+                        scrollButtons="auto"
                         indicatorColor={"transparent"}
                         value={currentTab}
                         onChange={(event, newValue) => handleChange(event,newValue)}
                         style={{ display: 'block', cursor:'pointer' }}
                         orientation="horizontal"
-                        // variant="scrollable"
                     >
                         {tabMenu.map((menu) =>(
-                            <Tab key={menu.id} label={ <div style={{textTransform:'capitalize',fontFamily: 'Inter', fontSize: '18px', fontWeight: 600}}>{menu.name}</div>}
+                            <Tab key={menu.id} label={ <div style={{textTransform:'capitalize',fontFamily: 'Inter', fontSize: '16px', fontWeight: 600}}>{menu.name}</div>}
                                  value={menu.id}
                                  style={{
                                      color: currentTab === menu.id ? '#4A5D58' : '#343838', // Set custom text color

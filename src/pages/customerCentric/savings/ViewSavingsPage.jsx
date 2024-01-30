@@ -1,10 +1,13 @@
-import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink, useNavigate} from "react-router-dom";
+import {useState} from "react";
 import Layout from "../../Layout.jsx";
+import {Button, Text} from "@chakra-ui/react";
 import dayjs from "dayjs";
 import ApproveDepositModal from "../../../components/customerCentric/fixedDeposit/ApproveDepositModal.jsx";
-import {useState} from "react";
-const ViewFixedDepositPage = () => {
+import {TableHeader} from "../fixedDeposit/ViewFixedDepositPage.jsx";
+import SavingsHistoryModal from "../../../components/customerCentric/savings/SavingsHistoryModal.jsx";
+
+const ViewSavingsPage = () => {
     const router = useNavigate();
     const [open, setOpen] = useState(false)
 
@@ -16,31 +19,50 @@ const ViewFixedDepositPage = () => {
         phoneNumber: "081 123 45678",
         deposit: [
             {
+                purpose: "Vacation",
+                startDate: "09/03/1991",
+                endDate: "09/03/1991",
                 amount: "20,000.00",
                 status: "Active",
-                interest: "20,000.00",
-                tenor: 365,
-                dateSubmitted: "July 21, 2023",
+                emailNotification: "Yes",
+                smsNotification: "No",
+                tenor: 36,
                 transDate: "July 21, 2023"
             },{
+                purpose: "Vacation",
+                startDate: "09/03/1991",
+                endDate: "09/03/1991",
                 amount: "20,000.00",
-                status: "Pending",
-                interest: "20,000.00",
-                tenor: 365,
-                dateSubmitted: "July 21, 2023",
+                status: "Active",
+                emailNotification: "Yes",
+                smsNotification: "Yes",
+                tenor: 24,
                 transDate: "July 21, 2023"
             },{
+                purpose: "Vacation",
+                startDate: "09/03/1991",
+                endDate: "09/03/1991",
                 amount: "20,000.00",
-                status: "Closed",
-                interest: "20,000.00",
-                tenor: 365,
-                dateSubmitted: "July 21, 2023",
+                status: "Active",
+                emailNotification: "Yes",
+                smsNotification: "No",
+                tenor: 6,
+                transDate: "July 21, 2023"
+            },{
+                purpose: "Vacation",
+                startDate: "09/03/1991",
+                endDate: "09/03/1991",
+                amount: "20,000.00",
+                status: "Active",
+                emailNotification: "No",
+                smsNotification: "Yes",
+                tenor: 12,
                 transDate: "July 21, 2023"
             },
         ]
     }
 
-    const header = ['S/N', 'Amount', 'Status', 'Interest', 'Tenor', 'Date Submitted', 'Transaction Date', 'Actions' ]
+    const header = ['S/N', 'Purpose', 'Tenor', 'Start Date', 'End Date', 'Amount', 'Email Notification', 'Sms Notification', 'Transaction Date', 'Status', 'Actions' ]
 
     return (
         <Layout>
@@ -56,7 +78,7 @@ const ViewFixedDepositPage = () => {
             </div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl overflow-auto sm:rounded-lg mt-4 px-6">
                 <div>
-                    <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Customer Details</p>
+                    <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Savings</p>
                     <div className="rounded-[5px] my-6 p-8 scroll-container" style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
                         <div className="flex space-x-4">
                             <div>
@@ -101,28 +123,48 @@ const ViewFixedDepositPage = () => {
                                     details.deposit.map((item, index) => (
                                         <tr key={index}>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{index + 1}</span>
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{index + 1}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.amount}</span>
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.purpose}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status}</span>
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.tenor}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.interest}</span>
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.startDate}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.tenor}</span>
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.endDate}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.dateSubmitted).format("YYYY/MM/DD")}</span>
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.amount}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.transDate).format("YYYY/MM/DD")}</span>
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.emailNotification}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span onClick={()=>setOpen(true)} className={`text-[16px] leading-5 font-[inter] ${item.status === "Pending" ? 'text-[#00C795] cursor-pointer' : 'text-[#4A5D58] italic font-[300]'}  font-medium`}>{item.status === "Pending" ? "Approve Now" : "No action"}</span>
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.smsNotification}</span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.transDate).format("YYYY/MM/DD")}</span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status}</span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span onClick={() => setOpen(true)}
+                                                      className={`text-[16px] leading-5 font-[inter] text-[#007BEC] cursor-pointer font-medium`}>View</span>
                                             </td>
                                         </tr>
                                     ))
@@ -133,18 +175,9 @@ const ViewFixedDepositPage = () => {
                     </div>
                 </div>
             </div>
-            <ApproveDepositModal open={open} setOpen={setOpen}/>
+            <SavingsHistoryModal open={open} setOpen={setOpen}/>
         </Layout>
     )
-        ;
 };
 
-export default ViewFixedDepositPage;
-
-export function TableHeader({name}) {
-    return (
-        <th className="px-6 py-3 text-[16px] font-medium leading-4 text-[#4A5D58] text-left border-b bg-gray-50">
-            {name}
-        </th>
-    )
-}
+export default ViewSavingsPage;

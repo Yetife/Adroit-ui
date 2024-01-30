@@ -1,36 +1,54 @@
-import {useEditStatusMutation, useGetAllStatusQuery} from "../../../store/features/loanApplication/api.js";
-import {LinearProgress, ThemeProvider} from "@mui/material";
-import themes from "../../reusables/theme.jsx";
-import React, {useState} from "react";
+import {useState} from "react";
 import {useDispatch} from "react-redux";
+import {useEditStatusMutation, useGetAllCustomerQuery} from "../../../store/features/loanApplication/api.js";
 import {useNavigate} from "react-router-dom";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import AddLoanStatusModal from "../../loanApplication/loanStatus/AddLoanStatusModal.jsx";
-import {useGetAllDisbursementQuery} from "../../../store/features/loanUnderwriting/api.js";
+import {LinearProgress, ThemeProvider} from "@mui/material";
+import themes from "../../reusables/theme.jsx";
 
-const DisburseTable = ({searchTerm}) => {
-    const {data, isFetching, error} = useGetAllDisbursementQuery()
+const CustomerSavingsTable = ({searchTerm}) => {
+    const {data, isFetching, error} =  useGetAllCustomerQuery()
     if (error) return <p>Network error</p>
 
     const customer = [
         {
-            uniqueId: "5556678889",
+            id: 1,
             customerRef: "Ref123456",
-            email: "adebona@creditWave.ng",
             firstName: "Adekunle",
-            middleName: "Samuel",
             lastName: "Adebona",
-            phoneNumber: "08101234567",
-            applicationDate: "01/08/2023",
-            amount: "200,000",
-            tenor: 6,
-            channel: "USSD"
-        }
+            middleName: "Samuel",
+            emailAddress: "adebona@credit...",
+            dob: "09/03/1991",
+            bvn: "109031991",
+            status: "Active",
+        }, {
+            id: 2,
+            customerRef: "Ref123456",
+            firstName: "Adekunle",
+            lastName: "Adebona",
+            middleName: "Samuel",
+            emailAddress: "adebona@credit...",
+            dob: "09/03/1991",
+            bvn: "109031991",
+            status: "Active",
+        }, {
+            id: 3,
+            customerRef: "Ref123456",
+            firstName: "Adekunle",
+            lastName: "Adebona",
+            middleName: "Samuel",
+            emailAddress: "adebona@credit...",
+            dob: "09/03/1991",
+            bvn: "109031991",
+            status: "Active",
+        },
     ]
 
-    const filteredData = data?.data.filter((item) =>
+    const filteredData = customer.filter((item) =>
         item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
 
     return (
         <div className="scroll-container flex rounded-3xl flex-col mt-8">
@@ -62,7 +80,7 @@ const DisburseTable = ({searchTerm}) => {
     );
 };
 
-export default DisburseTable;
+export default CustomerSavingsTable;
 
 export function TableHeader({name}) {
     return (
@@ -72,7 +90,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Channel', 'Customer Ref.', 'Email Address', 'First Name', 'Last Name', 'Amount', 'Tenor', 'Actions' ]
+const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Mid. Name', 'Last Name', 'Date of birth', 'BVN', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const [open, setOpen] = useState(false);
@@ -106,33 +124,33 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.applicationChannel}</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.workEmail}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.emailAddress}</span>
             </td>
-            <
-                td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
-            </td>
+            </td><td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
+        </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanAmount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dob}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanDuration}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
             </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status}</span>
+            </td>
+
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/loanUnderwriting/disbursement/customerDetails?id=${data.customerId}&aid=${data.applicantNumber}&status=disburse`)}>View
+                     onClick={() => router(`/customerCentric/savings/customerDetails?id=${data.id}`)}>View
                  </span>
             </td>
             <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked}

@@ -1,11 +1,12 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import Layout from "../../Layout.jsx";
 import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import CustomerFixedDepositTable from "../../../components/customerCentric/fixedDeposit/CustomerFixedDepositTable.jsx";
+import CustomerSavingsTable from "../../../components/customerCentric/savings/CustomerSavingsTable.jsx";
 
-const CustomerFixedDeposit = () => {
+const CustomerSavings = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [dropdown, setDropDown] = useState("email")
@@ -33,7 +34,7 @@ const CustomerFixedDeposit = () => {
                                  className="font-medium w-[150px] text-black h-[40px]  leading-relaxed py-1 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                  <option value={'email'}>Email</option>
                                  <option value={'phone'}>Phone Number</option>
-                                  <option value={'name'}>Customer Name</option>
+                                 <option value={'name'}>Customer Name</option>
                             </select>
                         </span>
                         <div className="ml-3 w-[200px]">
@@ -47,11 +48,11 @@ const CustomerFixedDeposit = () => {
                     </div>
                 </div>
                 <div>
-                    <CustomerFixedDepositTable searchTerm={searchTerm}/>
+                    <CustomerSavingsTable searchTerm={searchTerm}/>
                 </div>
             </div>
         </Layout>
     )
 };
 
-export default CustomerFixedDeposit;
+export default CustomerSavings;

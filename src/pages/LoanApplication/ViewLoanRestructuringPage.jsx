@@ -136,8 +136,7 @@ const ViewLoanRestructuringPage = () => {
                         <div className="rounded-[10px] my-3 p-8" style={{
                             border: "1px solid #C9D4D1",
                             background: "#FFF",
-                            boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"
-                        }}>
+                            boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"}}>
                             <div>
                                 <table className="table-auto md:w-full px-20">
                                     <thead>
@@ -168,7 +167,6 @@ const ViewLoanRestructuringPage = () => {
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                         <div className="mt-8">
                             <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pb-3">Comment</p>

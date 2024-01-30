@@ -1,32 +1,32 @@
-import React, {useState} from 'react';
+import {useState} from "react";
+import {
+    useAdjustApplicationMutation,
+    useApproveApplicationMutation, useDisburseApplicationMutation,
+    useGetReviewCustomerDetailsQuery, useReturnApplicationMutation, useStopDisbursementMutation
+} from "../../store/features/loanUnderwriting/api.js";
+import {useDispatch} from "react-redux";
+import LoanInformation from "../LoanApplication/LoanInformation.jsx";
+import LoanNanoReport from "../LoanApplication/LoanNanoReport.jsx";
+import LoanBankStatement from "../LoanApplication/LoanBankStatement.jsx";
+import LoanActivity from "../LoanApplication/LoanActivity.jsx";
+import LoanRepaymentDetails from "../LoanApplication/LoanRepaymentDetails.jsx";
+import LoanSupportingDocument from "../LoanApplication/LoanSupportingDocument.jsx";
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import Layout from "../Layout.jsx";
-import {TabContext} from "@mui/lab";
-import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
-import {Button, Text} from "@chakra-ui/react";
-import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
-import {
-    useGetAdjustCustomerDetailsQuery,
-} from "../../store/features/loanApplication/api.js";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
-import LoanInformation from '../LoanApplication/LoanInformation.jsx';
-import LoanNanoReport from '../LoanApplication/LoanNanoReport.jsx';
-import LoanBankStatement from '../LoanApplication/LoanBankStatement.jsx';
-import LoanActivity from '../LoanApplication/LoanActivity.jsx';
-import LoanRepaymentDetails from '../LoanApplication/LoanRepaymentDetails.jsx';
-import LoanSupportingDocument from '../LoanApplication/LoanSupportingDocument.jsx';
-import LoanComments from './LoanComments.jsx';
-import AddCommentModal from '../../components/loanUnderwritting/review/AddCommentModal.jsx';
-import AdjustLoanModal from '../../components/loanUnderwritting/review/AdjustLoanModal.jsx';
-import StopDisbursementModal from '../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx';
-import DecisionModal from '../../components/loanUnderwritting/approval/DecisionModal.jsx';
-import ReassignModal from '../../components/loanUnderwritting/loanReassignment/ReassignModal.jsx';
-import { useAdjustApplicationMutation, useApproveApplicationMutation, useDisburseApplicationMutation, useGetReviewCustomerDetailsQuery, useReturnApplicationMutation, useStopDisbursementMutation } from '../../store/features/loanUnderwriting/api.js';
-import { useDispatch } from 'react-redux';
+import {Button, Text} from "@chakra-ui/react";
+import {TabContext} from "@mui/lab";
+import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
+import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
+import AddCommentModal from "../../components/loanUnderwritting/review/AddCommentModal.jsx";
+import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoanModal.jsx";
+import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
+import DecisionModal from "../../components/loanUnderwritting/approval/DecisionModal.jsx";
+import ReassignModal from "../../components/loanUnderwritting/loanReassignment/ReassignModal.jsx";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 
-const ViewApprovalLoanPage = () => {
+const ViewLoanDisbursementPage = () => {
     const [comment, setComment] = useState("")
     const [openComment, setOpenComment] = useState(false)
     const [openAdjust, setOpenAdjust] = useState(false)
@@ -59,7 +59,7 @@ const ViewApprovalLoanPage = () => {
         {id:3, name:'Activity'},
         {id:4, name:'Repayment Details'},
         {id:5, name:'Supporting Documents'},
-        {id:6, name:'Comments'},
+        {id:6, name:'Disbursement Error'},
     ];
 
     const components = {
@@ -87,8 +87,8 @@ const ViewApprovalLoanPage = () => {
             component: <LoanSupportingDocument />,
             step: 5
         },
-        'comments':{
-            component: <LoanComments />,
+        'disbursement error':{
+            component: "",
             step: 6
         },
     }
@@ -174,7 +174,7 @@ const ViewApprovalLoanPage = () => {
 
     return (
         <Layout>
-             <div>
+            <div>
                 {
                     isFetching ? <ThemeProvider theme={themes}>
                         <CircularProgress color={"waveGreen"} sx={{display: "flex", margin: "auto", justifyContent: "center" }}/>
@@ -297,4 +297,4 @@ const ViewApprovalLoanPage = () => {
     );
 };
 
-export default ViewApprovalLoanPage;
+export default ViewLoanDisbursementPage;
