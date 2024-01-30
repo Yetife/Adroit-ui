@@ -37,27 +37,23 @@ const Navbar = ({openSidebar, name, email}) => {
             {
                 location.pathname.includes('customerCentric') && (
                     <div className="flex items-center justify-between">
-                        {/*<Link to="/" className="text-white text-lg font-bold">Your App</Link>*/}
                         <div className="flex space-x-12">
                             <NavLink
                                 to="/customerCentric/fixedDeposit"
                                 exact
                                 className={`text-white ${activeTab === 'fixedDeposit' ? 'border-b-2 border-white' : ''}`}
-                                // onClick={() => handleTabClick('fixed')}
                             >
                                 Fixed Deposit
                             </NavLink>
                             <NavLink
                                 to="/customerCentric/savings"
                                 className={`text-white ${activeTab === 'savings' ? 'border-b-2 border-white' : ''}`}
-                                // onClick={() => handleTabClick('savings')}
                             >
                                 Savings
                             </NavLink>
                             <NavLink
                                 to="/customerCentric/billsPayment"
                                 className={`text-white ${activeTab === 'billsPayment' ? 'border-b-2 border-white' : ''}`}
-                                // onClick={() => handleTabClick('bills')}
                             >
                                 Bills Payment
                             </NavLink>
