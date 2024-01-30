@@ -33,7 +33,7 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    <div className='w-full md:w-1/4 border pt-4 border-gray-100 bg-white text-center shadow-lg md:h-[290px] h-[300px] rounded'>
+                    <div className='w-full md:w-[280px] border pt-4 border-gray-100 bg-white text-center shadow-lg md:h-[290px] h-[300px] rounded'>
                         <Stack direction="column" justifyContent="center" alignItems="center">
                             <Avatar src={user} boxSize="166px" />
                             <Text color="#343434" textAlign="center" fontFamily="Inter" fontSize="16px" fontStyle="normal" fontWeight="700" lineHeight="normal">Adekunle Adebona</Text>
@@ -72,14 +72,14 @@ const Dashboard = () => {
                     </div>
 
                     <div className='w-full md:w-2/5  lg:w-1/4 space-y-6 text-center h-full '>
-                        <div className='h-fit md:h-[49%] m-auto py-0 mt-4 md:my-0 md:py-0 border shadow-lg border-gray-100 w-full rounded-lg'>
+                        <div className='h-fit md:h-[49%] w-[280px] m-auto py-0 mt-4 md:my-0 md:py-0 border shadow-lg border-gray-100 rounded-lg'>
                             <Stack direction="column" justifyContent="center" alignItems="center">
                                 <DemoItem>
                                     <DateCalendar views={['day']} />
                                 </DemoItem>
                             </Stack>
                         </div>
-                        <div className='h-[48%] w-full p-5 shadow-lg border border-gray-100 rounded-lg'>
+                        <div className='h-[48%] w-[280px] p-5 shadow-lg border border-gray-100 rounded-lg'>
                             <img className='m-auto' src={help} alt='bro-dashboard' width={200} height={170} />
                             <div className='pt-4 mt-2'>
                                 <h4 className='font-semibold font-manrope text-sm'>Need Help</h4>

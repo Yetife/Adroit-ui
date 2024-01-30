@@ -41,19 +41,19 @@ const Navbar = ({openSidebar, name, email}) => {
                             <NavLink
                                 to="/customerCentric/fixedDeposit"
                                 exact
-                                className={`text-white ${activeTab === 'fixedDeposit' ? 'border-b-2 border-white' : ''}`}
+                                className={`${activeTab === 'fixedDeposit' ? 'border-b-2 border-[#00C795] text-[#00C795]' : 'text-white'}`}
                             >
                                 Fixed Deposit
                             </NavLink>
                             <NavLink
                                 to="/customerCentric/savings"
-                                className={`text-white ${activeTab === 'savings' ? 'border-b-2 border-white' : ''}`}
+                                className={`${activeTab === 'savings' ? 'border-b-2 border-[#00C795] text-[#00C795]' : 'text-white'}`}
                             >
                                 Savings
                             </NavLink>
                             <NavLink
                                 to="/customerCentric/billsPayment"
-                                className={`text-white ${activeTab === 'billsPayment' ? 'border-b-2 border-white' : ''}`}
+                                className={`${activeTab === 'billsPayment' ? 'border-b-2 border-[#00C795] text-[#00C795]' : 'text-white'}`}
                             >
                                 Bills Payment
                             </NavLink>

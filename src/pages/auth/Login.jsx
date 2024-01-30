@@ -86,7 +86,7 @@ const Login = () => {
                     </Stack>
                 </GridItem>
                 <GridItem colSpan={{ base: 6, md: 6 }}>
-                    <Stack className="items-center justify-center md:my-64 my-24 flex flex-col md:w-auto m-auto;">
+                    <Stack className="items-center justify-center md:my-36 my-24 flex flex-col md:w-auto m-auto;">
                         <img alt={"logo"} src={logo}/>
                         <Stack>
                             <Stack m={{base:"45px 20px 0", md: "60px 0 0"}}>

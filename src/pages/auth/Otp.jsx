@@ -84,11 +84,11 @@ const Otp = () => {
     return (
         <Stack  mt="5rem">
             <img alt={"logo"} src={logo} className="items-center justify-center flex flex-col md:w-auto m-auto"/>
-            <Container display="flex" h="full"
+            <Container display="flex" h="80px"
                        alignItems={'center'}
-                       py="4"
+                       py="2"
                        justifyContent={'center'}
-                       mt="2rem"
+                       mt="8rem"
             >
                 <Card
                     align='center'

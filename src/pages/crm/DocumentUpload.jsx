@@ -13,6 +13,7 @@ const DocumentUpload = () => {
         residence: null,
         identity: null,
         employment: null,
+        uniqueId: ""
 
     })
     const [type, setType] = useState({
@@ -66,6 +67,8 @@ const DocumentUpload = () => {
         });
     };
 
+    console.log(inputs.passport)
+
     const handleNext = async (e) => {
         e.preventDefault();
         if (inputs.uniqueId){
@@ -82,6 +85,7 @@ const DocumentUpload = () => {
                 formData.append('ProofOfIdentityExpiryDate', type.expiryDate);
                 formData.append('ProofOfEmployment', inputs.employment);
                 formData.append('ProofOfEmploymentType', type.employmentType);
+                formData.append('UniqueId', inputs.uniqueId);
                 // ... other form data
                 const token = getUserToken();
                 const baseUrl = import.meta.env.VITE_APP_BASE_URL;
@@ -161,6 +165,7 @@ const DocumentUpload = () => {
                 residence: response.data?.data?.documentUpload.proofOfResidenceFileName,
                 identity: response.data?.data?.documentUpload.proofOfIdentityFileName,
                 employment: response.data?.data?.documentUpload.proofOfEmploymentFileName,
+                uniqueId: response.data?.data?.documentUpload.uniqueId
             })
             setType({
                 residenceType: response.data?.data?.documentUpload.passportPhotographFileName,

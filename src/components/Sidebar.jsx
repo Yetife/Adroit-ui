@@ -144,11 +144,11 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
                     href: '/crm/clients',
                     route: '/crm',
                 },
-                {
-                    applicationPageName: 'Notification',
-                    href: '/crm/notification',
-                    route: '/crm',
-                },
+                // {
+                //     applicationPageName: 'Notification',
+                //     href: '/crm/notification',
+                //     route: '/crm',
+                // },
             ]
         },
         {

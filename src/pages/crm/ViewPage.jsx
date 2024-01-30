@@ -287,23 +287,23 @@ const ViewPage = () => {
                                 <p className="text-[14px] leading-5 bg-[#EAFFFA] text-[#007970] px-3 font-medium w-[680px] py-2 my-4">Ensure all documents are uploaded and tagged properly. Files should be in .jpg, .png or .pdf formats</p>
                                 <div className="py-4">
                                     <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-medium">Passport Photograph</p>
-                                    <p className="text-[14px] font-[inter] leading-5 text-[#4A5D58] font-medium">{data?.data?.documentUpload?.passportPhotographFileName}</p>
+                                    <p className="text-[14px] font-[inter] leading-5 text-[#4A5D58] font-medium">{data?.data?.documentUpload?.passportPhotographFileName.name}</p>
                                 </div>
                                 <div className="py-4">
                                     <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-medium">E-Signature</p>
-                                    <p className="text-[14px] font-[inter] leading-5 text-[#4A5D58] font-medium">{data?.data?.documentUpload?.eSignatureFileName}</p>
+                                    <p className="text-[14px] font-[inter] leading-5 text-[#4A5D58] font-medium">{data?.data?.documentUpload?.eSignatureFileName.name}</p>
                                 </div>
                                 <div className="py-4">
                                     <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-medium">Proof Of Residence</p>
-                                    <p className="text-[14px] font-[inter] leading-5 text-[#4A5D58] font-medium">{data?.data?.documentUpload?.proofOfResidenceFileName}</p>
+                                    <p className="text-[14px] font-[inter] leading-5 text-[#4A5D58] font-medium">{data?.data?.documentUpload?.proofOfResidenceFileName.name}</p>
                                 </div>
                                 <div className="py-4">
                                     <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-medium">Proof Of Identity</p>
-                                    <p className="text-[14px] font-[inter] leading-5 text-[#4A5D58] font-medium">{data?.data?.documentUpload?.proofOfIdentityFileName}</p>
+                                    <p className="text-[14px] font-[inter] leading-5 text-[#4A5D58] font-medium">{data?.data?.documentUpload?.proofOfIdentityFileName.name}</p>
                                 </div>
                                 <div className="py-4">
                                     <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-medium">Proof Of Employment</p>
-                                    <p className="text-[14px] font-[inter] leading-5 text-[#4A5D58] font-medium">{data?.data?.documentUpload?.proofOfEmploymentFileName}</p>
+                                    <p className="text-[14px] font-[inter] leading-5 text-[#4A5D58] font-medium">{data?.data?.documentUpload?.proofOfEmploymentFileName.name}</p>
                                 </div>
                             </div>
                         </div>

@@ -74,7 +74,7 @@ import AddNewClientLayout from "../pages/crm/AddNewClientLayout.jsx";
 import ClientPage from "../pages/crm/ClientPage.jsx";
 import ViewPage from "../pages/crm/ViewPage.jsx";
 import Notification from "../pages/crm/Notification.jsx";
-import CustomerFixedDeposit from "../pages/customerCentric/CustomerFixedDeposit.jsx";
+import CustomerFixedDeposit from "../pages/customerCentric/fixedDeposit/CustomerFixedDeposit.jsx";
 import CustomerSavings from "../pages/customerCentric/CustomerSavings.jsx";
 import CustomerBillPayment from "../pages/customerCentric/CustomerBillPayment.jsx";
 import CustomerTransfer from "../pages/customerCentric/CustomerTransfer.jsx";
@@ -82,6 +82,7 @@ import CustomerData from "../pages/customerCentric/CustomerData.jsx";
 import CustomerAirtime from "../pages/customerCentric/CustomerAirtime.jsx";
 import CustomerLoanRepayment from "../pages/customerCentric/CustomerLoanRepayment.jsx";
 import CustomerEscrow from "../pages/customerCentric/CustomerEscrow.jsx";
+import ViewFixedDepositPage from "../pages/customerCentric/fixedDeposit/ViewFixedDepositPage.jsx";
 
 const ROUTES = [
     {
@@ -252,6 +253,11 @@ const ROUTES = [
                path: "escrow",
                exact: true,
                element: <CustomerEscrow/>,
+           },
+           {
+               path: "fixedDeposit/customerDetails",
+               exact: true,
+               element: <ViewFixedDepositPage />,
            },
        ]
     },
