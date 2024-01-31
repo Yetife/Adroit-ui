@@ -1,9 +1,9 @@
-import {useGetAllCustomerQuery} from "../../../store/features/loanApplication/api.js";
+import {useEditStatusMutation, useGetAllCustomerQuery} from "../../../store/features/loanApplication/api.js";
 import {useNavigate} from "react-router-dom";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 
-const CustomerSavingsTable = ({searchTerm}) => {
+const CustomerBillPaymentTable = ({searchTerm}) => {
     const {data, isFetching, error} =  useGetAllCustomerQuery()
     if (error) return <p>Network error</p>
 
@@ -17,7 +17,7 @@ const CustomerSavingsTable = ({searchTerm}) => {
             emailAddress: "adebona@credit...",
             dob: "09/03/1991",
             bvn: "109031991",
-            status: "Active",
+            status: "Successful",
         }, {
             id: 2,
             customerRef: "Ref123456",
@@ -27,7 +27,7 @@ const CustomerSavingsTable = ({searchTerm}) => {
             emailAddress: "adebona@credit...",
             dob: "09/03/1991",
             bvn: "109031991",
-            status: "Active",
+            status: "Reversed",
         }, {
             id: 3,
             customerRef: "Ref123456",
@@ -37,7 +37,7 @@ const CustomerSavingsTable = ({searchTerm}) => {
             emailAddress: "adebona@credit...",
             dob: "09/03/1991",
             bvn: "109031991",
-            status: "Active",
+            status: "Uncompleted",
         },
     ]
 
@@ -76,7 +76,7 @@ const CustomerSavingsTable = ({searchTerm}) => {
     );
 };
 
-export default CustomerSavingsTable;
+export default CustomerBillPaymentTable;
 
 export function TableHeader({name}) {
     return (
@@ -123,7 +123,7 @@ export function TableData({data, no}) {
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/customerCentric/savings/customerDetails?id=${data.id}`)}>View
+                     onClick={() => router(`/customerCentric/billsPayment/customerDetails?id=${data.id}`)}>View
                  </span>
             </td>
         </tr>

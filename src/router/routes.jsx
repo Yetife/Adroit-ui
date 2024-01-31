@@ -76,8 +76,8 @@ import ViewPage from "../pages/crm/ViewPage.jsx";
 import Notification from "../pages/crm/Notification.jsx";
 import CustomerFixedDeposit from "../pages/customerCentric/fixedDeposit/CustomerFixedDeposit.jsx";
 import CustomerSavings from "../pages/customerCentric/savings/CustomerSavings.jsx";
-import CustomerBillPayment from "../pages/customerCentric/CustomerBillPayment.jsx";
-import CustomerTransfer from "../pages/customerCentric/CustomerTransfer.jsx";
+import CustomerBillPayment from "../pages/customerCentric/billsPayment/CustomerBillPayment.jsx";
+import CustomerTransfer from "../pages/customerCentric/transfer/CustomerTransfer.jsx";
 import CustomerData from "../pages/customerCentric/CustomerData.jsx";
 import CustomerAirtime from "../pages/customerCentric/CustomerAirtime.jsx";
 import CustomerLoanRepayment from "../pages/customerCentric/CustomerLoanRepayment.jsx";
@@ -85,6 +85,7 @@ import CustomerEscrow from "../pages/customerCentric/CustomerEscrow.jsx";
 import ViewFixedDepositPage from "../pages/customerCentric/fixedDeposit/ViewFixedDepositPage.jsx";
 import ViewLoanDisbursementPage from "../pages/loanUnderwriting/ViewLoanDisbursementPage.jsx";
 import ViewSavingsPage from "../pages/customerCentric/savings/ViewSavingsPage.jsx";
+import ViewBillPaymentPage from "../pages/customerCentric/billsPayment/ViewBillPaymentPage.jsx";
 
 const ROUTES = [
     {
@@ -270,6 +271,11 @@ const ROUTES = [
                path: "savings/customerDetails",
                exact: true,
                element: <ViewSavingsPage />,
+           },
+           {
+               path: "billsPayment/customerDetails",
+               exact: true,
+               element: <ViewBillPaymentPage/>,
            },
        ]
     },
