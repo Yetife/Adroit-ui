@@ -1,48 +1,58 @@
-import {useNavigate} from "react-router-dom";
+import React, {useState} from 'react';
+import EscrowModal from "../escrow/EscrowModal.jsx";
 import {useGetAllCustomerQuery} from "../../../store/features/loanApplication/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 
-const CustomerAirtimeTable = ({searchTerm}) => {
+const P2PTable = ({searchTerm, dropDown}) => {
     const {data, isFetching, error} =  useGetAllCustomerQuery()
     if (error) return <p>Network error</p>
 
     const customer = [
         {
             id: 1,
-            customerRef: "Ref123456",
-            firstName: "Adekunle",
-            lastName: "Adebona",
-            middleName: "Samuel",
-            emailAddress: "adebona@credit...",
-            dob: "09/03/1991",
-            bvn: "109031991",
-            status: "Successful",
+            lenderName: "Adegeshi Dami",
+            lenderEmail: "adegeshidami@gmail.com",
+            lenderPhoneNumber: "08110239494",
+            borrowerName: "Adegeshi Dami",
+            borrowerEmailAddress: "adegeshidami@gmail.com",
+            borrowerPhoneNumber: "08110239494",
+            amount: "N200,000",
+            tenor: 12,
+            startDate: "09/03/1991",
+            endDate: "09/03/1991",
+            status: "Pending",
         }, {
             id: 2,
-            customerRef: "Ref123456",
-            firstName: "Adekunle",
-            lastName: "Adebona",
-            middleName: "Samuel",
-            emailAddress: "adebona@credit...",
-            dob: "09/03/1991",
-            bvn: "109031991",
-            status: "Reversed",
+            lenderName: "Adegeshi Dami",
+            lenderEmail: "adegeshidami@gmail.com",
+            lenderPhoneNumber: "08110221394",
+            borrowerName: "Bakare Dami",
+            borrowerEmailAddress: "adegeshidami@gmail.com",
+            borrowerPhoneNumber: "08110239494",
+            amount: "N200,000",
+            tenor: 12,
+            startDate: "09/03/1991",
+            endDate: "09/03/1991",
+            status: "Completed",
         }, {
-            id: 3,
-            customerRef: "Ref123456",
-            firstName: "Adekunle",
-            lastName: "Adebona",
-            middleName: "Samuel",
-            emailAddress: "adebona@credit...",
-            dob: "09/03/1991",
-            bvn: "109031991",
+            id: 2,
+            lenderName: "Olakunle Dami",
+            lenderEmail: "olageshidami@gmail.com",
+            lenderPhoneNumber: "08110239494",
+            borrowerName: "Adegeshi Dami",
+            borrowerEmailAddress: "adegeshidami@gmail.com",
+            borrowerPhoneNumber: "08110239494",
+            amount: "N200,000",
+            tenor: 12,
+            startDate: "09/03/1991",
+            endDate: "09/03/1991",
             status: "Pending",
         },
     ]
 
     const filteredData = customer.filter((item) =>
-        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+        item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
     );
 
 
@@ -76,20 +86,20 @@ const CustomerAirtimeTable = ({searchTerm}) => {
     );
 };
 
-export default CustomerAirtimeTable;
+export default P2PTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-6 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-6 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b bg-gray-50">
             {name}
         </th>
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Mid. Name', 'Last Name', 'Date of birth', 'BVN', 'Status', 'Actions' ]
+const header = ['S/N', 'Lender Name', 'Lender Email Address', 'Lender Phone Number', 'Borrower Name', 'Borrower Email Address', 'Borrower Phone Number', 'Amount', 'Tenor', 'Start Date', 'End Date', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
-    const router = useNavigate()
+    const [open, setOpen] = useState(false)
 
     return (
         <tr>
@@ -97,24 +107,33 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lenderName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.emailAddress}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lenderEmail}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lenderPhoneNumber}</span>
             </td><td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
+            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.borrowerName}</span>
         </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.borrowerEmailAddress}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dob}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.borrowerPhoneNumber}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.amount}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.tenor}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.startDate}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.endDate}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status}</span>
@@ -123,9 +142,10 @@ export function TableData({data, no}) {
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/customerCentric/airtime/customerDetails?id=${data.id}`)}>View
+                     onClick={() => setOpen(true)}>View
                  </span>
             </td>
+            <EscrowModal open={open} setOpen={setOpen}/>
         </tr>
     )
 }

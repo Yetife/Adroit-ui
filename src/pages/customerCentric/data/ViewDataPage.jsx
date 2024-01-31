@@ -1,12 +1,12 @@
+import {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
-import {useState} from "react";
 import Layout from "../../Layout.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {TableHeader} from "../fixedDeposit/ViewFixedDepositPage.jsx";
 import dayjs from "dayjs";
-import AirtimeModal from "../../../components/customerCentric/airtime/AirtimeModal.jsx";
+import DataModal from "../../../components/customerCentric/data/DataModal.jsx";
 
-const ViewAirtimePage = () => {
+const ViewDataPage = () => {
     const router = useNavigate();
     const [open, setOpen] = useState(false)
 
@@ -18,19 +18,19 @@ const ViewAirtimePage = () => {
         phoneNumber: "081 123 45678",
         deposit: [
             {
-                topUp: "GLO Top-up",
+                bundle: "MTN data",
                 phoneNumber: "08112345678",
                 amount: "20,000.00",
                 status: "Failed",
                 transDate: "July 21, 2023"
             }, {
-                topUp: "GLO Top-up",
+                bundle: "GLO data",
                 phoneNumber: "08112345678",
                 amount: "20,000.00",
                 status: "Success",
                 transDate: "July 21, 2023"
             }, {
-                topUp: "GLO Top-up",
+               bundle: "GLO data",
                 phoneNumber: "08112345678",
                 amount: "20,000.00",
                 status: "Reversed",
@@ -39,7 +39,7 @@ const ViewAirtimePage = () => {
         ]
     }
 
-    const header = ['S/N', 'Top-up', 'Phone Number', 'Amount', 'Transaction Date', 'Status', 'Actions' ]
+    const header = ['S/N', 'Bundle', 'Phone Number', 'Amount', 'Transaction Date', 'Status', 'Actions' ]
 
     return (
         <Layout>
@@ -105,7 +105,7 @@ const ViewAirtimePage = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.topUp}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.bundle}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
@@ -136,9 +136,9 @@ const ViewAirtimePage = () => {
                     </div>
                 </div>
             </div>
-            <AirtimeModal open={open} setOpen={setOpen}/>
+            <DataModal open={open} setOpen={setOpen}/>
         </Layout>
-    )
+    );
 };
 
-export default ViewAirtimePage;
+export default ViewDataPage;

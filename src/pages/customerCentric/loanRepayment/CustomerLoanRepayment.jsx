@@ -1,14 +1,16 @@
 import {useState} from 'react';
-import Layout from "../Layout.jsx";
-import Search from "../../components/reusables/Search.jsx";
+import Layout from "../../Layout.jsx";
+import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
-import EscrowTable from "../../components/customerCentric/escrow/EscrowTable.jsx";
+import CustomerDataTable from "../../../components/customerCentric/data/CustomerDataTable.jsx";
+import CustomerLoanRepaymentTable
+    from "../../../components/customerCentric/loanRepayment/CustomerLoanRepaymentTable.jsx";
 
-const CustomerEscrow = () => {
+const CustomerLoanRepayment = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
-    const [dropdown, setDropDown] = useState("sellerEmail")
+    const [dropdown, setDropDown] = useState("email")
 
     const handleOpen = () => {
         setOpen(true)
@@ -18,9 +20,8 @@ const CustomerEscrow = () => {
     };
 
     const handleChange = (e) => {
-        setDropDown(e.target.value);
-        handleSearch(searchTerm, e.target.value); // Pass the selected dropdown value to handleSearch
-    };
+        setDropDown(e.target.value)
+    }
 
     return (
         <Layout>
@@ -30,11 +31,11 @@ const CustomerEscrow = () => {
                          <span>
                              <select
                                  id="select" value={dropdown}
-                                 onChange={(event) => handleChange(event)}
+                                 onChange={(event) => handleChange(event, "identityType")}
                                  className="font-medium w-[150px] text-black h-[40px]  leading-relaxed py-1 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
-                                 <option value={'sellerEmail'}>Email</option>
-                                 <option value={'sellerPhoneNumber'}>Phone Number</option>
-                                  <option value={'sellerName'}>Customer Name</option>
+                                 <option value={'email'}>Email</option>
+                                 <option value={'phone'}>Phone Number</option>
+                                  <option value={'name'}>Customer Name</option>
                             </select>
                         </span>
                         <div className="ml-3 w-[200px]">
@@ -48,11 +49,11 @@ const CustomerEscrow = () => {
                     </div>
                 </div>
                 <div>
-                    <EscrowTable searchTerm={searchTerm} dropDown={dropdown}/>
+                    <CustomerLoanRepaymentTable searchTerm={searchTerm}/>
                 </div>
             </div>
         </Layout>
     )
 };
 
-export default CustomerEscrow;
+export default CustomerLoanRepayment;

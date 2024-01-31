@@ -4,9 +4,10 @@ import Layout from "../../Layout.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {TableHeader} from "../fixedDeposit/ViewFixedDepositPage.jsx";
 import dayjs from "dayjs";
-import AirtimeModal from "../../../components/customerCentric/airtime/AirtimeModal.jsx";
+import SavingsHistoryModal from "../../../components/customerCentric/savings/SavingsHistoryModal.jsx";
+import LoanRepaymentModal from "../../../components/customerCentric/loanRepayment/LoanRepaymentModal.jsx";
 
-const ViewAirtimePage = () => {
+const ViewLoanRepaymentPage = () => {
     const router = useNavigate();
     const [open, setOpen] = useState(false)
 
@@ -18,28 +19,42 @@ const ViewAirtimePage = () => {
         phoneNumber: "081 123 45678",
         deposit: [
             {
-                topUp: "GLO Top-up",
-                phoneNumber: "08112345678",
+                debit: "True",
+                startDate: "09/03/1991",
+                endDate: "09/03/1991",
                 amount: "20,000.00",
                 status: "Failed",
+                tenor: 36,
                 transDate: "July 21, 2023"
-            }, {
-                topUp: "GLO Top-up",
-                phoneNumber: "08112345678",
+            },{
+                debit: "True",
+                startDate: "09/03/1991",
+                endDate: "09/03/1991",
                 amount: "20,000.00",
                 status: "Success",
+                tenor: 6,
                 transDate: "July 21, 2023"
-            }, {
-                topUp: "GLO Top-up",
-                phoneNumber: "08112345678",
+            },{
+                debit: "False",
+                startDate: "09/03/1991",
+                endDate: "09/03/1991",
                 amount: "20,000.00",
                 status: "Reversed",
+                tenor: 12,
+                transDate: "July 21, 2023"
+            },{
+                debit: "True",
+                startDate: "09/03/1991",
+                endDate: "09/03/1991",
+                amount: "20,000.00",
+                status: "Overdue",
+                tenor: 3,
                 transDate: "July 21, 2023"
             },
         ]
     }
 
-    const header = ['S/N', 'Top-up', 'Phone Number', 'Amount', 'Transaction Date', 'Status', 'Actions' ]
+    const header = ['S/N', 'Loan Amount', 'Tenor', 'Status', 'Isbank Debit', 'Start Date', 'End Date', 'Transaction Date', 'Actions' ]
 
     return (
         <Layout>
@@ -105,27 +120,35 @@ const ViewAirtimePage = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.topUp}</span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.phoneNumber}</span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span
                                                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.amount}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.transDate).format("YYYY/MM/DD")}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.tenor}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
                                                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.debit}</span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.startDate}</span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.endDate}</span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.transDate).format("YYYY/MM/DD")}</span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span onClick={() => setOpen(true)}
-                                                      className={`text-[16px] leading-5 font-[inter] text-[#007BEC] cursor-pointer font-medium`}>View</span>
+                                                      className={`text-[16px] leading-5 font-[inter] ${item.status === "Failed" || item.status === "Overdue" ? 'text-[#007BEC] cursor-pointer' : 'text-[#4A5D58] italic font-[300]'}  font-medium`}>{item.status === "Failed" || item.status === "Overdue"  ? "View" : "No action"}</span>
                                             </td>
                                         </tr>
                                     ))
@@ -136,9 +159,9 @@ const ViewAirtimePage = () => {
                     </div>
                 </div>
             </div>
-            <AirtimeModal open={open} setOpen={setOpen}/>
+            <LoanRepaymentModal open={open} setOpen={setOpen}/>
         </Layout>
     )
 };
 
-export default ViewAirtimePage;
+export default ViewLoanRepaymentPage;

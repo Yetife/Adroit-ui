@@ -1,14 +1,15 @@
-import {useState} from 'react';
+import {useState} from "react";
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import EscrowTable from "../../components/customerCentric/escrow/EscrowTable.jsx";
+import LoanBiddingTable from "../../components/customerCentric/loanBidding/LoanBiddingTable.jsx";
 
-const CustomerEscrow = () => {
+const LoanBidding = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
-    const [dropdown, setDropDown] = useState("sellerEmail")
+    const [dropdown, setDropDown] = useState("lenderEmail")
 
     const handleOpen = () => {
         setOpen(true)
@@ -32,9 +33,9 @@ const CustomerEscrow = () => {
                                  id="select" value={dropdown}
                                  onChange={(event) => handleChange(event)}
                                  className="font-medium w-[150px] text-black h-[40px]  leading-relaxed py-1 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
-                                 <option value={'sellerEmail'}>Email</option>
-                                 <option value={'sellerPhoneNumber'}>Phone Number</option>
-                                  <option value={'sellerName'}>Customer Name</option>
+                                 <option value={'lenderEmail'}>Email</option>
+                                 <option value={'lenderPhoneNumber'}>Phone Number</option>
+                                  <option value={'lenderName'}>Customer Name</option>
                             </select>
                         </span>
                         <div className="ml-3 w-[200px]">
@@ -48,11 +49,12 @@ const CustomerEscrow = () => {
                     </div>
                 </div>
                 <div>
-                    <EscrowTable searchTerm={searchTerm} dropDown={dropdown}/>
+                    <LoanBiddingTable searchTerm={searchTerm} dropDown={dropdown}/>
                 </div>
             </div>
         </Layout>
     )
+        ;
 };
 
-export default CustomerEscrow;
+export default LoanBidding;

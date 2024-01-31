@@ -78,15 +78,20 @@ import CustomerFixedDeposit from "../pages/customerCentric/fixedDeposit/Customer
 import CustomerSavings from "../pages/customerCentric/savings/CustomerSavings.jsx";
 import CustomerBillPayment from "../pages/customerCentric/billsPayment/CustomerBillPayment.jsx";
 import CustomerTransfer from "../pages/customerCentric/transfer/CustomerTransfer.jsx";
-import CustomerData from "../pages/customerCentric/CustomerData.jsx";
+import CustomerData from "../pages/customerCentric/data/CustomerData.jsx";
 import CustomerAirtime from "../pages/customerCentric/airtime/CustomerAirtime.jsx";
-import CustomerLoanRepayment from "../pages/customerCentric/CustomerLoanRepayment.jsx";
+import CustomerLoanRepayment from "../pages/customerCentric/loanRepayment/CustomerLoanRepayment.jsx";
 import CustomerEscrow from "../pages/customerCentric/CustomerEscrow.jsx";
 import ViewFixedDepositPage from "../pages/customerCentric/fixedDeposit/ViewFixedDepositPage.jsx";
 import ViewLoanDisbursementPage from "../pages/loanUnderwriting/ViewLoanDisbursementPage.jsx";
 import ViewSavingsPage from "../pages/customerCentric/savings/ViewSavingsPage.jsx";
 import ViewBillPaymentPage from "../pages/customerCentric/billsPayment/ViewBillPaymentPage.jsx";
 import ViewTransfersPage from "../pages/customerCentric/transfer/ViewTransfersPage.jsx";
+import ViewAirtimePage from "../pages/customerCentric/airtime/ViewAirtimePage.jsx";
+import ViewDataPage from "../pages/customerCentric/data/ViewDataPage.jsx";
+import ViewLoanRepaymentPage from "../pages/customerCentric/loanRepayment/ViewLoanRepaymentPage.jsx";
+import LoanBidding from "../pages/customerCentric/LoanBidding.jsx";
+import P2P from "../pages/customerCentric/P2P.jsx";
 
 const ROUTES = [
     {
@@ -264,6 +269,16 @@ const ROUTES = [
                element: <CustomerEscrow/>,
            },
            {
+               path: "loanBidding",
+               exact: true,
+               element: <LoanBidding/>,
+           },
+           {
+               path: "p2PLoan",
+               exact: true,
+               element: <P2P/>,
+           },
+           {
                path: "fixedDeposit/customerDetails",
                exact: true,
                element: <ViewFixedDepositPage />,
@@ -282,6 +297,21 @@ const ROUTES = [
                path: "transfer/customerDetails",
                exact: true,
                element: <ViewTransfersPage/>,
+           },
+           {
+               path: "airtime/customerDetails",
+               exact: true,
+               element: <ViewAirtimePage/>,
+           },
+           {
+               path: "data/customerDetails",
+               exact: true,
+               element: <ViewDataPage/>,
+           },
+           {
+               path: "loanRepayment/customerDetails",
+               exact: true,
+               element: <ViewLoanRepaymentPage />,
            },
        ]
     },

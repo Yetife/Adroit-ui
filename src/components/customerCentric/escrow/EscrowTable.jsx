@@ -2,47 +2,49 @@ import {useNavigate} from "react-router-dom";
 import {useGetAllCustomerQuery} from "../../../store/features/loanApplication/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
+import {useState} from "react";
+import EscrowModal from "./EscrowModal.jsx";
 
-const CustomerAirtimeTable = ({searchTerm}) => {
+const EscrowTable = ({searchTerm, dropDown}) => {
     const {data, isFetching, error} =  useGetAllCustomerQuery()
     if (error) return <p>Network error</p>
 
     const customer = [
         {
             id: 1,
-            customerRef: "Ref123456",
-            firstName: "Adekunle",
-            lastName: "Adebona",
-            middleName: "Samuel",
-            emailAddress: "adebona@credit...",
-            dob: "09/03/1991",
-            bvn: "109031991",
-            status: "Successful",
+            sellerName: "Adegeshi Dami",
+            sellerEmail: "adegeshidami@gmail.com",
+            sellerPhoneNumber: "08110239494",
+            buyerName: "Adegeshi Dami",
+            buyerEmailAddress: "adegeshidami@gmail.com",
+            buyerPhoneNumber: "08110239494",
+            transDate: "09/03/1991",
+            status: "Pending",
         }, {
             id: 2,
-            customerRef: "Ref123456",
-            firstName: "Adekunle",
-            lastName: "Adebona",
-            middleName: "Samuel",
-            emailAddress: "adebona@credit...",
-            dob: "09/03/1991",
-            bvn: "109031991",
-            status: "Reversed",
+            sellerName: "Adegeshi Dami",
+            sellerEmail: "adegeshidami@gmail.com",
+            sellerPhoneNumber: "08110221394",
+            buyerName: "Bakare Dami",
+            buyerEmailAddress: "adegeshidami@gmail.com",
+            buyerPhoneNumber: "08110239494",
+            transDate: "09/03/1991",
+            status: "Completed",
         }, {
-            id: 3,
-            customerRef: "Ref123456",
-            firstName: "Adekunle",
-            lastName: "Adebona",
-            middleName: "Samuel",
-            emailAddress: "adebona@credit...",
-            dob: "09/03/1991",
-            bvn: "109031991",
+            id: 2,
+            sellerName: "Olakunle Dami",
+            sellerEmail: "olageshidami@gmail.com",
+            sellerPhoneNumber: "08110239494",
+            buyerName: "Adegeshi Dami",
+            buyerEmailAddress: "adegeshidami@gmail.com",
+            buyerPhoneNumber: "08110239494",
+            transDate: "09/03/1991",
             status: "Pending",
         },
     ]
 
     const filteredData = customer.filter((item) =>
-        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+        item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
     );
 
 
@@ -76,7 +78,7 @@ const CustomerAirtimeTable = ({searchTerm}) => {
     );
 };
 
-export default CustomerAirtimeTable;
+export default EscrowTable;
 
 export function TableHeader({name}) {
     return (
@@ -86,10 +88,11 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Mid. Name', 'Last Name', 'Date of birth', 'BVN', 'Status', 'Actions' ]
+const header = ['S/N', 'Seller Name', 'Seller Email Address', 'Seller Phone Number', 'Buyer Name', 'Buyer Email Address', 'Buyer Phone Number', 'Transaction Date', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const router = useNavigate()
+    const [open, setOpen] = useState(false)
 
     return (
         <tr>
@@ -97,24 +100,24 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.sellerName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.emailAddress}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.sellerEmail}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.sellerPhoneNumber}</span>
             </td><td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
+            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.buyerName}</span>
         </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.buyerEmailAddress}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dob}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.buyerPhoneNumber}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.transDate}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status}</span>
@@ -123,9 +126,10 @@ export function TableData({data, no}) {
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/customerCentric/airtime/customerDetails?id=${data.id}`)}>View
+                     onClick={() => setOpen(true)}>View
                  </span>
             </td>
+            <EscrowModal open={open} setOpen={setOpen}/>
         </tr>
     )
 }

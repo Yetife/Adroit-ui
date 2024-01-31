@@ -4,6 +4,7 @@ import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import CustomerTransfersTable from "../../../components/customerCentric/transfer/CustomerTransfersTable.jsx";
+import CustomerAirtimeTable from "../../../components/customerCentric/airtime/CustomerAirtimeTable.jsx";
 
 const CustomerAirtime = () => {
     const [open, setOpen] = useState(false)
@@ -47,7 +48,7 @@ const CustomerAirtime = () => {
                     </div>
                 </div>
                 <div>
-                    <CustomerTransfersTable searchTerm={searchTerm}/>
+                    <CustomerAirtimeTable searchTerm={searchTerm}/>
                 </div>
             </div>
         </Layout>
