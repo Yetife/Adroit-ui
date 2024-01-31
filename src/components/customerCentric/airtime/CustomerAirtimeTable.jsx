@@ -3,7 +3,7 @@ import {useGetAllCustomerQuery} from "../../../store/features/loanApplication/ap
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 
-const CustomerTransfersTable = ({searchTerm}) => {
+const CustomerAirtimeTable = ({searchTerm}) => {
     const {data, isFetching, error} =  useGetAllCustomerQuery()
     if (error) return <p>Network error</p>
 
@@ -76,7 +76,7 @@ const CustomerTransfersTable = ({searchTerm}) => {
     );
 };
 
-export default CustomerTransfersTable;
+export default CustomerAirtimeTable;
 
 export function TableHeader({name}) {
     return (

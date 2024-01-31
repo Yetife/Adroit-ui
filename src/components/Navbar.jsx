@@ -66,10 +66,12 @@ const Navbar = ({openSidebar, name, email}) => {
                                     {/* Dropdown items */}
                                     <div className="bg-white rounded-md shadow-lg py-1">
                                         <Link to="/customerCentric/transfer" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Transfer</Link>
-                                        <Link to="/customerCentric/airtime" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Airtime</Link>
-                                        <Link to="/customerCentric/data" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Data</Link>
+                                        <Link to="/customerCentric/airtime" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Buy Airtime</Link>
+                                        <Link to="/customerCentric/data" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Buy Data</Link>
                                         <Link to="/customerCentric/loanRepayment" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Loan Repayment</Link>
                                         <Link to="/customerCentric/escrow" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Escrow</Link>
+                                        <Link to="/customerCentric/loanBidding" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Loan Bidding</Link>
+                                        <Link to="/customerCentric/p2PLoan" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">P2P Loan</Link>
                                     </div>
                                 </div>
                             </div>
