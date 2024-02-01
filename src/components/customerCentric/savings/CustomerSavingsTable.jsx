@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 
-const CustomerSavingsTable = ({searchTerm}) => {
+const CustomerSavingsTable = ({searchTerm, dropDown}) => {
     const {data, isFetching, error} =  useGetAllCustomerQuery()
     if (error) return <p>Network error</p>
 
@@ -31,10 +31,10 @@ const CustomerSavingsTable = ({searchTerm}) => {
         }, {
             id: 3,
             customerRef: "Ref123456",
-            firstName: "Adekunle",
+            firstName: "Tomisin",
             lastName: "Adebona",
             middleName: "Samuel",
-            emailAddress: "adebona@credit...",
+            emailAddress: "tomisin@credit...",
             dob: "09/03/1991",
             bvn: "109031991",
             status: "Active",
@@ -42,7 +42,7 @@ const CustomerSavingsTable = ({searchTerm}) => {
     ]
 
     const filteredData = customer.filter((item) =>
-        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+        item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
     );
 
 

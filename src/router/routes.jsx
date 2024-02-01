@@ -92,6 +92,24 @@ import ViewDataPage from "../pages/customerCentric/data/ViewDataPage.jsx";
 import ViewLoanRepaymentPage from "../pages/customerCentric/loanRepayment/ViewLoanRepaymentPage.jsx";
 import LoanBidding from "../pages/customerCentric/LoanBidding.jsx";
 import P2P from "../pages/customerCentric/P2P.jsx";
+import {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
+import {getUserToken} from "../services/storage/index.js";
+
+export const ProtectedRoute = ({ children }) => {
+    const navigate = useNavigate();
+    const token = getUserToken();
+
+    useEffect(() => {
+        // Check if there is no token, then navigate to the home page
+        if (!token) {
+            navigate('/');
+        }
+    }, [token, navigate]);
+
+    // Return children only if the user has a valid token
+    return token ? children : null;
+};
 
 const ROUTES = [
     {
@@ -110,7 +128,9 @@ const ROUTES = [
         path: "/dashboard",
         key: "DASHBOARD",
         exact: true,
-        element: <Dashboard />,
+        element: <ProtectedRoute>
+            <Dashboard />
+        </ProtectedRoute>,
     },
     {
         path: "/loanApp",
@@ -119,63 +139,87 @@ const ROUTES = [
             {
                 path: "customer",
                 exact: true,
-                element: <Customer />
+                element: <ProtectedRoute>
+                    <Customer />
+                </ProtectedRoute>
             },
             {
                 path: "adjust",
                 exact: true,
-                element: <AdjustApplication />
+                element: <ProtectedRoute>
+                    <AdjustApplication />
+                </ProtectedRoute>
             },
             {
                 path: "declined",
                 exact: true,
-                element: <DeclinedApplication />
+                element: <ProtectedRoute>
+                    <DeclinedApplication />
+                </ProtectedRoute>
             },
             {
                 path: "loanStatus",
                 exact: true,
-                element: <LoanStatus />
+                element: <ProtectedRoute>
+                    <LoanStatus />
+                </ProtectedRoute>
             },
             {
                 path: "loanRestructuring",
                 exact: true,
-                element: <LoanRestructuring />
+                element: <ProtectedRoute>
+                    <LoanRestructuring />
+                </ProtectedRoute>
             },{
                 path: "loanTopUp",
                 exact: true,
-                element: <LoanTopUp />
+                element: <ProtectedRoute>
+                    <LoanTopUp />
+                </ProtectedRoute>
             },
             {
                 path: "customerDetails",
                 key: "viewLoan",
                 exact: true,
-                element: <ViewLoanApplicationPage />,
+                element: <ProtectedRoute>
+                    <ViewLoanApplicationPage />,
+                </ProtectedRoute>
             },
             {
                 path: "adjust/customerDetails",
                 key: "viewLoanAdjust",
                 exact: true,
-                element: <ViewAdjustLoanPage />,
+                element: <ProtectedRoute>
+                    <ViewAdjustLoanPage />,
+                </ProtectedRoute>
             },
             {
                 path: "loanRestructuring/view",
                 exact: true,
-                element: <ViewLoanRestructuringPage />
+                element: <ProtectedRoute>
+                    <ViewLoanRestructuringPage />
+                </ProtectedRoute>
             },
             {
                 path: "loanRestructuring/edit",
                 exact: true,
-                element: <ViewLoanRestructuringPage />
+                element: <ProtectedRoute>
+                    <ViewLoanRestructuringPage />
+                </ProtectedRoute>
             },
             {
                 path: "loanTopUp/view",
                 exact: true,
-                element: <ViewLoanTopUpPage />
+                element: <ProtectedRoute>
+                    <ViewLoanTopUpPage />
+                </ProtectedRoute>
             },
             {
                 path: "loanTopUp/edit",
                 exact: true,
-                element: <ViewLoanTopUpPage />
+                element: <ProtectedRoute>
+                    <ViewLoanTopUpPage />
+                </ProtectedRoute>
             },
 
         ]

@@ -9,7 +9,7 @@ import FilterSavingsModal from "../../../components/customerCentric/savings/Filt
 const CustomerSavings = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
-    const [dropdown, setDropDown] = useState("email")
+    const [dropdown, setDropDown] = useState("emailAddress")
     const [inputs, setInputs] = useState({
         status: "",
         startDate: "",
@@ -24,8 +24,9 @@ const CustomerSavings = () => {
     };
 
     const handleChange = (e) => {
-        setDropDown(e.target.value)
-    }
+        setDropDown(e.target.value);
+        handleSearch(searchTerm, e.target.value); // Pass the selected dropdown value to handleSearch
+    };
 
     return (
         <Layout>
@@ -35,11 +36,11 @@ const CustomerSavings = () => {
                          <span>
                              <select
                                  id="select" value={dropdown}
-                                 onChange={(event) => handleChange(event, "identityType")}
+                                 onChange={(event) => handleChange(event)}
                                  className="font-medium w-[150px] text-black h-[40px]  leading-relaxed py-1 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
-                                 <option value={'email'}>Email</option>
-                                 <option value={'phone'}>Phone Number</option>
-                                 <option value={'name'}>Customer Name</option>
+                                 <option value={'emailAddress'}>Email</option>
+                                 <option value={'phoneNumber'}>Phone Number</option>
+                                 <option value={'firstName'}>Customer Name</option>
                             </select>
                         </span>
                         <div className="ml-3 w-[200px]">
@@ -53,7 +54,7 @@ const CustomerSavings = () => {
                     </div>
                 </div>
                 <div>
-                    <CustomerSavingsTable searchTerm={searchTerm}/>
+                    <CustomerSavingsTable searchTerm={searchTerm} dropDown={dropdown}/>
                 </div>
                 <FilterSavingsModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
             </div>

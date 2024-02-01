@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 
-const CustomerFixedDepositTable = ({searchTerm}) => {
+const CustomerFixedDepositTable = ({searchTerm, dropDown}) => {
     const {data, isFetching, error} =  useGetAllCustomerQuery()
     if (error) return <p>Network error</p>
 
@@ -14,14 +14,14 @@ const CustomerFixedDepositTable = ({searchTerm}) => {
             firstName: "Adekunle",
             lastName: "Adebona",
             middleName: "Samuel",
-            emailAddress: "adebona@credit...",
+            emailAddress: "olabona@credit...",
             dob: "09/03/1991",
             bvn: "109031991",
             status: "Active",
         }, {
             id: 2,
             customerRef: "Ref123456",
-            firstName: "Adekunle",
+            firstName: "Olakunle",
             lastName: "Adebona",
             middleName: "Samuel",
             emailAddress: "adebona@credit...",
@@ -42,7 +42,7 @@ const CustomerFixedDepositTable = ({searchTerm}) => {
     ]
 
     const filteredData = customer.filter((item) =>
-        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+        item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
     );
 
 

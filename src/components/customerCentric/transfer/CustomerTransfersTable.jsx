@@ -3,7 +3,7 @@ import {useGetAllCustomerQuery} from "../../../store/features/loanApplication/ap
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 
-const CustomerTransfersTable = ({searchTerm}) => {
+const CustomerTransfersTable = ({searchTerm, dropDown}) => {
     const {data, isFetching, error} =  useGetAllCustomerQuery()
     if (error) return <p>Network error</p>
 
@@ -21,10 +21,10 @@ const CustomerTransfersTable = ({searchTerm}) => {
         }, {
             id: 2,
             customerRef: "Ref123456",
-            firstName: "Adekunle",
+            firstName: "Busayo",
             lastName: "Adebona",
             middleName: "Samuel",
-            emailAddress: "adebona@credit...",
+            emailAddress: "busayo@credit...",
             dob: "09/03/1991",
             bvn: "109031991",
             status: "Reversed",
@@ -42,7 +42,7 @@ const CustomerTransfersTable = ({searchTerm}) => {
     ]
 
     const filteredData = customer.filter((item) =>
-        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+        item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
     );
 
 

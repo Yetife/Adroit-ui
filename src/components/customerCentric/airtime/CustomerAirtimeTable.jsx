@@ -3,7 +3,7 @@ import {useGetAllCustomerQuery} from "../../../store/features/loanApplication/ap
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 
-const CustomerAirtimeTable = ({searchTerm}) => {
+const CustomerAirtimeTable = ({searchTerm, dropDown}) => {
     const {data, isFetching, error} =  useGetAllCustomerQuery()
     if (error) return <p>Network error</p>
 
@@ -21,17 +21,17 @@ const CustomerAirtimeTable = ({searchTerm}) => {
         }, {
             id: 2,
             customerRef: "Ref123456",
-            firstName: "Adekunle",
+            firstName: "Temilayo",
             lastName: "Adebona",
             middleName: "Samuel",
-            emailAddress: "adebona@credit...",
+            emailAddress: "temi@credit...",
             dob: "09/03/1991",
             bvn: "109031991",
             status: "Reversed",
         }, {
             id: 3,
             customerRef: "Ref123456",
-            firstName: "Adekunle",
+            firstName: "Olakunle",
             lastName: "Adebona",
             middleName: "Samuel",
             emailAddress: "adebona@credit...",
@@ -42,7 +42,7 @@ const CustomerAirtimeTable = ({searchTerm}) => {
     ]
 
     const filteredData = customer.filter((item) =>
-        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+        item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
     );
 
 
