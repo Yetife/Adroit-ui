@@ -5,11 +5,17 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import EscrowTable from "../../components/customerCentric/escrow/EscrowTable.jsx";
 import P2PTable from "../../components/customerCentric/p2p/P2PTable.jsx";
+import FilterLoanModal from "../../components/customerCentric/p2p/FilterLoanModal.jsx";
 
 const P2P = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [dropdown, setDropDown] = useState("lenderEmail")
+    const [inputs, setInputs] = useState({
+        status: "",
+        startDate: "",
+        endDate: "",
+    })
 
     const handleOpen = () => {
         setOpen(true)
@@ -51,6 +57,8 @@ const P2P = () => {
                 <div>
                     <P2PTable searchTerm={searchTerm} dropDown={dropdown}/>
                 </div>
+
+                <FilterLoanModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
             </div>
         </Layout>
     )

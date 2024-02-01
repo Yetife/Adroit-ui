@@ -1,20 +1,20 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import {Close} from "@mui/icons-material";
 import dayjs from "dayjs";
+import {Close} from "@mui/icons-material";
 
-const LoanBiddingModal = ({open, setOpen}) => {
+const P2PModal = ({open, setOpen}) => {
     const details = {
-            lenderName: "Olakunle Dami",
-            lenderEmail: "olageshidami@gmail.com",
-            lenderPhoneNumber: "08110239494",
-            borrowerName: "Adegeshi Dami",
-            borrowerEmailAddress: "adegeshidami@gmail.com",
-            borrowerPhoneNumber: "08110239494",
-            amount: "N200,000",
-            tenor: 12,
-            startDate: "09/03/1991",
-            endDate: "09/03/1991",
-            status: "Pending",
+        lenderName: "Olakunle Dami",
+        lenderEmail: "olageshidami@gmail.com",
+        lenderPhoneNumber: "08110239494",
+        borrowerName: "Adegeshi Dami",
+        borrowerEmailAddress: "adegeshidami@gmail.com",
+        borrowerPhoneNumber: "08110239494",
+        amount: "N200,000",
+        tenor: 12,
+        startDate: "09/03/1991",
+        endDate: "09/03/1991",
+        status: "Pending",
         repaymentSchedule: [
             {
                 date: "Aug 2, 2023",
@@ -30,7 +30,7 @@ const LoanBiddingModal = ({open, setOpen}) => {
                 amount: "N50,000.00"
             },
         ],
-        }
+    }
 
     return (
         <div>
@@ -43,7 +43,7 @@ const LoanBiddingModal = ({open, setOpen}) => {
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
                     <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[40%] left-[50%] max-h-[85vh] w-[90vw] max-w-[650px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white px-[45px] pt-[40px] pb-[20px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-                        <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-8">Loan Bidding</Dialog.Title>
+                        <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-8">P2P Loan</Dialog.Title>
                         {/*<Divider className="pt-4"/>*/}
                         <div className="flex mt-4 space-x-6">
                             <div>
@@ -147,4 +147,4 @@ const LoanBiddingModal = ({open, setOpen}) => {
     );
 };
 
-export default LoanBiddingModal;
+export default P2PModal;

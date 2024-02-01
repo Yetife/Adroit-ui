@@ -3,6 +3,7 @@ import EscrowModal from "../escrow/EscrowModal.jsx";
 import {useGetAllCustomerQuery} from "../../../store/features/loanApplication/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
+import P2PModal from "./P2PModal.jsx";
 
 const P2PTable = ({searchTerm, dropDown}) => {
     const {data, isFetching, error} =  useGetAllCustomerQuery()
@@ -11,10 +12,10 @@ const P2PTable = ({searchTerm, dropDown}) => {
     const customer = [
         {
             id: 1,
-            lenderName: "Adegeshi Dami",
+            lenderName: "Adegeshi Oluwadamilola",
             lenderEmail: "adegeshidami@gmail.com",
             lenderPhoneNumber: "08110239494",
-            borrowerName: "Adegeshi Dami",
+            borrowerName: "Adegeshi Oluwadamilolasilojojumo",
             borrowerEmailAddress: "adegeshidami@gmail.com",
             borrowerPhoneNumber: "08110239494",
             amount: "N200,000",
@@ -24,7 +25,7 @@ const P2PTable = ({searchTerm, dropDown}) => {
             status: "Pending",
         }, {
             id: 2,
-            lenderName: "Adegeshi Dami",
+            lenderName: "Adegeshi Damilola",
             lenderEmail: "adegeshidami@gmail.com",
             lenderPhoneNumber: "08110221394",
             borrowerName: "Bakare Dami",
@@ -145,7 +146,7 @@ export function TableData({data, no}) {
                      onClick={() => setOpen(true)}>View
                  </span>
             </td>
-            <EscrowModal open={open} setOpen={setOpen}/>
+            <P2PModal open={open} setOpen={setOpen}/>
         </tr>
     )
 }

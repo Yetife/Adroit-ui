@@ -67,7 +67,6 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                           <input
                                               type="text"
                                               value={inputs.applicationId}
-                                              disabled={purpose === "view"}
                                               onChange={(event) => handleChange(event, "applicationId")}
                                               placeholder="Enter application id"
                                               className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
@@ -99,7 +98,6 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                           <input
                                               type="text"
                                               value={inputs.name}
-                                              disabled={purpose === "view"}
                                               onChange={(event) => handleChange(event, "name")}
                                               placeholder="Enter applicant name"
                                               className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
@@ -112,7 +110,6 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                           <input
                                               type="text"
                                               value={inputs.email}
-                                              disabled={purpose === "view"}
                                               onChange={(event) => handleChange(event, "email")}
                                               placeholder="Enter official email address"
                                               className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
@@ -129,7 +126,6 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                             <input
                                                 type="date"
                                                 value={inputs.startDate}
-                                                disabled={purpose === "view"}
                                                 onChange={(event) => handleChange(event, "startDate")}
                                                 placeholder="Enter start date"
                                                 className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
@@ -142,7 +138,6 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                             <input
                                                 type="date"
                                                 value={inputs.endDate}
-                                                disabled={purpose === "view"}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter end date"
                                                 className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
@@ -159,7 +154,6 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                           <input
                                               type="text"
                                               value={inputs.channel}
-                                              disabled={purpose === "view"}
                                               onChange={(event) => handleChange(event, "channel")}
                                               placeholder="Enter channel"
                                               className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
