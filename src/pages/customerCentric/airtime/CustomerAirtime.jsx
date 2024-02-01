@@ -1,15 +1,20 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import Layout from "../../Layout.jsx";
 import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
-import CustomerTransfersTable from "../../../components/customerCentric/transfer/CustomerTransfersTable.jsx";
 import CustomerAirtimeTable from "../../../components/customerCentric/airtime/CustomerAirtimeTable.jsx";
+import FilterDataModal from "../../../components/customerCentric/data/FilterDataModal.jsx";
 
 const CustomerAirtime = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [dropdown, setDropDown] = useState("email")
+    const [inputs, setInputs] = useState({
+        status: "",
+        startDate: "",
+        endDate: "",
+    })
 
     const handleOpen = () => {
         setOpen(true)
@@ -50,6 +55,7 @@ const CustomerAirtime = () => {
                 <div>
                     <CustomerAirtimeTable searchTerm={searchTerm}/>
                 </div>
+                <FilterDataModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
             </div>
         </Layout>
     )

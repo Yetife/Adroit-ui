@@ -4,11 +4,17 @@ import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import CustomerTransfersTable from "../../../components/customerCentric/transfer/CustomerTransfersTable.jsx";
+import FilterDataModal from "../../../components/customerCentric/data/FilterDataModal.jsx";
 
 const CustomerTransfer = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [dropdown, setDropDown] = useState("email")
+    const [inputs, setInputs] = useState({
+        status: "",
+        startDate: "",
+        endDate: "",
+    })
 
     const handleOpen = () => {
         setOpen(true)
@@ -49,6 +55,7 @@ const CustomerTransfer = () => {
                 <div>
                     <CustomerTransfersTable searchTerm={searchTerm}/>
                 </div>
+                <FilterDataModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
             </div>
         </Layout>
     )

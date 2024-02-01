@@ -4,12 +4,17 @@ import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import CustomerFixedDepositTable from "../../../components/customerCentric/fixedDeposit/CustomerFixedDepositTable.jsx";
+import FilterFixedDepositModal from "../../../components/customerCentric/fixedDeposit/FilterFixedDepositModal.jsx";
 
 const CustomerFixedDeposit = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [dropdown, setDropDown] = useState("email")
-
+    const [inputs, setInputs] = useState({
+        status: "",
+        startDate: "",
+        endDate: "",
+    })
     const handleOpen = () => {
         setOpen(true)
     }
@@ -49,6 +54,7 @@ const CustomerFixedDeposit = () => {
                 <div>
                     <CustomerFixedDepositTable searchTerm={searchTerm}/>
                 </div>
+                <FilterFixedDepositModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
             </div>
         </Layout>
     )

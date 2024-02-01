@@ -3,14 +3,19 @@ import Layout from "../../Layout.jsx";
 import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
-import CustomerDataTable from "../../../components/customerCentric/data/CustomerDataTable.jsx";
 import CustomerLoanRepaymentTable
     from "../../../components/customerCentric/loanRepayment/CustomerLoanRepaymentTable.jsx";
+import FilterLoanRepaymentModal from "../../../components/customerCentric/loanRepayment/FilterLoanRepaymentModal.jsx";
 
 const CustomerLoanRepayment = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [dropdown, setDropDown] = useState("email")
+    const [inputs, setInputs] = useState({
+        status: "",
+        startDate: "",
+        endDate: "",
+    })
 
     const handleOpen = () => {
         setOpen(true)
@@ -51,6 +56,7 @@ const CustomerLoanRepayment = () => {
                 <div>
                     <CustomerLoanRepaymentTable searchTerm={searchTerm}/>
                 </div>
+                <FilterLoanRepaymentModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
             </div>
         </Layout>
     )
