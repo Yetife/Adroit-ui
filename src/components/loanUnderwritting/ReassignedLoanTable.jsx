@@ -32,7 +32,7 @@ const ReassignedLoanTable = ({searchTerm}) => {
         }
     ]
 
-    const filteredData = customer.filter((item) =>
+    const filteredData = customer?.filter((item) =>
         item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 

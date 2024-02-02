@@ -16,13 +16,6 @@ const LoanSupportingDocument = () => {
     const fileGuarantorInputRef = useRef(null);
     const fileInputRef = useRef(null);
     const dispatch = useDispatch()
-    const [image, setImage] = useState({
-        value: "",
-        type: "",
-        name: "",
-        size: "",
-    });
-
     const openExplorer = () => {
         fileInputRef.current.click();
     };
@@ -82,23 +75,11 @@ const LoanSupportingDocument = () => {
         }
     };
     const handleOtherFormUpload = async () => {
-        console.log("Uploading files:", selectedFiles);
         try {
-            // // const fileNames = selectedFiles.map(file => file.name); // Extract file names
-            // const formData = new FormData();
-            // // formData.append('OtherForms', JSON.stringify(fileNames)); // Convert array to JSON string
-            // formData.append('OtherForms', newFiles); // Convert array to JSON string
-            // formData.append('LoanApplicationId', appId);
-            // const token = getUserToken();
-            // const baseUrl = import.meta.env.VITE_APP_BASE_URL;
-
             const formData = new FormData();
-
-            // Append all files as a single field
             selectedFiles.forEach((file, index) => {
-                formData.append(`OtherForms[${index}]`, file);
+                formData.append('OtherForms', file);
             });
-
             formData.append('LoanApplicationId', appId);
             const token = getUserToken();
             const baseUrl = import.meta.env.VITE_APP_BASE_URL;

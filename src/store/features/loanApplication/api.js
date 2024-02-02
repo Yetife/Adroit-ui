@@ -116,6 +116,28 @@ export const loanApplicationApi = createApi({
             }),
             providesTags: []
         }),
+        adjustApplication: builder.mutation({
+            query: ({body}) => ({
+                url: `/LoanUnderwriting/Review/Adjust`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["adjustApplication"]
+        }),
+        returnApplication: builder.mutation({
+            query: ({body}) => ({
+                url: `/Approval/Return`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["returnApplication"]
+        }),
+        getAllReview: builder.query({
+            query: () => ({
+                url: `/LoanUnderwriting/Review/get`,
+            }),
+            providesTags: ["returnApplication", "adjustApplication", "completeReview"]
+        }),
     })
 })
 
@@ -136,4 +158,7 @@ export const {
     useRequestDocumentMutation,
     useReassignLoanMutation,
     useGetReassignedLoanQuery,
+    useGetAllReviewQuery,
+    useAdjustApplicationMutation,
+    useReturnApplicationMutation,
 } = loanApplicationApi

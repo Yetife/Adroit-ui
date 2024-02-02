@@ -16,15 +16,15 @@ import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoa
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
 import DecisionModal from "../../components/loanUnderwritting/approval/DecisionModal.jsx";
 import {
-    useAdjustApplicationMutation,
     useApproveApplicationMutation, useDisburseApplicationMutation,
-    useGetReviewCustomerDetailsQuery, useReturnApplicationMutation, useStopDisbursementMutation
+    useGetReviewCustomerDetailsQuery, useStopDisbursementMutation
 } from '../../store/features/loanUnderwriting/api.js';
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
 import ReassignModal from '../../components/loanUnderwritting/loanReassignment/ReassignModal.jsx';
+import {useAdjustApplicationMutation, useReturnApplicationMutation} from "../../store/features/loanApplication/api.js";
 
 const ViewLoanUnderwritingPage = () => {
     const [comment, setComment] = useState("")

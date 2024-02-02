@@ -6,7 +6,7 @@ import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
 import {
-    useGetAdjustCustomerDetailsQuery,
+    useAdjustApplicationMutation, useReturnApplicationMutation,
 } from "../../store/features/loanApplication/api.js";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
@@ -22,7 +22,7 @@ import AdjustLoanModal from '../../components/loanUnderwritting/review/AdjustLoa
 import StopDisbursementModal from '../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx';
 import DecisionModal from '../../components/loanUnderwritting/approval/DecisionModal.jsx';
 import ReassignModal from '../../components/loanUnderwritting/loanReassignment/ReassignModal.jsx';
-import { useAdjustApplicationMutation, useApproveApplicationMutation, useDisburseApplicationMutation, useGetReviewCustomerDetailsQuery, useReturnApplicationMutation, useStopDisbursementMutation } from '../../store/features/loanUnderwriting/api.js';
+import {useApproveApplicationMutation, useDisburseApplicationMutation, useGetReviewCustomerDetailsQuery, useStopDisbursementMutation } from '../../store/features/loanUnderwriting/api.js';
 import { useDispatch } from 'react-redux';
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 

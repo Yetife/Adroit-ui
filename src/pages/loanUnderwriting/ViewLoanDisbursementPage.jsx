@@ -1,8 +1,7 @@
 import {useState} from "react";
 import {
-    useAdjustApplicationMutation,
     useApproveApplicationMutation, useDisburseApplicationMutation,
-    useGetReviewCustomerDetailsQuery, useReturnApplicationMutation, useStopDisbursementMutation
+    useGetReviewCustomerDetailsQuery, useStopDisbursementMutation
 } from "../../store/features/loanUnderwriting/api.js";
 import {useDispatch} from "react-redux";
 import LoanInformation from "../LoanApplication/LoanInformation.jsx";
@@ -25,6 +24,7 @@ import StopDisbursementModal from "../../components/loanUnderwritting/disburseme
 import DecisionModal from "../../components/loanUnderwritting/approval/DecisionModal.jsx";
 import ReassignModal from "../../components/loanUnderwritting/loanReassignment/ReassignModal.jsx";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useAdjustApplicationMutation, useReturnApplicationMutation} from "../../store/features/loanApplication/api.js";
 
 const ViewLoanDisbursementPage = () => {
     const [comment, setComment] = useState("")

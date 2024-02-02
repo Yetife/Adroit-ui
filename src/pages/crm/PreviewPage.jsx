@@ -1,4 +1,3 @@
-import Layout from "../Layout.jsx";
 import {useGetClientByIdQuery} from "../../store/features/crm/api.js";
 import {Link as ReactLink, useLocation, useNavigate} from "react-router-dom";
 import {Button, Text} from "@chakra-ui/react";
@@ -10,6 +9,11 @@ const PreviewPage = () => {
     const custId = queryParams.get("cid");
     const clientId = JSON.parse(sessionStorage.getItem("cusId"));
     const {data, isFetching, error} = useGetClientByIdQuery(custId || clientId )
+
+    const handleNext = () => {
+        sessionStorage.removeItem('cusId');
+        router('/crm/clients')
+    }
     return (
         <div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto px-20 h-[550px]">
@@ -304,7 +308,7 @@ const PreviewPage = () => {
                     <Text color="#00C796">Back</Text>
                 </Button>
                 <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="35px" size='md'
-                        as={ReactLink} w={'100px'} onClick={()=>router('/crm/clients')}>
+                        as={ReactLink} w={'100px'} onClick={handleNext}>
                     <Text color="white">Save</Text>
                 </Button>
 

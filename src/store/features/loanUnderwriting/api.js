@@ -6,12 +6,6 @@ export const loanUnderwritingApi = createApi({
     baseQuery: customFetchBase,
     tagTypes: ["AddStatus", "EditStatus"],
     endpoints: (builder) => ({
-        getAllReview: builder.query({
-            query: () => ({
-                url: `/LoanUnderwriting/Review/get`,
-            }),
-            providesTags: ["returnApplication", "adjustApplication"]
-        }),
         getReviewCustomerDetails: builder.query({
             query: (id) => ({
                 url: `/LoanUnderwriting/Review/getbyCusId/${id}`,
@@ -39,22 +33,6 @@ export const loanUnderwritingApi = createApi({
                 url: `/Approval/get`,
             }),
             providesTags: ["approveApplication"]
-        }),
-        adjustApplication: builder.mutation({
-            query: ({body}) => ({
-                url: `/LoanUnderwriting/Review/Adjust`,
-                method: "POST",
-                body
-            }),
-            invalidatesTags: ["adjustApplication"]
-        }),
-        returnApplication: builder.mutation({
-            query: ({body}) => ({
-                url: `/Approval/Return`,
-                method: "PUT",
-                body
-            }),
-            invalidatesTags: ["returnApplication"]
         }),
         disburseApplication: builder.mutation({
             query: ({body}) => ({
@@ -88,15 +66,12 @@ export const loanUnderwritingApi = createApi({
 })
 
 export const {
-    useGetAllReviewQuery,
     useGetAllApprovalQuery,
     useEditStatusMutation,
     useGetAllDisbursementQuery,
     useGetReviewCustomerDetailsQuery,
     useStopDisbursementMutation,
-    useAdjustApplicationMutation,
     useApproveApplicationMutation,
-    useReturnApplicationMutation,
     useDisburseApplicationMutation,
     useGetAdjustmentDetailsQuery,
 

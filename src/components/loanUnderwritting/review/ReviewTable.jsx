@@ -1,4 +1,8 @@
-import {useEditStatusMutation, useGetAllStatusQuery} from "../../../store/features/loanApplication/api.js";
+import {
+    useEditStatusMutation,
+    useGetAllReviewQuery,
+    useGetAllStatusQuery
+} from "../../../store/features/loanApplication/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import {useState} from "react";
@@ -7,14 +11,13 @@ import {useNavigate} from "react-router-dom";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import dayjs from "dayjs";
 import AddLoanStatusModal from "../../loanApplication/loanStatus/AddLoanStatusModal.jsx";
-import {useGetAllReviewQuery} from "../../../store/features/loanUnderwriting/api.js";
 
 const ReviewTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllReviewQuery()
     if (error) return <p>Network error</p>
 
     const filteredData = data?.data.filter((item) =>
-        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+        item.applicantNumber.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (

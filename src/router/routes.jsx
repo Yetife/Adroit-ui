@@ -106,7 +106,6 @@ export const ProtectedRoute = ({ children }) => {
             navigate('/');
         }
     }, [token, navigate]);
-
     // Return children only if the user has a valid token
     return token ? children : null;
 };
@@ -231,41 +230,57 @@ const ROUTES = [
             {
                 path: "review",
                 exact: true,
-                element: <Review />,
+                element: <ProtectedRoute>
+                    <Review />,
+                </ProtectedRoute>
             },
             {
                 path: "approval",
                 exact: true,
-                element: <Approval />,
+                element: <ProtectedRoute>
+                    <Approval />,
+                </ProtectedRoute>
             }, {
                 path: "disbursement",
                 exact: true,
-                element: <Disbursement />,
+                element: <ProtectedRoute>
+                    <Disbursement />,
+                </ProtectedRoute>
             },
             {
                 path: "loanRe-assignment",
                 exact: true,
-                element: <LoanReassignment />,
+                element: <ProtectedRoute>
+                    <LoanReassignment />,
+                </ProtectedRoute>
             },
             {
                 path: "reassignedLoan",
                 exact: true,
-                element: <ReassignedLoan />,
+                element: <ProtectedRoute>
+                    <ReassignedLoan />,
+                </ProtectedRoute>
             },
             {
                 path: "customerDetails",
                 exact: true,
-                element: <ViewLoanUnderwritingPage />,
+                element: <ProtectedRoute>
+                    <ViewLoanUnderwritingPage />,
+                </ProtectedRoute>
             },
             {
                 path: "approval/customerDetails",
                 exact: true,
-                element: <ViewApprovalLoanPage/>,
+                element: <ProtectedRoute>
+                    <ViewApprovalLoanPage/>,
+                </ProtectedRoute>
             },
             {
                 path: "disbursement/customerDetails",
                 exact: true,
-                element: <ViewLoanDisbursementPage/>,
+                element: <ProtectedRoute>
+                    <ViewLoanDisbursementPage/>,
+                </ProtectedRoute>
             },
         ]
     },
@@ -282,80 +297,114 @@ const ROUTES = [
            {
                path: "fixedDeposit",
                exact: true,
-               element: <CustomerFixedDeposit />,
+               element: <ProtectedRoute>
+                   <CustomerFixedDeposit />,
+               </ProtectedRoute>
            }, {
                path: "savings",
                exact: true,
-               element: <CustomerSavings />,
+               element: <ProtectedRoute>
+                   <CustomerSavings />,
+               </ProtectedRoute>
            }, {
                path: "billsPayment",
                exact: true,
-               element: <CustomerBillPayment />,
+               element: <ProtectedRoute>
+                   <CustomerBillPayment />,
+               </ProtectedRoute>
            }, {
                path: "transfer",
                exact: true,
-               element: <CustomerTransfer />,
+               element: <ProtectedRoute>
+                   <CustomerTransfer />,
+               </ProtectedRoute>
            }, {
                path: "data",
                exact: true,
-               element: <CustomerData />,
+               element: <ProtectedRoute>
+                   <CustomerData />,
+               </ProtectedRoute>
            }, {
                path: "airtime",
                exact: true,
-               element: <CustomerAirtime />,
+               element: <ProtectedRoute>
+                   <CustomerAirtime />,
+               </ProtectedRoute>
            }, {
                path: "loanRepayment",
                exact: true,
-               element: <CustomerLoanRepayment />,
+               element: <ProtectedRoute>
+                   <CustomerLoanRepayment />,
+               </ProtectedRoute>
            },{
                path: "escrow",
                exact: true,
-               element: <CustomerEscrow/>,
+               element: <ProtectedRoute>
+                   <CustomerEscrow/>,
+               </ProtectedRoute>
            },
            {
                path: "loanBidding",
                exact: true,
-               element: <LoanBidding/>,
+               element: <ProtectedRoute>
+                   <LoanBidding/>,
+               </ProtectedRoute>
            },
            {
                path: "p2PLoan",
                exact: true,
-               element: <P2P/>,
+               element: <ProtectedRoute>
+                   <P2P/>,
+               </ProtectedRoute>
            },
            {
                path: "fixedDeposit/customerDetails",
                exact: true,
-               element: <ViewFixedDepositPage />,
+               element: <ProtectedRoute>
+                   <ViewFixedDepositPage />,
+               </ProtectedRoute>
            },
            {
                path: "savings/customerDetails",
                exact: true,
-               element: <ViewSavingsPage />,
+               element: <ProtectedRoute>
+                   <ViewSavingsPage />,
+               </ProtectedRoute>
            },
            {
                path: "billsPayment/customerDetails",
                exact: true,
-               element: <ViewBillPaymentPage/>,
+               element: <ProtectedRoute>
+                   <ViewBillPaymentPage/>,
+               </ProtectedRoute>
            },
            {
                path: "transfer/customerDetails",
                exact: true,
-               element: <ViewTransfersPage/>,
+               element: <ProtectedRoute>
+                   <ViewTransfersPage/>,
+               </ProtectedRoute>
            },
            {
                path: "airtime/customerDetails",
                exact: true,
-               element: <ViewAirtimePage/>,
+               element: <ProtectedRoute>
+                   <ViewAirtimePage/>,
+               </ProtectedRoute>
            },
            {
                path: "data/customerDetails",
                exact: true,
-               element: <ViewDataPage/>,
+               element: <ProtectedRoute>
+                   <ViewDataPage/>,
+               </ProtectedRoute>
            },
            {
                path: "loanRepayment/customerDetails",
                exact: true,
-               element: <ViewLoanRepaymentPage />,
+               element: <ProtectedRoute>
+                   <ViewLoanRepaymentPage />,
+               </ProtectedRoute>
            },
        ]
     },
@@ -366,27 +415,37 @@ const ROUTES = [
             {
                 path: "addClient",
                 exact: true,
-                element: <NewClient />,
+                element: <ProtectedRoute>
+                    <NewClient />,
+                </ProtectedRoute>
             },
             {
                 path: "addNewClient",
                 exact: true,
-                element: <AddNewClientLayout />,
+                element: <ProtectedRoute>
+                    <AddNewClientLayout />,
+                </ProtectedRoute>
             },
             {
                 path: "clients",
                 exact: true,
-                element: <ClientPage />,
+                element: <ProtectedRoute>
+                    <ClientPage />,
+                </ProtectedRoute>
             },
             {
                 path: "clients/view",
                 exact: true,
-                element: <ViewPage />,
+                element: <ProtectedRoute>
+                    <ViewPage />,
+                </ProtectedRoute>
             },
             {
                 path: "notification",
                 exact: true,
-                element: <Notification />,
+                element: <ProtectedRoute>
+                    <Notification />,
+                </ProtectedRoute>
             },
         ]
     },
@@ -394,7 +453,9 @@ const ROUTES = [
         path: "/staff/loan",
         key: "Staff",
         exact: true,
-        element: <StaffLoan />,
+        element: <ProtectedRoute>
+            <StaffLoan />,
+        </ProtectedRoute>
     },
     {
         path: "/generalSetup",
@@ -404,165 +465,218 @@ const ROUTES = [
                 path: "",
                 key: "GENERAL SETUP",
                 exact: true,
-                element: <GeneralSetup />,
+                element: <ProtectedRoute>
+                    <GeneralSetup />,
+                </ProtectedRoute>
             },
             {
                 path: "bank",
                 key: "bank",
                 exact: true,
-                element: <Bank />,
+                element: <ProtectedRoute>
+                    <Bank />,
+                </ProtectedRoute>
             },
             {
                 path: "educationalLevel",
                 key: "educationLevel",
                 exact: true,
-                element: <EducationalLevel />,
+                element: <ProtectedRoute>
+                    <EducationalLevel />,
+                </ProtectedRoute>
             },
             {
                 path: "employmentType",
                 key: "employmentType",
                 exact: true,
-                element: <EmploymentType />,
+                element: <ProtectedRoute>
+                    <EmploymentType />,
+                </ProtectedRoute>
             },
             {
                 path: "employmentSector",
                 key: "employmentSector",
                 exact: true,
-                element: <EmploymentSector />,
+                element: <ProtectedRoute>
+                    <EmploymentSector />,
+                </ProtectedRoute>
             },
             {
                 path: "gender",
                 key: "gender",
                 exact: true,
-                element: <Gender />,
+                element: <ProtectedRoute>
+                    <Gender />,
+                </ProtectedRoute>
             },
             {
                 path: "L.G.A",
                 key: "lga",
                 exact: true,
-                element: <Lga />,
+                element: <ProtectedRoute>
+                    <Lga />,
+                </ProtectedRoute>
             },
             {
                 path: "maritalStatus",
                 key: "maritalStatus",
                 exact: true,
-                element: <MaritalStatus />,
+                element: <ProtectedRoute>
+                    <MaritalStatus />,
+                </ProtectedRoute>
             },
             {
                 path: "noOfDependent",
                 key: "noOfDependent",
                 exact: true,
-                element: <Dependents />,
+                element: <ProtectedRoute>
+                    <Dependents />,
+                </ProtectedRoute>
             },
             {
                 path: "noOfYearsAtResident",
                 key: "noOfYearsAtResident",
                 exact: true,
-                element: <Residency />,
+                element: <ProtectedRoute>
+                    <Residency />,
+                </ProtectedRoute>
             },
             {
                 path: "organization",
                 key: "organization",
                 exact: true,
-                element: <Organization />,
+                element: <ProtectedRoute>
+                    <Organization />,
+                </ProtectedRoute>
             },
             {
                 path: "residentialStatus",
                 key: "residentialStatus",
                 exact: true,
-                element: <ResidentialStatus />,
+                element: <ProtectedRoute>
+                    <ResidentialStatus />,
+                </ProtectedRoute>
             },
             {
                 path: "salaryRange",
                 key: "salaryRange",
                 exact: true,
-                element: <SalaryRange />,
+                element: <ProtectedRoute>
+                    <SalaryRange />,
+                </ProtectedRoute>
             },
             {
                 path: "salaryPaymentDay",
                 key: "salaryPaymentDay",
                 exact: true,
-                element: <SalaryPaymentDay />,
+                element: <ProtectedRoute>
+                    <SalaryPaymentDay />,
+                </ProtectedRoute>
             },
             {
                 path: "state",
                 key: "state",
                 exact: true,
-                element: <State />,
+                element: <ProtectedRoute>
+                    <State />,
+                </ProtectedRoute>
             },
             {
                 path: "title",
                 key: "title",
                 exact: true,
-                element: <Title />,
+                element: <ProtectedRoute>
+                    <Title />,
+                </ProtectedRoute>
             },
             {
                 path: "country",
                 key: "country",
                 exact: true,
-                element: <Country />,
+                element: <ProtectedRoute>
+                    <Country />,
+                </ProtectedRoute>
             },
             {
                 path: "fixedDepositStatus",
                 key: "fixedDepositStatus",
                 exact: true,
-                element: <FixedDepositStatus />,
+                element: <ProtectedRoute>
+                    <FixedDepositStatus />,
+                </ProtectedRoute>
             },
             {
                 path: "fixedDepositTenor",
                 key: "fixedDepositTenor",
                 exact: true,
-                element: <FixedDepositTenor />,
+                element: <ProtectedRoute>
+                    <FixedDepositTenor />,
+                </ProtectedRoute>
             },
             {
                 path: "fixedDepositAmountRange",
                 key: "fixedDepositAmountRange",
                 exact: true,
-                element: <FixedDepositAmountRange />,
+                element: <ProtectedRoute>
+                    <FixedDepositAmountRange />,
+                </ProtectedRoute>
             },
             {
                 path: "fixedDepositPreliquidationCharges",
                 key: "fixedDepositPreliquidationCharges",
                 exact: true,
-                element: <FixedDepositPreliquidationCharges />,
+                element: <ProtectedRoute>
+                    <FixedDepositPreliquidationCharges />,
+                </ProtectedRoute>
             },
             {
                 path: "fixedDepositInterestRate",
                 key: "fixedDepositInterestRate",
                 exact: true,
-                element: <FixedDepositInterestRate />,
+                element: <ProtectedRoute>
+                    <FixedDepositInterestRate />,
+                </ProtectedRoute>
             },
             {
                 path: "regularLoanInterestRate",
                 key: "regularLoanInterestRate",
                 exact: true,
-                element: <RegularLoanInterestRate />,
+                element: <ProtectedRoute>
+                    <RegularLoanInterestRate />,
+                </ProtectedRoute>
             },
 
             {
                 path: "regularLoanCharges",
                 key: "regularLoanCharges",
                 exact: true,
-                element: <RegularLoanCharges />,
+                element: <ProtectedRoute>
+                    <RegularLoanCharges />,
+                </ProtectedRoute>
             },
             {
                 path: "lateFeeType",
                 key: "lateFeeType",
                 exact: true,
-                element: <LateFeeType
-                />,
+                element: <ProtectedRoute>
+                    <LateFeeType />,
+                </ProtectedRoute>
             },
             {
                 path: "lateFeePrincipal",
                 key: "lateFeePrincipal",
                 exact: true,
-                element: <LateFeePrincipal/>,
+                element: <ProtectedRoute>
+                    <LateFeePrincipal/>,
+                </ProtectedRoute>
             },
             {
                 path: "feeFrequency",
                 key: "feeFrequency",
                 exact: true,
-                element: <FeeFrequency/>,
+                element: <ProtectedRoute>
+                    <FeeFrequency/>,
+                </ProtectedRoute>
             },
         ]
     },
@@ -574,13 +688,17 @@ const ROUTES = [
                 path: "",
                 key: "PRODUCT",
                 exact: true,
-                element: <Product />,
+                element: <ProtectedRoute>
+                    <Product />,
+                </ProtectedRoute>
             },
             {
                 path: "loanTenor",
                 key: "loanTenor",
                 exact: true,
-                element: <LoanTenor />,
+                element: <ProtectedRoute>
+                    <LoanTenor />,
+                </ProtectedRoute>
             },
             {
                 path: "underwriter",
@@ -590,19 +708,25 @@ const ROUTES = [
                         path: "level",
                         key: "level",
                         exact: true,
-                        element: <Level />,
+                        element: <ProtectedRoute>
+                            <Level />,
+                        </ProtectedRoute>
                     },
                     {
                         path: "manage",
                         key: "manage",
                         exact: true,
-                        element: <Manage/>,
+                        element: <ProtectedRoute>
+                            <Manage/>,
+                        </ProtectedRoute>
                     },
                     {
                         path: "regularLoan",
                         key: "regularLoan",
                         exact: true,
-                        element: <RegularLoan />,
+                        element: <ProtectedRoute>
+                            <RegularLoan />,
+                        </ProtectedRoute>
                     },
                 ]
             },
@@ -614,25 +738,33 @@ const ROUTES = [
                         path: "loan",
                         key: "loan",
                         exact: true,
-                        element: <Loan />,
+                        element: <ProtectedRoute>
+                            <Loan />,
+                        </ProtectedRoute>
                     },
                     {
                         path: "disbursedLoan",
                         key: "disbursedLoan",
                         exact: true,
-                        element: <DisbursedLoan />,
+                        element: <ProtectedRoute>
+                            <DisbursedLoan />,
+                        </ProtectedRoute>
                     },
                     {
                         path: "loanCollection",
                         key: "loanCollection",
                         exact: true,
-                        element: <LoanCollection />,
+                        element: <ProtectedRoute>
+                            <LoanCollection />,
+                        </ProtectedRoute>
                     },
                     {
                         path: "view",
                         key: "viewStaff",
                         exact: true,
-                        element: <ViewStaffPage />,
+                        element: <ProtectedRoute>
+                            <ViewStaffPage />,
+                        </ProtectedRoute>
                     },
                 ]
             },
@@ -646,19 +778,25 @@ const ROUTES = [
                 path: "",
                 key: "DOCUMENTATION SETUP",
                 exact: true,
-                element: <DocumentationSetup />,
+                element: <ProtectedRoute>
+                    <DocumentationSetup />,
+                </ProtectedRoute>
             },
             {
                 path: "documentation",
                 key: "DOCUMENTATION",
                 exact: true,
-                element: <Documentation />,
+                element: <ProtectedRoute>
+                    <Documentation />,
+                </ProtectedRoute>
             },
             {
                 path: "documentationStatus",
                 key: "DOCUMENTATION STATUS",
                 exact: true,
-                element: <DocumentationStatus />,
+                element: <ProtectedRoute>
+                    <DocumentationStatus />,
+                </ProtectedRoute>
             },
             {
                 path: "disbursement",
@@ -668,31 +806,41 @@ const ROUTES = [
                         path: "returned",
                         key: "RETURNED",
                         exact: true,
-                        element: <Returned />,
+                        element: <ProtectedRoute>
+                            <Returned />,
+                        </ProtectedRoute>
                     },
                     {
                         path: "new",
                         key: "NEW",
                         exact: true,
-                        element: <New />,
+                        element: <ProtectedRoute>
+                            <New />,
+                        </ProtectedRoute>
                     },
                     {
                         path: "processed",
                         key: "PROCESSED",
                         exact: true,
-                        element: <Processed />,
+                        element: <ProtectedRoute>
+                            <Processed />,
+                        </ProtectedRoute>
                     },
                     {
                         path: "disbursed",
                         key: "DISBURSED",
                         exact: true,
-                        element: <Disbursed/>,
+                        element: <ProtectedRoute>
+                            <Disbursed/>,
+                        </ProtectedRoute>
                     },
                     {
                         path: "new/add",
                         key: "NEW ADD",
                         exact: true,
-                        element: <AddNewPage />,
+                        element: <ProtectedRoute>
+                            <AddNewPage />,
+                        </ProtectedRoute>
                     },
                 ]
             },
@@ -704,31 +852,41 @@ const ROUTES = [
                         path: "",
                         key: "GENERAL SETUP",
                         exact: true,
-                        element: <BridgeLoanGeneralSetup />,
+                        element: <ProtectedRoute>
+                            <BridgeLoanGeneralSetup />,
+                        </ProtectedRoute>
                     },
                     {
                         path: "tenor",
                         key: "TENOR",
                         exact: true,
-                        element: <Tenor />,
+                        element: <ProtectedRoute>
+                            <Tenor />,
+                        </ProtectedRoute>
                     },
                     {
                         path: "facilityType",
                         key: "FACILITY TYPE",
                         exact: true,
-                        element: <FacilityType />,
+                        element: <ProtectedRoute>
+                            <FacilityType />,
+                        </ProtectedRoute>
                     },
                     {
                         path: "documentStages",
                         key: "DOCUMENT STAGES",
                         exact: true,
-                        element: <DocumentStages />,
+                        element: <ProtectedRoute>
+                            <DocumentStages />,
+                        </ProtectedRoute>
                     },
                     {
                         path: "disbursementStatus",
                         key: "DISBURSEMENT STATUS",
                         exact: true,
-                        element: <DisbursementStatus />,
+                        element: <ProtectedRoute>
+                            <DisbursementStatus />,
+                        </ProtectedRoute>
                     },
                 ]
             },

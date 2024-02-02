@@ -1,19 +1,22 @@
 import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {useEditStatusMutation, useGetAllStatusQuery} from "../../../store/features/loanApplication/api.js";
+import {
+    useEditStatusMutation,
+    useGetAllReviewQuery,
+    useGetAllStatusQuery
+} from "../../../store/features/loanApplication/api.js";
 import {useNavigate} from "react-router-dom";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import AddLoanStatusModal from "../../loanApplication/loanStatus/AddLoanStatusModal.jsx";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
-import {useGetAllReviewQuery} from "../../../store/features/loanUnderwriting/api.js";
 
 const ReassignTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllReviewQuery()
     if (error) return <p>Network error</p>
 
     const filteredData = data?.data.filter((item) =>
-        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+        item.applicantNumber.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
