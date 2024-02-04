@@ -50,7 +50,7 @@ export default DocumentationStatusTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-10 py-3 text-[16px] font-medium leading-4 truncate tracking-wider text-[#4A5D58] text-left border-b bg-gray-50">
             {name}
         </th>
     )

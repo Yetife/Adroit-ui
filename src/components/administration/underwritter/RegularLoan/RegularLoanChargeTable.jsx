@@ -46,13 +46,13 @@ export default RegularLoanChargeTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
             {name}
         </th>
     )
 }
 
-const header = ['S/N','Employment Type', 'Charge Amount', 'Is Percentage', 'StaffLoan Amount From', 'StaffLoan Amount To', 'StaffLoan Tenor', 'Actions' ]
+const header = ['S/N','Employment Type', 'Charge Amount', 'Is Percentage', 'Loan Amount From', 'Loan Amount To', 'Loan Tenor', 'Actions' ]
 
 export function TableData({data, no}) {
     const [showDropdown, setShowDropdown] = useState(false)

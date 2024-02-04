@@ -13,7 +13,7 @@ const RegularLoanInterestTable = () => {
     const {data, isFetching, error} = useGetAllRegularLoanInterestQuery()
 
     return (
-        <div className="scroll-container flex rounded-3xl lg:overflow-hidden flex-col mt-8">
+        <div className="scroll-container flex rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2">
                 <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
                     {isFetching && <ThemeProvider theme={themes}>
@@ -46,13 +46,13 @@ export default RegularLoanInterestTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
             {name}
         </th>
     )
 }
 
-const header = ['S/N', 'Employment Type', 'Interest Rate(%)', 'StaffLoan Amount From', 'StaffLoan Amount To', 'Actions' ]
+const header = ['S/N', 'Employment Type', 'Interest Rate(%)', 'Loan Amount From', 'Loan Amount To', 'Actions' ]
 
 export function TableData({data, no}) {
     const [showDropdown, setShowDropdown] = useState(false)

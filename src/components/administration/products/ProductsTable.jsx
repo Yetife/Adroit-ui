@@ -52,7 +52,7 @@ export default ProductsTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider truncate text-[#4A5D58] text-left border-b bg-gray-50">
             {name}
         </th>
     )
@@ -190,10 +190,10 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.adminProduct.name}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.adminProduct.name}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.adminProduct.minimuimamount} - {data?.adminProduct.maximuimamount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.adminProduct.minimuimamount} - {data?.adminProduct.maximuimamount}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.adminProduct.interestRate}%</span>

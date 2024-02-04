@@ -4,41 +4,14 @@ import Layout from "../../Layout.jsx";
 import dayjs from "dayjs";
 import ApproveDepositModal from "../../../components/customerCentric/fixedDeposit/ApproveDepositModal.jsx";
 import {useState} from "react";
+import {useGetFixedDepositByIdQuery} from "../../../store/features/customerCentric/api.js";
 const ViewFixedDepositPage = () => {
     const router = useNavigate();
     const [open, setOpen] = useState(false)
+    const queryParams = new URLSearchParams(location.search);
+    const custId = queryParams.get("id");
+    const {data, isFetching, error} =  useGetFixedDepositByIdQuery(custId)
 
-    const details = {
-        name: "Adekunle Adebona Samuel",
-        emailAddress: "adekunle.adebona@creditwaveng.com.",
-        dob: "09/03/1991",
-        bvn: "109031991",
-        phoneNumber: "081 123 45678",
-        deposit: [
-            {
-                amount: "20,000.00",
-                status: "Active",
-                interest: "20,000.00",
-                tenor: 365,
-                dateSubmitted: "July 21, 2023",
-                transDate: "July 21, 2023"
-            },{
-                amount: "20,000.00",
-                status: "Pending",
-                interest: "20,000.00",
-                tenor: 365,
-                dateSubmitted: "July 21, 2023",
-                transDate: "July 21, 2023"
-            },{
-                amount: "20,000.00",
-                status: "Closed",
-                interest: "20,000.00",
-                tenor: 365,
-                dateSubmitted: "July 21, 2023",
-                transDate: "July 21, 2023"
-            },
-        ]
-    }
 
     const header = ['S/N', 'Amount', 'Status', 'Interest', 'Tenor', 'Date Submitted', 'Transaction Date', 'Actions' ]
 
@@ -58,26 +31,26 @@ const ViewFixedDepositPage = () => {
                 <div>
                     <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Customer Details</p>
                     <div className="rounded-[5px] my-6 p-8 scroll-container" style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
-                        <div className="flex space-x-4">
+                        <div className="flex space-x-6">
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Name</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.name}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500] capitalize">{data?.data.fullName}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">DOB</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.dob}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.dateOfBirth}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Email Address:</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500] truncate">{details.emailAddress}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500] truncate">{data?.data.emailAddress}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Phone number:</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.phoneNumber}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.phoneNumber}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">BVN</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.bvn}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.bvn}</p>
                             </div>
                         </div>
                     </div>
@@ -98,31 +71,31 @@ const ViewFixedDepositPage = () => {
                                 </thead>
                                 <tbody className="bg-white">
                                 {
-                                    details.deposit.map((item, index) => (
+                                    data?.data.listItem.map((item, index) => (
                                         <tr key={index}>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{index + 1}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.amount}</span>
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.depositAmount}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.interest}</span>
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.interestRate}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.tenor}</span>
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.fixedDepositTenorId}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.dateSubmitted).format("YYYY/MM/DD")}</span>
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.maturityDate).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.transDate).format("YYYY/MM/DD")}</span>
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.dateCreated).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span onClick={()=>setOpen(true)} className={`text-[16px] leading-5 font-[inter] ${item.status === "Pending" ? 'text-[#00C795] cursor-pointer' : 'text-[#4A5D58] italic font-[300]'}  font-medium`}>{item.status === "Pending" ? "Approve Now" : "No action"}</span>
+                                                <span onClick={()=>setOpen(true)} className={`text-[16px] leading-5 font-[inter] truncate ${item.status === "Pending" ? 'text-[#00C795] cursor-pointer' : 'text-[#4A5D58] italic font-[300]'}  font-medium`}>{item.status === "Pending" ? "Approve Now" : "No action"}</span>
                                             </td>
                                         </tr>
                                     ))
@@ -143,7 +116,7 @@ export default ViewFixedDepositPage;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-6 py-3 text-[16px] font-medium leading-4 text-[#4A5D58] text-left border-b bg-gray-50">
+        <th className="px-6 py-3 text-[16px] font-medium leading-4 truncate text-[#4A5D58] text-left border-b bg-gray-50">
             {name}
         </th>
     )

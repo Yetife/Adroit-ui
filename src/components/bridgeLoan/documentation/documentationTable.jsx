@@ -54,7 +54,7 @@ export default DocumentationTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-2 py-3 text-[16px] font-medium leading-4 text-[#4A5D58] text-left border-b bg-gray-50">
+        <th className="px-2 py-3 text-[16px] font-medium truncate leading-4 text-[#4A5D58] text-left border-b bg-gray-50">
             {name}
         </th>
     )
@@ -161,13 +161,13 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.obligorDob).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.facilityType}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.facilityType}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.interestRate}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.interestRate}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.documentationStatus}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.documentationStatus}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <a
@@ -189,7 +189,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.amount}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.tenor}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.tenor}</span>
             </td>
             <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <a onClick={handleshowDropDown}

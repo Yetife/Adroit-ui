@@ -47,13 +47,13 @@ export default StaffLoanTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
             {name}
         </th>
     )
 }
 
-const header = ['S/N', 'Staff ID', 'StaffLoan Amount', 'Official Email Address', 'First Name', 'Last Name', 'Application Date', 'Actions' ]
+const header = ['S/N', 'Staff ID', 'Loan Amount', 'Official Email Address', 'First Name', 'Last Name', 'Application Date', 'Actions' ]
 
 export function TableData({data, no}) {
     const router = useNavigate()
@@ -64,22 +64,22 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.staffId}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.staffId}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanAmount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.loanAmount}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.officialEmail}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.officialEmail}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.firstName}</span>
             </td>
             {/*<td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">*/}
             {/*    <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>*/}
             {/*</td>*/}
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.lastName}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.dateCreated).format("YYYY/MM/DD")}</span>

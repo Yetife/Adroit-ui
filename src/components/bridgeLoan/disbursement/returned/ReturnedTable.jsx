@@ -46,7 +46,7 @@ export default ReturnedTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-2 py-3 text-[16px] font-medium leading-4 text-[#4A5D58] text-left border-b bg-gray-50">
+        <th className="px-2 py-3 text-[16px] font-medium leading-4 truncate text-[#4A5D58] text-left border-b bg-gray-50">
             {name}
         </th>
     )

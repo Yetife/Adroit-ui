@@ -1,10 +1,10 @@
-import {useGetAllCustomerQuery} from "../../../store/features/loanApplication/api.js";
 import {useNavigate} from "react-router-dom";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
+import {useGetAllFixedDepositQuery} from "../../../store/features/customerCentric/api.js";
 
 const CustomerFixedDepositTable = ({searchTerm, dropDown}) => {
-    const {data, isFetching, error} =  useGetAllCustomerQuery()
+    const {data, isFetching, error} =  useGetAllFixedDepositQuery()
     if (error) return <p>Network error</p>
 
     const customer = [
@@ -41,7 +41,7 @@ const CustomerFixedDepositTable = ({searchTerm, dropDown}) => {
         },
     ]
 
-    const filteredData = customer.filter((item) =>
+    const filteredData = data?.data.filter((item) =>
         item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -80,7 +80,7 @@ export default CustomerFixedDepositTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-6 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-6 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] truncate text-left border-b text-gray-900 bg-gray-50">
             {name}
         </th>
     )
@@ -97,7 +97,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.customerRef}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.emailAddress}</span>
@@ -111,7 +111,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dob}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.dateOfBirth}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
@@ -123,7 +123,7 @@ export function TableData({data, no}) {
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/customerCentric/fixedDeposit/customerDetails?id=${data.id}`)}>View
+                     onClick={() => router(`/customerCentric/fixedDeposit/customerDetails?id=${data.customerId}`)}>View
                  </span>
             </td>
         </tr>

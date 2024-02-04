@@ -5,44 +5,18 @@ import {Button, Text} from "@chakra-ui/react";
 import {TableHeader} from "../fixedDeposit/ViewFixedDepositPage.jsx";
 import dayjs from "dayjs";
 import BillPaymentModal from "../../../components/customerCentric/billPayment/BillPaymentModal.jsx";
+import {useGetBillsPaymentByIdQuery} from "../../../store/features/customerCentric/api.js";
 
 const ViewBillPaymentPage = () => {
     const router = useNavigate();
     const [open, setOpen] = useState(false)
+    const queryParams = new URLSearchParams(location.search);
+    const custId = queryParams.get("id");
+    const {data, isFetching, error} =  useGetBillsPaymentByIdQuery(custId)
 
-    const details = {
-        name: "Adekunle Adebona Samuel",
-        emailAddress: "adekunle.adebona@creditwaveng.com.",
-        dob: "09/03/1991",
-        bvn: "109031991",
-        phoneNumber: "081 123 45678",
-        deposit: [
-            {
-                paymentFor: "Eko electric",
-                package: "Premium",
-                number: 63879216,
-                prepaid: "Prepaid",
-                amount: "20,000.00",
-                status: "Active",
-                transDate: "July 21, 2023"
-            },{
-                paymentFor: "Dstv",
-                package: "Standard",
-                number: 6387234,
-                prepaid: "Postpaid",
-                amount: "20,000.00",
-                status: "Inactive",
-                transDate: "July 21, 2023"
-            },{
-                paymentFor: "Eko electric",
-                package: "Premium",
-                number: 63879216,
-                prepaid: "Prepaid",
-                amount: "20,000.00",
-                status: "Active",
-                transDate: "July 21, 2023"
-            },
-        ]
+    const formatAmount = (amount) => {
+        const number = parseInt(amount, 10);
+        return  number.toLocaleString();
     }
 
     const header = ['S/N', 'Payment For', 'Package', 'Number', 'Prepaid/Postpaid', 'Amount', 'Transaction Date', 'Status', 'Actions' ]
@@ -63,26 +37,26 @@ const ViewBillPaymentPage = () => {
                 <div>
                     <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Savings</p>
                     <div className="rounded-[5px] my-6 p-8 scroll-container" style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
-                        <div className="flex space-x-4">
+                        <div className="flex space-x-8">
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Name</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.name}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.fullName}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">DOB</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.dob}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.dateOfBirth}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Email Address:</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500] truncate">{details.emailAddress}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500] truncate">{data?.data.emailAddress}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Phone number:</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.phoneNumber}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.phoneNumber}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">BVN</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.bvn}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.bvn}</p>
                             </div>
                         </div>
                     </div>
@@ -103,7 +77,7 @@ const ViewBillPaymentPage = () => {
                                 </thead>
                                 <tbody className="bg-white">
                                 {
-                                    details.deposit.map((item, index) => (
+                                    data?.data.listItem.map((item, index) => (
                                         <tr key={index}>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
@@ -111,7 +85,7 @@ const ViewBillPaymentPage = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.paymentFor}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.categoryName}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
@@ -119,7 +93,7 @@ const ViewBillPaymentPage = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.number}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.billersId}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
@@ -127,11 +101,11 @@ const ViewBillPaymentPage = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.amount}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item.amount)}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.transDate).format("YYYY/MM/DD")}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.dateCreated).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
