@@ -95,6 +95,7 @@ import P2P from "../pages/customerCentric/P2P.jsx";
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {getUserToken} from "../services/storage/index.js";
+import Repayment from "../pages/collection/Repayment.jsx";
 
 export const ProtectedRoute = ({ children }) => {
     const navigate = useNavigate();
@@ -286,9 +287,16 @@ const ROUTES = [
     },
     {
         path: "/collection",
-        key: "COLLECTION",
         exact: true,
-        element: <Collection />,
+        children: [
+            {
+                path: "repayment",
+                exact: true,
+                element: <ProtectedRoute>
+                    <Repayment />,
+                </ProtectedRoute>
+            },
+        ]
     },
     {
         path: "/customerCentric",

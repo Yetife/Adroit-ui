@@ -2,15 +2,24 @@ import {useNavigate} from "react-router-dom";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import {useGetAllSavingsQuery} from "../../../store/features/customerCentric/api.js";
+import {useState} from "react";
+import Pagination from "../../reusables/Pagination.jsx";
 
 const CustomerSavingsTable = ({searchTerm, dropDown}) => {
-    const {data, isFetching, error} =  useGetAllSavingsQuery()
+    const [page, setPage] = useState(1)
+    const [size, setSize] = useState(10)
+    const {data, isFetching, error} =  useGetAllSavingsQuery({size, page})
     if (error) return <p>Network error</p>
 
     const filteredData = data?.data.filter((item) =>
         item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
     );
-
+    const handlePageChange = (newPage) => {
+        setPage(newPage)
+    }
+    const handleRowPerPageChange = (event) => {
+        setSize(parseInt(event.target.value, 10));
+    }
 
     return (
         <div className="scroll-container flex rounded-3xl flex-col mt-8">
@@ -29,13 +38,17 @@ const CustomerSavingsTable = ({searchTerm, dropDown}) => {
                         { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
                         </tbody>
                     </table>
-                    {/*{ data?.data?.length > 0 && <Pagination totalCount={data?.resultCount} getPage={getPage} /> }*/}
-                    {/*{ err || data?.data?.length === 0 && <div className='w-full flex align-center'>*/}
-                    {/*    <div className="m-auto py-5">*/}
-                    {/*        <Image src={'../img/no-data.svg'} width="150" height="150" alt="no data" />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*}*/}
+                    {data && (
+                        <Pagination
+                            totalCount={data?.recordCount || 0}
+                            page={page}
+                            rowsPerPage={size}
+                            rowsPerPageOptions={[10, 20, 50, 70, 100]}
+                            sizes={[10, 20, 50, 70, 100]}
+                            onPageChange={handlePageChange}
+                            onRowsPerPageChange={handleRowPerPageChange}
+                        />
+                    )}
                 </div>
             </div>
         </div>

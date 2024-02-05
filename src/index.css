@@ -82,3 +82,43 @@
     max-height: 20px !important;
     border-radius: 32px;
 }
+
+.pagination {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+}
+
+.pagination li {
+    display: inline-block;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.pagination p.active {
+    color: #3A3A3A;
+    cursor: pointer;
+}
+.pagination p.disabled {
+    color: #999; /* Set the color for disabled buttons */
+    cursor: not-allowed; /* Set the cursor to not-allowed */
+    pointer-events: none; /* Disable pointer events */
+    opacity: 0.6; /* Set opacity for disabled buttons */
+}
+.pagination img.active {
+    color: #3A3A3A;
+    cursor: pointer;
+}
+.pagination img.disabled {
+    color: #999;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.6;
+}
