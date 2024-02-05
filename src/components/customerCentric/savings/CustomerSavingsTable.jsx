@@ -7,41 +7,7 @@ const CustomerSavingsTable = ({searchTerm, dropDown}) => {
     const {data, isFetching, error} =  useGetAllSavingsQuery()
     if (error) return <p>Network error</p>
 
-    const customer = [
-        {
-            id: 1,
-            customerRef: "Ref123456",
-            firstName: "Adekunle",
-            lastName: "Adebona",
-            middleName: "Samuel",
-            emailAddress: "adebona@credit...",
-            dob: "09/03/1991",
-            bvn: "109031991",
-            status: "Active",
-        }, {
-            id: 2,
-            customerRef: "Ref123456",
-            firstName: "Adekunle",
-            lastName: "Adebona",
-            middleName: "Samuel",
-            emailAddress: "adebona@credit...",
-            dob: "09/03/1991",
-            bvn: "109031991",
-            status: "Active",
-        }, {
-            id: 3,
-            customerRef: "Ref123456",
-            firstName: "Tomisin",
-            lastName: "Adebona",
-            middleName: "Samuel",
-            emailAddress: "tomisin@credit...",
-            dob: "09/03/1991",
-            bvn: "109031991",
-            status: "Active",
-        },
-    ]
-
-    const filteredData = data?.filter((item) =>
+    const filteredData = data?.data.filter((item) =>
         item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -80,7 +46,7 @@ export default CustomerSavingsTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-6 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-6 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
             {name}
         </th>
     )
@@ -97,7 +63,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.customerRef}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.emailAddress}</span>
@@ -111,7 +77,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dateOfBirth}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate ">{data?.dateOfBirth}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
