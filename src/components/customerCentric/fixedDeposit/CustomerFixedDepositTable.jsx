@@ -4,15 +4,18 @@ import themes from "../../reusables/theme.jsx";
 import {useGetAllFixedDepositQuery} from "../../../store/features/customerCentric/api.js";
 import {useState} from "react";
 import Pagination from "../../reusables/Pagination.jsx";
-const CustomerFixedDepositTable = ({searchTerm, dropDown}) => {
+const CustomerFixedDepositTable = ({searchTerm, dropDown, searchName}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} = useGetAllFixedDepositQuery({size, page})
+    const {data, isFetching, error} = useGetAllFixedDepositQuery({size, page, dropDown, searchTerm})
     if (error) return <p>Network error</p>
 
-    const filteredData = data?.data.filter((item) =>
-        item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    console.log(dropDown)
+    console.log(searchTerm)
+
+    // const filteredData = data?.data.filter((item) =>
+    //     item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
+    // );
 
     const handlePageChange = (newPage) => {
         setPage(newPage)
@@ -23,48 +26,36 @@ const CustomerFixedDepositTable = ({searchTerm, dropDown}) => {
     }
 
     return (
-        <div className="scroll-container flex rounded-3xl flex-col mt-8">
-            <div className="py-2 md:px-2 sm:px-2">
-                <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+        <div className="flex rounded-3xl flex-col mt-8">
+            <div className="py-2 md:px-2 sm:px-2 inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+                <div className="scroll-container">
                     {isFetching && <ThemeProvider theme={themes}>
                         <LinearProgress color={"waveGreen"}/>
                     </ThemeProvider>}
                     <table className="table-auto md:w-full px-20">
                         <thead>
                         <tr>
-                            { header?.map((val, ind) => <TableHeader key={ind + val} name={val} />)}
+                            {header?.map((val, ind) => <TableHeader key={ind + val} name={val}/>)}
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
+                        {data?.data.length > 0 && data?.data.map((val, ind) => <TableData key={"00" + ind}
+                                                                                                no={ind + 1}
+                                                                                                data={val}/>)}
                         </tbody>
                     </table>
-                    {data && (
-                        <Pagination
-                            totalCount={data?.recordCount || 0}
-                            page={page}
-                            rowsPerPage={size}
-                            rowsPerPageOptions={[10, 20, 50, 70, 100]}
-                            sizes={[10, 20, 50, 70, 100]}
-                            onPageChange={handlePageChange}
-                            onRowsPerPageChange={handleRowPerPageChange}
-                        />
-                    )}
-                    {/*<div className="w-full ml-32">*/}
-                    {/*    <TablePagination*/}
-                    {/*        // count={data ? data.totalElement : 0}*/}
-                    {/*        // page={data ? data.pageable.pageNumber : 0}*/}
-                    {/*        count={data.recordCount}*/}
-                    {/*        page={page}*/}
-                    {/*        rowsPerPage={size}*/}
-                    {/*        rowsPerPageOptions={[10, 20, 50, 70, 100]}*/}
-                    {/*        onPageChange={handlePageChange}*/}
-                    {/*        onRowsPerPageChange={handleRowPerPageChange}*/}
-                    {/*        sx = {{*/}
-                    {/*            width: "100vw"*/}
-                    {/*        }}*/}
-                    {/*    />*/}
                 </div>
+                {data && (
+                    <Pagination
+                        totalCount={data?.recordCount || 0}
+                        page={page}
+                        rowsPerPage={size}
+                        rowsPerPageOptions={[10, 20, 50, 70, 100]}
+                        sizes={[10, 20, 50, 70, 100]}
+                        onPageChange={handlePageChange}
+                        onRowsPerPageChange={handleRowPerPageChange}
+                    />
+                )}
             </div>
         </div>
     );
@@ -80,7 +71,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Mid. Name', 'Last Name', 'Date of birth', 'BVN', 'Status', 'Actions' ]
+const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Mid. Name', 'Last Name', 'Date of birth', 'BVN', 'Status', 'Actions']
 
 export function TableData({data, no}) {
     const router = useNavigate()
@@ -98,7 +89,8 @@ export function TableData({data, no}) {
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
-            </td><td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">

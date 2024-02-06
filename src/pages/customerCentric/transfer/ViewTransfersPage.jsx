@@ -4,46 +4,24 @@ import Layout from "../../Layout.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {TableHeader} from "../fixedDeposit/ViewFixedDepositPage.jsx";
 import dayjs from "dayjs";
-import BillPaymentModal from "../../../components/customerCentric/billPayment/BillPaymentModal.jsx";
 import TransferModal from "../../../components/customerCentric/transfer/TransferModal.jsx";
+import {useGetTransferByIdQuery} from "../../../store/features/customerCentric/api.js";
+import {formatAmount} from "../../../components/reusables/formatAmount.js";
 
 const ViewTransfersPage = () => {
     const router = useNavigate();
     const [open, setOpen] = useState(false)
-
-    const details = {
-        name: "Adekunle Adebona Samuel",
-        emailAddress: "adekunle.adebona@creditwaveng.com.",
-        dob: "09/03/1991",
-        bvn: "109031991",
-        phoneNumber: "081 123 45678",
-        deposit: [
-            {
-                transferType: "Wallet to Wallet",
-                sender: "Femi Thompson",
-                receiver: "Ajibola Olumide",
-                amount: "20,000.00",
-                status: "Failed",
-                transDate: "July 21, 2023"
-            }, {
-                transferType: "Wallet to Bank",
-                sender: "Femi Thompson",
-                receiver: "Ajibola Olumide",
-                amount: "20,000.00",
-                status: "Success",
-                transDate: "July 21, 2023"
-            }, {
-                transferType: "Wallet to Wallet",
-                sender: "Femi Thompson",
-                receiver: "Ajibola Olumide",
-                amount: "20,000.00",
-                status: "Reversed",
-                transDate: "July 21, 2023"
-            },
-        ]
-    }
+    const [id, setId] = useState(null)
+    const queryParams = new URLSearchParams(location.search);
+    const custId = queryParams.get("id");
+    const {data, isFetching, error} =  useGetTransferByIdQuery(custId)
 
     const header = ['S/N', 'Transfer Type', 'Amount', 'Sender', 'Receiver', 'Transaction Date', 'Status', 'Actions' ]
+
+    const handleOpen = (id) => {
+        setId(id)
+        setOpen(true)
+    }
 
     return (
         <Layout>
@@ -59,34 +37,34 @@ const ViewTransfersPage = () => {
             </div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl overflow-auto sm:rounded-lg mt-4 px-6">
                 <div>
-                    <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Savings</p>
+                    <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Customer Details</p>
                     <div className="rounded-[5px] my-6 p-8 scroll-container" style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
-                        <div className="flex space-x-4">
+                        <div className="flex space-x-8">
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Name</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.name}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.fullName}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">DOB</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.dob}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.dateOfBirth}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Email Address:</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500] truncate">{details.emailAddress}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500] truncate">{data?.data.emailAddress}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Phone number:</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.phoneNumber}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.phoneNumber}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">BVN</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.bvn}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.bvn}</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="mb-12">
-                    <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Fixed Deposit</p>
+                    <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Transfer</p>
                     <div className="scroll-container rounded-[10px] my-3" style={{
                         border: "1px solid #C9D4D1",
                         background: "#FFF",
@@ -101,7 +79,7 @@ const ViewTransfersPage = () => {
                                 </thead>
                                 <tbody className="bg-white">
                                 {
-                                    details.deposit.map((item, index) => (
+                                    data?.data.listItem.map((item, index) => (
                                         <tr key={index}>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
@@ -109,30 +87,30 @@ const ViewTransfersPage = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.transferType}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{item.transferType}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.amount}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatAmount(item.amount)}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.sender}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{item.sender}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.receiver}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{item.receiver}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.transDate).format("YYYY/MM/DD")}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{dayjs(item.dateCreated).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{item.status}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span onClick={() => setOpen(true)}
+                                                <span onClick={() => handleOpen(item.transactionReference)}
                                                       className={`text-[16px] leading-5 font-[inter] text-[#007BEC] cursor-pointer font-medium`}>View</span>
                                             </td>
                                         </tr>
@@ -144,7 +122,7 @@ const ViewTransfersPage = () => {
                     </div>
                 </div>
             </div>
-            <TransferModal open={open} setOpen={setOpen}/>
+            <TransferModal open={open} setOpen={setOpen} id={id}/>
         </Layout>
     )
 };

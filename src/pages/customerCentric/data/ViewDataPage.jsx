@@ -55,7 +55,7 @@ const ViewDataPage = () => {
             </div>
             <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl overflow-auto sm:rounded-lg mt-4 px-6">
                 <div>
-                    <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Savings</p>
+                    <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Customer Details</p>
                     <div className="rounded-[5px] my-6 p-8 scroll-container" style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
                         <div className="flex space-x-4">
                             <div>
@@ -82,7 +82,7 @@ const ViewDataPage = () => {
                     </div>
                 </div>
                 <div className="mb-12">
-                    <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Fixed Deposit</p>
+                    <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Data</p>
                     <div className="scroll-container rounded-[10px] my-3" style={{
                         border: "1px solid #C9D4D1",
                         background: "#FFF",

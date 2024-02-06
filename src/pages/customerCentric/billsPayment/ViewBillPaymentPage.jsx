@@ -6,17 +6,19 @@ import {TableHeader} from "../fixedDeposit/ViewFixedDepositPage.jsx";
 import dayjs from "dayjs";
 import BillPaymentModal from "../../../components/customerCentric/billPayment/BillPaymentModal.jsx";
 import {useGetBillsPaymentByIdQuery} from "../../../store/features/customerCentric/api.js";
+import {formatAmount} from "../../../components/reusables/formatAmount.js";
 
 const ViewBillPaymentPage = () => {
     const router = useNavigate();
+    const [id, setId] = useState(null)
     const [open, setOpen] = useState(false)
     const queryParams = new URLSearchParams(location.search);
     const custId = queryParams.get("id");
     const {data, isFetching, error} =  useGetBillsPaymentByIdQuery(custId)
 
-    const formatAmount = (amount) => {
-        const number = parseInt(amount, 10);
-        return  number.toLocaleString();
+    const handleOpen = (id) => {
+        setId(id)
+        setOpen(true)
     }
 
     const header = ['S/N', 'Payment For', 'Package', 'Number', 'Prepaid/Postpaid', 'Amount', 'Transaction Date', 'Status', 'Actions' ]
@@ -112,7 +114,7 @@ const ViewBillPaymentPage = () => {
                                                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span onClick={() => setOpen(true)}
+                                                <span onClick={()=> handleOpen(item.transactionReference)}
                                                       className={`text-[16px] leading-5 font-[inter] text-[#007BEC] cursor-pointer font-medium`}>View</span>
                                             </td>
                                         </tr>
@@ -124,7 +126,7 @@ const ViewBillPaymentPage = () => {
                     </div>
                 </div>
             </div>
-            <BillPaymentModal open={open} setOpen={setOpen}/>
+            <BillPaymentModal open={open} setOpen={setOpen} id={id}/>
         </Layout>
     )
 };

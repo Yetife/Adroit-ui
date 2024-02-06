@@ -19,16 +19,43 @@ export const customerCentricApi = createApi({
             providesTags: []
         }),
         getAllFixedDeposit: builder.query({
-            query: ({size, page}) => ({
-                url: `/CustomerCentric/getallfixeddeposits?PasgeSize=${size}&PageNumber=${page}`,
-            }),
-            providesTags: []
+            query: ({size, page, dropDown, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    // Add optional parameters conditionally
+                    ...(dropDown && { SearchType: dropDown }),
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+
+                return {
+                    url: `/CustomerCentric/getallfixeddeposits`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["searchFixedDeposit"]
         }),
         getFixedDepositById: builder.query({
             query: (id) => ({
                 url: `/CustomerCentric/GetfixeddepositByCusId/${id}`,
             }),
             providesTags: []
+        }),
+        searchFixedDeposit: builder.mutation({
+            query: ({body}) => ({
+                url: `/CustomerCentric/getallfixeddepositsForFilter`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["searchFixedDeposit"]
+        }),
+        modifyFixedDeposit: builder.mutation({
+            query: ({body}) => ({
+                url: `/CustomerCentric/ModifyfixeddepositsWithReferenceId`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["modifyFixedDeposit"]
         }),
         getAllBillsPayment: builder.query({
             query: ({size, page}) => ({
@@ -40,11 +67,19 @@ export const customerCentricApi = createApi({
             query: (id) => ({
                 url: `/CustomerCentric/GetbillspaymentByCusId/${id}`,
             }),
-            providesTags: []
+            providesTags: ["modifyBillsPayment"]
+        }),
+        modifyBillsPayment: builder.mutation({
+            query: ({body}) => ({
+                url: `/CustomerCentric/ModifybillsPaymentsStatusWithTransactionReference`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["modifyBillsPayment"]
         }),
         getAllTransfers: builder.query({
-            query: () => ({
-                url: `/CustomerCentric/getalltransfers`,
+            query: ({size, page}) => ({
+                url: `/CustomerCentric/getalltransfers?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: []
         }),
@@ -54,9 +89,17 @@ export const customerCentricApi = createApi({
             }),
             providesTags: []
         }),
+        modifyTransfer: builder.mutation({
+            query: ({body}) => ({
+                url: `/CustomerCentric/ModifytransferStatusWithTransactionReference`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: [" modifyTransfer"]
+        }),
         getAllAirtime: builder.query({
-            query: () => ({
-                url: `/CustomerCentric/getallairtimes`,
+            query: ({size, page}) => ({
+                url: `/CustomerCentric/getallairtimes?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: []
         }),
@@ -66,9 +109,17 @@ export const customerCentricApi = createApi({
             }),
             providesTags: []
         }),
+        modifyAirtime: builder.mutation({
+            query: ({body}) => ({
+                url: `/CustomerCentric/ModifyairtimePaymentsStatusWithTransactionReference`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: [" modifyAirtime"]
+        }),
         getAllData: builder.query({
-            query: () => ({
-                url: `/CustomerCentric/getalldatas`,
+            query: ({size, page}) => ({
+                url: `/CustomerCentric/getalldatas?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: []
         }),
@@ -77,6 +128,14 @@ export const customerCentricApi = createApi({
                 url: `/CustomerCentric/GetdataByCusId/${id}`,
             }),
             providesTags: []
+        }),
+        modifyData: builder.mutation({
+            query: ({body}) => ({
+                url: `/CustomerCentric/ModifydataPaymentsStatusWithTransactionReference`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: [" modifyData"]
         }),
     })
 })
@@ -92,5 +151,10 @@ export const {
     useGetTransferByIdQuery,
     useGetAllAirtimeQuery,
     useGetAirtimeByIdQuery,
-
+    useModifyFixedDepositMutation,
+    useModifyBillsPaymentMutation,
+    useSearchFixedDepositMutation,
+    useModifyTransferMutation,
+    useModifyAirtimeMutation,
+    useModifyDataMutation,
 } = customerCentricApi

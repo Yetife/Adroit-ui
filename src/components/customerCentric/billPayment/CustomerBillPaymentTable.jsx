@@ -25,9 +25,9 @@ const CustomerBillPaymentTable = ({searchTerm, dropDown}) => {
 
 
     return (
-        <div className="scroll-container flex rounded-3xl flex-col mt-8">
-            <div className="py-2 md:px-2 sm:px-2">
-                <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+        <div className="flex rounded-3xl flex-col mt-8">
+            <div className="py-2 md:px-2 sm:px-2 inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+                <div className="scroll-container">
                     {isFetching && <ThemeProvider theme={themes}>
                         <LinearProgress color={"waveGreen"}/>
                     </ThemeProvider>}
@@ -41,18 +41,18 @@ const CustomerBillPaymentTable = ({searchTerm, dropDown}) => {
                         { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
                         </tbody>
                     </table>
-                    {data && (
-                        <Pagination
-                            totalCount={data?.recordCount || 0}
-                            page={page}
-                            rowsPerPage={size}
-                            rowsPerPageOptions={[10, 20, 50, 70, 100]}
-                            sizes={[10, 20, 50, 70, 100]}
-                            onPageChange={handlePageChange}
-                            onRowsPerPageChange={handleRowPerPageChange}
-                        />
-                    )}
                 </div>
+                {data && (
+                    <Pagination
+                        totalCount={data?.recordCount || 0}
+                        page={page}
+                        rowsPerPage={size}
+                        rowsPerPageOptions={[10, 20, 50, 70, 100]}
+                        sizes={[10, 20, 50, 70, 100]}
+                        onPageChange={handlePageChange}
+                        onRowsPerPageChange={handleRowPerPageChange}
+                    />
+                )}
             </div>
         </div>
     );

@@ -3,9 +3,31 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import {Close} from "@mui/icons-material";
+import {useDispatch} from "react-redux";
+import {useModifyTransferMutation} from "../../../store/features/customerCentric/api.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 
-const TransferModal = ({open, setOpen}) => {
+const TransferModal = ({open, setOpen, id}) => {
     const [desc, setDesc] = useState("")
+
+    const dispatch = useDispatch()
+    const [modifyTransfer] = useModifyTransferMutation()
+
+    const handleSubmit = (status) => {
+        modifyTransfer({
+            body: {
+                entityId: id,
+                status: status,
+                description: desc
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpen(!open)
+            setDesc("")
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
     return (
         <div>
             <Dialog.Root
@@ -36,13 +58,13 @@ const TransferModal = ({open, setOpen}) => {
 
                             <div className="flex tw-items-center m-auto tw-text-center mt-6">
                                 <Button className="ml-6" variant="primary" bgColor="#00C795" borderRadius="4px"
-                                        height="40px" size='md' as={ReactLink} w={'290px'}>
+                                        height="40px" size='md' as={ReactLink} w={'290px'} onClick={()=>handleSubmit("Reverse")}>
                                     <Text color="white">Reverse</Text>
                                 </Button>
                             </div>
                             <div className="flex tw-items-center m-auto tw-text-center mt-3">
                                 <Button className="ml-6" variant="primary" bgColor="#135D54" borderRadius="4px"
-                                        height="40px" size='md' as={ReactLink} w={'290px'}>
+                                        height="40px" size='md' as={ReactLink} w={'290px'} onClick={()=>handleSubmit("Retry")}>
                                     <Text color="white">Retry</Text>
                                 </Button>
                             </div>

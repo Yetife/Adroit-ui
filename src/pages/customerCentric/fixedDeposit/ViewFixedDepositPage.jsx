@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import ApproveDepositModal from "../../../components/customerCentric/fixedDeposit/ApproveDepositModal.jsx";
 import {useState} from "react";
 import {useGetFixedDepositByIdQuery} from "../../../store/features/customerCentric/api.js";
+import {formatAmount} from "../../../components/reusables/formatAmount.js";
 const ViewFixedDepositPage = () => {
     const router = useNavigate();
     const [open, setOpen] = useState(false)
@@ -77,7 +78,7 @@ const ViewFixedDepositPage = () => {
                                                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{index + 1}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.depositAmount}</span>
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item.depositAmount)}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status}</span>

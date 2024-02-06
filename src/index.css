@@ -43,12 +43,13 @@
 }
 .scroll-container {
     overflow-x: auto;
-    max-width: 100%; /* Ensure the container takes the full width */
+    max-width: 100%;
 }
 
 /* Hide the scrollbar */
 .scroll-container::-webkit-scrollbar {
     display: block;
+    height: 10px;
 }
 
 .scroll-container::-webkit-scrollbar-thumb {

@@ -22,34 +22,36 @@ const CustomerSavingsTable = ({searchTerm, dropDown}) => {
     }
 
     return (
-        <div className="scroll-container flex rounded-3xl flex-col mt-8">
-            <div className="py-2 md:px-2 sm:px-2">
-                <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+        <div className="flex rounded-3xl flex-col mt-8">
+            <div className="py-2 md:px-2 sm:px-2 inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+                <div className="scroll-container">
                     {isFetching && <ThemeProvider theme={themes}>
                         <LinearProgress color={"waveGreen"}/>
                     </ThemeProvider>}
                     <table className="table-auto md:w-full px-20">
                         <thead>
                         <tr>
-                            { header?.map((val, ind) => <TableHeader key={ind + val} name={val} />)}
+                            {header?.map((val, ind) => <TableHeader key={ind + val} name={val}/>)}
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
+                        {filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind}
+                                                                                                no={ind + 1}
+                                                                                                data={val}/>)}
                         </tbody>
                     </table>
-                    {data && (
-                        <Pagination
-                            totalCount={data?.recordCount || 0}
-                            page={page}
-                            rowsPerPage={size}
-                            rowsPerPageOptions={[10, 20, 50, 70, 100]}
-                            sizes={[10, 20, 50, 70, 100]}
-                            onPageChange={handlePageChange}
-                            onRowsPerPageChange={handleRowPerPageChange}
-                        />
-                    )}
                 </div>
+                {data && (
+                    <Pagination
+                        totalCount={data?.recordCount || 0}
+                        page={page}
+                        rowsPerPage={size}
+                        rowsPerPageOptions={[10, 20, 50, 70, 100]}
+                        sizes={[10, 20, 50, 70, 100]}
+                        onPageChange={handlePageChange}
+                        onRowsPerPageChange={handleRowPerPageChange}
+                    />
+                )}
             </div>
         </div>
     );
@@ -65,7 +67,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Mid. Name', 'Last Name', 'Date of birth', 'BVN', 'Status', 'Actions' ]
+const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Mid. Name', 'Last Name', 'Date of birth', 'BVN', 'Status', 'Actions']
 
 export function TableData({data, no}) {
     const router = useNavigate()
@@ -83,8 +85,9 @@ export function TableData({data, no}) {
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
-            </td><td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
         </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>

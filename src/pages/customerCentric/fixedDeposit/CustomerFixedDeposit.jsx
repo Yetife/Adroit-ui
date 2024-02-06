@@ -1,20 +1,24 @@
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import Layout from "../../Layout.jsx";
 import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import CustomerFixedDepositTable from "../../../components/customerCentric/fixedDeposit/CustomerFixedDepositTable.jsx";
 import FilterFixedDepositModal from "../../../components/customerCentric/fixedDeposit/FilterFixedDepositModal.jsx";
+import {useSearchFixedDepositMutation} from "../../../store/features/customerCentric/api.js";
 
 const CustomerFixedDeposit = () => {
+    const formRef = useRef(null);
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
-    const [dropdown, setDropDown] = useState("emailAddress")
+    const [searchName, setSearchName] = useState("");
+    const [dropdown, setDropDown] = useState("email")
     const [inputs, setInputs] = useState({
         status: "",
         startDate: "",
         endDate: "",
     })
+    const [searchDeposit] = useSearchFixedDepositMutation()
     const handleOpen = () => {
         setOpen(true)
     }
@@ -25,7 +29,25 @@ const CustomerFixedDeposit = () => {
         setDropDown(e.target.value);
         handleSearch(searchTerm, e.target.value); // Pass the selected dropdown value to handleSearch
     };
+    const handleEmailSubmit = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        setSearchTerm(form.searchInput.value);
 
+        // if (searchTerm){
+        //     setSearchTerm("")
+        // }
+    };
+    const handleNameSubmit = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        setSearchName(form.searchNameInput.value);
+    };
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSearch(searchTerm);
+        }
+    };
     return (
         <Layout>
             <div className="px-2">
@@ -35,24 +57,51 @@ const CustomerFixedDeposit = () => {
                              <select
                                  id="select" value={dropdown}
                                  onChange={(event) => handleChange(event)}
-                                 className="font-medium w-[150px] text-black h-[40px]  leading-relaxed py-1 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
-                                 <option value={'emailAddress'}>Email</option>
-                                 <option value={'phoneNumber'}>Phone Number</option>
-                                  <option value={'firstName'}>Customer Name</option>
+                                 className="font-medium w-[150px] text-black h-[44px]  leading-relaxed py-1 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                 <option value={'email'}>Email</option>
+                                 <option value={'phone'}>Phone Number</option>
+                                  <option value={'name'}>Customer Name</option>
                             </select>
                         </span>
                         <div className="ml-3 w-[200px]">
-                            <Search search={searchTerm} setSearch={handleSearch}/>
+                            {dropdown === "email" &&<form ref={formRef} onSubmit={handleEmailSubmit}>
+                                <input
+                                    type="email"
+                                    name="searchInput"
+                                    placeholder="Search for customer details by email"
+                                    className="text-zinc-800 outline-zinc-500 outline-1 w-full border border-neutral-300 leading-relaxed bg-transparent pl-2 p-2 rounded"
+                                    onKeyUp={(e) => {
+                                        if (e.key === "Enter") {
+                                            formRef.current.requestSubmit();
+                                        }
+                                    }}
+                                />
+                            </form>}
+                            {dropdown === "name" &&<form ref={formRef} onSubmit={handleNameSubmit}>
+                                <input
+                                    type="name"
+                                    name="searchNameInput"
+                                    placeholder="Search customer by name"
+                                    className="text-zinc-800 outline-zinc-500 outline-1 w-full border border-neutral-300 leading-relaxed bg-transparent pl-2 p-2 rounded"
+                                    onKeyUp={(e) => {
+                                        if (e.key === "Enter") {
+                                            formRef.current.requestSubmit();
+                                        }
+                                    }}
+                                />
+                            </form>}
+                            {/*<Search search={searchTerm} setSearch={handleSearch} onKeyPress={handleKeyPress}/>*/}
                         </div>
                     </div>
                     <div>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Filter</Text>
                         </Button>
                     </div>
                 </div>
                 <div>
-                    <CustomerFixedDepositTable searchTerm={searchTerm} dropDown={dropdown}/>
+                    <CustomerFixedDepositTable searchTerm={searchTerm} dropDown={dropdown} searchName={searchName}/>
                 </div>
                 <FilterFixedDepositModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
             </div>

@@ -41,7 +41,7 @@ const Pagination = ({ totalCount, onPageChange, onRowsPerPageChange, page, rowsP
                     {startIndex}-{endIndex} of {totalCount}
                 </div>
                 <ul className="pagination ml-4">
-                    <li>
+                    <li className="px-2">
                         <img src={previous} onClick={() => onPageChange(page - 1)}
                              className={page === 1 ? "disabled" : "active"}  alt={"previous"}/>
                     </li>
@@ -59,7 +59,7 @@ const Pagination = ({ totalCount, onPageChange, onRowsPerPageChange, page, rowsP
                             )}
                         </li>
                     ))}
-                    <li>
+                    <li className="px-2">
                         <img src={next} onClick={() => onPageChange(page + 1)}
                                     className={page === numPages ? "disabled" : "active"} alt={"next"}/>
                     </li>

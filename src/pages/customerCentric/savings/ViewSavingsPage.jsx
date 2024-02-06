@@ -3,13 +3,17 @@ import {useState} from "react";
 import Layout from "../../Layout.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import dayjs from "dayjs";
-import ApproveDepositModal from "../../../components/customerCentric/fixedDeposit/ApproveDepositModal.jsx";
 import {TableHeader} from "../fixedDeposit/ViewFixedDepositPage.jsx";
 import SavingsHistoryModal from "../../../components/customerCentric/savings/SavingsHistoryModal.jsx";
+import {formatAmount} from "../../../components/reusables/formatAmount.js";
+import {useGetFixedDepositByIdQuery, useGetSavingsByIdQuery} from "../../../store/features/customerCentric/api.js";
 
 const ViewSavingsPage = () => {
     const router = useNavigate();
     const [open, setOpen] = useState(false)
+    const queryParams = new URLSearchParams(location.search);
+    const custId = queryParams.get("id");
+    const {data, isFetching, error} =  useGetSavingsByIdQuery(custId)
 
     const details = {
         name: "Adekunle Adebona Samuel",
@@ -22,7 +26,7 @@ const ViewSavingsPage = () => {
                 purpose: "Vacation",
                 startDate: "09/03/1991",
                 endDate: "09/03/1991",
-                amount: "20,000.00",
+                amount: "20000",
                 status: "Active",
                 emailNotification: "Yes",
                 smsNotification: "No",
@@ -32,7 +36,7 @@ const ViewSavingsPage = () => {
                 purpose: "Vacation",
                 startDate: "09/03/1991",
                 endDate: "09/03/1991",
-                amount: "20,000.00",
+                amount: "20000",
                 status: "Active",
                 emailNotification: "Yes",
                 smsNotification: "Yes",
@@ -42,7 +46,7 @@ const ViewSavingsPage = () => {
                 purpose: "Vacation",
                 startDate: "09/03/1991",
                 endDate: "09/03/1991",
-                amount: "20,000.00",
+                amount: "20000",
                 status: "Active",
                 emailNotification: "Yes",
                 smsNotification: "No",
@@ -52,7 +56,7 @@ const ViewSavingsPage = () => {
                 purpose: "Vacation",
                 startDate: "09/03/1991",
                 endDate: "09/03/1991",
-                amount: "20,000.00",
+                amount: "20000",
                 status: "Active",
                 emailNotification: "No",
                 smsNotification: "Yes",
@@ -80,32 +84,32 @@ const ViewSavingsPage = () => {
                 <div>
                     <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Savings</p>
                     <div className="rounded-[5px] my-6 p-8 scroll-container" style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
-                        <div className="flex space-x-4">
+                        <div className="flex space-x-12">
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Name</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.name}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.fullName}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">DOB</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.dob}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.dateOfBirth}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Email Address:</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500] truncate">{details.emailAddress}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500] truncate">{data?.data.emailAddress}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Phone number:</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.phoneNumber}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.phoneNumber}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">BVN</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.bvn}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.bvn}</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="mb-12">
-                    <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Fixed Deposit</p>
+                    <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Savings</p>
                     <div className="scroll-container rounded-[10px] my-3" style={{
                         border: "1px solid #C9D4D1",
                         background: "#FFF",
@@ -120,7 +124,7 @@ const ViewSavingsPage = () => {
                                 </thead>
                                 <tbody className="bg-white">
                                 {
-                                    details.deposit.map((item, index) => (
+                                    data?.data.listItem.map((item, index) => (
                                         <tr key={index}>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
@@ -132,35 +136,35 @@ const ViewSavingsPage = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.tenor}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.savingsFrequencyId}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.startDate}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.startDate).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.endDate}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.endDate).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.amount}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item.amount)}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.emailNotification}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium capitalize">{item.enableEmailNotification.toString()}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.smsNotification}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium capitalize">{item.enableSmsNotification.toString()}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.transDate).format("YYYY/MM/DD")}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.dateCreated).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.isActive ? "Active" : "Inactive"}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span onClick={() => setOpen(true)}
