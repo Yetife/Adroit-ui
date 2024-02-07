@@ -5,38 +5,20 @@ import {Button, Text} from "@chakra-ui/react";
 import {TableHeader} from "../fixedDeposit/ViewFixedDepositPage.jsx";
 import dayjs from "dayjs";
 import AirtimeModal from "../../../components/customerCentric/airtime/AirtimeModal.jsx";
+import {useGetAirtimeByIdQuery, useGetBillsPaymentByIdQuery} from "../../../store/features/customerCentric/api.js";
+import {formatAmount} from "../../../components/reusables/formatAmount.js";
 
 const ViewAirtimePage = () => {
     const router = useNavigate();
     const [open, setOpen] = useState(false)
+    const [id, setId] = useState(null)
+    const queryParams = new URLSearchParams(location.search);
+    const custId = queryParams.get("id");
+    const {data, isFetching, error} = useGetAirtimeByIdQuery(custId)
 
-    const details = {
-        name: "Adekunle Adebona Samuel",
-        emailAddress: "adekunle.adebona@creditwaveng.com.",
-        dob: "09/03/1991",
-        bvn: "109031991",
-        phoneNumber: "081 123 45678",
-        deposit: [
-            {
-                topUp: "GLO Top-up",
-                phoneNumber: "08112345678",
-                amount: "20,000.00",
-                status: "Failed",
-                transDate: "July 21, 2023"
-            }, {
-                topUp: "GLO Top-up",
-                phoneNumber: "08112345678",
-                amount: "20,000.00",
-                status: "Success",
-                transDate: "July 21, 2023"
-            }, {
-                topUp: "GLO Top-up",
-                phoneNumber: "08112345678",
-                amount: "20,000.00",
-                status: "Reversed",
-                transDate: "July 21, 2023"
-            },
-        ]
+    const handleOpen = (id) => {
+        setId(id)
+        setOpen(true)
     }
 
     const header = ['S/N', 'Top-up', 'Phone Number', 'Amount', 'Transaction Date', 'Status', 'Actions' ]
@@ -57,26 +39,26 @@ const ViewAirtimePage = () => {
                 <div>
                     <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Customer Details</p>
                     <div className="rounded-[5px] my-6 p-8 scroll-container" style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
-                        <div className="flex space-x-4">
+                        <div className="flex space-x-8">
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Name</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.name}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.fullName}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">DOB</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.dob}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.dateOfBirth}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Email Address:</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500] truncate">{details.emailAddress}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500] truncate">{data?.data.emailAddress}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Phone number:</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.phoneNumber}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.phoneNumber}</p>
                             </div>
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">BVN</p>
-                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.bvn}</p>
+                                <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.bvn}</p>
                             </div>
                         </div>
                     </div>
@@ -97,7 +79,7 @@ const ViewAirtimePage = () => {
                                 </thead>
                                 <tbody className="bg-white">
                                 {
-                                    details.deposit.map((item, index) => (
+                                    data?.data.listItem.map((item, index) => (
                                         <tr key={index}>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
@@ -105,26 +87,26 @@ const ViewAirtimePage = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.topUp}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.mobileOperatorName} Top-up</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.phoneNumber}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.mobileNumber}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.amount}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item.amount)}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.transDate).format("YYYY/MM/DD")}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.dateCreated).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
                                                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span onClick={() => setOpen(true)}
+                                                <span onClick={() => handleOpen(item.transactionReference)}
                                                       className={`text-[16px] leading-5 font-[inter] text-[#007BEC] cursor-pointer font-medium`}>View</span>
                                             </td>
                                         </tr>
@@ -136,7 +118,7 @@ const ViewAirtimePage = () => {
                     </div>
                 </div>
             </div>
-            <AirtimeModal open={open} setOpen={setOpen}/>
+            <AirtimeModal open={open} setOpen={setOpen} id={id}/>
         </Layout>
     )
 };

@@ -151,6 +151,8 @@ export const {
     useGetTransferByIdQuery,
     useGetAllAirtimeQuery,
     useGetAirtimeByIdQuery,
+    useGetAllDataQuery,
+    useGetDataByIdQuery,
     useModifyFixedDepositMutation,
     useModifyBillsPaymentMutation,
     useSearchFixedDepositMutation,
