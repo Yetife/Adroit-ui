@@ -1,8 +1,11 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import dayjs from "dayjs";
 import {Close} from "@mui/icons-material";
+import {useGetAllP2PQuery, useGetP2PByIdQuery} from "../../../store/features/customerCentric/api.js";
 
-const P2PModal = ({open, setOpen}) => {
+const P2PModal = ({open, setOpen, id}) => {
+    const {data, isFetching, error} =  useGetP2PByIdQuery(id)
+
     const details = {
         lenderName: "Olakunle Dami",
         lenderEmail: "olageshidami@gmail.com",
@@ -52,17 +55,17 @@ const P2PModal = ({open, setOpen}) => {
                                     <p className="text-[14px] leading-5 text-[#007970] font-[600]">Lender Details</p>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Name:</p>
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.lenderName}</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500] capitalize">{data?.data.lenderDetails?.firstName + " " + data?.data.lenderDetails?.lastName}</p>
                                     </div>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Email
                                             Address:</p>
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.lenderEmail}</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.lenderDetails?.emailAddress}</p>
                                     </div>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Phone
                                             Number:</p>
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.lenderPhoneNumber}</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.lenderDetails?.phoneNumber}</p>
                                     </div>
                                 </div>
                                 <div className="rounded-[5px] my-3 px-4 py-2"
@@ -70,15 +73,15 @@ const P2PModal = ({open, setOpen}) => {
                                     <p className="text-[14px] leading-5 text-[#007970] font-[600]">Borrower Details</p>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Name:</p>
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.borrowerName}</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500] capitalize">{data?.data.borrowerDetails?.firstName + " " + data?.data.borrowerDetails?.lastName}</p>
                                     </div>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Email Address:</p>
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.borrowerEmailAddress}</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.borrowerDetails?.emailAddress}</p>
                                     </div>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Phone Number:</p>
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.borrowerPhoneNumber}</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.borrowerDetails?.phoneNumber}</p>
                                     </div>
                                 </div>
                             </div>
@@ -86,17 +89,17 @@ const P2PModal = ({open, setOpen}) => {
                                 <div className="mt-2">
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[500]">Tenor:</p>
-                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.tenor}</p>
+                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.tenor}</p>
                                     </div>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[500]">Start
                                             Date:</p>
-                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.startDate}</p>
+                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{dayjs(data?.data.startDate).format("YYYY/MM/DD")}</p>
                                     </div>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[600]">End
                                             Date:</p>
-                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.endDate}</p>
+                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{dayjs(data?.data.endDate).format("YYYY/MM/DD")}</p>
                                     </div>
                                 </div>
                                 <div  className="rounded-[5px] my-3 p-2 scroll-container"

@@ -25,6 +25,7 @@ import DecisionModal from "../../components/loanUnderwritting/approval/DecisionM
 import ReassignModal from "../../components/loanUnderwritting/loanReassignment/ReassignModal.jsx";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useAdjustApplicationMutation, useReturnApplicationMutation} from "../../store/features/loanApplication/api.js";
+import ManualDisbursementModal from "../../components/loanUnderwritting/disbursement/ManualDisbursementModal.jsx";
 
 const ViewLoanDisbursementPage = () => {
     const [comment, setComment] = useState("")
@@ -33,6 +34,7 @@ const ViewLoanDisbursementPage = () => {
     const [open, setOpen] = useState(false)
     const [openReassign, setOpenReassign] = useState(false)
     const [openDisburse, setOpenDisburse] = useState(false)
+    const [openManual, setOpenManual] = useState(false)
     const [openDecision, setOpenDecision] = useState(false)
     const [openComplete, setOpenComplete] = useState(false)
     const [inputs, setInputs] = useState({
@@ -273,9 +275,17 @@ const ViewLoanDisbursementPage = () => {
                                     )
                                 }
                             </div>
-                            <div>
+                            <div className="flex space-x-4">
                                 <div>
-                                    <Button variant="primary" onClick={() => router(-1)} bgColor="#4A5D58" borderRadius="4px"
+                                    <Button variant="primary" onClick={() => setOpenManual(true)} bgColor="#1781BC"
+                                            borderRadius="4px"
+                                            height="37px" size='md' as={ReactLink} w={'170px'}>
+                                        <Text color="white">Manual Disbursement</Text>
+                                    </Button>
+                                </div>
+                                <div>
+                                    <Button variant="primary" onClick={() => router(-1)} bgColor="#4A5D58"
+                                            borderRadius="4px"
                                             height="37px" size='md' as={ReactLink} w={'109px'}>
                                         <Text color="white">Back</Text>
                                     </Button>
@@ -293,6 +303,7 @@ const ViewLoanDisbursementPage = () => {
             <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/approval')}/>
             <DecisionModal open={openDecision} setOpen={setOpenDecision}/>
             <ReassignModal open={openReassign} setOpen={setOpenReassign}/>
+            <ManualDisbursementModal open={openManual} setOpen={setOpenManual}/>
         </Layout>
     );
 };

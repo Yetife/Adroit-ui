@@ -8,12 +8,9 @@ import Pagination from "../../reusables/Pagination.jsx";
 const CustomerSavingsTable = ({searchTerm, dropDown}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllSavingsQuery({size, page})
+    const {data, isFetching, error} =  useGetAllSavingsQuery({size, page, dropDown, searchTerm})
     if (error) return <p>Network error</p>
 
-    const filteredData = data?.data.filter((item) =>
-        item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
-    );
     const handlePageChange = (newPage) => {
         setPage(newPage)
     }
@@ -35,7 +32,7 @@ const CustomerSavingsTable = ({searchTerm, dropDown}) => {
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        {filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind}
+                        {data?.data.length > 0 && data?.data.map((val, ind) => <TableData key={"00" + ind}
                                                                                                 no={ind + 1}
                                                                                                 data={val}/>)}
                         </tbody>
@@ -99,7 +96,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerCentricStatus }</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerCentricStatus}</span>
             </td>
 
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">

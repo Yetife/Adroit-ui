@@ -8,7 +8,7 @@ import Pagination from "../../reusables/Pagination.jsx";
 const CustomerDataTable = ({searchTerm, dropDown}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllDataQuery({size, page})
+    const {data, isFetching, error} =  useGetAllDataQuery({size, page, dropDown, searchTerm})
     if (error) return <p>Network error</p>
 
 
@@ -19,45 +19,6 @@ const CustomerDataTable = ({searchTerm, dropDown}) => {
     const handleRowPerPageChange = (event) => {
         setSize(parseInt(event.target.value, 10));
     }
-
-    const customer = [
-        {
-            id: 1,
-            customerRef: "Ref123456",
-            firstName: "Adekunle",
-            lastName: "Adebona",
-            middleName: "Samuel",
-            emailAddress: "adebona@credit...",
-            dob: "09/03/1991",
-            bvn: "109031991",
-            status: "Successful",
-        }, {
-            id: 2,
-            customerRef: "Ref123456",
-            firstName: "Solomon",
-            lastName: "Adebona",
-            middleName: "Samuel",
-            emailAddress: "samuel@credit...",
-            dob: "09/03/1991",
-            bvn: "109031991",
-            status: "Reversed",
-        }, {
-            id: 3,
-            customerRef: "Ref123456",
-            firstName: "Adekunle",
-            lastName: "Adebona",
-            middleName: "Samuel",
-            emailAddress: "adebona@credit...",
-            dob: "09/03/1991",
-            bvn: "109031991",
-            status: "Pending",
-        },
-    ]
-
-    const filteredData = data?.data.filter((item) =>
-        item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
 
     return (
         <div className="flex rounded-3xl flex-col mt-8">
@@ -73,7 +34,7 @@ const CustomerDataTable = ({searchTerm, dropDown}) => {
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        {filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
+                        {data?.data.length > 0 && data?.data.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
                         </tbody>
                     </table>
                 </div>

@@ -8,7 +8,7 @@ import {useState} from "react";
 const CustomerAirtimeTable = ({searchTerm, dropDown}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllAirtimeQuery({size, page})
+    const {data, isFetching, error} =  useGetAllAirtimeQuery({size, page, dropDown, searchTerm})
     if (error) return <p>Network error</p>
 
     const handlePageChange = (newPage) => {
@@ -18,10 +18,6 @@ const CustomerAirtimeTable = ({searchTerm, dropDown}) => {
     const handleRowPerPageChange = (event) => {
         setSize(parseInt(event.target.value, 10));
     }
-
-    const filteredData = data?.data.filter((item) =>
-        item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
 
     return (
@@ -38,7 +34,7 @@ const CustomerAirtimeTable = ({searchTerm, dropDown}) => {
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                            {filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
+                            {data?.data.length > 0 && data?.data.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
                         </tbody>
                     </table>
                 </div>

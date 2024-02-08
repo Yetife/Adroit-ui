@@ -11,14 +11,12 @@ const CustomerFixedDeposit = () => {
     const formRef = useRef(null);
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
-    const [searchName, setSearchName] = useState("");
     const [dropdown, setDropDown] = useState("email")
     const [inputs, setInputs] = useState({
         status: "",
         startDate: "",
         endDate: "",
     })
-    const [searchDeposit] = useSearchFixedDepositMutation()
     const handleOpen = () => {
         setOpen(true)
     }
@@ -33,21 +31,8 @@ const CustomerFixedDeposit = () => {
         e.preventDefault();
         const form = e.target;
         setSearchTerm(form.searchInput.value);
+    };
 
-        // if (searchTerm){
-        //     setSearchTerm("")
-        // }
-    };
-    const handleNameSubmit = (e) => {
-        e.preventDefault();
-        const form = e.target;
-        setSearchName(form.searchNameInput.value);
-    };
-    const handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-            handleSearch(searchTerm);
-        }
-    };
     return (
         <Layout>
             <div className="px-2">
@@ -64,9 +49,9 @@ const CustomerFixedDeposit = () => {
                             </select>
                         </span>
                         <div className="ml-3 w-[200px]">
-                            {dropdown === "email" &&<form ref={formRef} onSubmit={handleEmailSubmit}>
+                           <form ref={formRef} onSubmit={handleEmailSubmit}>
                                 <input
-                                    type="email"
+                                    type="text"
                                     name="searchInput"
                                     placeholder="Search for customer details by email"
                                     className="text-zinc-800 outline-zinc-500 outline-1 w-full border border-neutral-300 leading-relaxed bg-transparent pl-2 p-2 rounded"
@@ -76,20 +61,7 @@ const CustomerFixedDeposit = () => {
                                         }
                                     }}
                                 />
-                            </form>}
-                            {dropdown === "name" &&<form ref={formRef} onSubmit={handleNameSubmit}>
-                                <input
-                                    type="name"
-                                    name="searchNameInput"
-                                    placeholder="Search customer by name"
-                                    className="text-zinc-800 outline-zinc-500 outline-1 w-full border border-neutral-300 leading-relaxed bg-transparent pl-2 p-2 rounded"
-                                    onKeyUp={(e) => {
-                                        if (e.key === "Enter") {
-                                            formRef.current.requestSubmit();
-                                        }
-                                    }}
-                                />
-                            </form>}
+                            </form>
                             {/*<Search search={searchTerm} setSearch={handleSearch} onKeyPress={handleKeyPress}/>*/}
                         </div>
                     </div>
@@ -101,7 +73,7 @@ const CustomerFixedDeposit = () => {
                     </div>
                 </div>
                 <div>
-                    <CustomerFixedDepositTable searchTerm={searchTerm} dropDown={dropdown} searchName={searchName}/>
+                    <CustomerFixedDepositTable searchTerm={searchTerm} dropDown={dropdown} />
                 </div>
                 <FilterFixedDepositModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
             </div>

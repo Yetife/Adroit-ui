@@ -7,9 +7,20 @@ export const customerCentricApi = createApi({
     tagTypes: [],
     endpoints: (builder) => ({
         getAllSavings: builder.query({
-            query: ({size, page}) => ({
-                url: `/CustomerCentric/getallSavings?PasgeSize=${size}&PageNumber=${page}`,
-            }),
+            query: ({size, page, dropDown, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    // Add optional parameters conditionally
+                    ...(dropDown && { SearchType: dropDown }),
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+
+                return {
+                    url: `/CustomerCentric/getallSavings`,
+                    params: queryParams,
+                };
+            },
             providesTags: []
         }),
         getSavingsById: builder.query({
@@ -58,9 +69,19 @@ export const customerCentricApi = createApi({
             invalidatesTags: ["modifyFixedDeposit"]
         }),
         getAllBillsPayment: builder.query({
-            query: ({size, page}) => ({
-                url: `/CustomerCentric/getallbillspayments?PasgeSize=${size}&PageNumber=${page}`,
-            }),
+            query: ({size, page, dropDown, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    // Add optional parameters conditionally
+                    ...(dropDown && { SearchType: dropDown }),
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+                return {
+                    url: `/CustomerCentric/getallbillspayments`,
+                    params: queryParams,
+                };
+            },
             providesTags: []
         }),
         getBillsPaymentById: builder.query({
@@ -78,9 +99,20 @@ export const customerCentricApi = createApi({
             invalidatesTags: ["modifyBillsPayment"]
         }),
         getAllTransfers: builder.query({
-            query: ({size, page}) => ({
-                url: `/CustomerCentric/getalltransfers?PasgeSize=${size}&PageNumber=${page}`,
-            }),
+            query: ({size, page, dropDown, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    // Add optional parameters conditionally
+                    ...(dropDown && { SearchType: dropDown }),
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+
+                return {
+                    url: `/CustomerCentric/getalltransfers`,
+                    params: queryParams,
+                };
+            },
             providesTags: []
         }),
         getTransferById: builder.query({
@@ -98,9 +130,20 @@ export const customerCentricApi = createApi({
             invalidatesTags: [" modifyTransfer"]
         }),
         getAllAirtime: builder.query({
-            query: ({size, page}) => ({
-                url: `/CustomerCentric/getallairtimes?PasgeSize=${size}&PageNumber=${page}`,
-            }),
+            query: ({size, page, dropDown, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    // Add optional parameters conditionally
+                    ...(dropDown && { SearchType: dropDown }),
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+
+                return {
+                    url: `/CustomerCentric/getallairtimes`,
+                    params: queryParams,
+                };
+            },
             providesTags: []
         }),
         getAirtimeById: builder.query({
@@ -118,9 +161,20 @@ export const customerCentricApi = createApi({
             invalidatesTags: [" modifyAirtime"]
         }),
         getAllData: builder.query({
-            query: ({size, page}) => ({
-                url: `/CustomerCentric/getalldatas?PasgeSize=${size}&PageNumber=${page}`,
-            }),
+            query: ({size, page, dropDown, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    // Add optional parameters conditionally
+                    ...(dropDown && { SearchType: dropDown }),
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+
+                return {
+                    url: `/CustomerCentric/getalldatas`,
+                    params: queryParams,
+                };
+            },
             providesTags: []
         }),
         getDataById: builder.query({
@@ -136,6 +190,18 @@ export const customerCentricApi = createApi({
                 body
             }),
             invalidatesTags: [" modifyData"]
+        }),
+        getAllP2P: builder.query({
+            query: ({size, page}) => ({
+                url: `/CustomerCentric/getallp2ps?PasgeSize=${size}&PageNumber=${page}`,
+            }),
+            providesTags: []
+        }),
+        getP2PById: builder.query({
+            query: (id) => ({
+                url: `/CustomerCentric/Getp2pByP2PLoanRequestId/${id}`,
+            }),
+            providesTags: []
         }),
     })
 })
@@ -159,4 +225,6 @@ export const {
     useModifyTransferMutation,
     useModifyAirtimeMutation,
     useModifyDataMutation,
+    useGetAllP2PQuery,
+    useGetP2PByIdQuery,
 } = customerCentricApi
