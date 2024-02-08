@@ -96,6 +96,7 @@ import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {getUserToken} from "../services/storage/index.js";
 import Repayment from "../pages/collection/Repayment.jsx";
+import RepaymentDetails from "../pages/collection/RepaymentDetails.jsx";
 
 export const ProtectedRoute = ({ children }) => {
     const navigate = useNavigate();
@@ -294,6 +295,13 @@ const ROUTES = [
                 exact: true,
                 element: <ProtectedRoute>
                     <Repayment />,
+                </ProtectedRoute>
+            },
+            {
+                path: "repayment/loanDetails",
+                exact: true,
+                element: <ProtectedRoute>
+                    <RepaymentDetails />,
                 </ProtectedRoute>
             },
         ]
