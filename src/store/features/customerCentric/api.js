@@ -203,6 +203,23 @@ export const customerCentricApi = createApi({
             }),
             providesTags: []
         }),
+        getAllEscrow: builder.query({
+            query: ({size, page, dropDown, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    // Add optional parameters conditionally
+                    ...(dropDown && { SearchType: dropDown }),
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+
+                return {
+                    url: `/CustomerCentric/getallescrows`,
+                    params: queryParams,
+                };
+            },
+            providesTags: []
+        }),
     })
 })
 
@@ -227,4 +244,5 @@ export const {
     useModifyDataMutation,
     useGetAllP2PQuery,
     useGetP2PByIdQuery,
+    useGetAllEscrowQuery,
 } = customerCentricApi

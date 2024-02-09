@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Divider, Tab, Tabs, ThemeProvider} from "@mui/material";
+import {Box, Divider, Tab, Tabs, ThemeProvider} from "@mui/material";
 import themes from "./theme.jsx";
 
 const HorizontalMenu = ({activeTab, handleChange, tabMenu }) => {
@@ -10,12 +10,13 @@ const HorizontalMenu = ({activeTab, handleChange, tabMenu }) => {
     }, [activeTab]);
     return (
         <div>
-            <div>
+            <Box>
                 <ThemeProvider theme={themes}>
                     <Tabs
                         textColor="inherit"
                         variant="scrollable"
-                        scrollButtons="auto"
+                        scrollButtons
+                        allowScrollButtonsMobile
                         indicatorColor={"transparent"}
                         value={currentTab}
                         onChange={(event, newValue) => handleChange(event,newValue)}
@@ -33,7 +34,7 @@ const HorizontalMenu = ({activeTab, handleChange, tabMenu }) => {
                         ))}
                     </Tabs>
                 </ThemeProvider>
-            </div>
+            </Box>
 
         </div>
     );

@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import AddLoanStatusModal from "../loanStatus/AddLoanStatusModal.jsx";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
+import {formatAmount} from "../../reusables/formatAmount.js";
 
 const CustomerTable = ({searchTerm}) => {
     const {data, isFetching, error} =  useGetAllCustomerQuery()
@@ -95,14 +96,14 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.applicationChannel}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.applicationChannel}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.customerRef}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanAmount}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{formatAmount(data?.loanAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.workEmail}</span>

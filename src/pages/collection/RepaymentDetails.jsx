@@ -93,13 +93,13 @@ const RepaymentDetails = () => {
                     //     <CircularProgress color={"waveGreen"} sx={{display: "flex", margin: "auto", justifyContent: "center" }}/>
                     // </ThemeProvider> :
                         <div>
-                        <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto px-20 h-[613px]">
+                        <div className="custom-scroll-bar min-w-full align-middle c-border w-full shadow-xl sm:rounded-lg mt-12 overflow-auto h-[613px]">
                             <div>
                                 <TabContext value={currentTab.toString()}>
                                     <HorizontalMenu activeTab={currentTab} handleChange={handleChange} tabMenu={tabMenu}/>
                                 </TabContext>
                             </div>
-                            <div className={'mt-8 pb-12'}>
+                            <div className={'mt-8 pb-12 px-20'}>
                                 {components[item.toLowerCase()].component}
                             </div>
                         </div>
