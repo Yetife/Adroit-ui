@@ -99,7 +99,7 @@ const RepaymentDetails = () => {
                                     <HorizontalMenu activeTab={currentTab} handleChange={handleChange} tabMenu={tabMenu}/>
                                 </TabContext>
                             </div>
-                            <div className={'mt-8 pb-12 px-20'}>
+                            <div className={'mt-8 pb-12 px-8'}>
                                 {components[item.toLowerCase()].component}
                             </div>
                         </div>

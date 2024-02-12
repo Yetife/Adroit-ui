@@ -197,14 +197,19 @@ const LoanSupportingDocument = () => {
             </div>
             <div style={{border: '1px solid rgba(105, 119, 115, 0.50', background: '#F3F3F3'}} onClick={()=>setOpen(true)} className="flex flex-col h-[180px] items-center py-12 px-10 ml-12 cursor-pointer">
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
-                        <circle cx="19.5" cy="19.5" r="18.8558" fill="#D9D9D9" stroke="#4A5D58" strokeWidth="0.711538" strokeDasharray="2.85 2.85"/>
+                    <svg width="39" height="39" viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="19.5" cy="19.5" r="18.8558" fill="#D9D9D9" stroke="#4A5D58" strokeWidth="0.711538"
+                                strokeDasharray="2.85 2.85"/>
+                        <path
+                            d="M28.7504 21.1258H21.1267V28.7494H18.5855V21.1258H10.9619V18.5846H18.5855V10.9609H21.1267V18.5846H28.7504V21.1258Z"
+                            fill="#4A5D58"/>
                     </svg>
                 </div>
-                <p className="font-medium text-[#4A5D58] text-[14px] whitespace-nowrap pt-4">Request for New Document</p>
+                <p className="font-medium text-[#4A5D58] text-[14px] whitespace-nowrap pt-4">Request for New
+                    Document</p>
             </div>
             <RequestDocumentModal open={open} setOpen={setOpen}/>
-    </div>
+        </div>
     );
 };
 
