@@ -1,7 +1,16 @@
 import logo from '../assets/logo.svg'
 import exit from '../assets/exit.svg'
 import dashboard from '../assets/dashboard.svg'
+import collection from '../assets/collectionIcon.svg'
+import staff from '../assets/staffIcon.svg'
+import admin from '../assets/adminIcon.svg'
+import debt from '../assets/debtIcon.svg'
+import crm from '../assets/crmIcon.svg'
+import bridge from '../assets/bridgeIcon.svg'
+import customer from '../assets/customer.svg'
+import setup from '../assets/setupIcon.svg'
 import loanApp from '../assets/document-text.svg'
+import report from '../assets/reportIcon.svg'
 import receipt from '../assets/receipt-edit.svg'
 import arrowDown from '../assets/arrow-down.svg'
 import arrowUp from '../assets/arrowUp.svg'
@@ -89,7 +98,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
         {
             name: 'Collection',
             hasDropdown: true,
-            icon: receipt,
+            icon: collection,
             route: '/collection',
             iconClosed: arrowUp,
             iconOpened: arrowDown,
@@ -114,7 +123,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
         {
             name: 'Staff',
             hasDropdown: true,
-            icon: receipt,
+            icon: staff,
             route: '/staff',
             iconClosed: arrowUp,
             iconOpened: arrowDown,
@@ -129,7 +138,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
         {
             name: 'CRM',
             hasDropdown: true,
-            icon: receipt,
+            icon: crm,
             route: '/crm',
             iconClosed: arrowUp,
             iconOpened: arrowDown,
@@ -154,14 +163,14 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
         {
             name: 'Administration',
             hasDropdown: true,
-            icon: receipt,
-            route: '/administration',
+            icon: admin,
+            route: '/administration/product',
             iconClosed: arrowUp,
             iconOpened: arrowDown,
             dropdown: [
                 {
                     applicationPageName: 'Product',
-                    href: '/administration',
+                    href: '/administration/product',
                     route: '/administration',
                 },
                 {
@@ -227,19 +236,19 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             hasDropdown: false,
             href: '/debtManagement',
             route: '/debtManagement',
-            icon: dashboard,
+            icon: debt,
         },
         {
             name: 'Bridge Loan',
             hasDropdown: true,
-            icon: receipt,
-            route: '/bridgeLoan',
+            icon: bridge,
+            route: '/bridgeLoan/documentationSetup',
             iconClosed: arrowUp,
             iconOpened: arrowDown,
             dropdown: [
                 {
                     applicationPageName: 'Documentation Setup',
-                    href: '/bridgeLoan',
+                    href: '/bridgeLoan/documentationSetup',
                     route: '/bridgeLoan',
                 },
                 {
@@ -297,21 +306,21 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             hasDropdown: false,
             href: '/customerCentric/fixedDeposit',
             route: '/customerCentric',
-            icon: dashboard,
+            icon: customer,
         },
         {
             name: 'General Setup',
             hasDropdown: false,
             href: '/generalSetup',
             route: '/generalSetup',
-            icon: dashboard,
+            icon: setup,
         },
         {
             name: 'Report',
             hasDropdown: false,
             href: '/report',
             route: '/report',
-            icon: dashboard,
+            icon: report,
         },
 
     ]

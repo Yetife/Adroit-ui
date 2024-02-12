@@ -16,9 +16,17 @@ export const administrationApi = createApi({
             invalidatesTags: ["AddProduct"]
         }),
         getAllProducts: builder.query({
-            query: () => ({
-                url: `/Administration/AdminProduct/getall`,
-            }),
+            query: ({size, page, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+                return {
+                    url: `/Administration/AdminProduct/getall`,
+                    params: queryParams,
+                };
+            },
             providesTags: ["AddProduct", "EditProduct", "DelProduct"]
         }),
         editProduct: builder.mutation({

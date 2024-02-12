@@ -17,9 +17,19 @@ export const bridgeLoanApi = createApi({
             invalidatesTags: ["AddDocumentSetup"]
         }),
         getAllValidDocumentSetup: builder.query({
-            query: () => ({
-                url: `/BridgeLoan/DocumentSetUp/getallvalid`,
-            }),
+            query: ({size, page, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    // Add optional parameters conditionally
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+
+                return {
+                    url: `/BridgeLoan/DocumentSetUp/getallvalid`,
+                    params: queryParams,
+                };
+            },
             providesTags: ["AddDocumentSetup", "EditDocumentSetup"]
         }),
         editDocumentSetup: builder.mutation({
@@ -39,9 +49,19 @@ export const bridgeLoanApi = createApi({
             invalidatesTags: ["AddDocumentStatus"]
         }),
         getAllValidDocumentStatus: builder.query({
-            query: () => ({
-                url: `/BridgeLoan/DocumentationStatus/getallvalid`,
-            }),
+            query: ({size, page, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    // Add optional parameters conditionally
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+
+                return {
+                    url: `/BridgeLoan/DocumentationStatus/getallvalid`,
+                    params: queryParams,
+                };
+            },
             providesTags: ["AddDocumentStatus", "EditDocumentStatus"]
         }),
         editDocumentStatus: builder.mutation({
@@ -91,21 +111,45 @@ export const bridgeLoanApi = createApi({
             invalidatesTags: ["ReturnDisbursement"]
         }),
         getAllProcessedDisbursement: builder.query({
-            query: () => ({
-                url: `/BridgeLoan/Disbursement/getprocessed`,
-            }),
+            query: ({size, page, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+                return {
+                    url: `/BridgeLoan/Disbursement/getprocessed`,
+                    params: queryParams,
+                };
+            },
             providesTags: ["AddDisbursement", "ReturnDisbursement"]
         }),
         getAllReturnedDisbursement: builder.query({
-            query: () => ({
-                url: `/BridgeLoan/Disbursement/getreturned`,
-            }),
+            query: ({size, page, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+                return {
+                    url: `/BridgeLoan/Disbursement/getreturned`,
+                    params: queryParams,
+                };
+            },
             providesTags: ["AddDisbursement", "ReturnDisbursement"]
         }),
         getAllDisbursedDisbursement: builder.query({
-            query: () => ({
-                url: `/BridgeLoan/Disbursement/getdisbursed`,
-            }),
+            query: ({size, page, searchTerm}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    ...(searchTerm && { SearchName: searchTerm }),
+                };
+                return {
+                    url: `/BridgeLoan/Disbursement/getdisbursed`,
+                    params: queryParams,
+                };
+            },
             providesTags: ["AddDisbursement", "ReturnDisbursement"]
         }),
         addTenor: builder.mutation({

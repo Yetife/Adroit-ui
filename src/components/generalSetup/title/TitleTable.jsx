@@ -11,9 +11,16 @@ import AddTitleModal from "./AddTitleModal.jsx";
 const TitleTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllTitleQuery()
 
-    const filteredData = data?.data?.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filterData = (item) => {
+        for (const key in item) {
+            if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Found a match
+            }
+        }
+        return false; // No match found
+    };
+
+    const filteredData = data?.data?.filter(filterData);
 
     return (
         <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">

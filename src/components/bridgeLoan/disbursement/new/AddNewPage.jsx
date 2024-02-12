@@ -109,17 +109,19 @@ const AddNewPage = () => {
     }
     return (
         <Layout>
-            <div className="flex justify-between px-0 py-4  pb-2 md:pt-3 overflow-x-auto">
-                <Search search={searchTerm} setSearch={handleSearch}/>
-                <div>
-                    <Button variant="primary" onClick={()=>router(-1)} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
-                        <Text color="white">Back</Text>
-                    </Button>
-                </div>
-            </div>
-            <div className="scroll-container inline-block min-w-full align-middle c-border shadow sm:rounded-lg mt-8 px-20">
-               <div className="py-12">
-                   <div className="flex">
+            {/*<div className="flex justify-between px-0 py-4  pb-2 md:pt-3 overflow-x-auto">*/}
+            {/*    <Search search={searchTerm} setSearch={handleSearch}/>*/}
+            {/*    <div>*/}
+            {/*        <Button variant="primary" onClick={() => router(-1)} bgColor="#00C795" borderRadius="4px"*/}
+            {/*                height="37px" size='md' as={ReactLink} w={'109px'}>*/}
+            {/*            <Text color="white">Back</Text>*/}
+            {/*        </Button>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
+            <div
+                className="scroll-container inline-block min-w-full align-middle c-border shadow sm:rounded-lg mt-8 px-8">
+                <div className="py-12">
+                    <div className="flex">
                     <span>
                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                         Surname
@@ -129,10 +131,10 @@ const AddNewPage = () => {
                           value={inputs.surname}
                           onChange={(event) => handleChange(event, "surname")}
                           placeholder="Enter surname"
-                          className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                          className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                       />
                     </span>
-                       <span className="ml-8">
+                        <span className="ml-8">
                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                             First Name
                           </h3>
@@ -141,10 +143,10 @@ const AddNewPage = () => {
                               value={inputs.firstName}
                               onChange={(event) => handleChange(event, "firstName")}
                               placeholder="Enter firstName"
-                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
-                       <span className="ml-8">
+                        <span className="ml-8">
                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                             Middle Name
                           </h3>
@@ -153,10 +155,10 @@ const AddNewPage = () => {
                               value={inputs.middleName}
                               onChange={(event) => handleChange(event, "middleName")}
                               placeholder="Enter middleName"
-                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
-                       <span className="ml-8">
+                        <span className="ml-8">
                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                             Email Address
                           </h3>
@@ -165,11 +167,11 @@ const AddNewPage = () => {
                               value={inputs.email}
                               onChange={(event) => handleChange(event, "email")}
                               placeholder="Enter name"
-                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
-                   </div>
-               </div>
+                    </div>
+                </div>
                 <div className="pb-12">
                     <div className="flex">
                      <span>
@@ -178,7 +180,7 @@ const AddNewPage = () => {
                           </h3>
                              <select id="select" value={selectedGender}
                                      onChange={handleGenderChange}
-                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 h-[52px] rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                     className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 h-[52px] rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                 <option value="" disabled>Select gender</option>
                                  {gender && gender?.map((option) => (
                                      <option key={option.uniqueId} value={option.id}>
@@ -196,7 +198,7 @@ const AddNewPage = () => {
                               value={inputs.houseNo}
                               onChange={(event) => handleChange(event, "houseNo")}
                               placeholder="Enter house number"
-                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
                         <span className="ml-8">
@@ -208,7 +210,7 @@ const AddNewPage = () => {
                               value={inputs.streetName}
                               onChange={(event) => handleChange(event, "streetName")}
                               placeholder="Enter street name"
-                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
                         <span className="ml-8">
@@ -220,7 +222,7 @@ const AddNewPage = () => {
                               value={inputs.city}
                               onChange={(event) => handleChange(event, "city")}
                               placeholder="Enter city"
-                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
                     </div>
@@ -236,7 +238,7 @@ const AddNewPage = () => {
                           value={inputs.state}
                           onChange={(event) => handleChange(event, "state")}
                           placeholder="Enter state"
-                          className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                          className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                       />
                     </span>
                         <span className="ml-8">
@@ -248,7 +250,7 @@ const AddNewPage = () => {
                                value={inputs.date}
                                onChange={(event) => handleChange(event, "date")}
                                placeholder="Enter date"
-                               className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                               className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                            />
                         </span>
                         <span className="ml-8">
@@ -256,11 +258,11 @@ const AddNewPage = () => {
                             BVN
                           </h3>
                           <input
-                              type="text"
+                              type="number"
                               value={inputs.bvn}
                               onChange={(event) => handleChange(event, "bvn")}
                               placeholder="Enter bvn"
-                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
                         <span className="ml-8">
@@ -272,7 +274,7 @@ const AddNewPage = () => {
                               value={inputs.idNo}
                               onChange={(event) => handleChange(event, "idNo")}
                               placeholder="Enter id number"
-                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[235px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
                     </div>
@@ -288,7 +290,7 @@ const AddNewPage = () => {
                               value={inputs.idDate}
                               onChange={(event) => handleChange(event, "idDate")}
                               placeholder="Enter id date"
-                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
                         <span className="ml-8">
@@ -300,7 +302,7 @@ const AddNewPage = () => {
                               value={inputs.transferAmt}
                               onChange={(event) => handleChange(event, "transferAmt")}
                               placeholder="Enter transfer amount"
-                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
                         <span className="ml-8">
@@ -312,7 +314,7 @@ const AddNewPage = () => {
                               value={inputs.narration}
                               onChange={(event) => handleChange(event, "narration")}
                               placeholder="Enter preferred narration"
-                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
                         <span className="ml-8">
@@ -324,18 +326,18 @@ const AddNewPage = () => {
                               value={inputs.repayment}
                               onChange={(event) => handleChange(event, "repayment")}
                               placeholder="Enter repayment date"
-                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
                     </div>
-                    <div className="flex space-x-3 float-right mb-6">
-                        <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-8"
-                                onClick={handleAdd}>Add
-                        </button>
-                    </div>
+
                 </div>
             </div>
-
+            <div className="flex space-x-3 float-right mb-6">
+                <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-8"
+                        onClick={handleAdd}>Add
+                </button>
+            </div>
         </Layout>
     );
 };

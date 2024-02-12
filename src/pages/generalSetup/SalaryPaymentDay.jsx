@@ -16,6 +16,12 @@ const SalaryPaymentDay = () => {
     const [paymentDay, setPaymentDay] = useState("")
     const dispatch = useDispatch()
     const [addSalaryDay] = useAddSalaryPaymentDayMutation()
+    const [searchTerm, setSearchTerm] = useState("");
+
+
+    const handleSearch = (searchValue) => {
+        setSearchTerm(searchValue);
+    };
 
     const handleOpen = () => {
         setOpen(true)
@@ -39,7 +45,7 @@ const SalaryPaymentDay = () => {
         <Layout>
             <div className="px-2">
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
-                    <Search />
+                    <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
                         <Button variant="outline" borderColor="#00C795" marginRight="10px"
                                 border={"1px solid #00C796"}  borderRadius="4px" height="37px"
@@ -52,7 +58,7 @@ const SalaryPaymentDay = () => {
                     </div>
                 </div>
                 <div>
-                    <SalaryPaymentDayTable />
+                    <SalaryPaymentDayTable searchTerm={searchTerm}/>
                 </div>
                 <AddSalaryPaymentDayModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} paymentDay={paymentDay} setPaymentDay={setPaymentDay} handleAdd={handleAdd}/>
             </div>

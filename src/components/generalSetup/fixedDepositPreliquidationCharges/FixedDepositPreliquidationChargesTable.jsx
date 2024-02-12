@@ -8,13 +8,21 @@ import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import AddFixedDepositPreliquidationChargesModal from "./AddFixedDepositPreliquidationChargesModal.jsx";
+import {formatAmount} from "../../reusables/formatAmount.js";
 
 const FixedDepositPreliquidationChargesTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllFixedDepositPreliquidationChargesQuery()
 
-    const filteredData = data?.data?.filter((item) =>
-        item?.fromAmount?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filterData = (item) => {
+        for (const key in item) {
+            if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Found a match
+            }
+        }
+        return false; // No match found
+    };
+
+    const filteredData = data?.data?.filter(filterData);
 
 
     return (
@@ -52,7 +60,7 @@ export default FixedDepositPreliquidationChargesTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
             {name}
         </th>
     )
@@ -137,16 +145,16 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.fromAmount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.fromAmount)}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.toAmount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.toAmount)}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.isPercentage}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.amountCharge}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.amountCharge)}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === 1 ? "Active" : "Inactive"}</span>

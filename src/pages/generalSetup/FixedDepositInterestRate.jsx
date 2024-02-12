@@ -8,8 +8,8 @@ import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import FixedDepositInterestRateTable from "../../components/generalSetup/FixedDepositInterestRateTable.jsx";
-import AddFixedDepositInterestRateModal from "../../components/generalSetup/AddFixedDepositInterestRateModal.jsx";
+import FixedDepositInterestRateTable from "../../components/generalSetup/fixedDepositInterestRate/FixedDepositInterestRateTable.jsx";
+import AddFixedDepositInterestRateModal from "../../components/generalSetup/fixedDepositInterestRate/AddFixedDepositInterestRateModal.jsx";
 
 const FixedDepositInterestRate = () => {
     const router = useNavigate()

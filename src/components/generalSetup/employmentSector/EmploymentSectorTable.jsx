@@ -12,9 +12,16 @@ import themes from "../../reusables/theme.jsx";
 const EmploymentSectorTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllEmploymentSectorsQuery()
 
-    const filteredData = data?.data?.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filterData = (item) => {
+        for (const key in item) {
+            if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Found a match
+            }
+        }
+        return false; // No match found
+    };
+
+    const filteredData = data?.data?.filter(filterData);
 
     return (
         <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">
@@ -52,7 +59,7 @@ export default EmploymentSectorTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-20 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-20 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
             {name}
         </th>
     )

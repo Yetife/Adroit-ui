@@ -7,12 +7,13 @@ import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import AddRegularLoanInterestRateModal from "./AddRegularLoanInterestRateModal.jsx";
+import {formatAmount} from "../../reusables/formatAmount.js";
 
 const RegularLoanInterestRateTable = () => {
     const {data, isFetching, error} = useGetAllRegularLoanInterestRateQuery()
 
     return (
-        <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">
+        <div className="scroll-container flex overflow-x-auto rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2">
                 <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
                     {isFetching && <ThemeProvider theme={themes}>
@@ -46,7 +47,7 @@ export default RegularLoanInterestRateTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-6 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
             {name}
         </th>
     )
@@ -106,26 +107,26 @@ export function TableData({data, no}) {
 
     return (
         <tr>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.employmentTypeId}</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.interestRate}%</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanAmountFrom}</span>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.loanAmountFrom)}</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanAmountTo}</span>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.loanAmountTo)}</span>
             </td>
-            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === 1 ? "Active" : "Inactive"}</span>
             </td>
-            <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <a onClick={handleshowDropDown}
                    className="text-2xl cursor-pointer pt-0 leading-5 text-indigo-00 hover:text-indigo-900">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="7" viewBox="0 0 30 7" fill="none">

@@ -8,13 +8,21 @@ import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import AddFixedDepositAmountRangeModal from "./AddFixedDepositAmountRangeModal.jsx";
+import {formatAmount} from "../../reusables/formatAmount.js";
 
 const FixedDepositAmountRangeTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllFixedDepositAmountRangeQuery()
 
-    const filteredData = data?.data?.filter((item) =>
-        item?.fromAmount?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filterData = (item) => {
+        for (const key in item) {
+            if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Found a match
+            }
+        }
+        return false; // No match found
+    };
+
+    const filteredData = data?.data?.filter(filterData);
 
     return (
         <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">
@@ -125,10 +133,10 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.fromAmount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.fromAmount)}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.toAmount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.toAmount)}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === 1 ? "Active" : "Inactive"}</span>

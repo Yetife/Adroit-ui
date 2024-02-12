@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {
     useDeleteLgaMutation,
-    useEditLgaMutation,
     useGetAllLgaQuery
 } from "../../store/features/generalSetup/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
@@ -10,9 +9,19 @@ import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 import AddLgaModal from "./AddLgaModal.jsx";
 
-const LgaTable = () => {
+const LgaTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllLgaQuery()
 
+    const filterData = (item) => {
+        for (const key in item) {
+            if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Found a match
+            }
+        }
+        return false; // No match found
+    };
+
+    const filteredData = data?.data?.filter(filterData);
     return (
         <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2">
@@ -27,7 +36,7 @@ const LgaTable = () => {
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        { data?.data?.length > 0 && data?.data?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
+                        { filteredData.length > 0 && filteredData.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
                         </tbody>
                     </table>
                     {/*{ data?.data?.length > 0 && <Pagination totalCount={data?.resultCount} getPage={getPage} /> }*/}

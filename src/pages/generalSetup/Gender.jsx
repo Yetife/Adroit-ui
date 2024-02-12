@@ -16,6 +16,11 @@ const Gender = () => {
     const [gender, setGender] = useState("")
     const dispatch = useDispatch()
     const [addGender] = useAddGenderMutation()
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const handleSearch = (searchValue) => {
+        setSearchTerm(searchValue);
+    };
 
     const handleOpen = () => {
         setOpen(true)
@@ -38,7 +43,7 @@ const Gender = () => {
         <Layout>
             <div className="px-2">
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
-                    <Search />
+                    <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
                         <Button variant="outline" borderColor="#00C795" marginRight="10px"
                                 border={"1px solid #00C796"}  borderRadius="4px" height="37px"
@@ -51,7 +56,7 @@ const Gender = () => {
                     </div>
                 </div>
                 <div>
-                    <GenderTable />
+                    <GenderTable searchTerm={searchTerm}/>
                 </div>
                 <AddGenderModal open={open} setOpen={setOpen} gender={gender} setGender={setGender} checked={checked} setChecked={setChecked} handleAdd={handleAdd}/>
             </div>

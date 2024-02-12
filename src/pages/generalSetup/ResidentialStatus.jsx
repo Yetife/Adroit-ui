@@ -18,6 +18,11 @@ const ResidentialStatus = () => {
     const [residential, setResidential] = useState("")
     const dispatch = useDispatch()
     const [addResidential] = useAddResidentialStatusMutation()
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const handleSearch = (searchValue) => {
+        setSearchTerm(searchValue);
+    };
 
     const handleOpen = () => {
         setOpen(true)
@@ -41,7 +46,7 @@ const ResidentialStatus = () => {
         <Layout>
             <div className="px-2">
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
-                    <Search />
+                    <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
                         <Button variant="outline" borderColor="#00C795" marginRight="10px"
                                 border={"1px solid #00C796"}  borderRadius="4px" height="37px"
@@ -54,7 +59,7 @@ const ResidentialStatus = () => {
                     </div>
                 </div>
                 <div>
-                    <ResidentialStatusTable />
+                    <ResidentialStatusTable searchTerm={searchTerm}/>
                 </div>
                 <AddResidentialStatusModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} residential={residential} setResidential={setResidential} handleAdd={handleAdd}/>
             </div>

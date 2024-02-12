@@ -6,11 +6,15 @@ export const documentationSlice = createSlice({
     initialState: {
         allDoc: [],
         loading: false,
+        totalCount: 0,
     },
 
     reducers: {
         fetchDoc: (state, action) => {
             state.allDoc = action.payload;
+        },
+        fetchCount: (state, action) => {
+            state.totalCount = action.payload;
         },
         getLoading: (state, action) => {
             state.loading = action.payload;
@@ -19,14 +23,15 @@ export const documentationSlice = createSlice({
 });
 
 export const {
-    fetchDoc, getLoading
+    fetchDoc, fetchCount, getLoading
 } = documentationSlice.actions;
 
-export const fetchDocumentation = () => async (dispatch) => {
+export const fetchDocumentation = (size, page) => async (dispatch) => {
     try {
         dispatch(getLoading(true));
-        const res = await getDocumentation();
+        const res = await getDocumentation(size, page);
         dispatch(fetchDoc(res.data))
+        dispatch(fetchCount(res.recordCount))
         dispatch(getLoading(false));
     }catch (e) {
         dispatch(getLoading(false));

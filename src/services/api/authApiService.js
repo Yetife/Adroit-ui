@@ -7,8 +7,8 @@ const authServiceCallEndpoint = ({ method, url, data, needsAuth }) => {
     return callEndpoint({ method, url, data, needsAuth });
 };
 
-export const getDocumentation = async () => {
-    const url = `/BridgeLoan/Documentation/get`;
+export const getDocumentation = async (size, page) => {
+    const url = `/BridgeLoan/Documentation/get?PasgeSize=${size}&PageNumber=${page}`;
     return authServiceCallEndpoint({url, needsAuth:true})
 };
 export const repaymentDetail = async data => {

@@ -9,8 +9,19 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import AddSalaryPaymentDayModal from "./AddSalaryPaymentDayModal.jsx";
 
-const SalaryPaymentDayTable = () => {
+const SalaryPaymentDayTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllSalaryPaymentDayQuery()
+
+    const filterData = (item) => {
+        for (const key in item) {
+            if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Found a match
+            }
+        }
+        return false; // No match found
+    };
+
+    const filteredData = data?.data?.filter(filterData);
 
     return (
         <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">
@@ -26,7 +37,7 @@ const SalaryPaymentDayTable = () => {
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        { data?.data?.length > 0 && data?.data?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
+                        { filteredData.length > 0 && filteredData.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
                         </tbody>
                     </table>
                     {/*{ data?.data?.length > 0 && <Pagination totalCount={data?.resultCount} getPage={getPage} /> }*/}

@@ -17,6 +17,11 @@ const MaritalStatus = () => {
     const [status, setStatus] = useState("")
     const dispatch = useDispatch()
     const [addStatus] = useAddMaritalStatusMutation()
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const handleSearch = (searchValue) => {
+        setSearchTerm(searchValue);
+    };
 
     const handleOpen = () => {
         setOpen(true)
@@ -40,7 +45,7 @@ const MaritalStatus = () => {
         <Layout>
             <div className="px-2">
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
-                    <Search />
+                    <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
                         <Button variant="outline" borderColor="#00C795" marginRight="10px"
                                 border={"1px solid #00C796"}  borderRadius="4px" height="37px"
@@ -53,7 +58,7 @@ const MaritalStatus = () => {
                     </div>
                 </div>
                 <div>
-                    <MaritalStatusTable />
+                    <MaritalStatusTable searchTerm={searchTerm}/>
                 </div>
                 <AddMaritalStatusModal open={open} setOpen={setOpen} handleAdd={handleAdd} status={status} setStatus={setStatus} checked={checked} setChecked={setChecked}/>
             </div>

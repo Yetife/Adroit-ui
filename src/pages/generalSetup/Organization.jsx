@@ -16,6 +16,11 @@ const Organization = () => {
     const [organization, setOrganization] = useState("")
     const dispatch = useDispatch()
     const [addOrganization] = useAddOrganizationMutation()
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const handleSearch = (searchValue) => {
+        setSearchTerm(searchValue);
+    };
 
     const handleOpen = () => {
         setOpen(true)
@@ -39,7 +44,7 @@ const Organization = () => {
         <Layout>
             <div className="px-2">
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
-                    <Search />
+                    <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
                         <Button variant="outline" borderColor="#00C795" marginRight="10px"
                                 border={"1px solid #00C796"}  borderRadius="4px" height="37px"
@@ -52,7 +57,7 @@ const Organization = () => {
                     </div>
                 </div>
                 <div>
-                    <OrganizationTable />
+                    <OrganizationTable searchTerm={searchTerm}/>
                 </div>
                 <AddOrganizationModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} organization={organization} setOrganization={setOrganization} handleAdd={handleAdd}/>
             </div>

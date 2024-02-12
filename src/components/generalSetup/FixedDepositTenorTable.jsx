@@ -2,12 +2,10 @@ import {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {
     useDeleteFixedDepositTenorMutation,
-    useDeleteTitleMutation, useEditFixedDepositTenorMutation,
-    useEditTitleMutation, useGetAllFixedDepositTenorQuery,
-    useGetAllTitleQuery
+    useEditFixedDepositTenorMutation,
+    useGetAllFixedDepositTenorQuery,
 } from "../../store/features/generalSetup/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import AddTitleModal from "./title/AddTitleModal.jsx";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../reusables/theme.jsx";
 import AddFixedDepositTenorModal from "./AddFixedDepositTenorModal.jsx";
@@ -15,9 +13,16 @@ import AddFixedDepositTenorModal from "./AddFixedDepositTenorModal.jsx";
 const FixedDepositTenorTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllFixedDepositTenorQuery()
 
-    const filteredData = data?.data?.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filterData = (item) => {
+        for (const key in item) {
+            if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Found a match
+            }
+        }
+        return false; // No match found
+    };
+
+    const filteredData = data?.data?.filter(filterData);
 
     return (
         <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">

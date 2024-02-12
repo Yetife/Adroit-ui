@@ -32,17 +32,17 @@ const AddFixedDepositInterestRateModal = ({open, setOpen, checked, setChecked, d
             >
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
-                    <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[39%] left-[50%] max-h-[62vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                    <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[45%] left-[50%] max-h-[89vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                         <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-8">{purpose === "edit" ? "Edit" : purpose === "view" ? "View" : "Add"}</Dialog.Title>
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-2">
                             <div>
                                 <span className="ml-8">
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                    From Amount
+                                    Loan Amount From
                                   </h3>
                                   <input
-                                      type="text"
+                                      type="number"
                                       value={depositFrom}
                                       disabled={purpose === "view"}
                                       onChange={handleFromChange}
@@ -53,10 +53,10 @@ const AddFixedDepositInterestRateModal = ({open, setOpen, checked, setChecked, d
 
                                 <span className="ml-8 mt-4">
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                    From To
+                                    Loan Amount To
                                   </h3>
                                   <input
-                                      type="text"
+                                      type="number"
                                       value={depositTo}
                                       disabled={purpose === "view"}
                                       onChange={handleToChange}
@@ -95,9 +95,9 @@ const AddFixedDepositInterestRateModal = ({open, setOpen, checked, setChecked, d
                                      />
                                 </span>
                                 </div>
-                                <div className="flex space-x-3 float-right my-4">
-                                    <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8" onClick={()=>setOpen(!open)}>Close</button>
-                                    {purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
+                                <div className="flex space-x-3 float-right mt-4">
+                                    <button className="bg-gray-300 rounded py-2 px-6 flex text-black" onClick={()=>setOpen(!open)}>Close</button>
+                                    {purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white "
                                                                    onClick={handleAdd}>Save</button>}
                                 </div>
                             </div>

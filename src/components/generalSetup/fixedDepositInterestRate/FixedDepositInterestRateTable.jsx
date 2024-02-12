@@ -4,22 +4,31 @@ import {
     useDeleteFixedDepositInterestRateMutation,
     useEditFixedDepositInterestRateMutation,
     useGetAllFixedDepositInterestRateQuery
-} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
+} from "../../../store/features/generalSetup/api.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import AddFixedDepositAmountRangeModal
-    from "./fixedDepositAmountRange/AddFixedDepositAmountRangeModal.jsx";
+    from "../fixedDepositAmountRange/AddFixedDepositAmountRangeModal.jsx";
 import {LinearProgress, ThemeProvider} from "@mui/material";
-import themes from "../reusables/theme.jsx";
+import themes from "../../reusables/theme.jsx";
+import {formatAmount} from "../../reusables/formatAmount.js";
+import AddFixedDepositInterestRateModal from "./AddFixedDepositInterestRateModal.jsx";
 
 const FixedDepositInterestRateTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllFixedDepositInterestRateQuery()
 
-    const filteredData = data?.data?.filter((item) =>
-        item?.fromAmount?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filterData = (item) => {
+        for (const key in item) {
+            if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Found a match
+            }
+        }
+        return false; // No match found
+    };
+
+    const filteredData = data?.data?.filter(filterData);
 
     return (
-        <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">
+        <div className="scroll-container flex overflow-x-auto rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2">
                 <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
                     {isFetching && <ThemeProvider theme={themes}>
@@ -52,7 +61,7 @@ export default FixedDepositInterestRateTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate text-gray-900 bg-gray-50">
             {name}
         </th>
     )
@@ -129,10 +138,10 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.fromAmount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.fromAmount)}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.toAmount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.toAmount)}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.interestRate}</span>
@@ -155,7 +164,7 @@ export function TableData({data, no}) {
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.id)}>Remove</span>
         </span>
             </td>
-            <AddFixedDepositAmountRangeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} handleAdd={handleEdit} purpose={purpose}/>
+            <AddFixedDepositInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} handleAdd={handleEdit} purpose={purpose}/>
         </tr>
     )
 }
