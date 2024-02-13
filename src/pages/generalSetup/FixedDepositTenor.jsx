@@ -6,8 +6,8 @@ import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import AddFixedDepositTenorModal from "../../components/generalSetup/AddFixedDepositTenorModal.jsx";
-import FixedDepositTenorTable from "../../components/generalSetup/FixedDepositTenorTable.jsx";
+import AddFixedDepositTenorModal from "../../components/generalSetup/fixedDepositTenor/AddFixedDepositTenorModal.jsx";
+import FixedDepositTenorTable from "../../components/generalSetup/fixedDepositTenor/FixedDepositTenorTable.jsx";
 
 const FixedDepositTenor = () => {
     const router = useNavigate()

@@ -3,12 +3,12 @@ import {useDispatch} from "react-redux";
 import {
     useDeleteRegularLoanChargeMutation,
     useGetAllRegularLoanChargeQuery,
-} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import AddRegularLoanChargeModal from "./regularLoanCharges/AddRegularLoanChargeModal.jsx";
+} from "../../../store/features/generalSetup/api.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import AddRegularLoanChargeModal from "./AddRegularLoanChargeModal.jsx";
 import {LinearProgress, ThemeProvider} from "@mui/material";
-import themes from "../reusables/theme.jsx";
-import {formatAmount} from "../reusables/formatAmount.js";
+import themes from "../../reusables/theme.jsx";
+import {formatAmount} from "../../reusables/formatAmount.js";
 
 const RegularLoanChargesTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllRegularLoanChargeQuery()
@@ -38,7 +38,7 @@ const RegularLoanChargesTable = ({searchTerm}) => {
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        { filteredData.length > 0 && filteredData.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
+                        { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
                         </tbody>
                     </table>
                     {/*{ data?.data?.length > 0 && <Pagination totalCount={data?.resultCount} getPage={getPage} /> }*/}

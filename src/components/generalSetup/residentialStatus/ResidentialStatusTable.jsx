@@ -36,7 +36,7 @@ const ResidentialStatusTable = ({searchTerm}) => {
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        { filteredData.length > 0 && filteredData.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
+                        { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
                         </tbody>
                     </table>
                     {/*{ data?.data?.length > 0 && <Pagination totalCount={data?.resultCount} getPage={getPage} /> }*/}
@@ -57,13 +57,13 @@ export default ResidentialStatusTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-20 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-20 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
             {name}
         </th>
     )
 }
 
-const header = ['S/N', 'Organization/Employer', 'Status', 'Actions' ]
+const header = ['S/N', 'Residential Status', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const [showDropdown, setShowDropdown] = useState(false)

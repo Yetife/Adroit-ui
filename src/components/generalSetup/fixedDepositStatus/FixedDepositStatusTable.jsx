@@ -8,7 +8,6 @@ import themes from "../../reusables/theme.jsx";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
-import AddTitleModal from "../title/AddTitleModal.jsx";
 import AddFixedDepositStatusModal from "./AddFixedDepositStatusModal.jsx";
 
 const FixedDepositStatusTable = ({searchTerm}) => {

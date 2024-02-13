@@ -4,10 +4,10 @@ import {
     useDeleteFixedDepositTenorMutation,
     useEditFixedDepositTenorMutation,
     useGetAllFixedDepositTenorQuery,
-} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
+} from "../../../store/features/generalSetup/api.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
-import themes from "../reusables/theme.jsx";
+import themes from "../../reusables/theme.jsx";
 import AddFixedDepositTenorModal from "./AddFixedDepositTenorModal.jsx";
 
 const FixedDepositTenorTable = ({searchTerm}) => {
@@ -25,7 +25,7 @@ const FixedDepositTenorTable = ({searchTerm}) => {
     const filteredData = data?.data?.filter(filterData);
 
     return (
-        <div className="flex overflow-x-auto rounded-3xl lg:overflow-hidden flex-col mt-8">
+        <div className="scroll-container flex overflow-x-auto rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2">
                 <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
                     {isFetching && <ThemeProvider theme={themes}>
@@ -58,7 +58,7 @@ export default FixedDepositTenorTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
             {name}
         </th>
     )
@@ -166,7 +166,7 @@ export function TableData({data, no}) {
                               stroke="#4A5D58" strokeWidth="3.25" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                 </a>
-                <span  onMouseLeave={handleBlurDropdown} className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer" style={{ display: showDropdown ? "block" : "none"}}>
+                <span  onMouseLeave={handleBlurDropdown} className="absolute z-10 w-32 right--1 md:right-10 mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer" style={{ display: showDropdown ? "block" : "none"}}>
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white" onClick={()=>handleOpenView(data)}>View</span>
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleOpenEdit(data)}>Edit</span>
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.id)}>Remove</span>

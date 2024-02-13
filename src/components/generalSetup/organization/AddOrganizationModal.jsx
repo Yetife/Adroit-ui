@@ -28,14 +28,14 @@ const AddOrganizationModal = ({open, setOpen, checked, setChecked, organization,
                             <div>
                                 <span className="ml-8">
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                    No of Residency
+                                    Organization
                                   </h3>
                                   <input
                                       type="text"
                                       value={organization}
                                       disabled={purpose === "view"}
                                       onChange={handleResidencyChange}
-                                      placeholder="Enter no of residency"
+                                      placeholder="Enter organization"
                                       className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                   />
                                 </span>
