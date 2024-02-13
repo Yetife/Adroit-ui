@@ -168,7 +168,7 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
                                              <select id="select" value={selectedValue} disabled={purpose === "view"}
                                                      onChange={handleSelectChange}
                                                      className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                                     style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
+                                                     style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                                 <option value="" disabled>Select type</option>
                                                  {type && type?.map((option) => (
                                                      <option key={option.id} value={option.name}>
@@ -182,12 +182,12 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
                                             Charge Amount
                                           </h3>
                                           <input
-                                              type="text"
+                                              type="number"
                                               value={cAmount}
                                               disabled={purpose === "view"}
                                               onChange={handleCAmountChange}
                                               placeholder="Enter charge amount"
-                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
                                         </span>
                                         <span className="ml-8">
@@ -195,12 +195,12 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
                                             Loan Amount From
                                           </h3>
                                           <input
-                                              type="text"
+                                              type="number"
                                               value={depositFrom}
                                               disabled={purpose === "view"}
                                               onChange={handleFromChange}
                                               placeholder="Enter loan amount from"
-                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
                                         </span>
                                     </div>
@@ -210,9 +210,9 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
                                            Loan Tenor
                                           </h3>
                                              <select id="select" value={selectedLoan} disabled={purpose === "view"}
-                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                                      onChange={handleLoanChange}
-                                                     style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
+                                                     style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                                 <option value="" disabled>Select loan tenor</option>
                                                  {tenor && tenor?.map((option) => (
                                                      <option key={option.id} value={option.name}>
@@ -227,8 +227,8 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
                                             IsPercentage
                                           </h3>
                                              <select id="select" disabled={purpose === "view"} value={selectedPer} onChange={handlePercentageChange}
-                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                                     style={{ width: '100%', padding: '14px', border: '1px solid #ccc', borderRadius: '4px' }}>
+                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                     style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                                  <option value={true}>True</option>
                                                  <option value={false}>False</option>
                                             </select>
@@ -239,19 +239,19 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
                                             Loan Amount To
                                           </h3>
                                           <input
-                                              type="text"
+                                              type="number"
                                               value={depositTo}
                                               disabled={purpose === "view"}
                                               onChange={handleToChange}
                                               placeholder="Enter loan amount to"
-                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
                                         </span>
                                     </div>
                                 </div>
-                                <div className="flex space-x-3 float-right my-4">
-                                    <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8" onClick={()=>setOpen(!open)}>Close</button>
-                                    {purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
+                                <div className="flex space-x-3 float-right mt-6">
+                                    <button className="bg-gray-300 rounded py-2 px-6 flex text-black" onClick={()=>setOpen(!open)}>Close</button>
+                                    {purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white"
                                                                    onClick={handleAdd}>Save</button>}
                                 </div>
                             </div>

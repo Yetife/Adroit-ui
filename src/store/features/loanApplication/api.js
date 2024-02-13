@@ -29,9 +29,17 @@ export const loanApplicationApi = createApi({
             invalidatesTags: ["EditStatus"]
         }),
         getAllCustomer: builder.query({
-            query: () => ({
-                url: `/LoanApplication/Customer/get`,
-            }),
+            query: ({size, page}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    // Add optional parameters conditionally
+                };
+                return {
+                    url: `/LoanApplication/Customer/get`,
+                    params: queryParams,
+                };
+            },
             providesTags: ["completeReview"]
         }),
         getCustomerDetails: builder.query({
@@ -69,8 +77,8 @@ export const loanApplicationApi = createApi({
             invalidatesTags: ["completeReview"]
         }),
         getAllAdjust: builder.query({
-            query: () => ({
-                url: `/LoanApplication/Adjust/get`,
+            query: ({size, page}) => ({
+                url: `/LoanApplication/Adjust/get?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: ["completeReview", "declineApplication"]
         }),
@@ -83,8 +91,8 @@ export const loanApplicationApi = createApi({
             invalidatesTags: ["declineApplication"]
         }),
         getAllDeclined: builder.query({
-            query: () => ({
-                url: `/LoanApplication/Declined/get`,
+            query: ({size, page}) => ({
+                url: `/LoanApplication/Declined/get?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: ["declineApplication"]
         }),
@@ -133,8 +141,8 @@ export const loanApplicationApi = createApi({
             invalidatesTags: ["returnApplication"]
         }),
         getAllReview: builder.query({
-            query: () => ({
-                url: `/LoanUnderwriting/Review/get`,
+            query: ({page, size}) => ({
+                url: `/LoanUnderwriting/Review/get?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: ["returnApplication", "adjustApplication", "completeReview"]
         }),

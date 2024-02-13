@@ -164,13 +164,13 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             name: 'Administration',
             hasDropdown: true,
             icon: admin,
-            route: '/administration/product',
+            route: '/administration',
             iconClosed: arrowUp,
             iconOpened: arrowDown,
             dropdown: [
                 {
                     applicationPageName: 'Product',
-                    href: '/administration/product',
+                    href: '/administration',
                     route: '/administration',
                 },
                 {
@@ -242,13 +242,13 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
             name: 'Bridge Loan',
             hasDropdown: true,
             icon: bridge,
-            route: '/bridgeLoan/documentationSetup',
+            route: '/bridgeLoan',
             iconClosed: arrowUp,
             iconOpened: arrowDown,
             dropdown: [
                 {
                     applicationPageName: 'Documentation Setup',
-                    href: '/bridgeLoan/documentationSetup',
+                    href: '/bridgeLoan',
                     route: '/bridgeLoan',
                 },
                 {

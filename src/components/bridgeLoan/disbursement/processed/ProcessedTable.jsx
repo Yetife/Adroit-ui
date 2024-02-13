@@ -44,7 +44,7 @@ const ProcessedTable = ({searchTerm}) => {
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        {filteredData.length > 0 && filteredData.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
+                        {filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
                         </tbody>
                     </table>
                 </div>

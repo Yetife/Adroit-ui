@@ -90,7 +90,7 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
     // };
     const fetchLevel = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/Administration/UnderwriterLevel/getallvalidUnderwriterLevels', {
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/Administration/UnderwriterLevel/getall', {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -124,7 +124,7 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
                     <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[30%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-                        <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-8">{purpose === "edit" ? "Edit" : purpose === "view" ? "View" : "Add Levels"}</Dialog.Title>
+                        <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-8">{purpose === "edit" ? "Edit" : purpose === "view" ? "View" : "Manage"}</Dialog.Title>
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-2">
                             <div>
@@ -169,7 +169,7 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
                                       <select id="select" value={inputs.level}
                                               disabled={purpose === "view"}
                                               onChange={(event) => handleChange(event, "level")}
-                                              className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                              className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select level</option>
                                           {level && level?.map((option) => (
                                               <option key={option.uniqueId} value={option.name}>
@@ -179,12 +179,12 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
                                         </select>
                                     </span>
                                 </div>
-                                <div className="flex space-x-3 float-right my-4">
-                                    <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8"
+                                <div className="flex space-x-3 float-right mt-6">
+                                    <button className="bg-gray-300 rounded py-2 px-6 flex text-black"
                                             onClick={() => setOpen(!open)}>Close
                                     </button>
                                     {purpose !== "view" &&
-                                        <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
+                                        <button className="bg-[#00C796] rounded py-2 px-6 flex text-white"
                                                 onClick={handleAdd}>Save</button>}
                                 </div>
                             </div>

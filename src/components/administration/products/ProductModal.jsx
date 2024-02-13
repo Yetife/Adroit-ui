@@ -39,7 +39,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
 
     const fetchTenor = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/Administration/LoanTenor/getallvalidLoanTenors', {
+            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/Administration/LoanTenor/getall', {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -138,7 +138,7 @@ const fetchFeeFrequency = async () => {
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
                     <Dialog.Content className="custom-scroll-bar overflow-auto data-[state=open]:animate-contentShow z-[200] fixed top-[50%] left-[50%] max-h-[100vh] w-[90vw] max-w-[900px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-                        <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-8">Add Product</Dialog.Title>
+                        <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-8">{purpose === "edit" ? "Edit Product" : purpose === "view" ? "View Product" : "Add Product"}</Dialog.Title>
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-2">
                             <div className="py-4">
@@ -153,7 +153,7 @@ const fetchFeeFrequency = async () => {
                                           value={inputs.name}
                                           onChange={(event) => handleChange(event, "name")}
                                           placeholder="Enter name"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -166,7 +166,7 @@ const fetchFeeFrequency = async () => {
                                           value={inputs.minimumamount}
                                           onChange={(event) => handleChange(event, "minimumamount")}
                                           placeholder="Enter Amount From"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -179,7 +179,7 @@ const fetchFeeFrequency = async () => {
                                           value={inputs.maximumamount}
                                           onChange={(event) => handleChange(event, "maximumamount")}
                                           placeholder="Enter Amount to"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                 </div>
@@ -193,7 +193,7 @@ const fetchFeeFrequency = async () => {
                                       <select id="select" value={inputs.tenor}
                                               disabled={purpose === "view"}
                                               onChange={(event) => handleChange(event, "tenor")}
-                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select tenor</option>
                                           {tenor && tenor?.map((option) => (
                                               <option key={option.uniqueId} value={option.name}>
@@ -212,7 +212,7 @@ const fetchFeeFrequency = async () => {
                                              value={inputs.startDate}
                                              onChange={(event) => handleChange(event, "startDate")}
                                              placeholder="Enter start date"
-                                             className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                             className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                          />
                                          {/*<DatePicker*/}
                                          {/*    className='border broder-gray-700 px-2 rounded-md py-3 text-[14px] focus:outline-none'*/}
@@ -254,7 +254,7 @@ const fetchFeeFrequency = async () => {
                                       <select id="select" value={inputs.interestRate}
                                               disabled={purpose === "view"}
                                               onChange={(event) => handleChange(event, "interestRate")}
-                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select interest rate</option>
                                           {rate && rate?.map((option) => (
                                               <option key={option.uniqueId} value={option.interestRate}>
@@ -275,7 +275,7 @@ const fetchFeeFrequency = async () => {
                                                 value={inputs.endDate}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter start date"
-                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                             />
                                          {/*<DatePicker*/}
                                          {/*    className='border broder-gray-700  px-2 rounded-md py-3 text-[14px] focus:outline-none'*/}
@@ -323,8 +323,8 @@ const fetchFeeFrequency = async () => {
                                           <span className="percent-sign">NGN</span>
                                           <input
                                               disabled={purpose === "view"}
-                                              type="text"
-                                              className="percent-input font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              type="number"
+                                              className="percent-input font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                               value={inputs.fixedPrice}
                                               onChange={(event) => handleChange(event, "fixedPrice")}
                                           />
@@ -338,8 +338,8 @@ const fetchFeeFrequency = async () => {
                                           <span className="percent-sign">%</span>
                                           <input
                                               disabled={purpose === "view"}
-                                              type="text"
-                                              className="percent-input font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              type="number"
+                                              className="percent-input font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                               value={inputs.principal}
                                               onChange={(event) => handleChange(event, "principal")}
                                               placeholder="Enter the fixed amount"
@@ -360,7 +360,7 @@ const fetchFeeFrequency = async () => {
                                       <select id="select" value={inputs.lateFeeType}
                                               disabled={purpose === "view"}
                                               onChange={(event) => handleChange(event, "lateFeeType")}
-                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select fee type</option>
                                           {feeType && feeType?.map((option) => (
                                               <option key={option.uniqueId} value={option.name}>
@@ -377,8 +377,8 @@ const fetchFeeFrequency = async () => {
                                           <span className="percent-sign">NGN</span>
                                           <input
                                               disabled={purpose === "view"}
-                                              type="text"
-                                              className="percent-input font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              type="number"
+                                              className="percent-input font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                               value={inputs.fixedPrice}
                                               onChange={(event) => handleChange(event, "fixedPrice")}
                                           />
@@ -391,7 +391,7 @@ const fetchFeeFrequency = async () => {
                                       <select id="select" value={inputs.lateFeePrincipal}
                                               disabled={purpose === "view"}
                                               onChange={(event) => handleChange(event, "lateFeePrincipal")}
-                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select fee principal</option>
                                           {feePrincipal && feePrincipal?.map((option) => (
                                               <option key={option.uniqueId} value={option.name}>
@@ -412,7 +412,7 @@ const fetchFeeFrequency = async () => {
                                           value={inputs.gracePeriod}
                                           onChange={(event) => handleChange(event, "gracePeriod")}
                                           placeholder="Enter the text"
-                                          className="font-medium w-[345px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[345px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -422,7 +422,7 @@ const fetchFeeFrequency = async () => {
                                       <select id="select" value={inputs.feeFrequency}
                                               disabled={purpose === "view"}
                                               onChange={(event) => handleChange(event, "feeFrequency")}
-                                              className="font-medium w-[420px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                              className="font-medium w-[420px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select fee frequency</option>
                                           {feeFreq && feeFreq?.map((option) => (
                                               <option key={option.uniqueId} value={option.name}>

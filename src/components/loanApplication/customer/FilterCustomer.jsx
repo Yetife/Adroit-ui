@@ -53,7 +53,7 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
             >
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
-                    <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[42%] left-[50%] max-h-[85vh] w-[90vw] max-w-[700px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                    <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[45%] left-[50%] max-h-[90vh] w-[90vw] max-w-[700px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                         <Dialog.Title className="text-[32px] text-[#343434] font-extrabold -mt-8">{purpose === "edit" ? "Filter" : purpose === "view" ? "View" : "Filter"}</Dialog.Title>
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-2">
@@ -69,7 +69,7 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                               value={inputs.applicationId}
                                               onChange={(event) => handleChange(event, "applicationId")}
                                               placeholder="Enter application id"
-                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
                                         </span>
                                         <span className="ml-4">
@@ -78,7 +78,7 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                           </h3>
                                              <select id="select" value={inputs.status} disabled={purpose === "view"}
                                                      onChange={(event) => handleChange(event, "status")}
-                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
+                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
                                                 <option value="" disabled>Select loan status</option>
                                                  {status && status?.map((option) => (
                                                      <option key={option.uniqueId} value={option.name}>
@@ -89,7 +89,7 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                         </span>
                                     </div>
                                 </div>
-                                <div className="flex items-center mt-4">
+                                <div className="flex items-center mt-2">
                                     <div className='py-2 flex items-center'>
                                         <span>
                                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
@@ -100,7 +100,7 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                               value={inputs.name}
                                               onChange={(event) => handleChange(event, "name")}
                                               placeholder="Enter applicant name"
-                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
                                         </span>
                                         <span className="ml-4">
@@ -112,12 +112,12 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                               value={inputs.email}
                                               onChange={(event) => handleChange(event, "email")}
                                               placeholder="Enter official email address"
-                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
                                         </span>
                                     </div>
                                 </div>
-                                <div className="flex items-center mt-4">
+                                <div className="flex items-center mt-2">
                                     <div className='py-2 flex items-center'>
                                         <div>
                                             <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
@@ -128,7 +128,7 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                                 value={inputs.startDate}
                                                 onChange={(event) => handleChange(event, "startDate")}
                                                 placeholder="Enter start date"
-                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                             />
                                         </div>
                                         <div className="ml-4">
@@ -140,12 +140,12 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                                 value={inputs.endDate}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter end date"
-                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                             />
                                         </div>
                                     </div>
                                 </div>
-                                <div className='mt-4'>
+                                <div className='mt-2'>
                                     <div>
                                         <span>
                                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
@@ -156,7 +156,7 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                               value={inputs.channel}
                                               onChange={(event) => handleChange(event, "channel")}
                                               placeholder="Enter channel"
-                                              className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
                                         </span>
                                     </div>

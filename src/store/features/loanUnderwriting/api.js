@@ -29,8 +29,8 @@ export const loanUnderwritingApi = createApi({
             invalidatesTags: ["approveApplication"]
         }),
         getAllApproval: builder.query({
-            query: () => ({
-                url: `/Approval/get`,
+            query: ({size, page}) => ({
+                url: `/Approval/get?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: ["approveApplication"]
         }),
@@ -43,8 +43,8 @@ export const loanUnderwritingApi = createApi({
             invalidatesTags: ["disburseApplication"]
         }),
         getAllDisbursement: builder.query({
-            query: () => ({
-                url: `/Disbursement/get`,
+            query: ({size, page}) => ({
+                url: `/Disbursement/get?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: ["disburseApplication", "stopDisbursement"]
         }),

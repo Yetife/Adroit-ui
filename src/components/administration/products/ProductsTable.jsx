@@ -19,9 +19,16 @@ const ProductsTable = ({searchTerm}) => {
     const {data, isFetching, error} =  useGetAllProductsQuery({size, page})
     if (error) return <p>Network error</p>
 
-    // const filteredData = data?.data?.filter((item) =>
-    //     item.adminProduct.name.toLowerCase().includes(searchTerm.toLowerCase())
-    // );
+    const filterData = (item) => {
+        for (const key in item) {
+            if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Found a match
+            }
+        }
+        return false; // No match found
+    };
+
+    const filteredData = data?.data?.filter(filterData);
     const handlePageChange = (newPage) => {
         setPage(newPage)
     }
@@ -45,7 +52,7 @@ const ProductsTable = ({searchTerm}) => {
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        {data?.data?.length > 0 && data?.data?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
+                        {filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
                         </tbody>
                     </table>
                 </div>

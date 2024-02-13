@@ -53,8 +53,8 @@ export const administrationApi = createApi({
             invalidatesTags: ["AddLoanTenor"]
         }),
         getAllValidLoanTenors: builder.query({
-            query: () => ({
-                url: `/Administration/LoanTenor/getallvalidLoanTenors`,
+            query: ({size, page}) => ({
+                url: `/Administration/LoanTenor/getallvalidLoanTenors?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: ["AddLoanTenor", "DelLoanTenor", "EditLoanTenor"]
         }),
@@ -82,8 +82,8 @@ export const administrationApi = createApi({
             invalidatesTags: ["AddLevel"]
         }),
         getAllValidLevel: builder.query({
-            query: () => ({
-                url: `/Administration/UnderwriterLevel/getallvalidUnderwriterLevels`,
+            query: ({size, page}) => ({
+                url: `/Administration/UnderwriterLevel/getallvalidUnderwriterLevels?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: ["AddLevel", "DelLevel", "EditLevel"]
         }),
@@ -111,8 +111,8 @@ export const administrationApi = createApi({
             invalidatesTags: ["AddManage"]
         }),
         getAllValidManage: builder.query({
-            query: () => ({
-                url: `/Administration/Manage/getallManage`,
+            query: ({size, page}) => ({
+                url: `/Administration/Manage/getallManage?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: ["AddManage", "DelManage", "EditManage"]
         }),
@@ -140,8 +140,8 @@ export const administrationApi = createApi({
             invalidatesTags: ["AddRegularLoanInterest"]
         }),
         getAllRegularLoanInterest: builder.query({
-            query: () => ({
-                url: `/Administration/UnderRegularLoan/getallRegularLoanInterestRate`,
+            query: ({size, page}) => ({
+                url: `/Administration/UnderRegularLoan/getallRegularLoanInterestRate?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: ["AddRegularLoanInterest", "DelRegularLoanInterest", "EditRegularLoanInterest"]
         }),
@@ -169,8 +169,8 @@ export const administrationApi = createApi({
             invalidatesTags: ["AddRegularLoanCharges"]
         }),
         getAllRegularLoanCharges: builder.query({
-            query: () => ({
-                url: `/Administration/UnderRegularLoan/getallRegularLoanCharge`,
+            query: ({size, page}) => ({
+                url: `/Administration/UnderRegularLoan/getallRegularLoanCharge?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: ["AddRegularLoanCharges", "DelRegularLoanCharges", "EditRegularLoanCharges"]
         }),
@@ -190,8 +190,8 @@ export const administrationApi = createApi({
             invalidatesTags: ["EditRegularLoanCharges"]
         }),
         getStaffLoan: builder.query({
-            query: () => ({
-                url: `/Administration/StaffLoan/GetStaffLoan`,
+            query: ({size, page}) => ({
+                url: `/Administration/StaffLoan/GetStaffLoan?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: []
         }),

@@ -68,6 +68,21 @@ const Product = () => {
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
+            setInputs({
+                name: "",
+                minimuimamount: 0,
+                maximuimamount: 0,
+                startDate: new Date(),
+                endDate: new Date(),
+                lateFeePrincipal: "",
+                lateFeeType: "",
+                fixedPrice: 0,
+                gracePeriod: "",
+                principal: 0,
+                tenor: "",
+                interestRate: "",
+                feeFrequency: "",
+            })
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })

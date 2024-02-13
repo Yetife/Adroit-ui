@@ -701,7 +701,7 @@ const ROUTES = [
         exact: true,
         children: [
             {
-                path: "product",
+                path: "",
                 key: "PRODUCT",
                 exact: true,
                 element: <ProtectedRoute>
@@ -791,7 +791,7 @@ const ROUTES = [
         exact: true,
         children:[
             {
-                path: "documentationSetup",
+                path: "",
                 key: "DOCUMENTATION SETUP",
                 exact: true,
                 element: <ProtectedRoute>

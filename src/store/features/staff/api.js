@@ -15,8 +15,8 @@ export const staffLoanApi = createApi({
             invalidatesTags: ["AddStaffLoan"]
         }),
         getAllStaffLoan: builder.query({
-            query: () => ({
-                url: `/Administration/StaffLoan/GetStaffLoan`,
+            query: ({size, page}) => ({
+                url: `/Administration/StaffLoan/GetStaffLoan?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: ["AddStaffLoan"]
         }),

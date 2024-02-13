@@ -1,4 +1,3 @@
-import React from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import {Checkbox} from "@mui/material";
 import {Close} from "@mui/icons-material";
@@ -28,10 +27,10 @@ const AddLoanTenorModal = ({open, setOpen, checked, setChecked, tenor, setTenor,
                             <div>
                                 <span className="ml-8">
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                    Late Fee Type Name
+                                    Loan Tenor
                                   </h3>
                                   <input
-                                      type="text"
+                                      type="number"
                                       value={tenor}
                                       disabled={purpose === "view"}
                                       onChange={handleTenorChange}
@@ -55,9 +54,9 @@ const AddLoanTenorModal = ({open, setOpen, checked, setChecked, tenor, setTenor,
                                      />
                                 </span>
                                 </div>
-                                <div className="flex space-x-3 float-right my-4">
-                                    <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8" onClick={()=>setOpen(!open)}>Close</button>
-                                    {purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
+                                <div className="flex space-x-3 float-right mt-4">
+                                    <button className="bg-gray-300 rounded py-2 px-6 flex text-black" onClick={()=>setOpen(!open)}>Close</button>
+                                    {purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white"
                                                                    onClick={handleAdd}>Save</button>}
                                 </div>
                             </div>

@@ -52,7 +52,7 @@ const CustomAutocomplete = ({ options, onSelect, isDropdownOpen, setIsDropdownOp
                     value={inputValue}
                     onChange={handleInputChange}
                     placeholder="Type to search..."
-                    className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded border border-neutral-300 focus:border-indigo-500 focus:outline-none focus:ring focus:ring-indigo-200"
+                    className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded border border-neutral-300 focus:border-indigo-500 focus:outline-none focus:ring focus:ring-indigo-200"
                     onClick={() => setIsDropdownOpen(true)}
                     ref={inputRef}
                 />

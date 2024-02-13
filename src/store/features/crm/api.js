@@ -102,8 +102,8 @@ export const crmApi = createApi({
             providesTags: []
         }),
         getAllClient: builder.query({
-            query: () => ({
-                url: `/CRM/Client/getall`,
+            query: ({size, page}) => ({
+                url: `/CRM/Client/getall?PasgeSize=${size}&PageNumber=${page}`,
             }),
             providesTags: ["addClient", "editClient", "addEmployment", "editEmployment", " addResidential", "editResidential", "addNextOfKin",
                 "editNextOfKin", "addBankDetails", "editBankDetails", "addDocument"]
