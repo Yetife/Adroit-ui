@@ -6,8 +6,8 @@ import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
-import FilterCustomer from "../../components/loanApplication/customer/FilterCustomer.jsx";
 import DisburseTable from "../../components/loanUnderwritting/disbursement/DisburseTable.jsx";
+import FilterDisbursement from "../../components/loanUnderwritting/disbursement/FilterDisbursement.jsx";
 
 const Disbursement = () => {
     const [open, setOpen] = useState(false)
@@ -59,7 +59,7 @@ const Disbursement = () => {
                 <div>
                     <DisburseTable searchTerm={searchTerm} />
                 </div>
-                <FilterCustomer open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}  handleAdd={handleAdd}/>
+                <FilterDisbursement open={open} setOpen={setOpen}  handleAdd={handleAdd}/>
             </div>
         </Layout>
     );

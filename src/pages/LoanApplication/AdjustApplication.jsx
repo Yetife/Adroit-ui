@@ -9,6 +9,7 @@ import {Link as ReactLink} from "react-router-dom";
 import CustomerTable from "../../components/loanApplication/customer/CustomerTable.jsx";
 import FilterCustomer from "../../components/loanApplication/customer/FilterCustomer.jsx";
 import AdjustTable from "../../components/loanApplication/adjust/AdjustTable.jsx";
+import FilterAdjust from "../../components/loanApplication/adjust/filterAdjust.jsx";
 
 const AdjustApplication = () => {
     const [open, setOpen] = useState(false)
@@ -61,7 +62,7 @@ const AdjustApplication = () => {
                 <div>
                     <AdjustTable searchTerm={searchTerm} />
                 </div>
-                <FilterCustomer open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}  handleAdd={handleAdd}/>
+                <FilterAdjust open={open} setOpen={setOpen} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );

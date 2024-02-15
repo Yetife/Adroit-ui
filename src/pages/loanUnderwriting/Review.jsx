@@ -8,6 +8,7 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import FilterCustomer from "../../components/loanApplication/customer/FilterCustomer.jsx";
 import ReviewTable from "../../components/loanUnderwritting/review/ReviewTable.jsx";
+import FilterReview from "../../components/loanUnderwritting/review/FilterReview.jsx";
 
 const Review = () => {
     const router = useNavigate()
@@ -66,7 +67,7 @@ const Review = () => {
                 <div>
                     <ReviewTable searchTerm={searchTerm} />
                 </div>
-                <FilterCustomer open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}  handleAdd={handleAdd}/>
+                <FilterReview open={open} setOpen={setOpen} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );

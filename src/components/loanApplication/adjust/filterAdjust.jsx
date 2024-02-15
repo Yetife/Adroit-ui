@@ -1,22 +1,17 @@
-import {useEffect, useState} from "react";
-import dayjs from "dayjs";
-import {getUserToken} from "../../../services/storage/index.js";
-import axios from "axios";
+import {useState} from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 
-const FilterCustomer = ({open, setOpen, handleAdd}) => {
-    const [status, setStatus] = useState([]);
+const FilterAdjust = ({open, setOpen, handleAdd}) => {
     const [inputs, setInputs] = useState({
         startDate: "",
         endDate: ""
     })
-    const [statusName, setStatusName] = useState("");
+    const [phone, setPhone] = useState("");
     const [name, setName] = useState("");
     const [channel, setChannel] = useState("");
     const [applicationId, setApplicationId] = useState("");
     const [email, setEmail] = useState("");
-    const token = getUserToken();
 
 
     const handleChange = (e, fieldName) => {
@@ -28,25 +23,28 @@ const FilterCustomer = ({open, setOpen, handleAdd}) => {
         setApplicationId(e.target.value)
         setEmail("")
         setName("")
-        setStatusName("")
+        setPhone("")
         setChannel("")
     }
     const handleEmailChange = (e) => {
         setEmail(e.target.value)
         setApplicationId("")
         setName("")
-        setStatusName("")
+        setPhone("")
         setChannel("")
     }
     const handleNameChange = (e) => {
         setName(e.target.value)
         setEmail("")
         setApplicationId("")
-        setStatusName("")
+        setPhone("")
         setChannel("")
     }
-    const handleStatusNameChange = (e) => {
-        setStatusName(e.target.value)
+    const handlePhoneChange = (e, isNumeric= false) => {
+        const numericRegex = /^\d{0,11}$/;
+        if ((isNumeric && numericRegex.test(e.target.value)) || !isNumeric) {
+            setPhone(e.target.value)
+        }
         setName("")
         setEmail("")
         setApplicationId("")
@@ -57,44 +55,20 @@ const FilterCustomer = ({open, setOpen, handleAdd}) => {
         setName("")
         setEmail("")
         setApplicationId("")
-        setStatusName("")
+        setPhone("")
     }
     const handleRefresh = () => {
         setChannel("")
         setName("")
         setEmail("")
         setApplicationId("")
-        setStatusName("")
+        setPhone("")
         setInputs({
             startDate: "",
             endDate: ""
         })
     }
 
-    const allOption = { uniqueId: 'all', name: 'All' };
-
-    // ... (other code)
-
-    const fetchData = async () => {
-        try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/LoanApplication/LoanStatus/getallvalid', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
-                    'authorization': `Bearer ${token}`
-                }
-            });
-            // Include the "ALL" option in the status dropdown
-            setStatus([allOption, ...response.data.data]);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
-
-    useEffect(() => {
-        fetchData()
-    }, []);
 
     return (
         <div>
@@ -127,18 +101,15 @@ const FilterCustomer = ({open, setOpen, handleAdd}) => {
                                         </span>
                                         <span className="ml-4">
                                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                           Status
+                                           Phone Number
                                           </h3>
-                                             <select id="select" value={statusName}
-                                                     onChange={handleStatusNameChange}
-                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
-                                                <option value="" disabled>Select loan status</option>
-                                                 {status && status?.map((option) => (
-                                                     <option key={option.uniqueId} value={option.name}>
-                                                         {option.name}
-                                                     </option>
-                                                 ))}
-                                            </select>
+                                              <input
+                                                  type="number"
+                                                  value={phone}
+                                                  onChange={(e)=>handlePhoneChange(e, true)}
+                                                  placeholder="Enter phone"
+                                                  className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              />
                                         </span>
                                     </div>
                                 </div>
@@ -213,14 +184,14 @@ const FilterCustomer = ({open, setOpen, handleAdd}) => {
                                           />
                                         </span>
                                     </div>
-                                 </div>
+                                </div>
                             </div>
                             <div className="flex space-x-3 float-right">
                                 <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8"
                                         onClick={handleRefresh}>Refresh
                                 </button>
-                                    <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
-                                            onClick={handleAdd}>Search</button>
+                                <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
+                                        onClick={handleAdd}>Search</button>
                             </div>
                         </div>
                         <Dialog.Close asChild>
@@ -235,7 +206,7 @@ const FilterCustomer = ({open, setOpen, handleAdd}) => {
                 </Dialog.Portal>
             </Dialog.Root>
         </div>
-    );
+    )
 };
 
-export default FilterCustomer;
+export default FilterAdjust;

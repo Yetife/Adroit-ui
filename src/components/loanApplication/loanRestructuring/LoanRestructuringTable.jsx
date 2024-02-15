@@ -74,7 +74,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'First Name', 'Middle Name', 'Last Name', 'Email Address', 'Phone Number', 'Gender', 'D.O.B', 'BVN', 'Initial StaffLoan Tenor', 'New Loan Tenor', 'Date Submitted', 'Loan Amount', 'Application Date', 'Actions' ]
+const header = ['S/N', 'Customer Ref.', 'First Name', 'Middle Name', 'Last Name', 'Email Address', 'Phone Number', 'Gender', 'D.O.B', 'BVN', 'Initial Loan Tenor', 'New Loan Tenor', 'Date Submitted', 'Loan Amount', 'Application Date', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)

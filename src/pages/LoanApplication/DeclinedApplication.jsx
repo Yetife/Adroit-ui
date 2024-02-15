@@ -8,6 +8,7 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import FilterCustomer from "../../components/loanApplication/customer/FilterCustomer.jsx";
 import DeclinedTable from "../../components/loanApplication/declined/DeclinedTable.jsx";
+import FilterDeclined from "../../components/loanApplication/declined/FilterDeclined.jsx";
 
 const DeclinedApplication = () => {
     const [open, setOpen] = useState(false)
@@ -60,7 +61,7 @@ const DeclinedApplication = () => {
                 <div>
                     <DeclinedTable searchTerm={searchTerm} />
                 </div>
-                <FilterCustomer open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}  handleAdd={handleAdd}/>
+                <FilterDeclined open={open} setOpen={setOpen} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );

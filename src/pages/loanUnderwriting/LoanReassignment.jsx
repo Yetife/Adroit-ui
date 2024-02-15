@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {useAddGenderMutation} from "../../store/features/generalSetup/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
@@ -6,9 +6,8 @@ import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
-import CustomerTable from "../../components/loanApplication/customer/CustomerTable.jsx";
-import FilterCustomer from "../../components/loanApplication/customer/FilterCustomer.jsx";
 import ReassignTable from "../../components/loanUnderwritting/loanReassignment/ReassignTable.jsx";
+import FilterLoanReassignment from "../../components/loanUnderwritting/loanReassignment/FilterLoanReassignment.jsx";
 
 const LoanReassignment = () => {
     const [open, setOpen] = useState(false)
@@ -60,7 +59,7 @@ const LoanReassignment = () => {
                 <div>
                     <ReassignTable searchTerm={searchTerm} />
                 </div>
-                <FilterCustomer open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}  handleAdd={handleAdd}/>
+                <FilterLoanReassignment open={open} setOpen={setOpen} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );

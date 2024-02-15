@@ -5,7 +5,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import {Divider} from "@mui/material";
 
-const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => {
+const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, handleAdd}) => {
     const [tenor, setTenor] = useState([]);
     const [type, setType] = useState([]);
     const token = getUserToken();
@@ -97,7 +97,7 @@ const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, purpose, handl
                                             Loan Amount
                                           </h3>
                                           <input
-                                              type="text"
+                                              type="number"
                                               value={inputs.amount}
                                               onChange={(event) => handleChange(event, "amount", true)}
                                               placeholder="Enter Loan Amount"
@@ -113,7 +113,7 @@ const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, purpose, handl
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                        Loan Tenor
                                       </h3>
-                                         <select id="select" value={inputs.tenor} disabled={purpose === "view"}
+                                         <select id="select" value={inputs.tenor}
                                                  onChange={(event) => handleChange(event, "tenor")}
                                                  className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select tenor</option>
@@ -147,7 +147,6 @@ const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, purpose, handl
                                             <input
                                                 type="date"
                                                 value={inputs.startDate}
-                                                disabled={purpose === "view"}
                                                 onChange={(event) => handleChange(event, "startDate")}
                                                 placeholder="Enter start date"
                                                 className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
@@ -160,7 +159,6 @@ const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, purpose, handl
                                             <input
                                                 type="date"
                                                 value={inputs.endDate}
-                                                disabled={purpose === "view"}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter end date"
                                                 className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"

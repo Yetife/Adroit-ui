@@ -48,7 +48,7 @@ const PersonalInformation = () => {
     // const {data, isFetching, error} = useGetClientByIdQuery(custId || clientId )
 
 
-    const handleChange = (e, fieldName) => {
+    const handleChange = (e, fieldName, isNumeric = false) => {
         const value = e.target.value;
         if (fieldName === "title") {
             const selected = titles.find((s) => s.name === value);
@@ -90,6 +90,12 @@ const PersonalInformation = () => {
                 educationalLevel: selected.name,
                 educationalLevelId: selected.id || 0,
             }));
+        }else if (fieldName === "bvn"){
+            const numericRegex = /^\d{0,11}$/;
+
+            if ((isNumeric && numericRegex.test(value)) || !isNumeric) {
+                setInputs((values) => ({ ...values, [fieldName]: value }));
+            }
         }
         else {
             setInputs((values) => ({...values, [fieldName]: value}));
@@ -349,10 +355,7 @@ const PersonalInformation = () => {
                                 <input
                                     type="text"
                                     value={inputs.bvn}
-                                    maxLength={11}
-                                    minLength={11}
-                                    size={11}
-                                    onChange={(event) => handleChange(event, "bvn")}
+                                    onChange={(event) => handleChange(event, "bvn", true)}
                                     placeholder="Enter bvn"
                                     className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                 />

@@ -49,13 +49,13 @@ const FilterLoanModal = ({open, setOpen, inputs, setInputs, purpose, handleAdd})
             >
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
-                    <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[42%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                    <Dialog.Content className="custom-scroll-bar overflow-auto data-[state=open]:animate-contentShow z-[200] fixed top-[50%] left-[50%] max-h-[100vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                         <Dialog.Title className="text-[32px] text-[#343434] font-extrabold -mt-8 mb-4 border-b">{purpose === "edit" ? "Filter" : purpose === "view" ? "View" : "Filter"}</Dialog.Title>
                         {/*<Divider className="pt-4"/>*/}
-                        <div className="mt-2">
+                        <div className="mt-1">
                             <div>
                                 <div className="flex items-center">
-                                    <div className='py-2 flex items-center'>
+                                    <div className='flex items-center'>
                                         <div>
                                             <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                                 Start Date
@@ -66,7 +66,7 @@ const FilterLoanModal = ({open, setOpen, inputs, setInputs, purpose, handleAdd})
                                                 disabled={purpose === "view"}
                                                 onChange={(event) => handleChange(event, "startDate")}
                                                 placeholder="Enter start date"
-                                                className="font-medium w-[160px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                className="font-medium w-[160px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                             />
                                         </div>
                                         <p className="px-4 pt-6">-</p>
@@ -80,7 +80,7 @@ const FilterLoanModal = ({open, setOpen, inputs, setInputs, purpose, handleAdd})
                                                 disabled={purpose === "view"}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter end date"
-                                                className="font-medium w-[160px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                className="font-medium w-[160px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                             />
                                         </div>
                                         {/*<DatePicker*/}
@@ -97,7 +97,7 @@ const FilterLoanModal = ({open, setOpen, inputs, setInputs, purpose, handleAdd})
                                         {/*/>*/}
                                     </div>
                                 </div>
-                                <span className="ml-8 mt-8">
+                                <span className="ml-8 mt-6">
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                     Customer Reference
                                   </h3>
@@ -107,10 +107,10 @@ const FilterLoanModal = ({open, setOpen, inputs, setInputs, purpose, handleAdd})
                                       disabled={purpose === "view"}
                                       onChange={(event) => handleChange(event, "customerRef")}
                                       placeholder="Enter reference"
-                                      className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                      className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                   />
                                 </span>
-                                <span className="ml-8 mt-8">
+                                <span className="ml-8 mt-6">
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                     Email Address
                                   </h3>
@@ -120,10 +120,10 @@ const FilterLoanModal = ({open, setOpen, inputs, setInputs, purpose, handleAdd})
                                       disabled={purpose === "view"}
                                       onChange={(event) => handleChange(event, "email")}
                                       placeholder="Enter email"
-                                      className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                      className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                   />
                                 </span>
-                                <span className="ml-8 mt-8">
+                                <span className="ml-8 mt-6">
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                     BVN
                                   </h3>
@@ -133,17 +133,17 @@ const FilterLoanModal = ({open, setOpen, inputs, setInputs, purpose, handleAdd})
                                       disabled={purpose === "view"}
                                       onChange={(event) => handleChange(event, "bvn")}
                                       placeholder="Enter bvn"
-                                      className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                      className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                   />
                                 </span>
-                                <div className="mt-8">
+                                <div className="mt-6">
                                    <span>
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                        Loan Status
                                       </h3>
                                      <select id="select" value={inputs.status} disabled={purpose === "view"}
                                              onChange={(event) => handleChange(event, "status")}
-                                             className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                             className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                         <option value="" disabled>Select loan status</option>
                                          {status && status?.map((option) => (
                                              <option key={option.uniqueId} value={option.name}>
