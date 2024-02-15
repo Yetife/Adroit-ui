@@ -8,8 +8,13 @@ import {Close} from "@mui/icons-material";
 const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => {
     const [status, setStatus] = useState([]);
     const currentDate = dayjs(new Date()).format("YYYY-MM-DD");
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [statusName, setStatusName] = useState("");
+    const [name, setName] = useState("");
+    const [channel, setChannel] = useState("");
+    const [applicationId, setApplicationId] = useState("");
+    const [email, setEmail] = useState("");
     const token = getUserToken();
 
 
@@ -17,6 +22,43 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
     };
+
+    const handleIdChange = (e) => {
+        setApplicationId(e.target.value)
+        setEmail("")
+        setName("")
+        setStatusName("")
+        setChannel("")
+    }
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value)
+        setApplicationId("")
+        setName("")
+        setStatusName("")
+        setChannel("")
+    }
+    const handleNameChange = (e) => {
+        setName(e.target.value)
+        setEmail("")
+        setApplicationId("")
+        setStatusName("")
+        setChannel("")
+    }
+    const handleStatusNameChange = (e) => {
+        setStatusName(e.target.value)
+        setName("")
+        setEmail("")
+        setApplicationId("")
+        setChannel("")
+    }
+    const handleChannelChange = (e) => {
+        setChannel(e.target.value)
+        setName("")
+        setEmail("")
+        setApplicationId("")
+        setStatusName("")
+    }
+
 
     const allOption = { uniqueId: 'all', name: 'All' };
 
@@ -66,8 +108,8 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                           </h3>
                                           <input
                                               type="text"
-                                              value={inputs.applicationId}
-                                              onChange={(event) => handleChange(event, "applicationId")}
+                                              value={applicationId}
+                                              onChange={handleIdChange}
                                               placeholder="Enter application id"
                                               className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
@@ -76,8 +118,8 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                            Status
                                           </h3>
-                                             <select id="select" value={inputs.status} disabled={purpose === "view"}
-                                                     onChange={(event) => handleChange(event, "status")}
+                                             <select id="select" value={statusName} disabled={purpose === "view"}
+                                                     onChange={handleStatusNameChange}
                                                      className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
                                                 <option value="" disabled>Select loan status</option>
                                                  {status && status?.map((option) => (
@@ -97,8 +139,8 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                           </h3>
                                           <input
                                               type="text"
-                                              value={inputs.name}
-                                              onChange={(event) => handleChange(event, "name")}
+                                              value={name}
+                                              onChange={handleNameChange}
                                               placeholder="Enter applicant name"
                                               className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
@@ -109,8 +151,8 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                           </h3>
                                           <input
                                               type="text"
-                                              value={inputs.email}
-                                              onChange={(event) => handleChange(event, "email")}
+                                              value={email}
+                                              onChange={handleEmailChange}
                                               placeholder="Enter official email address"
                                               className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
@@ -153,8 +195,8 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                           </h3>
                                           <input
                                               type="text"
-                                              value={inputs.channel}
-                                              onChange={(event) => handleChange(event, "channel")}
+                                              value={channel}
+                                              onChange={handleChannelChange}
                                               placeholder="Enter channel"
                                               className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
@@ -163,9 +205,9 @@ const FilterCustomer = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) 
                                  </div>
                             </div>
                             <div className="flex space-x-3 float-right">
-                                {/*<button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8"*/}
-                                {/*        onClick={() => setOpen(!open)}>Close*/}
-                                {/*</button>*/}
+                                <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8"
+                                        onClick={() => setOpen(!open)}>Refresh
+                                </button>
                                     <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
                                             onClick={handleAdd}>Search</button>
                             </div>
