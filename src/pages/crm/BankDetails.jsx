@@ -30,9 +30,17 @@ const BankDetails = () => {
     const clientId = JSON.parse(sessionStorage.getItem("cusId"));
 
 
-    const handleChange = (e, fieldName) => {
+    const handleChange = (e, fieldName, isNumeric = false) => {
         const value = e.target.value;
-        setInputs((values) => ({...values, [fieldName]: value}))
+        if (fieldName === "accNumber"){
+            const numericRegex = /^\d{0,10}$/;
+
+            if ((isNumeric && numericRegex.test(value)) || !isNumeric) {
+                setInputs((values) => ({ ...values, [fieldName]: value }));
+            }
+        }else {
+            setInputs((values) => ({...values, [fieldName]: value}))
+        }
     };
     const handleGoBack = () => {
         queryParams.set("step", "four");
@@ -148,7 +156,7 @@ const BankDetails = () => {
                                 <input
                                     type="text"
                                     value={inputs.accNumber}
-                                    onChange={(event) => handleChange(event, "accNumber")}
+                                    onChange={(event) => handleChange(event, "accNumber", true)}
                                     placeholder="Enter account number"
                                     className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                 />

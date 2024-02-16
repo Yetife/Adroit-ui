@@ -114,7 +114,11 @@ const PersonalInformation = () => {
     }
 
     const handleGoBack = () => {
-        navigate('/crm/addClient');
+        if (custId){
+            navigate('/crm/clients');
+        }else{
+            navigate('/crm/addClient');
+        }
     };
     const handleNext = async (e) => {
         e.preventDefault();
