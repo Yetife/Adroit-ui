@@ -6,7 +6,7 @@ import cloud from '../assets/cloud.svg'
 import help from '../assets/help.svg'
 import {DemoItem} from "@mui/x-date-pickers/internals/demo/index.js";
 import {DateCalendar} from "@mui/x-date-pickers";
-import user from '../assets/avatar.svg'
+import userImg from '../assets/avatar.svg'
 
 const Dashboard = () => {
     let data;
@@ -15,11 +15,13 @@ const Dashboard = () => {
         data = JSON.parse(sessionStorage.getItem('validate'))
     }
 
+    const user = JSON.parse(sessionStorage.getItem("userData"));
+
     return (
         <Layout>
             <>
-                <div className='flex flex-col md:flex md:flex-row w-full h-auto my-12 space-x-0 md:space-x-8 md:h-[16rem]'>
-                    <div className='flex py-3 w-full md:w-3/5 lg:w-4/5 md:h-[290px] h-[350px]'>
+                <div className='flex flex-col md:flex md:flex-row w-full h-auto space-x-0 md:space-x-8 md:h-[16rem]'>
+                    <div className='flex pb-3 w-full md:w-3/5 lg:w-4/5 md:h-[290px] h-[350px]'>
                         <div className='w-full bg-[#00C795] shadow-md rounded p-4'>
                             <Stack direction={{md: "row", base: "column"}} justifyContent={{md: "space-between"}} p={{base:"10px", md:"40px"}}>
                                 <Stack>
@@ -33,10 +35,10 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    <div className='w-[300px] p-5  border border-gray-100 bg-white text-center shadow-lg md:h-[290px] h-[300px] rounded'>
+                    <div className='w-[300px] p-5  border border-gray-100 bg-white text-center shadow-lg md:h-[278px] h-[280px] rounded'>
                         <Stack direction="column" justifyContent="center" alignItems="center">
-                            <Avatar src={user} boxSize="166px" />
-                            <Text color="#343434" textAlign="center" fontFamily="Inter" fontSize="16px" fontStyle="normal" fontWeight="700" lineHeight="normal">Adekunle Adebona</Text>
+                            <Avatar src={userImg} boxSize="166px" />
+                            <Text color="#343434" textAlign="center" fontFamily="Inter" fontSize="16px" fontStyle="normal" fontWeight="700" lineHeight="normal">{user.FirstName + " " + user.LastName}</Text>
                             <Text color="#343434" textAlign="center" fontFamily="Inter" fontSize="14px" fontStyle="normal" fontWeight="500" lineHeight="normal">UI/UX Designer</Text>
                         </Stack>
                     </div>

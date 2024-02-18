@@ -10,8 +10,8 @@ import {
     useGetAllProductsQuery
 } from "../../../store/features/administration/api.js";
 import dayjs from "dayjs";
-import {useGetAllProcessedDisbursementQuery} from "../../../store/features/bridgeLoan/api.js";
 import Pagination from "../../reusables/Pagination.jsx";
+import {formatAmount} from "../../reusables/formatAmount.js";
 
 const ProductsTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -217,7 +217,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.adminProduct.name}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.adminProduct.minimuimamount} - {data?.adminProduct.maximuimamount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatAmount(data?.adminProduct.minimuimamount)} - &#8358;{formatAmount(data?.adminProduct.maximuimamount)}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.adminProduct.interestRate}%</span>
