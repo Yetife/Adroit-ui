@@ -12,10 +12,14 @@ import dayjs from "dayjs";
 import AddLoanStatusModal from "../../loanApplication/loanStatus/AddLoanStatusModal.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
 
-const ReviewTable = ({searchTerm}) => {
+const ReviewTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllReviewQuery({size, page})
+    const {data, isFetching, error} =  useGetAllReviewQuery({
+        size,
+        page,
+        applicationId, name, phone, email, channel, startDate, endDate
+    })
     if (error) return <p>Network error</p>
 
     const filterData = (item) => {

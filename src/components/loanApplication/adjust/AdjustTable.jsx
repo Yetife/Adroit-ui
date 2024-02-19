@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {
     useEditStatusMutation,
-    useGetAllAdjustQuery, useGetAllDeclinedQuery,
-    useGetAllStatusQuery
+    useGetAllAdjustQuery,
 } from "../../../store/features/loanApplication/api.js";
 import {useNavigate} from "react-router-dom";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
@@ -11,10 +10,13 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
 
-const AdjustTable = ({searchTerm}) => {
+const AdjustTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllAdjustQuery({size, page})
+    const {data, isFetching, error} =  useGetAllAdjustQuery({
+        size,
+        page,
+        applicationId, name, phone, email, channel, startDate, endDate})
     if (error) return <p>Network error</p>
 
     const filterData = (item) => {
@@ -118,7 +120,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.applicationChannel}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.customerRef}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.workEmail}</span>

@@ -13,20 +13,7 @@ import FilterAdjust from "../../components/loanApplication/adjust/filterAdjust.j
 
 const AdjustApplication = () => {
     const [open, setOpen] = useState(false)
-    const [checked, setChecked] = useState(true);
-    const initialState = {
-        applicationId: "",
-        email: "",
-        bvn: "",
-        status: "",
-        startDate: "",
-        endDate: "",
-    }
-    const [inputs, setInputs] = useState(initialState)
-    const dispatch = useDispatch()
-    const [addStatus] = useAddGenderMutation()
     const [searchTerm, setSearchTerm] = useState("");
-
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
     };
@@ -34,20 +21,19 @@ const AdjustApplication = () => {
     const handleOpen = () => {
         setOpen(true)
     }
-    const handleAdd = ()=> {
-        addStatus({
-            body: {
-                name: status,
-                statusID: checked ? 1 : 0
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-            setStatus("")
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
+    const [filters, setFilters] = useState({
+        applicationId: "",
+        phone: "",
+        name: "",
+        email: "",
+        channel: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+    };
     return (
         <Layout>
             <div className="px-2">
@@ -60,9 +46,10 @@ const AdjustApplication = () => {
                     </div>
                 </div>
                 <div>
-                    <AdjustTable searchTerm={searchTerm} />
+                    <AdjustTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name} phone={filters.phone}
+                                 startDate={filters.startDate} endDate={filters.endDate} email={filters.email} channel={filters.channel} />
                 </div>
-                <FilterAdjust open={open} setOpen={setOpen} handleAdd={handleAdd}/>
+                <FilterAdjust open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     );

@@ -12,15 +12,6 @@ import FilterCustomer from "../../components/loanApplication/customer/FilterCust
 const Customer = () => {
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
-    const initialState = {
-        applicationId: "",
-        email: "",
-        bvn: "",
-        status: "",
-        startDate: "",
-        endDate: "",
-    }
-    const [inputs, setInputs] = useState(initialState)
     const dispatch = useDispatch()
     const [addStatus] = useAddGenderMutation()
     const [searchTerm, setSearchTerm] = useState("");
@@ -32,19 +23,20 @@ const Customer = () => {
     const handleOpen = () => {
         setOpen(true)
     }
-    const handleAdd = ()=> {
-        addStatus({
-            body: {
-                name: status,
-                statusID: checked ? 1 : 0
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
+    const [filters, setFilters] = useState({
+        applicationId: "",
+        statusName: "",
+        name: "",
+        email: "",
+        channel: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+    };
+
     return (
         <Layout>
             <div className="px-2">
@@ -57,9 +49,10 @@ const Customer = () => {
                     </div>
                 </div>
                 <div>
-                    <CustomerTable searchTerm={searchTerm} />
+                    <CustomerTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name} statusName={filters.statusName}
+                                   startDate={filters.startDate} endDate={filters.endDate} email={filters.email} channel={filters.channel}/>
                 </div>
-                <FilterCustomer open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}  handleAdd={handleAdd}/>
+                <FilterCustomer open={open} setOpen={setOpen}  handleFilter={handleFilter}/>
             </div>
         </Layout>
     );

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {
     useEditStatusMutation,
@@ -13,11 +13,20 @@ import themes from "../../reusables/theme.jsx";
 import {formatAmount} from "../../reusables/formatAmount.js";
 import Pagination from "../../reusables/Pagination.jsx";
 
-const CustomerTable = ({searchTerm}) => {
-    const [page, setPage] = useState(1)
-    const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllCustomerQuery({size, page})
-    if (error) return <p>Network error</p>
+const CustomerTable = ({searchTerm, applicationId, name, statusName, email, channel, startDate, endDate}) => {
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(10);
+    const [det, setDet] = useState(2);
+
+    // Query data
+    const { data, isFetching, error } = useGetAllCustomerQuery({
+        size,
+        page,
+        applicationId, name, statusName, email, channel, startDate, endDate // Spread filters directly into the query
+    });
+
+
+    if (error) return <p>Network error</p>;
 
     const filterData = (item) => {
         for (const key in item) {
@@ -28,15 +37,15 @@ const CustomerTable = ({searchTerm}) => {
         return false; // No match found
     };
 
-    const filteredData = data?.data?.filter(filterData);
+    const filteredData = data?.data?.filter(filterData) ?? [];
+
     const handlePageChange = (newPage) => {
-        setPage(newPage)
-    }
+        setPage(newPage);
+    };
 
     const handleRowPerPageChange = (event) => {
         setSize(parseInt(event.target.value, 10));
-    }
-
+    };
 
     return (
         <div className="flex rounded-3xl flex-col mt-8">

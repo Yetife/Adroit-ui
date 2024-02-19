@@ -29,9 +29,26 @@ export const loanUnderwritingApi = createApi({
             invalidatesTags: ["approveApplication"]
         }),
         getAllApproval: builder.query({
-            query: ({size, page}) => ({
-                url: `/Approval/get?PasgeSize=${size}&PageNumber=${page}`,
-            }),
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/Approval/get`,
+                    params: queryParams,
+                };
+            },
             providesTags: ["approveApplication"]
         }),
         disburseApplication: builder.mutation({
@@ -43,9 +60,26 @@ export const loanUnderwritingApi = createApi({
             invalidatesTags: ["disburseApplication"]
         }),
         getAllDisbursement: builder.query({
-            query: ({size, page}) => ({
-                url: `/Disbursement/get?PasgeSize=${size}&PageNumber=${page}`,
-            }),
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/Disbursement/get`,
+                    params: queryParams,
+                };
+            },
             providesTags: ["disburseApplication", "stopDisbursement", "manualDisbursement"]
         }),
         stopDisbursement: builder.mutation({

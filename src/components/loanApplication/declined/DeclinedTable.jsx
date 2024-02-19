@@ -12,10 +12,14 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
 
-const DeclinedTable = ({searchTerm}) => {
+const DeclinedTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllDeclinedQuery({size, page})
+    const {data, isFetching, error} =  useGetAllDeclinedQuery({
+        size,
+        page,
+        applicationId, name, phone, email, channel, startDate, endDate
+    })
     if (error) return <p>Network error</p>
 
     const filterData = (item) => {

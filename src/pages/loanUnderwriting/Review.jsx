@@ -1,30 +1,14 @@
 import {useState} from 'react';
 import Layout from "../Layout.jsx";
-import {useDispatch} from "react-redux";
-import {useAddGenderMutation} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink, useNavigate} from "react-router-dom";
-import FilterCustomer from "../../components/loanApplication/customer/FilterCustomer.jsx";
 import ReviewTable from "../../components/loanUnderwritting/review/ReviewTable.jsx";
 import FilterReview from "../../components/loanUnderwritting/review/FilterReview.jsx";
 
 const Review = () => {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
-    const [checked, setChecked] = useState(true);
-    const initialState = {
-        applicationId: "",
-        email: "",
-        bvn: "",
-        status: "",
-        startDate: "",
-        endDate: "",
-    }
-    const [inputs, setInputs] = useState(initialState)
-    const dispatch = useDispatch()
-    const [addStatus] = useAddGenderMutation()
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = (searchValue) => {
@@ -34,19 +18,19 @@ const Review = () => {
     const handleOpen = () => {
         setOpen(true)
     }
-    const handleAdd = ()=> {
-        addStatus({
-            body: {
-                name: status,
-                statusID: checked ? 1 : 0
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
+    const [filters, setFilters] = useState({
+        applicationId: "",
+        phone: "",
+        name: "",
+        email: "",
+        channel: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+    };
     return (
         <Layout>
             <div className="px-2">
@@ -65,9 +49,10 @@ const Review = () => {
                     </div>
                 </div>
                 <div>
-                    <ReviewTable searchTerm={searchTerm} />
+                    <ReviewTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name} phone={filters.phone}
+                                 startDate={filters.startDate} endDate={filters.endDate} email={filters.email} channel={filters.channel} />
                 </div>
-                <FilterReview open={open} setOpen={setOpen} handleAdd={handleAdd}/>
+                <FilterReview open={open} setOpen={setOpen} handleAdd={handleFilter}/>
             </div>
         </Layout>
     );

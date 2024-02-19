@@ -29,11 +29,20 @@ export const loanApplicationApi = createApi({
             invalidatesTags: ["EditStatus"]
         }),
         getAllCustomer: builder.query({
-            query: ({size, page}) => {
+            query: ({size, page, applicationId, name, statusName, email, channel, startDate, endDate }) => {
                 const queryParams = {
                     PasgeSize: size,
                     PageNumber: page,
+                    det: startDate ? 1 : 2,
                     // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(statusName && { Status: statusName }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
                 };
                 return {
                     url: `/LoanApplication/Customer/get`,
@@ -77,9 +86,26 @@ export const loanApplicationApi = createApi({
             invalidatesTags: ["completeReview"]
         }),
         getAllAdjust: builder.query({
-            query: ({size, page}) => ({
-                url: `/LoanApplication/Adjust/get?PasgeSize=${size}&PageNumber=${page}`,
-            }),
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/LoanApplication/Adjust/get`,
+                    params: queryParams,
+                };
+            },
             providesTags: ["completeReview", "declineApplication"]
         }),
         declineApplication: builder.mutation({
@@ -91,9 +117,26 @@ export const loanApplicationApi = createApi({
             invalidatesTags: ["declineApplication"]
         }),
         getAllDeclined: builder.query({
-            query: ({size, page}) => ({
-                url: `/LoanApplication/Declined/get?PasgeSize=${size}&PageNumber=${page}`,
-            }),
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/LoanApplication/Declined/get`,
+                    params: queryParams,
+                };
+            },
             providesTags: ["declineApplication"]
         }),
         requestDocument: builder.mutation({
@@ -141,9 +184,26 @@ export const loanApplicationApi = createApi({
             invalidatesTags: ["returnApplication"]
         }),
         getAllReview: builder.query({
-            query: ({page, size}) => ({
-                url: `/LoanUnderwriting/Review/get?PasgeSize=${size}&PageNumber=${page}`,
-            }),
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/LoanUnderwriting/Review/get`,
+                    params: queryParams,
+                };
+            },
             providesTags: ["returnApplication", "adjustApplication", "completeReview"]
         }),
     })

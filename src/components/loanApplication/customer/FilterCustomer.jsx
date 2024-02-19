@@ -4,8 +4,10 @@ import {getUserToken} from "../../../services/storage/index.js";
 import axios from "axios";
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
 
-const FilterCustomer = ({open, setOpen, handleAdd}) => {
+const FilterCustomer = ({open, setOpen, handleFilter}) => {
     const [status, setStatus] = useState([]);
     const [inputs, setInputs] = useState({
         startDate: "",
@@ -17,6 +19,7 @@ const FilterCustomer = ({open, setOpen, handleAdd}) => {
     const [applicationId, setApplicationId] = useState("");
     const [email, setEmail] = useState("");
     const token = getUserToken();
+    const dispatch = useDispatch()
 
 
     const handleChange = (e, fieldName) => {
@@ -70,6 +73,33 @@ const FilterCustomer = ({open, setOpen, handleAdd}) => {
             endDate: ""
         })
     }
+
+    const applyFilters = () => {
+        if (!inputs.startDate) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Start date is required",success:false}));
+            return;
+        }else if (!inputs.endDate) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"End date is required",success:false}));
+            return;
+        }
+        // Gather filter parameters
+        const filters = {
+            applicationId,
+            statusName,
+            name,
+            email,
+            channel,
+            startDate: inputs.startDate,
+            endDate: inputs.endDate,
+        };
+
+        // Pass filters to the parent component
+        handleFilter(filters);
+
+        // Close the filter modal
+        setOpen(false);
+    };
+
 
     const allOption = { uniqueId: 'all', name: 'All' };
 
@@ -220,7 +250,7 @@ const FilterCustomer = ({open, setOpen, handleAdd}) => {
                                         onClick={handleRefresh}>Refresh
                                 </button>
                                     <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
-                                            onClick={handleAdd}>Search</button>
+                                            onClick={applyFilters}>Search</button>
                             </div>
                         </div>
                         <Dialog.Close asChild>

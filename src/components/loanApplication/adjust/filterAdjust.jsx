@@ -1,8 +1,10 @@
 import {useState} from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
 
-const FilterAdjust = ({open, setOpen, handleAdd}) => {
+const FilterAdjust = ({open, setOpen, handleFilter}) => {
     const [inputs, setInputs] = useState({
         startDate: "",
         endDate: ""
@@ -12,7 +14,7 @@ const FilterAdjust = ({open, setOpen, handleAdd}) => {
     const [channel, setChannel] = useState("");
     const [applicationId, setApplicationId] = useState("");
     const [email, setEmail] = useState("");
-
+    const dispatch = useDispatch()
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
@@ -69,6 +71,29 @@ const FilterAdjust = ({open, setOpen, handleAdd}) => {
         })
     }
 
+    const applyFilters = () => {
+        if (!inputs.startDate) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Start date is required",success:false}));
+            return;
+        }else if (!inputs.endDate) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"End date is required",success:false}));
+            return;
+        }
+        // Gather filter parameters
+        const filters = {
+            applicationId,
+            phone,
+            name,
+            email,
+            channel,
+            startDate: inputs.startDate,
+            endDate: inputs.endDate,
+        };
+
+        // Pass filters to the parent component
+        handleFilter(filters);
+        setOpen(false);
+    };
 
     return (
         <div>
@@ -191,7 +216,7 @@ const FilterAdjust = ({open, setOpen, handleAdd}) => {
                                         onClick={handleRefresh}>Refresh
                                 </button>
                                 <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
-                                        onClick={handleAdd}>Search</button>
+                                        onClick={applyFilters}>Search</button>
                             </div>
                         </div>
                         <Dialog.Close asChild>
