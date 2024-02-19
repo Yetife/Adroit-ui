@@ -46,7 +46,7 @@ export const loanUnderwritingApi = createApi({
             query: ({size, page}) => ({
                 url: `/Disbursement/get?PasgeSize=${size}&PageNumber=${page}`,
             }),
-            providesTags: ["disburseApplication", "stopDisbursement"]
+            providesTags: ["disburseApplication", "stopDisbursement", "manualDisbursement"]
         }),
         stopDisbursement: builder.mutation({
             query: ({body}) => ({
@@ -55,6 +55,14 @@ export const loanUnderwritingApi = createApi({
                 body
             }),
             invalidatesTags: ["stopDisbursement"]
+        }),
+        manualDisbursement: builder.mutation({
+            query: ({body}) => ({
+                url: `/Approval/ManualDisbursementDeterminate`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["manualDisbursement"]
         }),
         getAdjustmentDetails: builder.query({
             query: (id) => ({
@@ -74,5 +82,6 @@ export const {
     useApproveApplicationMutation,
     useDisburseApplicationMutation,
     useGetAdjustmentDetailsQuery,
+    useManualDisbursementMutation,
 
 } = loanUnderwritingApi

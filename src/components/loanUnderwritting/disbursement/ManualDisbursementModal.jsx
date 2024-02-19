@@ -2,13 +2,30 @@ import {useState} from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
-import {Close} from "@mui/icons-material";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {useManualDisbursementMutation} from "../../../store/features/loanUnderwriting/api.js";
+import {useDispatch} from "react-redux";
 
 const ManualDisbursementModal = ({open, setOpen, handleRoute}) => {
     const [desc, setDesc] = useState("")
+    const queryParams = new URLSearchParams(location.search);
+    const appId = queryParams.get("aid");
+    const [manualDisburse] = useManualDisbursementMutation()
+    const dispatch = useDispatch()
 
     const handleSubmit = () =>{
         console.log(desc)
+        manualDisburse({
+            body: {
+                loanApplicationId: appId,
+                description: desc,
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpen(!open)
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
     }
     return (
         <div>
