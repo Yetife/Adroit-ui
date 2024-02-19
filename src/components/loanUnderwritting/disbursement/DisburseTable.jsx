@@ -9,10 +9,14 @@ import AddLoanStatusModal from "../../loanApplication/loanStatus/AddLoanStatusMo
 import {useGetAllDisbursementQuery} from "../../../store/features/loanUnderwriting/api.js";
 import Pagination from "../../reusables/Pagination.jsx";
 
-const DisburseTable = ({searchTerm}) => {
+const DisburseTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllDisbursementQuery({size, page})
+    const {data, isFetching, error} =  useGetAllDisbursementQuery({
+        size,
+        page,
+        applicationId, name, phone, email, channel, startDate, endDate
+    })
     if (error) return <p>Network error</p>
 
     const filterData = (item) => {

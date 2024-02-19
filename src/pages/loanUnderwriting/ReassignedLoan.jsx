@@ -1,28 +1,13 @@
 import {useState} from 'react';
-import {useDispatch} from "react-redux";
-import {useAddGenderMutation} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
-import FilterCustomer from "../../components/loanApplication/customer/FilterCustomer.jsx";
-import ReassignedLoanTable from "../../components/loanUnderwritting/ReassignedLoanTable.jsx";
+import ReassignedLoanTable from "../../components/loanUnderwritting/reassignedLoan/ReassignedLoanTable.jsx";
+import FilterReassigned from "../../components/loanUnderwritting/reassignedLoan/FilterReassigned.jsx";
 
 const ReassignedLoan = () => {
     const [open, setOpen] = useState(false)
-    const [checked, setChecked] = useState(true);
-    const initialState = {
-        applicationId: "",
-        email: "",
-        bvn: "",
-        status: "",
-        startDate: "",
-        endDate: "",
-    }
-    const [inputs, setInputs] = useState(initialState)
-    const dispatch = useDispatch()
-    const [addStatus] = useAddGenderMutation()
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = (searchValue) => {
@@ -32,19 +17,19 @@ const ReassignedLoan = () => {
     const handleOpen = () => {
         setOpen(true)
     }
-    const handleAdd = ()=> {
-        addStatus({
-            body: {
-                name: status,
-                statusID: checked ? 1 : 0
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
+    const [filters, setFilters] = useState({
+        applicationId: "",
+        phone: "",
+        name: "",
+        email: "",
+        channel: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+    };
     return (
         <Layout>
             <div className="px-2">
@@ -59,7 +44,7 @@ const ReassignedLoan = () => {
                 <div>
                     <ReassignedLoanTable searchTerm={searchTerm} />
                 </div>
-                <FilterCustomer open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}  handleAdd={handleAdd}/>
+                <FilterReassigned open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     )

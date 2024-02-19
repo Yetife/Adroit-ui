@@ -1,10 +1,10 @@
-import {useState} from 'react';
+import React, {useState} from "react";
+import {useDispatch} from "react-redux";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
-import {updateSnackbar} from "../../../store/snackbar/reducer.js";
-import {useDispatch} from "react-redux";
 
-const FilterDisbursement = ({open, setOpen, handleFilter}) => {
+const FilterReassigned =({open, setOpen, handleFilter}) => {
     const [inputs, setInputs] = useState({
         startDate: "",
         endDate: ""
@@ -93,7 +93,6 @@ const FilterDisbursement = ({open, setOpen, handleFilter}) => {
         handleFilter(filters);
         setOpen(false);
     };
-
     return (
         <div>
             <Dialog.Root
@@ -233,4 +232,4 @@ const FilterDisbursement = ({open, setOpen, handleFilter}) => {
     )
 };
 
-export default FilterDisbursement;
+export default FilterReassigned;

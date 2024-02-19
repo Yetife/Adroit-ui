@@ -11,18 +11,6 @@ import FilterLoanReassignment from "../../components/loanUnderwritting/loanReass
 
 const LoanReassignment = () => {
     const [open, setOpen] = useState(false)
-    const [checked, setChecked] = useState(true);
-    const initialState = {
-        applicationId: "",
-        email: "",
-        bvn: "",
-        status: "",
-        startDate: "",
-        endDate: "",
-    }
-    const [inputs, setInputs] = useState(initialState)
-    const dispatch = useDispatch()
-    const [addStatus] = useAddGenderMutation()
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = (searchValue) => {
@@ -32,19 +20,19 @@ const LoanReassignment = () => {
     const handleOpen = () => {
         setOpen(true)
     }
-    const handleAdd = ()=> {
-        addStatus({
-            body: {
-                name: status,
-                statusID: checked ? 1 : 0
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
+    const [filters, setFilters] = useState({
+        applicationId: "",
+        phone: "",
+        name: "",
+        email: "",
+        channel: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+    };
     return (
         <Layout>
             <div className="px-2">
@@ -57,9 +45,10 @@ const LoanReassignment = () => {
                     </div>
                 </div>
                 <div>
-                    <ReassignTable searchTerm={searchTerm} />
+                    <ReassignTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name} phone={filters.phone}
+                                   startDate={filters.startDate} endDate={filters.endDate} email={filters.email} channel={filters.channel} />
                 </div>
-                <FilterLoanReassignment open={open} setOpen={setOpen} handleAdd={handleAdd}/>
+                <FilterLoanReassignment open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     );

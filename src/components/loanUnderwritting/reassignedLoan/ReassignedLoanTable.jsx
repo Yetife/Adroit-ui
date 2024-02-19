@@ -3,12 +3,12 @@ import {useDispatch} from "react-redux";
 import {
     useEditStatusMutation,
     useGetReassignedLoanQuery
-} from "../../store/features/loanApplication/api.js";
+} from "../../../store/features/loanApplication/api.js";
 import {useNavigate} from "react-router-dom";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import AddLoanStatusModal from "../loanApplication/loanStatus/AddLoanStatusModal.jsx";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import AddLoanStatusModal from "../../loanApplication/loanStatus/AddLoanStatusModal.jsx";
 import {LinearProgress, ThemeProvider} from "@mui/material";
-import themes from "../reusables/theme.jsx";
+import themes from "../../reusables/theme.jsx";
 
 const ReassignedLoanTable = ({searchTerm}) => {
     const user = JSON.parse(sessionStorage.getItem("userData"));

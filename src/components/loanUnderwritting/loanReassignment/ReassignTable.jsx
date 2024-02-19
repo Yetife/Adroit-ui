@@ -11,10 +11,14 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
 
-const ReassignTable = ({searchTerm}) => {
+const ReassignTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllReviewQuery({size, page})
+    const {data, isFetching, error} =  useGetAllReviewQuery({
+        size,
+        page,
+        applicationId, name, phone, email, channel, startDate, endDate
+    })
     if (error) return <p>Network error</p>
 
     const filterData = (item) => {
