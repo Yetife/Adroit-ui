@@ -90,7 +90,6 @@ const DeclineApplicationModal = ({open, setOpen, handleAdd, id}) => {
 
     useEffect(() => {
         fetchData()
-        console.log(selectedItems);
     }, [selectedItems]);
 
 

@@ -5,12 +5,17 @@ import {useGetAllStaffLoanQuery} from "../../store/features/staff/api.js";
 import {useState} from "react";
 import Pagination from "../reusables/Pagination.jsx";
 
-const StaffTable = () => {
+const StaffTable = ({applicationId, statusName, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllStaffLoanQuery({size, page})
+    const {data, isFetching, error} =  useGetAllStaffLoanQuery({
+        size,
+        page,
+        applicationId, statusName, startDate, endDate
+    })
     if (error) return <p>Network error</p>
 
+    console.log(statusName)
     // const filterData = (item) => {
     //     for (const key in item) {
     //         if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {

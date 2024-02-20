@@ -171,7 +171,7 @@ const LoanSupportingDocument = () => {
                     />
                     {guarantorFile && (
                         <p className="font-medium text-[#4A5D58] text-[18px] flex flex-wrap pt-4">
-                            {guarantorFile.name}
+                            {guarantorFile?.name}
                         </p>
                     )}
                     {!guarantorFile && (

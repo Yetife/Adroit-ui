@@ -112,10 +112,10 @@ const ViewStaffPage = () => {
                                 <table className="table-auto md:w-full px-20">
                                     <thead>
                                     <tr>
-                                        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b bg-gray-50">
+                                        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] truncate text-left border-b bg-gray-50">
                                             Repayment Date
                                         </th>
-                                        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+                                        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
                                             Amount
                                         </th>
                                     </tr>

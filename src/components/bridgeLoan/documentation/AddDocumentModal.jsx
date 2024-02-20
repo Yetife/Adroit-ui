@@ -5,7 +5,6 @@ import axios from "axios";
 import {getUserToken} from "../../../services/storage/index.js";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
-import {useEditDocumentationMutation} from "../../../store/features/bridgeLoan/api.js";
 import {fetchDocumentation} from "../../../store/documentationSlice.js";
 
 
@@ -15,40 +14,13 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
     const [tenor, setTenor] = useState([]);
     const [interest, setInterest] = useState([])
     const dispatch = useDispatch()
-    const [editDoc]  = useEditDocumentationMutation()
     const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
     };
-
-    // const [minDate, setMinDate] = useState(dayjs(''));
-    // let startMinDate = dayjs().format('YYYY-MM-DD')
-    // let startMaxDate = dayjs().add(1,'year').format('YYYY-MM-DD')
-    //
-    // const shouldDisableDate = date => {
-    //     const newDate = dayjs(date.$d).format('YYYY')
-    //     const year = new Date().getFullYear()
-    //     let i;
-    //     const newArr = []
-    //     for(i = 0; i <= 10; i++){
-    //         const newYear = year - i
-    //         newArr.push(newYear.toString())
-    //     }
-    //     return newArr.includes(newDate);
-    // }
-    // const handleDateOfBirth = (e) => {
-    //     const name = 'dateOfBirth'
-    //     setInputs((values) => ({ ...values, [name]: dayjs(e.$d).format('YYYY-MM-DD') }));
-    // }
-    //
-    // const handleDOBDate = (e) => {
-    //     console.log('inputs.dateOfBirth:', inputs.dateOfBirth);
-    //     setMinDate(dayjs(e.$d))
-    //     const name = 'dateOfBirth'
-    //     setInputs((values) => ({ ...values, [name]: dayjs(e.$d).format('YYYY-MM-DD')  }));
-    // }
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         setSelectedFiles(file);
@@ -56,7 +28,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
 
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/BridgeLoan/GeneralSetUpFacilityType/getallvalid', {
+            const response = await axios.get(`${baseUrl}/BridgeLoan/GeneralSetUpFacilityType/getallvalid`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -71,7 +43,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
     };
     const fetchTenor = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/BridgeLoan/GeneralSetUpTenor/getallvalid', {
+            const response = await axios.get(`${baseUrl}/BridgeLoan/GeneralSetUpTenor/getallvalid`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -87,7 +59,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
 
     const fetchStatus = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/BridgeLoan/DocumentationStatus/getallvalid', {
+            const response = await axios.get(`${baseUrl}/BridgeLoan/DocumentationStatus/getallvalid`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -102,7 +74,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
     };
     const fetchInterest = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidRegularLoanInterestRate', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidRegularLoanInterestRate`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -155,7 +127,6 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                         'Authorization': `Bearer ${token}`
                     },
                 });
-                console.log(res.status, "resssssss")
                 if (res.status === 200) {
                     dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record saved successfully", success:true}));
                     setOpen(!open)
@@ -172,7 +143,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                         docStatus: "",
                         amount: "",
                     })
-                    dispatch(fetchDocumentation())
+                    await dispatch(fetchDocumentation())
                 }
             } catch (error) {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
@@ -197,7 +168,6 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                 formData.append('UniqueId', id)
                 // ... other form data
                 const token = getUserToken();
-                const baseUrl = import.meta.env.VITE_APP_BASE_URL;
 
                 const res = await fetch(`${baseUrl}/BridgeLoan/Documentation/Update`, {
                     method: 'POST',
@@ -226,7 +196,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                         docStatus: "",
                         amount: "",
                     })
-                    dispatch(fetchDocumentation())
+                    await dispatch(fetchDocumentation())
                 }
             } catch (error) {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
@@ -260,7 +230,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                           disabled={purpose === "view"}
                                           onChange={(event) => handleChange(event, "lender")}
                                           placeholder="Enter name"
-                                          className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -273,7 +243,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                           disabled={purpose === "view"}
                                           onChange={(event) => handleChange(event, "obName")}
                                           placeholder="Enter name"
-                                          className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -286,20 +256,8 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                              disabled={purpose === "view"}
                                              onChange={(event) => handleChange(event, "dateOfBirth")}
                                              placeholder="Enter date of birth"
-                                             className="font-medium w-[250px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                             className="font-medium w-[250px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                          />
-                                     {/*<LocalizationProvider dateAdapter={AdapterDayjs}>*/}
-                                     {/*   <DesktopDatePicker*/}
-                                     {/*       sx={{width: '100%'}}*/}
-                                     {/*       disableFuture*/}
-                                     {/*       views={['year', 'day', 'month']}*/}
-                                     {/*       name={'birthday'}*/}
-                                     {/*       shouldDisableYear={shouldDisableDate}*/}
-                                     {/*       value={inputs.dateOfBirth}*/}
-                                     {/*       onChange={handleDateOfBirth}*/}
-                                     {/*       slotProps={{ textField: { size: 'small'} }}*/}
-                                     {/*   />*/}
-                                    {/*</LocalizationProvider>*/}
                                     </span>
                                 </div>
                                 <div className="flex mt-8">
@@ -309,7 +267,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                       </h3>
                                          <select id="select" value={inputs.tenor} disabled={purpose === "view"}
                                                  onChange={(event) => handleChange(event, "tenor")}
-                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select tenor</option>
                                              {tenor && tenor?.map((option) => (
                                                  <option key={option.uniqueId} value={option.name}>
@@ -324,7 +282,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                       </h3>
                                          <select id="select" value={inputs.interestRate} disabled={purpose === "view"}
                                                  onChange={(event) => handleChange(event, "interestRate")}
-                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select interest</option>
                                              {interest && interest?.map((option) => (
                                                  <option key={option.id} value={option.interestRate}>
@@ -343,7 +301,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                           disabled={purpose === "view"}
                                           onChange={(event) => handleChange(event, "amount")}
                                           placeholder="Enter amount"
-                                          className="font-medium w-[250px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[250px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                 </div>
@@ -354,7 +312,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                       </h3>
                                          <select id="select" value={inputs.facilityType} disabled={purpose === "view"}
                                                  onChange={(event) => handleChange(event, "facilityType")}
-                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select facility type</option>
                                              {type && type?.map((option) => (
                                                  <option key={option.uniqueId} value={option.docName}>
@@ -369,7 +327,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                       </h3>
                                          <select id="select" value={inputs.docStatus} disabled={purpose === "view"}
                                                  onChange={(event) => handleChange(event, "docStatus")}
-                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select status</option>
                                              {status && status?.map((option) => (
                                                  <option key={option.uniqueId} value={option.docName}>
@@ -388,7 +346,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                              disabled={purpose === "view"}
                                              onChange={(event) => handleChange(event, "valueDate")}
                                              placeholder="Enter value date"
-                                             className="font-medium w-[250px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                             className="font-medium w-[250px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                          />
                                     </span>
                                 </div>
@@ -403,7 +361,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                              disabled={purpose === "view"}
                                              onChange={(event) => handleChange(event, "maturityDate")}
                                              placeholder="Enter maturity date"
-                                             className="font-medium w-[250px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                             className="font-medium w-[250px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                          />
                                     </span>
                                     <span className="ml-8">
@@ -411,7 +369,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                         Document Upload
                                       </h3>
                                          <input
-                                             className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                             className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                              type="file"
                                              id="fileInput"
                                              name="files"
@@ -432,7 +390,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                                    disabled={purpose === "view"}
                                                    onChange={(event) => handleChange(event, "comment")}
                                                    placeholder="Add comment"
-                                                   className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                   className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                          ></textarea>
                                     </span>
                                 </div>

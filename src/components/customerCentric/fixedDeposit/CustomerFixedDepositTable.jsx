@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {LinearProgress, TablePagination, ThemeProvider} from "@mui/material";
+import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import {useGetAllFixedDepositQuery} from "../../../store/features/customerCentric/api.js";
 import {useState} from "react";
@@ -65,13 +65,13 @@ export default CustomerFixedDepositTable;
 
 export function TableHeader({name}) {
     return (
-        <th className="px-6 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] truncate text-left border-b text-gray-900 bg-gray-50">
+        <th className="px-6 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] truncate text-left border-b bg-gray-50">
             {name}
         </th>
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Mid. Name', 'Last Name', 'Date of birth', 'BVN', 'Status', 'Actions']
+const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Last Name', 'Date of birth', 'BVN', 'Status', 'Actions']
 
 export function TableData({data, no}) {
     const router = useNavigate()
@@ -89,9 +89,6 @@ export function TableData({data, no}) {
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>

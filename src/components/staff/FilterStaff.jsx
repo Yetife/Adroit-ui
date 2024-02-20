@@ -1,27 +1,71 @@
-import React, {useEffect, useState} from 'react';
-import dayjs from "dayjs";
+import {useEffect, useState} from 'react';
 import {getUserToken} from "../../services/storage/index.js";
 import axios from "axios";
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
 
-const FilterStaff = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => {
+const FilterStaff = ({open, setOpen, handleFilter}) => {
     const [status, setStatus] = useState([]);
+    const [inputs, setInputs] = useState({
+        startDate: "",
+        endDate: ""
+    })
+    const [statusName, setStatusName] = useState("");
+    const [applicationId, setApplicationId] = useState("");
     const token = getUserToken();
+    const dispatch = useDispatch()
 
+    const handleIdChange = (e) => {
+        setApplicationId(e.target.value)
+        setStatusName("")
+    }
+
+    const handleStatusNameChange = (e) => {
+        setStatusName(e.target.value)
+        setApplicationId("")
+    }
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
     };
 
-    const allOption = { key: 'all', value: 'All' };
+    const allOption = { key: 0, value: 'All' };
 
-    // ... (other code)
+    const handleRefresh = () => {
+        setApplicationId("")
+        setStatusName("")
+        setInputs({
+            startDate: "",
+            endDate: ""
+        })
+    }
+
+    const applyFilters = () => {
+        if (!inputs.startDate) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Start date is required",success:false}));
+            return;
+        }else if (!inputs.endDate) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"End date is required",success:false}));
+            return;
+        }
+        const filters = {
+            applicationId,
+            statusName,
+            startDate: inputs.startDate,
+            endDate: inputs.endDate,
+        };
+        handleFilter(filters);
+        setOpen(false);
+    };
 
     const fetchData = async () => {
+        const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/StaffLoan/GetStaffLoanApprovalStatus', {
+            const response = await axios.get(`${baseUrl}/StaffLoan/GetStaffLoanApprovalStatus`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -51,7 +95,7 @@ const FilterStaff = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => 
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
                     <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[32%] left-[50%] max-h-[85vh] w-[90vw] max-w-[700px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-                        <Dialog.Title className="text-[32px] text-[#343434] font-extrabold -mt-8">{purpose === "edit" ? "Filter" : purpose === "view" ? "View" : "Filter"}</Dialog.Title>
+                        <Dialog.Title className="text-[32px] text-[#343434] font-extrabold -mt-8">Filter</Dialog.Title>
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-2">
                             <div>
@@ -63,9 +107,8 @@ const FilterStaff = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => 
                                           </h3>
                                           <input
                                               type="text"
-                                              value={inputs.applicationId}
-                                              disabled={purpose === "view"}
-                                              onChange={(event) => handleChange(event, "applicationId")}
+                                              value={applicationId}
+                                              onChange={handleIdChange}
                                               placeholder="Enter application id"
                                               className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
@@ -74,12 +117,13 @@ const FilterStaff = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => 
                                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                            Status
                                           </h3>
-                                             <select id="select" value={inputs.status} disabled={purpose === "view"}
-                                                     onChange={(event) => handleChange(event, "status")}
+                                             <select id="select"
+                                                     value={statusName}
+                                                     onChange={handleStatusNameChange}
                                                      className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
                                                 <option value="" disabled>Select loan status</option>
                                                  {status && status?.map((option) => (
-                                                     <option key={option.key} value={option.value}>
+                                                     <option key={option.key} value={option.key}>
                                                          {option.value}
                                                      </option>
                                                  ))}
@@ -96,7 +140,6 @@ const FilterStaff = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => 
                                             <input
                                                 type="date"
                                                 value={inputs.startDate}
-                                                disabled={purpose === "view"}
                                                 onChange={(event) => handleChange(event, "startDate")}
                                                 placeholder="Enter start date"
                                                 className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
@@ -109,7 +152,6 @@ const FilterStaff = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => 
                                             <input
                                                 type="date"
                                                 value={inputs.endDate}
-                                                disabled={purpose === "view"}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter end date"
                                                 className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
@@ -119,11 +161,12 @@ const FilterStaff = ({open, setOpen, inputs, setInputs, purpose, handleAdd}) => 
                                 </div>
                             </div>
                             <div className="flex space-x-3 float-right">
-                                {/*<button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8"*/}
-                                {/*        onClick={() => setOpen(!open)}>Close*/}
-                                {/*</button>*/}
+                                <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8"
+                                        onClick={handleRefresh}>Refresh
+                                </button>
                                 <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
-                                        onClick={handleAdd}>Search</button>
+                                        onClick={applyFilters}>Search
+                                </button>
                             </div>
                         </div>
                         <Dialog.Close asChild>

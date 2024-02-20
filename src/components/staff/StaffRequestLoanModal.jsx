@@ -5,11 +5,11 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import {Divider} from "@mui/material";
 
-const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, handleAdd}) => {
+const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, endDate, setEndDate, handleAdd}) => {
     const [tenor, setTenor] = useState([]);
     const [type, setType] = useState([]);
     const token = getUserToken();
-
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL;
 
     const handleChange = (e, fieldName, isNumeric = false) => {
         const userInput = e.target.value;
@@ -20,11 +20,12 @@ const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, handleAdd}) =>
         }
     };
 
+
     const allOption = { uniqueId: 'all', name: 'All' };
 
     const fetchTenor = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/BridgeLoan/GeneralSetUpTenor/getallvalid', {
+            const response = await axios.get(`${baseUrl}/BridgeLoan/GeneralSetUpTenor/getallvalid`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -40,7 +41,7 @@ const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, handleAdd}) =>
     };
     const fetchLoanType = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/StaffLoan/GetStaffLoanType', {
+            const response = await axios.get(`${baseUrl}/StaffLoan/GetStaffLoanType`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",

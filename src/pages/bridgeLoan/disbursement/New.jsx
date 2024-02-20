@@ -4,9 +4,11 @@ import Layout from "../../Layout.jsx";
 import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import NewDisbursementTable from "../../../components/bridgeLoan/disbursement/new/NewDisbursementTable.jsx";
+import UploadBulkModal from "../../../components/bridgeLoan/disbursement/new/UploadBulkModal.jsx";
 
 const New = () => {
     const [searchTerm, setSearchTerm] = useState("");
+    const [open, setOpen] = useState(false)
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -19,7 +21,7 @@ const New = () => {
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
                         <Button variant="primary"borderColor="#00C795" marginRight="10px"
-                                bgColor="#135D54" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                                bgColor="#135D54" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'} onClick={()=> setOpen(true)}>
                             <Text color="white">Bulk Upload</Text>
                         </Button>
                         <Button variant="primary" to={'/bridgeLoan/disbursement/new/add'} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
@@ -28,6 +30,7 @@ const New = () => {
                     </div>
                 </div>
                 <NewDisbursementTable searchTerm={searchTerm}/>
+                <UploadBulkModal open={open} setOpen={setOpen} />
             </div>
         </Layout>
     );

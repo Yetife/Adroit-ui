@@ -6,10 +6,14 @@ import dayjs from "dayjs";
 import {useState} from "react";
 import Pagination from "../../reusables/Pagination.jsx";
 
-const StaffLoanTable = () => {
+const StaffLoanTable = ({applicationId, statusName, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetStaffLoanQuery({size, page})
+    const {data, isFetching, error} =  useGetStaffLoanQuery({
+        size,
+        page,
+        applicationId, statusName, startDate, endDate
+    })
     if (error) return <p>Network error</p>
 
     const handlePageChange = (newPage) => {

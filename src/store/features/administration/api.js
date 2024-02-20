@@ -190,9 +190,23 @@ export const administrationApi = createApi({
             invalidatesTags: ["EditRegularLoanCharges"]
         }),
         getStaffLoan: builder.query({
-            query: ({size, page}) => ({
-                url: `/Administration/StaffLoan/GetStaffLoan?PasgeSize=${size}&PageNumber=${page}`,
-            }),
+            query: ({size, page, applicationId, statusName, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    // Add optional parameters conditionally
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(statusName && { Status: statusName }),
+
+                };
+                return {
+                    url: `/Administration/StaffLoan/GetStaffLoan`,
+                    params: queryParams,
+                };
+            },
             providesTags: []
         }),
         getStaffLoanById: builder.query({

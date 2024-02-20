@@ -15,8 +15,6 @@ import {useAddStaffLoanMutation} from "../../store/features/staff/api.js";
 const StaffLoan = () => {
     const [open, setOpen] = useState(false)
     const [openStaff, setOpenStaff] = useState(false)
-    const [checked, setChecked] = useState(true);
-    const [tenor, setTenor] = useState("")
     const [inputs, setInputs] = useState({
         tenor: "",
         type: "",
@@ -27,15 +25,6 @@ const StaffLoan = () => {
         purpose: ""
     })
 
-    const initialState = {
-        applicationId: "",
-        email: "",
-        bvn: "",
-        status: "",
-        startDate: "",
-        endDate: "",
-    }
-    const [input, setInput] = useState(initialState)
     const dispatch = useDispatch()
     const [addStaffLoan] = useAddStaffLoanMutation()
     const handleOpen = () => {
@@ -76,6 +65,18 @@ const StaffLoan = () => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
     }
+
+    const [filters, setFilters] = useState({
+        applicationId: "",
+        statusName: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+    };
+
     return (
         <Layout>
             <div className="px-2">
@@ -93,10 +94,11 @@ const StaffLoan = () => {
                     </div>
                 </div>
                 <div>
-                    <StaffTable />
+                    <StaffTable applicationId={filters.applicationId} statusName={filters.statusName}
+                                startDate={filters.startDate} endDate={filters.endDate} />
                 </div>
                 <StaffRequestLoanModal open={openStaff} setOpen={setOpenStaff} setInputs={setInputs} inputs={inputs} handleAdd={handleAdd}/>
-                <FilterStaff open={open} setOpen={setOpen} inputs={input} setInputs={setInput}/>
+                <FilterStaff open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     );

@@ -14,7 +14,7 @@ const ViewFixedDepositPage = () => {
     const {data, isFetching, error} =  useGetFixedDepositByIdQuery(custId)
 
 
-    const header = ['S/N', 'Amount', 'Status', 'Interest', 'Tenor', 'Date Submitted', 'Transaction Date', 'Actions' ]
+    const header = ['S/N', 'Amount', 'Status', 'Interest', 'Tenor', 'Date Submitted', 'Start Date', 'Maturity Date', 'Actions' ]
 
     return (
         <Layout>
@@ -32,7 +32,7 @@ const ViewFixedDepositPage = () => {
                 <div>
                     <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Customer Details</p>
                     <div className="rounded-[5px] my-6 p-8 scroll-container" style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
-                        <div className="flex space-x-6">
+                        <div className="flex space-x-12">
                             <div>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[600]">Name</p>
                                 <p className="text-[15px] font-[inter] leading-5 text-[#4A5D58] font-[500] capitalize">{data?.data.fullName}</p>
@@ -81,7 +81,7 @@ const ViewFixedDepositPage = () => {
                                                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item.depositAmount)}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status}</span>
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.statusName}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.interestRate}</span>
@@ -90,10 +90,12 @@ const ViewFixedDepositPage = () => {
                                                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.fixedDepositTenorId}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.maturityDate).format("YYYY/MM/DD")}</span>
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.dateCreated).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.dateCreated).format("YYYY/MM/DD")}</span>
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.startDate).format("YYYY/MM/DD")}</span>
+                                            </td> <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.maturityDate).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span onClick={()=>setOpen(true)} className={`text-[16px] leading-5 font-[inter] truncate ${item.status === "Pending" ? 'text-[#00C795] cursor-pointer' : 'text-[#4A5D58] italic font-[300]'}  font-medium`}>{item.status === "Pending" ? "Approve Now" : "No action"}</span>

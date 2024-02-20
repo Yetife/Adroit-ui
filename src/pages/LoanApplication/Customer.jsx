@@ -11,9 +11,6 @@ import FilterCustomer from "../../components/loanApplication/customer/FilterCust
 
 const Customer = () => {
     const [open, setOpen] = useState(false)
-    const [checked, setChecked] = useState(true);
-    const dispatch = useDispatch()
-    const [addStatus] = useAddGenderMutation()
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = (searchValue) => {

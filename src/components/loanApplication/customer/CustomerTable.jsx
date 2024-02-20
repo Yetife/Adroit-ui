@@ -25,6 +25,7 @@ const CustomerTable = ({searchTerm, applicationId, name, statusName, email, chan
         applicationId, name, statusName, email, channel, startDate, endDate // Spread filters directly into the query
     });
 
+    console.log(applicationId)
 
     if (error) return <p>Network error</p>;
 
