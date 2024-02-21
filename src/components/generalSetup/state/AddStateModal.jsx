@@ -143,7 +143,7 @@ const AddStateModal = ({open, setOpen, checked, setChecked, state, setState, pur
                                              style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                         <option value="" disabled>Select a country</option>
                                              {country.map((option) => (
-                                             <option key={option.id} value={option.name}>
+                                             <option key={option.id} value={option.id}>
                                                  {option.name}
                                              </option>
                                          ))}

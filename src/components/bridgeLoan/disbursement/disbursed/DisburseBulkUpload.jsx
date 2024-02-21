@@ -1,13 +1,12 @@
-import * as Dialog from "@radix-ui/react-dialog";
 import {useRef, useState} from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import {getUserToken} from "../../../../services/storage/index.js";
 import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 
-const UploadBulkModal = ({open, setOpen}) => {
+const DisburseBulkUpload = ({open, setOpen}) => {
     const [doc, setDoc] = useState(null)
-    const [startDate, setStartDate] = useState(null)
     const fileInputRef = useRef(null);
     const dispatch = useDispatch()
 
@@ -20,18 +19,14 @@ const UploadBulkModal = ({open, setOpen}) => {
         setDoc(file);
     }
 
-    const handleStartDate = (e) =>{
-        setStartDate(e.target.value)
-    }
     const handleUpload = async () => {
         try {
             const formData = new FormData();
             formData.append('UploadedExcel', doc);
-            formData.append('StartDate', startDate);
             const token = getUserToken();
             const baseUrl = import.meta.env.VITE_APP_BASE_URL;
 
-            const res = await fetch(`${baseUrl}/BridgeLoan/Disbursement/addbulkWithDate`, {
+            const res = await fetch(`${baseUrl}/BridgeLoan/Disbursement/addbulk`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -42,9 +37,8 @@ const UploadBulkModal = ({open, setOpen}) => {
                 },
             });
             if (res.status === 200) {
-                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record saved successfully", success:true}));
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Record Saved Successfully.", success:true}));
                 setDoc(null)
-                setStartDate(null)
                 setOpen(!open)
             }
         } catch (error) {
@@ -67,19 +61,7 @@ const UploadBulkModal = ({open, setOpen}) => {
                         <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-4">Bulk Upload</Dialog.Title>
 
                         <div className="mt-6">
-                            <div>
-                                <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                    Start Date
-                                </h3>
-                                <input
-                                    type="date"
-                                    value={startDate}
-                                    onChange={handleStartDate}
-                                    placeholder="Enter start date"
-                                    className="font-medium w-[315px] text-black leading-relaxed px-4 py-1 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                />
-                            </div>
-                            <div className="flex items-center space-x-4 mt-6">
+                            <div className="flex items-center space-x-4">
                                     <span>
                                         <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                             Upload
@@ -122,7 +104,7 @@ const UploadBulkModal = ({open, setOpen}) => {
                                 className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[24px] right-[40px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                                 aria-label="Close"
                             >
-                                <Close/>
+                                <Close />
                             </button>
                         </Dialog.Close>
                     </Dialog.Content>
@@ -132,4 +114,4 @@ const UploadBulkModal = ({open, setOpen}) => {
     );
 };
 
-export default UploadBulkModal;
+export default DisburseBulkUpload;

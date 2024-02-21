@@ -3,8 +3,11 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import Layout from "../../Layout.jsx";
 import {DisbursedTable} from "../../../components/bridgeLoan/disbursement/disbursed/DisbursedTable.jsx";
+import DisburseBulkUpload from "../../../components/bridgeLoan/disbursement/disbursed/DisburseBulkUpload.jsx";
+import {useState} from "react";
 
 const Disbursed = () => {
+    const [open, setOpen] = useState(false)
     return (
         <Layout>
             <div className="px-2">
@@ -15,13 +18,15 @@ const Disbursed = () => {
                                 bgColor="#135D54" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Filter</Text>
                         </Button>
-                        <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
+                                as={ReactLink} w={'109px'} onClick={()=>setOpen(true)}>
                             <Text color="white">Upload</Text>
                         </Button>
                     </div>
                 </div>
 
                 <DisbursedTable />
+                <DisburseBulkUpload open={open} setOpen={setOpen}/>
             </div>
         </Layout>
     );

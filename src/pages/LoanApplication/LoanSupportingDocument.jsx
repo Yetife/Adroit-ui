@@ -62,7 +62,6 @@ const LoanSupportingDocument = () => {
                     'Authorization': `Bearer ${token}`
                 },
             });
-            console.log(res.status, "resssssss")
             if (res.status === 200) {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record saved successfully", success:true}));
                 setSelectedFiles([]);

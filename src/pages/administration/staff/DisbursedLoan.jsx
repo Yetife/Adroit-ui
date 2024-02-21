@@ -8,40 +8,24 @@ import {Link as ReactLink} from "react-router-dom";
 import StaffLoanTable from "../../../components/administration/staff/StaffLoanTable.jsx";
 import AddLoanTenorModal from "../../../components/administration/loanTenor/AddLoanTenorModal.jsx";
 import FilterStaff from "../../../components/staff/FilterStaff.jsx";
+import DisburseStaffLoanTable from "../../../components/administration/staff/DisburseStaffLoanTable.jsx";
 
 const DisbursedLoan = () => {
     const [open, setOpen] = useState(false)
-    const [checked, setChecked] = useState(true);
-    const [tenor, setTenor] = useState("")
-    const dispatch = useDispatch()
-    const [addTenor] = useAddLoanTenorMutation()
-    const initialState = {
-        applicationId: "",
-        email: "",
-        bvn: "",
-        status: "",
-        startDate: "",
-        endDate: "",
-    }
-    const [input, setInput] = useState(initialState)
     const handleOpen = () => {
         setOpen(true)
     }
 
-    const handleAdd = ()=> {
-        addTenor({
-            body: {
-                name: tenor,
-                statusID: checked ? 1 : 0
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-            setTenor("")
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
+    const [filters, setFilters] = useState({
+        applicationId: "",
+        statusName: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+    };
     return (
         <Layout>
             <div className="px-2">
@@ -54,9 +38,10 @@ const DisbursedLoan = () => {
                     </div>
                 </div>
                 <div>
-                    <StaffLoanTable />
+                    <DisburseStaffLoanTable applicationId={filters.applicationId} statusName={filters.statusName}
+                                    startDate={filters.startDate} endDate={filters.endDate} />
                 </div>
-                <FilterStaff open={open} setOpen={setOpen} handleAdd={handleAdd} inputs={input} setInputs={setInput}/>
+                <FilterStaff open={open} setOpen={setOpen} handleFilter={handleFilter} />
             </div>
         </Layout>
     );

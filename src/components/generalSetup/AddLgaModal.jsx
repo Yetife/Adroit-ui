@@ -137,7 +137,7 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, selectedV
                                              style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}>
                                         <option value="" disabled>Select a state</option>
                                          {state && state?.map((option) => (
-                                             <option key={option.id} value={option.name}>
+                                             <option key={option.id} value={option.id}>
                                                  {option.name}
                                              </option>
                                          ))}
