@@ -1,13 +1,10 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {useDispatch} from "react-redux";
-import {useAddLoanTenorMutation} from "../../store/features/administration/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import Layout from "../Layout.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
-import AddLoanTenorModal from "../../components/administration/loanTenor/AddLoanTenorModal.jsx";
 import StaffTable from "../../components/staff/StaffTable.jsx";
-import Search from "../../components/reusables/Search.jsx";
 import StaffRequestLoanModal from "../../components/staff/StaffRequestLoanModal.jsx";
 import FilterStaff from "../../components/staff/FilterStaff.jsx";
 import {useAddStaffLoanMutation} from "../../store/features/staff/api.js";
@@ -15,6 +12,8 @@ import {useAddStaffLoanMutation} from "../../store/features/staff/api.js";
 const StaffLoan = () => {
     const [open, setOpen] = useState(false)
     const [openStaff, setOpenStaff] = useState(false)
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
     const [inputs, setInputs] = useState({
         tenor: "",
         type: "",
@@ -45,8 +44,8 @@ const StaffLoan = () => {
                 loanType: inputs.type,
                 loanAmount: inputs.amount,
                 loanTenorid: inputs.tenor,
-                startDate: inputs.startDate,
-                endDate: inputs.endDate,
+                startDate: startDate,
+                endDate: endDate,
                 purpose: inputs.purpose
             }
         }).then(res => {
@@ -97,7 +96,8 @@ const StaffLoan = () => {
                     <StaffTable applicationId={filters.applicationId} statusName={filters.statusName}
                                 startDate={filters.startDate} endDate={filters.endDate} />
                 </div>
-                <StaffRequestLoanModal open={openStaff} setOpen={setOpenStaff} setInputs={setInputs} inputs={inputs} handleAdd={handleAdd}/>
+                <StaffRequestLoanModal open={openStaff} setOpen={setOpenStaff} setInputs={setInputs} inputs={inputs}
+                                       handleAdd={handleAdd} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}/>
                 <FilterStaff open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>

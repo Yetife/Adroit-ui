@@ -27,7 +27,7 @@ const UploadBulkModal = ({open, setOpen}) => {
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
                     <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[30%] left-[50%] max-h-[85vh]
                     w-[80vw] max-w-[400px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[35px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-                        <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-8">Bulk Upload</Dialog.Title>
+                        <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-4">Bulk Upload</Dialog.Title>
 
                         <div className="mt-6">
                             <div className="flex items-center space-x-4">
@@ -70,7 +70,7 @@ const UploadBulkModal = ({open, setOpen}) => {
                         </div>
                         <Dialog.Close asChild>
                             <button
-                                className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[20px] right-[40px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+                                className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[24px] right-[40px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                                 aria-label="Close"
                             >
                                 <Close />

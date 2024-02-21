@@ -4,12 +4,16 @@ import axios from "axios";
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import {Divider} from "@mui/material";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
+import dayjs from "dayjs";
 
-const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, endDate, setEndDate, handleAdd}) => {
+const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, endDate, setEndDate, startDate, setStartDate, handleAdd}) => {
     const [tenor, setTenor] = useState([]);
     const [type, setType] = useState([]);
     const token = getUserToken();
     const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+    const dispatch = useDispatch()
 
     const handleChange = (e, fieldName, isNumeric = false) => {
         const userInput = e.target.value;
@@ -19,6 +23,30 @@ const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, endDate, setEn
             setInputs((values) => ({ ...values, [fieldName]: userInput }));
         }
     };
+
+    const handleStartDate = async (e) => {
+        setStartDate(e.target.value);
+        if (inputs.tenor) {
+            try {
+                const response = await axios.get(`${baseUrl}/StaffLoan/GetEndDate?tenor=${inputs.tenor}&startDate=${e.target.value}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*',
+                        'authorization': `Bearer ${token}`
+                    }
+                });
+                setEndDate(response.data.data);
+                console.log('Fetched state:', response.data.data);
+                console.log('Updated endDate:', endDate);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        } else {
+            dispatch(updateSnackbar({ type: 'TOGGLE_SNACKBAR_OPEN', message: 'loan tenor is required', success: false }));
+        }
+    };
+
 
 
     const allOption = { uniqueId: 'all', name: 'All' };
@@ -71,7 +99,7 @@ const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, endDate, setEn
             >
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
-                    <Dialog.Content className="custom-scroll-bar overflow-auto data-[state=open]:animate-contentShow z-[200] fixed top-[45%] left-[50%] max-h-[95vh] w-[90vw] max-w-[700px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                    <Dialog.Content className="custom-scroll-bar overflow-auto data-[state=open]:animate-contentShow z-[200] fixed top-[50%] left-[50%] max-h-[95vh] w-[90vw] max-w-[700px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                         <Dialog.Title className="text-[32px] text-[#343434] font-extrabold -mt-8">Request for loan</Dialog.Title>
                         <Divider className="pt-3"/>
                         <div className="mt-4">
@@ -147,8 +175,8 @@ const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, endDate, setEn
                                             </h3>
                                             <input
                                                 type="date"
-                                                value={inputs.startDate}
-                                                onChange={(event) => handleChange(event, "startDate")}
+                                                value={startDate}
+                                                onChange={handleStartDate}
                                                 placeholder="Enter start date"
                                                 className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                             />
@@ -159,8 +187,8 @@ const StaffRequestLoanModal = ({open, setOpen, inputs, setInputs, endDate, setEn
                                             </h3>
                                             <input
                                                 type="date"
-                                                value={inputs.endDate}
-                                                onChange={(event) => handleChange(event, "endDate")}
+                                                value={dayjs(endDate).format('YYYY-MM-DD')}
+                                                readOnly
                                                 placeholder="Enter end date"
                                                 className="font-medium w-[300px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                             />
