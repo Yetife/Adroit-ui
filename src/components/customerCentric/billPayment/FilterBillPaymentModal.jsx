@@ -30,7 +30,7 @@ const FilterBillPaymentModal = ({open, setOpen, handleFilter}) => {
     const fetchData = async () => {
         const baseUrl = import.meta.env.VITE_APP_BASE_URL
         try {
-            const response = await axios.get(`${baseUrl}/CustomerCentric/GetAllfixeddepositsStattus`, {
+            const response = await axios.get(`${baseUrl}/CustomerCentric/GetAllbillspaymentsStattus`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -93,7 +93,7 @@ const FilterBillPaymentModal = ({open, setOpen, handleFilter}) => {
                                                      className="font-medium w-[355px] text-black leading-relaxed px-4 py-2 rounded h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
                                                 <option value="" disabled>Select loan status</option>
                                                  {status && status?.map((option) => (
-                                                     <option key={option.id} value={option.name}>
+                                                     <option key={option.id} value={option.id}>
                                                          {option.name}
                                                      </option>
                                                  ))}

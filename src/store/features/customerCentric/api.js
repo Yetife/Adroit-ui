@@ -15,7 +15,7 @@ export const customerCentricApi = createApi({
                     // Add optional parameters conditionally
                     ...(dropDown && { SearchType: dropDown }),
                     ...(searchTerm && { SearchName: searchTerm }),
-                    ...(statusName && { Stats: statusName }),
+                    ...(statusName && { Status: statusName }),
                     ...(startDate && { StartDate: startDate }),
                     ...(endDate && { EndDate: endDate }),
                 };
@@ -42,7 +42,7 @@ export const customerCentricApi = createApi({
                     // Add optional parameters conditionally
                     ...(dropDown && { SearchType: dropDown }),
                     ...(searchTerm && { SearchName: searchTerm }),
-                    ...(statusName && { Stats: statusName }),
+                    ...(statusName && { Status: statusName }),
                     ...(startDate && { StartDate: startDate }),
                     ...(endDate && { EndDate: endDate }),
                 };
@@ -85,7 +85,7 @@ export const customerCentricApi = createApi({
                     // Add optional parameters conditionally
                     ...(dropDown && { SearchType: dropDown }),
                     ...(searchTerm && { SearchName: searchTerm }),
-                    ...(statusName && { Stats: statusName }),
+                    ...(statusName && { Status: statusName }),
                     ...(startDate && { StartDate: startDate }),
                     ...(endDate && { EndDate: endDate }),
                 };
