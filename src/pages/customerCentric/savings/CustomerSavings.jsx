@@ -11,12 +11,6 @@ const CustomerSavings = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [dropdown, setDropDown] = useState("email")
-    const [inputs, setInputs] = useState({
-        status: "",
-        startDate: "",
-        endDate: "",
-    })
-
     const handleOpen = () => {
         setOpen(true)
     }
@@ -34,7 +28,15 @@ const CustomerSavings = () => {
         const form = e.target;
         setSearchTerm(form.searchInput.value);
     };
+    const [filters, setFilters] = useState({
+        statusName: "",
+        startDate: "",
+        endDate: "",
+    });
 
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+    };
     return (
         <Layout>
             <div className="px-2">
@@ -75,9 +77,10 @@ const CustomerSavings = () => {
                     </div>
                 </div>
                 <div>
-                    <CustomerSavingsTable searchTerm={searchTerm} dropDown={dropdown}/>
+                    <CustomerSavingsTable searchTerm={searchTerm} dropDown={dropdown} statusName={filters.statusName}
+                                          startDate={filters.startDate} endDate={filters.endDate} />
                 </div>
-                <FilterSavingsModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
+                <FilterSavingsModal open={open} setOpen={setOpen} handleFilter={handleFilter} />
             </div>
         </Layout>
     )

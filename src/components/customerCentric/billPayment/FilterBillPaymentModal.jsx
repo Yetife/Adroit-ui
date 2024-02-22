@@ -1,11 +1,71 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
+import React, {useEffect, useState} from "react";
+import {getUserToken} from "../../../services/storage/index.js";
+import {useDispatch} from "react-redux";
+import axios from "axios";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 
-const FilterBillPaymentModal = ({open, setOpen, inputs, setInputs, handleFilter}) => {
+const FilterBillPaymentModal = ({open, setOpen, handleFilter}) => {
+    const [status, setStatus] = useState([]);
+    const [inputs, setInputs] = useState({
+        startDate: "",
+        endDate: ""
+    })
+    const [statusName, setStatusName] = useState("");
+    const token = getUserToken();
+    const dispatch = useDispatch()
+
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
     };
+
+    const handleStatusNameChange = (e) => {
+        setStatusName(e.target.value)
+    }
+
+    const allOption = { id: 0, name: 'All' };
+
+    const fetchData = async () => {
+        const baseUrl = import.meta.env.VITE_APP_BASE_URL
+        try {
+            const response = await axios.get(`${baseUrl}/CustomerCentric/GetAllfixeddepositsStattus`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            // Include the "ALL" option in the status dropdown
+            setStatus([allOption, ...response.data.data]);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData()
+    }, []);
+
+    const applyFilters = () => {
+        if (!inputs.startDate) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Start date is required",success:false}));
+            return;
+        }else if (!inputs.endDate) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"End date is required",success:false}));
+            return;
+        }
+        // Gather filter parameters
+        const filters = {
+            statusName,
+            startDate: inputs.startDate,
+            endDate: inputs.endDate,
+        };
+        handleFilter(filters);
+        setOpen(false);
+    };;
 
     return (
         <div>
@@ -28,14 +88,15 @@ const FilterBillPaymentModal = ({open, setOpen, inputs, setInputs, handleFilter}
                                              <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                                 Status
                                             </h3>
-                                             <select
-                                                 id="select" value={inputs.status}
-                                                 onChange={(event) => handleChange(event, "status")}
-                                                 className="font-medium w-[355px] text-black h-[50px]  leading-relaxed py-1 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
-                                                     <option value="All">All</option>
-                                                    <option value={'Successful'}>Successful</option>
-                                                     <option value={'Reversed'}>Reversed</option>
-                                                     <option value={'Uncompleted'}>Uncompleted</option>
+                                             <select id="select" value={statusName}
+                                                     onChange={handleStatusNameChange}
+                                                     className="font-medium w-[355px] text-black leading-relaxed px-4 py-2 rounded h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
+                                                <option value="" disabled>Select loan status</option>
+                                                 {status && status?.map((option) => (
+                                                     <option key={option.id} value={option.name}>
+                                                         {option.name}
+                                                     </option>
+                                                 ))}
                                             </select>
                                         </span>
                                     </div>
@@ -74,7 +135,7 @@ const FilterBillPaymentModal = ({open, setOpen, inputs, setInputs, handleFilter}
                                         onClick={() => setOpen(!open)}>Close
                                 </button>
                                 <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8"
-                                        onClick={handleFilter}>Filter</button>
+                                        onClick={applyFilters}>Filter</button>
                             </div>
                         </div>
                         <Dialog.Close asChild>

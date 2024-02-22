@@ -4,10 +4,10 @@ import themes from "../../reusables/theme.jsx";
 import {useGetAllFixedDepositQuery} from "../../../store/features/customerCentric/api.js";
 import {useState} from "react";
 import Pagination from "../../reusables/Pagination.jsx";
-const CustomerFixedDepositTable = ({searchTerm, dropDown, searchName}) => {
+const CustomerFixedDepositTable = ({searchTerm, dropDown, statusName, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} = useGetAllFixedDepositQuery({size, page, dropDown, searchTerm})
+    const {data, isFetching, error} = useGetAllFixedDepositQuery({size, page, dropDown, searchTerm, statusName, startDate, endDate})
     if (error) return <p>Network error</p>
 
     console.log(dropDown)

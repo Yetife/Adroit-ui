@@ -1,22 +1,15 @@
 import {useRef, useState} from 'react';
 import Layout from "../../Layout.jsx";
-import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import CustomerFixedDepositTable from "../../../components/customerCentric/fixedDeposit/CustomerFixedDepositTable.jsx";
 import FilterFixedDepositModal from "../../../components/customerCentric/fixedDeposit/FilterFixedDepositModal.jsx";
-import {useSearchFixedDepositMutation} from "../../../store/features/customerCentric/api.js";
 
 const CustomerFixedDeposit = () => {
     const formRef = useRef(null);
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [dropdown, setDropDown] = useState("email")
-    const [inputs, setInputs] = useState({
-        status: "",
-        startDate: "",
-        endDate: "",
-    })
     const handleOpen = () => {
         setOpen(true)
     }
@@ -31,6 +24,16 @@ const CustomerFixedDeposit = () => {
         e.preventDefault();
         const form = e.target;
         setSearchTerm(form.searchInput.value);
+    };
+
+    const [filters, setFilters] = useState({
+        statusName: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
     };
 
     return (
@@ -73,9 +76,10 @@ const CustomerFixedDeposit = () => {
                     </div>
                 </div>
                 <div>
-                    <CustomerFixedDepositTable searchTerm={searchTerm} dropDown={dropdown} />
+                    <CustomerFixedDepositTable searchTerm={searchTerm} dropDown={dropdown} statusName={filters.statusName}
+                                               startDate={filters.startDate} endDate={filters.endDate} />
                 </div>
-                <FilterFixedDepositModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
+                <FilterFixedDepositModal open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     )

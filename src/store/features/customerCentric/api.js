@@ -7,13 +7,17 @@ export const customerCentricApi = createApi({
     tagTypes: [],
     endpoints: (builder) => ({
         getAllSavings: builder.query({
-            query: ({size, page, dropDown, searchTerm}) => {
+            query: ({size, page, dropDown, searchTerm, statusName, startDate, endDate}) => {
                 const queryParams = {
                     PasgeSize: size,
                     PageNumber: page,
+                    det: startDate ? 1 : 2,
                     // Add optional parameters conditionally
                     ...(dropDown && { SearchType: dropDown }),
                     ...(searchTerm && { SearchName: searchTerm }),
+                    ...(statusName && { Stats: statusName }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
                 };
 
                 return {
@@ -30,13 +34,17 @@ export const customerCentricApi = createApi({
             providesTags: []
         }),
         getAllFixedDeposit: builder.query({
-            query: ({size, page, dropDown, searchTerm}) => {
+            query: ({size, page, dropDown, searchTerm, statusName, startDate, endDate}) => {
                 const queryParams = {
                     PasgeSize: size,
                     PageNumber: page,
+                    det: startDate ? 1 : 2,
                     // Add optional parameters conditionally
                     ...(dropDown && { SearchType: dropDown }),
                     ...(searchTerm && { SearchName: searchTerm }),
+                    ...(statusName && { Stats: statusName }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
                 };
 
                 return {
@@ -69,13 +77,17 @@ export const customerCentricApi = createApi({
             invalidatesTags: ["modifyFixedDeposit"]
         }),
         getAllBillsPayment: builder.query({
-            query: ({size, page, dropDown, searchTerm}) => {
+            query: ({size, page, dropDown, searchTerm, statusName, startDate, endDate}) => {
                 const queryParams = {
                     PasgeSize: size,
                     PageNumber: page,
+                    det: startDate ? 1 : 2,
                     // Add optional parameters conditionally
                     ...(dropDown && { SearchType: dropDown }),
                     ...(searchTerm && { SearchName: searchTerm }),
+                    ...(statusName && { Stats: statusName }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
                 };
                 return {
                     url: `/CustomerCentric/getallbillspayments`,

@@ -11,12 +11,6 @@ const CustomerBillPayment = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [dropdown, setDropDown] = useState("email")
-    const [inputs, setInputs] = useState({
-        status: "",
-        startDate: "",
-        endDate: "",
-    })
-
     const handleOpen = () => {
         setOpen(true)
     }
@@ -32,6 +26,15 @@ const CustomerBillPayment = () => {
         e.preventDefault();
         const form = e.target;
         setSearchTerm(form.searchInput.value);
+    };
+    const [filters, setFilters] = useState({
+        statusName: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
     };
 
     return (
@@ -74,9 +77,10 @@ const CustomerBillPayment = () => {
                     </div>
                 </div>
                 <div>
-                    <CustomerBillPaymentTable searchTerm={searchTerm} dropDown={dropdown}/>
+                    <CustomerBillPaymentTable searchTerm={searchTerm} dropDown={dropdown} statusName={filters.statusName}
+                                              startDate={filters.startDate} endDate={filters.endDate} />
                 </div>
-                <FilterBillPaymentModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
+                <FilterBillPaymentModal open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     )
