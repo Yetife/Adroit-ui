@@ -11,6 +11,7 @@ import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import dayjs from "dayjs";
 import AddLoanStatusModal from "../../loanApplication/loanStatus/AddLoanStatusModal.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
+import {formatAmount} from "../../reusables/formatAmount.js";
 
 const ReviewTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1)
@@ -135,8 +136,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanAmount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{formatAmount(data?.loanAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span

@@ -1,64 +1,74 @@
 import {useState} from "react";
-import {useGetAllStatusQuery} from "../../../store/features/loanApplication/api.js";
+import {
+    useGetAllLoanRestructuringQuery,
+    useGetAllReviewQuery,
+    useGetAllStatusQuery
+} from "../../../store/features/loanApplication/api.js";
 import {useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
+import Pagination from "../../reusables/Pagination.jsx";
+import {formatAmount} from "../../reusables/formatAmount.js";
 
-const LoanRestructuringTable = ({searchTerm}) => {
-    const {data, isFetching, error} = useGetAllStatusQuery()
+const LoanRestructuringTable = ({searchTerm, statusName, bvn, email, customerRef, startDate, endDate}) => {
+    const [page, setPage] = useState(1)
+    const [size, setSize] = useState(10)
+    const {data, isFetching, error} =  useGetAllLoanRestructuringQuery({
+        size,
+        page,
+        statusName, bvn, email, customerRef, startDate, endDate,
+    })
     if (error) return <p>Network error</p>
 
-    const customer = [
-        {
-            uniqueId: "5556678889",
-            customerRef: "Ref123456",
-            email: "adebona@creditWave.ng",
-            firstName: "Adekunle",
-            middleName: "Samuel",
-            lastName: "Adebona",
-            phoneNumber: "08101234567",
-            applicationDate: "01/08/2023",
-            amount: "500,000",
-            gender: "Male",
-            dateOfBirth: "01/08/2023",
-            bvn: "012345678",
-            initialTenor: 6,
-            newTenor: 3,
-            dateSubmitted: "01/08/2023"
+    const filterData = (item) => {
+        for (const key in item) {
+            if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Found a match
+            }
         }
-    ]
+        return false; // No match found
+    };
 
-    const filteredData = customer.filter((item) =>
-        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredData = data?.data?.filter(filterData);
+    const handlePageChange = (newPage) => {
+        setPage(newPage)
+    }
+
+    const handleRowPerPageChange = (event) => {
+        setSize(parseInt(event.target.value, 10));
+    }
 
 
     return (
-        <div className="scroll-container flex rounded-3xl flex-col mt-8">
-            <div className="py-2 md:px-2 sm:px-2">
-                <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+        <div className="flex rounded-3xl flex-col mt-8">
+            <div className="py-2 md:px-2 sm:px-2 inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+                <div className="scroll-container">
                     {isFetching && <ThemeProvider theme={themes}>
                         <LinearProgress color={"waveGreen"}/>
                     </ThemeProvider>}
                     <table className="table-auto md:w-full px-20">
                         <thead>
                         <tr>
-                            { header?.map((val, ind) => <TableHeader key={ind + val} name={val} />)}
+                            {header?.map((val, ind) => <TableHeader key={ind + val} name={val}/>)}
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
+                        {filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
                         </tbody>
                     </table>
-                    {/*{ data?.data?.length > 0 && <Pagination totalCount={data?.resultCount} getPage={getPage} /> }*/}
-                    {/*{ err || data?.data?.length === 0 && <div className='w-full flex align-center'>*/}
-                    {/*    <div className="m-auto py-5">*/}
-                    {/*        <Image src={'../img/no-data.svg'} width="150" height="150" alt="no data" />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*}*/}
                 </div>
+                {data && (
+                    <Pagination
+                        totalCount={data?.recordCount || 0}
+                        page={page}
+                        rowsPerPage={size}
+                        rowsPerPageOptions={[10, 20, 50, 70, 100]}
+                        sizes={[10, 20, 50, 70, 100]}
+                        onPageChange={handlePageChange}
+                        onRowsPerPageChange={handleRowPerPageChange}
+                    />
+                )}
             </div>
         </div>
     );
@@ -74,7 +84,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'First Name', 'Middle Name', 'Last Name', 'Email Address', 'Phone Number', 'Gender', 'D.O.B', 'BVN', 'Initial Loan Tenor', 'New Loan Tenor', 'Date Submitted', 'Loan Amount', 'Application Date', 'Actions' ]
+const header = ['S/N', 'Customer Ref.', 'First Name', 'Last Name', 'Email Address', 'Phone Number', 'D.O.B', 'BVN', 'Initial Loan Tenor', 'New Loan Tenor', 'Loan Amount', 'Date Submitted', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
@@ -89,13 +99,10 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.customerRef}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
@@ -106,9 +113,9 @@ export function TableData({data, no}) {
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.phoneNumber}</span>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.gender}</span>
-            </td>
+            {/*<td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">*/}
+            {/*    <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.gender}</span>*/}
+            {/*</td>*/}
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dateOfBirth}</span>
             </td>
@@ -119,20 +126,17 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.initialTenor}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.newTenor}</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dateSubmitted}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.tenorValue}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.amount}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{formatAmount(data?.loanAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.applicationDate).format("YYYY/MM/DD")}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.dateSubmitted).format("YYYY/MM/DD")}</span>
             </td>
-            <td className="px-][ text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <a onClick={handleshowDropDown}
                    className="text-2xl cursor-pointer pt-0 leading-5 text-indigo-00 hover:text-indigo-900">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="7" viewBox="0 0 30 7" fill="none">

@@ -206,6 +206,28 @@ export const loanApplicationApi = createApi({
             },
             providesTags: ["returnApplication", "adjustApplication", "completeReview"]
         }),
+        getAllLoanRestructuring: builder.query({
+            query: ({size, page, bvn, statusName, email,  customerRef, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    // Add optional parameters conditionally
+                    ...(bvn && { Bvn: bvn }),
+                    ...(statusName && { Status: statusName }),
+                    ...(email && { EmailAddress: email }),
+                    ...(customerRef && { CustomerReference: customerRef }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `LoanRestructuring/get`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["returnApplication", "adjustApplication", "completeReview"]
+        }),
     })
 })
 
@@ -226,7 +248,9 @@ export const {
     useRequestDocumentMutation,
     useReassignLoanMutation,
     useGetReassignedLoanQuery,
+    useGetAllLoanRestructuringQuery,
     useGetAllReviewQuery,
     useAdjustApplicationMutation,
     useReturnApplicationMutation,
+
 } = loanApplicationApi

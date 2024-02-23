@@ -11,18 +11,6 @@ import LoanRestructuringTable from "../../components/loanApplication/loanRestruc
 
 const LoanRestructuring = () => {
     const [open, setOpen] = useState(false)
-    const [checked, setChecked] = useState(true);
-    const initialState = {
-        customerRef: "",
-        email: "",
-        bvn: "",
-        status: "",
-        startDate: "",
-        endDate: "",
-    }
-    const [inputs, setInputs] = useState(initialState)
-    const dispatch = useDispatch()
-    const [addStatus] = useAddGenderMutation()
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = (searchValue) => {
@@ -32,20 +20,18 @@ const LoanRestructuring = () => {
     const handleOpen = () => {
         setOpen(true)
     }
-    const handleAdd = ()=> {
-        addStatus({
-            body: {
-                name: status,
-                statusID: checked ? 1 : 0
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-            setStatus("")
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
+    const [filters, setFilters] = useState({
+        statusName: "",
+        bvn: "",
+        email: "",
+        customerRef: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+    };
     return (
         <Layout>
             <div className="px-2">
@@ -58,9 +44,10 @@ const LoanRestructuring = () => {
                     </div>
                 </div>
                 <div>
-                    <LoanRestructuringTable searchTerm={searchTerm} />
+                    <LoanRestructuringTable searchTerm={searchTerm} statusName={filters.statusName} bvn={filters.bvn} customerRef={filters.customerRef} email={filters.email}
+                                            startDate={filters.startDate} endDate={filters.endDate}/>
                 </div>
-                <FilterLoanModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}  handleAdd={handleAdd}/>
+                <FilterLoanModal open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     );

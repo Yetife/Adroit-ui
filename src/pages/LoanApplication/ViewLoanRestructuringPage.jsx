@@ -79,7 +79,7 @@ const ViewLoanRestructuringPage = () => {
             <div className="flex justify-between px-0 py-4  pb-2 md:pt-3 overflow-auto">
                 <div></div>
                 <div>
-                    <Button variant="primary" onClick={() => router(-1)} bgColor="#00C795" borderRadius="4px"
+                    <Button variant="primary" onClick={() => router('/loanApp/loanRestructuring')} bgColor="#00C795" borderRadius="4px"
                             height="37px" size='md' as={ReactLink} w={'109px'}>
                         <Text color="white">Back</Text>
                     </Button>
@@ -141,10 +141,10 @@ const ViewLoanRestructuringPage = () => {
                                 <table className="table-auto md:w-full px-20">
                                     <thead>
                                     <tr>
-                                        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b bg-gray-50">
+                                        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] truncate text-left border-b bg-gray-50">
                                             Repayment Date
                                         </th>
-                                        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b text-gray-900 bg-gray-50">
+                                        <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
                                             Amount
                                         </th>
                                     </tr>
