@@ -136,7 +136,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{formatAmount(data?.loanAmount)}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.loanAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span

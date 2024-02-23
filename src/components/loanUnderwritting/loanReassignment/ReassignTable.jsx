@@ -10,6 +10,7 @@ import AddLoanStatusModal from "../../loanApplication/loanStatus/AddLoanStatusMo
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
+import {formatAmount} from "../../reusables/formatAmount.js";
 
 const ReassignTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1)
@@ -135,7 +136,7 @@ export function TableData({data, no}) {
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanAmount}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{formatAmount(data?.loanAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
@@ -147,8 +148,6 @@ export function TableData({data, no}) {
                      onClick={() => router(`/loanUnderwriting/customerDetails?id=${data.customerId}&aid=${data.applicantNumber}&status=reassign`)}>View
                  </span>
             </td>
-            <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked}
-                                setChecked={setChecked} purpose={purpose} handleAdd={handleEdit}/>
         </tr>
     )
 }

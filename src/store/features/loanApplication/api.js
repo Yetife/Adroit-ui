@@ -226,7 +226,21 @@ export const loanApplicationApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["returnApplication", "adjustApplication", "completeReview"]
+            providesTags: ["updateLoanRestructure"]
+        }),
+        getLoanRestructureDetail: builder.query({
+            query: (id) => ({
+                url: `/LoanRestructuring/ViewLoan/${id}`,
+            }),
+            providesTags: []
+        }),
+        updateLoanRestructure: builder.mutation({
+            query: ({body}) => ({
+                url: `/LoanRestructuring/Update`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["updateLoanRestructure"]
         }),
     })
 })
@@ -252,5 +266,7 @@ export const {
     useGetAllReviewQuery,
     useAdjustApplicationMutation,
     useReturnApplicationMutation,
+    useGetLoanRestructureDetailQuery,
+    useUpdateLoanRestructureMutation,
 
 } = loanApplicationApi

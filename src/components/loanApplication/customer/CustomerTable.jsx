@@ -16,7 +16,6 @@ import Pagination from "../../reusables/Pagination.jsx";
 const CustomerTable = ({searchTerm, applicationId, name, statusName, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(10);
-    const [det, setDet] = useState(2);
 
     // Query data
     const { data, isFetching, error } = useGetAllCustomerQuery({
@@ -95,30 +94,7 @@ export function TableHeader({name}) {
 const header = ['S/N', 'Channel', 'Customer Ref.', 'Loan Amount', 'Email Address', 'First Name', 'Last Name', 'Application Date', 'Actions' ]
 
 export function TableData({data, no}) {
-    const [open, setOpen] = useState(false);
-    const [checked, setChecked] = useState(true);
-    const [status, setStatus] = useState("")
-    const [purpose, setPurpose] = useState("")
-    const [id, setId] = useState(0)
-    const dispatch = useDispatch()
-    const [editStatus] = useEditStatusMutation()
     const router = useNavigate()
-
-    const handleEdit = ()=> {
-        editStatus({
-            body: {
-                name: status,
-                status: checked ? "1" : "0",
-                uniqueId: id
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-            setStatus("")
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
 
     return (
         <tr>
@@ -153,8 +129,6 @@ export function TableData({data, no}) {
                      onClick={() => router(`/loanApp/customerDetails?id=${data.customerId}&aid=${data.applicantNumber}&status=cust`)}>View
                  </span>
             </td>
-            <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked}
-                                setChecked={setChecked} purpose={purpose} handleAdd={handleEdit}/>
         </tr>
     )
 }

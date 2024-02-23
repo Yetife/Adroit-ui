@@ -1,9 +1,33 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
-import {Link as ReactLink} from "react-router-dom";
+import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {Button, Text} from "@chakra-ui/react";
+import {useUpdateLoanRestructureMutation} from "../../../store/features/loanApplication/api.js";
+import {useDispatch} from "react-redux";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 
-const ApproveLoanModal = ({open, setOpen}) => {
+const ApproveLoanModal = ({open, setOpen, comment}) => {
+    const queryParams = new URLSearchParams(location.search);
+    const appId = queryParams.get("id");
+    const [updateLoan] = useUpdateLoanRestructureMutation()
+    const router = useNavigate()
+    const dispatch = useDispatch()
+
+    const handleApprove = ()=> {
+        updateLoan({
+            body: {
+                loanApplicationId: appId,
+                comment: comment,
+                status: 1
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpen(!open)
+            router('/loanApp/loanRestructuring')
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
     return (
         <div>
             <Dialog.Root
@@ -28,7 +52,7 @@ const ApproveLoanModal = ({open, setOpen}) => {
                                     <Text color="#4A5D58">Close</Text>
                                 </Button>
                                 <Button className="ml-4" variant="primary" bgColor="#00C795" borderRadius="4px"
-                                        height="37px" size='md' as={ReactLink} w={'109px'}>
+                                        height="37px" size='md' as={ReactLink} w={'109px'} onClick={handleApprove}>
                                     <Text color="white">Send</Text>
                                 </Button>
                             </div>

@@ -123,14 +123,14 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.initialTenor}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.initialTenorValue}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.tenorValue}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{formatAmount(data?.loanAmount)}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.loanAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
@@ -151,10 +151,10 @@ export function TableData({data, no}) {
                       style={{display: showDropdown ? "block" : "none"}}>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
-                        onClick={() => router(`/loanApp/loanRestructuring/view?id=${data.uniqueId}&status=view`)}>View</span>
+                        onClick={() => router(`/loanApp/loanRestructuring/view?id=${data.loanApplicationId}&status=view`)}>View</span>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => router(`/loanApp/loanRestructuring/edit?id=${data.uniqueId}&status=edit`)}>Edit</span>
+                        onClick={() => router(`/loanApp/loanRestructuring/edit?id=${data.loanApplicationId}&status=edit`)}>Edit</span>
                 </span>
             </td>
         </tr>

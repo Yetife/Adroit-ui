@@ -1,15 +1,38 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import {Button, Text} from "@chakra-ui/react";
-import {Link as ReactLink} from "react-router-dom";
+import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {Close} from "@mui/icons-material";
 import {useState} from "react";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {useUpdateLoanRestructureMutation} from "../../../store/features/loanApplication/api.js";
+import {useDispatch} from "react-redux";
 
 const DeclineModal = ({open, setOpen}) => {
     const [comment, setComment] = useState("")
+    const queryParams = new URLSearchParams(location.search);
+    const appId = queryParams.get("id");
+    const [updateLoan] = useUpdateLoanRestructureMutation()
+    const dispatch = useDispatch()
+    const router = useNavigate()
 
     const handleChange = (e) => {
         setComment(e.target.value)
     };
+    const handleDecline = ()=> {
+        updateLoan({
+            body: {
+                loanApplicationId: appId,
+                comment: comment,
+                status: 2
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpen(!open)
+            router('/loanApp/loanRestructuring')
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
     return (
         <div>
             <Dialog.Root
@@ -40,7 +63,7 @@ const DeclineModal = ({open, setOpen}) => {
                                     <Text color="#4A5D58">Close</Text>
                                 </Button>
                                 <Button className="ml-4" variant="primary" bgColor="#00C795" borderRadius="4px"
-                                        height="37px" size='md' as={ReactLink} w={'109px'}>
+                                        height="37px" size='md' as={ReactLink} w={'109px'} onClick={handleDecline}>
                                     <Text color="white">Submit</Text>
                                 </Button>
                             </div>
