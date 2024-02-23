@@ -5,6 +5,7 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import EscrowTable from "../../components/customerCentric/escrow/EscrowTable.jsx";
 import FilterLoanModal from "../../components/customerCentric/p2p/FilterLoanModal.jsx";
+import FilterEscrowModal from "../../components/customerCentric/escrow/FilterEscrowModal.jsx";
 
 const CustomerEscrow = () => {
     const formRef = useRef(null);
@@ -33,6 +34,16 @@ const CustomerEscrow = () => {
         e.preventDefault();
         const form = e.target;
         setSearchTerm(form.searchInput.value);
+    };
+
+    const [filters, setFilters] = useState({
+        statusName: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
     };
 
     return (
@@ -75,10 +86,11 @@ const CustomerEscrow = () => {
                     </div>
                 </div>
                 <div>
-                    <EscrowTable searchTerm={searchTerm} dropDown={dropdown}/>
+                    <EscrowTable searchTerm={searchTerm} dropDown={dropdown} statusName={filters.statusName}
+                                 startDate={filters.startDate} endDate={filters.endDate}/>
                 </div>
 
-                <FilterLoanModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
+                <FilterEscrowModal open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     )

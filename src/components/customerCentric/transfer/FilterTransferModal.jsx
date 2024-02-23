@@ -1,12 +1,12 @@
+import {useEffect, useState} from 'react';
+import {getUserToken} from "../../../services/storage/index.js";
+import {useDispatch} from "react-redux";
+import axios from "axios";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
-import axios from "axios";
-import {useEffect, useState} from "react";
-import {getUserToken} from "../../../services/storage/index.js";
-import {updateSnackbar} from "../../../store/snackbar/reducer.js";
-import {useDispatch} from "react-redux";
 
-const FilterFixedDepositModal = ({open, setOpen, handleFilter}) => {
+const FilterTransferModal = ({open, setOpen, handleFilter}) => {
     const [status, setStatus] = useState([]);
     const [inputs, setInputs] = useState({
         startDate: "",
@@ -30,7 +30,7 @@ const FilterFixedDepositModal = ({open, setOpen, handleFilter}) => {
     const fetchData = async () => {
         const baseUrl = import.meta.env.VITE_APP_BASE_URL
         try {
-            const response = await axios.get(`${baseUrl}/CustomerCentric/GetAllfixeddepositsStattus`, {
+            const response = await axios.get(`${baseUrl}/CustomerCentric/GetAlltransfersStattus`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -153,4 +153,4 @@ const FilterFixedDepositModal = ({open, setOpen, handleFilter}) => {
     );
 };
 
-export default FilterFixedDepositModal;
+export default FilterTransferModal;

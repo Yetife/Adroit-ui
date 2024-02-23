@@ -5,10 +5,10 @@ import {useGetAllTransfersQuery} from "../../../store/features/customerCentric/a
 import Pagination from "../../reusables/Pagination.jsx";
 import {useState} from "react";
 
-const CustomerTransfersTable = ({searchTerm, dropDown}) => {
+const CustomerTransfersTable = ({searchTerm, dropDown, statusName, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllTransfersQuery({size, page, dropDown, searchTerm})
+    const {data, isFetching, error} =  useGetAllTransfersQuery({size, page, dropDown, searchTerm, statusName, startDate, endDate})
     if (error) return <p>Network error</p>
 
 

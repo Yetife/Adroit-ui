@@ -43,9 +43,10 @@ const Otp = () => {
     const handleLogin = async()=> {
        const otp = JSON.parse(sessionStorage.getItem("userOtp"));
        const userName = JSON.parse(sessionStorage.getItem("userName"));
+       const baseUrl = import.meta.env.VITE_APP_BASE_URL
         setLoading(true)
         try {
-            const user =  await axios.post('http://prananettech-001-site27.ftempurl.com/api/Adroit/Login/UserLogin', {
+            const user =  await axios.post(`${baseUrl}/Adroit/Login/UserLogin`, {
                 otp: otp,
                 username: userName,
                 userPassword: "1234",

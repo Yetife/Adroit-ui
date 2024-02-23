@@ -11,11 +11,6 @@ const CustomerData = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [dropdown, setDropDown] = useState("email")
-    const [inputs, setInputs] = useState({
-        status: "",
-        startDate: "",
-        endDate: "",
-    })
 
     const handleOpen = () => {
         setOpen(true)
@@ -32,6 +27,16 @@ const CustomerData = () => {
         e.preventDefault();
         const form = e.target;
         setSearchTerm(form.searchInput.value);
+    };
+
+    const [filters, setFilters] = useState({
+        statusName: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
     };
     return (
         <Layout>
@@ -73,9 +78,10 @@ const CustomerData = () => {
                     </div>
                 </div>
                 <div>
-                    <CustomerDataTable searchTerm={searchTerm} dropDown={dropdown}/>
+                    <CustomerDataTable searchTerm={searchTerm} dropDown={dropdown} statusName={filters.statusName}
+                                       startDate={filters.startDate} endDate={filters.endDate} />
                 </div>
-                <FilterDataModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
+                <FilterDataModal open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     )

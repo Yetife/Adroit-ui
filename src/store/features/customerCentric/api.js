@@ -111,13 +111,17 @@ export const customerCentricApi = createApi({
             invalidatesTags: ["modifyBillsPayment"]
         }),
         getAllTransfers: builder.query({
-            query: ({size, page, dropDown, searchTerm}) => {
+            query: ({size, page, dropDown, searchTerm, statusName, startDate, endDate}) => {
                 const queryParams = {
                     PasgeSize: size,
                     PageNumber: page,
+                    det: startDate ? 1 : 2,
                     // Add optional parameters conditionally
                     ...(dropDown && { SearchType: dropDown }),
                     ...(searchTerm && { SearchName: searchTerm }),
+                    ...(statusName && { Status: statusName }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
                 };
 
                 return {
@@ -142,13 +146,17 @@ export const customerCentricApi = createApi({
             invalidatesTags: [" modifyTransfer"]
         }),
         getAllAirtime: builder.query({
-            query: ({size, page, dropDown, searchTerm}) => {
+            query: ({size, page, dropDown, searchTerm, statusName, startDate, endDate}) => {
                 const queryParams = {
                     PasgeSize: size,
                     PageNumber: page,
+                    det: startDate ? 1 : 2,
                     // Add optional parameters conditionally
                     ...(dropDown && { SearchType: dropDown }),
                     ...(searchTerm && { SearchName: searchTerm }),
+                    ...(statusName && { Status: statusName }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
                 };
 
                 return {
@@ -173,13 +181,17 @@ export const customerCentricApi = createApi({
             invalidatesTags: [" modifyAirtime"]
         }),
         getAllData: builder.query({
-            query: ({size, page, dropDown, searchTerm}) => {
+            query: ({size, page, dropDown, searchTerm, statusName, startDate, endDate}) => {
                 const queryParams = {
                     PasgeSize: size,
                     PageNumber: page,
+                    det: startDate ? 1 : 2,
                     // Add optional parameters conditionally
                     ...(dropDown && { SearchType: dropDown }),
                     ...(searchTerm && { SearchName: searchTerm }),
+                    ...(statusName && { Status: statusName }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
                 };
 
                 return {
@@ -216,13 +228,17 @@ export const customerCentricApi = createApi({
             providesTags: []
         }),
         getAllEscrow: builder.query({
-            query: ({size, page, dropDown, searchTerm}) => {
+            query: ({size, page, dropDown, searchTerm, statusName, startDate, endDate}) => {
                 const queryParams = {
                     PasgeSize: size,
                     PageNumber: page,
+                    det: startDate ? 1 : 2,
                     // Add optional parameters conditionally
                     ...(dropDown && { SearchType: dropDown }),
                     ...(searchTerm && { SearchName: searchTerm }),
+                    ...(statusName && { Status: statusName }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
                 };
 
                 return {

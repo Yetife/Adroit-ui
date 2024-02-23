@@ -5,10 +5,10 @@ import {useGetAllAirtimeQuery} from "../../../store/features/customerCentric/api
 import Pagination from "../../reusables/Pagination.jsx";
 import {useState} from "react";
 
-const CustomerAirtimeTable = ({searchTerm, dropDown}) => {
+const CustomerAirtimeTable = ({searchTerm, dropDown, statusName, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllAirtimeQuery({size, page, dropDown, searchTerm})
+    const {data, isFetching, error} =  useGetAllAirtimeQuery({size, page, dropDown, searchTerm, statusName, startDate, endDate})
     if (error) return <p>Network error</p>
 
     const handlePageChange = (newPage) => {

@@ -5,10 +5,10 @@ import themes from "../../reusables/theme.jsx";
 import {useGetAllDataQuery} from "../../../store/features/customerCentric/api.js";
 import Pagination from "../../reusables/Pagination.jsx";
 
-const CustomerDataTable = ({searchTerm, dropDown}) => {
+const CustomerDataTable = ({searchTerm, dropDown, statusName, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllDataQuery({size, page, dropDown, searchTerm})
+    const {data, isFetching, error} =  useGetAllDataQuery({size, page, dropDown, searchTerm, statusName, startDate, endDate})
     if (error) return <p>Network error</p>
 
 

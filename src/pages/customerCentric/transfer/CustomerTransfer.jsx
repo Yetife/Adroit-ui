@@ -1,21 +1,15 @@
-import React, {useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import Layout from "../../Layout.jsx";
-import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import CustomerTransfersTable from "../../../components/customerCentric/transfer/CustomerTransfersTable.jsx";
-import FilterDataModal from "../../../components/customerCentric/data/FilterDataModal.jsx";
+import FilterTransferModal from "../../../components/customerCentric/transfer/FilterTransferModal.jsx";
 
 const CustomerTransfer = () => {
     const formRef = useRef(null);
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [dropdown, setDropDown] = useState("email")
-    const [inputs, setInputs] = useState({
-        status: "",
-        startDate: "",
-        endDate: "",
-    })
 
     const handleOpen = () => {
         setOpen(true)
@@ -32,6 +26,16 @@ const CustomerTransfer = () => {
         e.preventDefault();
         const form = e.target;
         setSearchTerm(form.searchInput.value);
+    };
+
+    const [filters, setFilters] = useState({
+        statusName: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
     };
 
     return (
@@ -63,7 +67,6 @@ const CustomerTransfer = () => {
                                     }}
                                 />
                             </form>
-                            {/*<Search search={searchTerm} setSearch={handleSearch} onKeyPress={handleKeyPress}/>*/}
                         </div>
                     </div>
                     <div>
@@ -74,9 +77,10 @@ const CustomerTransfer = () => {
                     </div>
                 </div>
                 <div>
-                    <CustomerTransfersTable searchTerm={searchTerm} dropDown={dropdown}/>
+                    <CustomerTransfersTable searchTerm={searchTerm} dropDown={dropdown} statusName={filters.statusName}
+                                            startDate={filters.startDate} endDate={filters.endDate} />
                 </div>
-                <FilterDataModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
+                <FilterTransferModal open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     )

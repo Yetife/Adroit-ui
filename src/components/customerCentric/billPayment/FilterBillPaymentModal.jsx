@@ -91,7 +91,7 @@ const FilterBillPaymentModal = ({open, setOpen, handleFilter}) => {
                                              <select id="select" value={statusName}
                                                      onChange={handleStatusNameChange}
                                                      className="font-medium w-[355px] text-black leading-relaxed px-4 py-2 rounded h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
-                                                <option value="" disabled>Select loan status</option>
+                                                <option value="" disabled>Select status</option>
                                                  {status && status?.map((option) => (
                                                      <option key={option.id} value={option.id}>
                                                          {option.name}
