@@ -16,6 +16,8 @@ const AddRegularLoanInterestModal = ({open, setOpen, rate, setRate, depositFrom,
     const [addLoan] = useAddRegularLoanInterestMutation()
     const [editLoan] = useEditRegularLoanInterestMutation()
     const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
 
     const handleFromChange = (e) => {
         setDepositFrom(e.target.value)
@@ -81,7 +83,7 @@ const AddRegularLoanInterestModal = ({open, setOpen, rate, setRate, depositFrom,
     }
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidEmploymenttypes', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidEmploymenttypes`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",

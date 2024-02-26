@@ -10,14 +10,12 @@ import {Checkbox, Divider} from "@mui/material";
 import {useAddProductMutation} from "../../../store/features/administration/api.js";
 import dayjs from "dayjs";
 
-const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, setStartDate, endDate, setEndDate, asEndDate, setAsEndDate, selectedGender, isOptInProcessingFee, setIsOptInProcessingFee, selectedTenor, setSelectedTenor, purpose, handleAdd}) => {
+const ProductModal = ({open, setOpen, inputs, setInputs, asEndDate, setAsEndDate, isOptInProcessingFee, setIsOptInProcessingFee, purpose, handleAdd}) => {
     const [tenor, setTenor] = useState([])
-    const [gender, setGender] = useState([])
     const [feeType, setFeeType] = useState([])
     const [feeFreq, setFeeFreq] = useState([])
     const [feePrincipal, setFeePrincipal] = useState([])
     const [rate, setRate] = useState([])
-    const dispatch  = useDispatch()
     const token = getUserToken();
     const baseUrl = import.meta.env.VITE_APP_BASE_URL
 
@@ -30,13 +28,6 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
-    };
-
-    const handleGenderChange = (event) => {
-        const selectedOption = event.target.value;
-        const selectedOptionObject = tenor.find((option) => option.name === selectedOption);
-
-        setSelectedTenor(selectedOption);
     };
 
     const fetchTenor = async () => {

@@ -12,6 +12,8 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
     const [level, setLevel] = useState([])
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
 
     //
     // const handleChange = (e, fieldName) => {
@@ -52,7 +54,7 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
 
     const fetchStaff = async () => {
         try {
-            const response = await axios.get(`http://prananettech-001-site28.ftempurl.com/api/Users/get_all_active_users`, {
+            const response = await axios.get(`${baseUrl}/Users/get_all_active_users`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -90,7 +92,7 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
     // };
     const fetchLevel = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/Administration/UnderwriterLevel/getall', {
+            const response = await axios.get(`${baseUrl}/Administration/UnderwriterLevel/getall`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
