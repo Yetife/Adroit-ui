@@ -1,3 +1,5 @@
+import {formatAmount} from "../../components/reusables/formatAmount.js";
+
 const LoanInformation = ({data}) => {
 
     return (
@@ -16,9 +18,9 @@ const LoanInformation = ({data}) => {
             </div>
             <div className="text-right">
                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">{data?.data.information.applicationId}</p>
-                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.amountRequested}</p>
+                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{formatAmount(data?.data.information.amountRequested)}</p>
                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.interest ? data?.data.information.interest : "null" }</p>
-                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.totalAmount}</p>
+                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{formatAmount(data?.data.information.totalAmount)}</p>
                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.processingFee}</p>
                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.status}</p>
                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pt-8">{data?.data.information.duration}</p>

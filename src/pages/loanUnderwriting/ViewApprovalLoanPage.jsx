@@ -138,7 +138,7 @@ const ViewApprovalLoanPage = () => {
                 loanApplicationId: appId,
             }
         }).then(res => {
-            router('/loanUnderwriting')
+            router('/loanUnderwriting/approval')
         }).catch(err =>{
             setOpenComplete(false)
         })

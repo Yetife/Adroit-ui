@@ -1,86 +1,72 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
-import {useGetAllStatusQuery} from "../../../store/features/loanApplication/api.js";
+import {
+    useGetAllLoanTopUpQuery,
+} from "../../../store/features/loanApplication/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
+import Pagination from "../../reusables/Pagination.jsx";
+import {formatAmount} from "../../reusables/formatAmount.js";
 
-const LoanTopUpTable = ({searchTerm}) => {
-    const {data, isFetching, error} = useGetAllStatusQuery()
+const LoanTopUpTable = ({searchTerm, statusName, bvn, email, customerRef, startDate, endDate}) => {
+    const [page, setPage] = useState(1)
+    const [size, setSize] = useState(10)
+    const {data, isFetching, error} =  useGetAllLoanTopUpQuery({
+        size,
+        page,
+        statusName, bvn, email, customerRef, startDate, endDate,
+    })
     if (error) return <p>Network error</p>
 
-    const customer = [
-        {
-            uniqueId: "5556678889",
-            customerRef: "Ref123456",
-            email: "adebona@creditWave.ng",
-            firstName: "Adekunle",
-            middleName: "Samuel",
-            lastName: "Adebona",
-            phoneNumber: "08101234567",
-            applicationDate: "01/08/2023",
-            amount: "200,000",
-            gender: "Male",
-            dateOfBirth: "01/08/2023",
-            bvn: "012345678",
-            topUpAmount: "N300,000.00",
-            newAmount: "N500,000.00",
-            initialTenor: 6,
-            newTenor: 3,
-            status: "Pending",
-            dateSubmitted: "01/08/2023"
-        },{
-            uniqueId: "5556678889",
-            customerRef: "Ref123456",
-            email: "adebona@creditWave.ng",
-            firstName: "Adekunle",
-            middleName: "Samuel",
-            lastName: "Adebona",
-            phoneNumber: "08101234567",
-            applicationDate: "01/08/2023",
-            amount: "200,000",
-            gender: "Male",
-            dateOfBirth: "01/08/2023",
-            bvn: "012345678",
-            topUpAmount: "N300,000.00",
-            newAmount: "N500,000.00",
-            initialTenor: 6,
-            newTenor: 3,
-            status: "Pending",
-            dateSubmitted: "01/08/2023"
+    const filterData = (item) => {
+        for (const key in item) {
+            if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Found a match
+            }
         }
-    ]
+        return false; // No match found
+    };
 
-    const filteredData = customer.filter((item) =>
-        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredData = data?.data?.filter(filterData);
+    const handlePageChange = (newPage) => {
+        setPage(newPage)
+    }
+
+    const handleRowPerPageChange = (event) => {
+        setSize(parseInt(event.target.value, 10));
+    }
 
 
     return (
-        <div className="scroll-container flex rounded-3xl flex-col mt-8">
-            <div className="py-2 md:px-2 sm:px-2">
-                <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+        <div className="flex rounded-3xl flex-col mt-8">
+            <div className="py-2 md:px-2 sm:px-2 inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+                <div className="scroll-container">
                     {isFetching && <ThemeProvider theme={themes}>
                         <LinearProgress color={"waveGreen"}/>
                     </ThemeProvider>}
                     <table className="table-auto md:w-full px-20">
                         <thead>
                         <tr>
-                            { header?.map((val, ind) => <TableHeader key={ind + val} name={val} />)}
+                            {header?.map((val, ind) => <TableHeader key={ind + val} name={val}/>)}
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
+                        {filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
                         </tbody>
                     </table>
-                    {/*{ data?.data?.length > 0 && <Pagination totalCount={data?.resultCount} getPage={getPage} /> }*/}
-                    {/*{ err || data?.data?.length === 0 && <div className='w-full flex align-center'>*/}
-                    {/*    <div className="m-auto py-5">*/}
-                    {/*        <Image src={'../img/no-data.svg'} width="150" height="150" alt="no data" />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*}*/}
                 </div>
+                {data && (
+                    <Pagination
+                        totalCount={data?.recordCount || 0}
+                        page={page}
+                        rowsPerPage={size}
+                        rowsPerPageOptions={[10, 20, 50, 70, 100]}
+                        sizes={[10, 20, 50, 70, 100]}
+                        onPageChange={handlePageChange}
+                        onRowsPerPageChange={handleRowPerPageChange}
+                    />
+                )}
             </div>
         </div>
     );
@@ -111,7 +97,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerRef}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.customerRef}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
@@ -123,7 +109,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.email}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.emailAddress}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.phoneNumber}</span>
@@ -139,24 +125,25 @@ export function TableData({data, no}) {
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.amount}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.initialLoanAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.topUpAmount}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.topUpAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.newAmount}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.newLoanAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.initialTenor}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.tenor}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dateSubmitted}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.dateSubmitted).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <a onClick={handleshowDropDown}
@@ -173,10 +160,10 @@ export function TableData({data, no}) {
                       style={{display: showDropdown ? "block" : "none"}}>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => router(`/loanApp/loanTopUp/view?id=${data.uniqueId}&status=view`)}>View</span>
+                        onClick={() => router(`/loanApp/loanTopUp/view?id=${data.loanApplicationId}&status=view`)}>View</span>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => router(`/loanApp/loanTopUp/edit?id=${data.uniqueId}&status=edit`)}>Edit</span>
+                        onClick={() => router(`/loanApp/loanTopUp/edit?id=${data.loanApplicationId}&status=edit`)}>Edit</span>
                 </span>
             </td>
         </tr>

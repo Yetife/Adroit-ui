@@ -7,8 +7,8 @@ import themes from "../../reusables/theme.jsx";
 import {formatAmount} from "../../reusables/formatAmount.js";
 
 const RepaymentTable = ({searchTerm}) => {
-    const {data, isFetching, error} =  useGetAllCustomerQuery()
-    if (error) return <p>Network error</p>
+    // const {data, isFetching, error} =  useGetAllCustomerQuery()
+    // if (error) return <p>Network error</p>
 
     const customer = [
         {
@@ -35,9 +35,9 @@ const RepaymentTable = ({searchTerm}) => {
         <div className="scroll-container flex rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2">
                 <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
-                    {isFetching && <ThemeProvider theme={themes}>
-                        <LinearProgress color={"waveGreen"}/>
-                    </ThemeProvider>}
+                    {/*{isFetching && <ThemeProvider theme={themes}>*/}
+                    {/*    <LinearProgress color={"waveGreen"}/>*/}
+                    {/*</ThemeProvider>}*/}
                     <table className="table-auto md:w-full px-20">
                         <thead>
                         <tr>

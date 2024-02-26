@@ -17,25 +17,16 @@ const ReassignedLoanTable = ({searchTerm}) => {
     const {data, isFetching, error} =  useGetReassignedLoanQuery(user.UserId)
     if (error) return <p>Network error</p>
 
-    const customer = [
-        {
-            uniqueId: "5556678889",
-            customerRef: "Ref123456",
-            email: "adebona@creditWave.ng",
-            firstName: "Adekunle",
-            middleName: "Samuel",
-            lastName: "Adebona",
-            phoneNumber: "08101234567",
-            applicationDate: "01/08/2023",
-            amount: "200,000",
-            tenor: 6,
-            channel: "USSD"
+    const filterData = (item) => {
+        for (const key in item) {
+            if (item[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Found a match
+            }
         }
-    ]
+        return false; // No match found
+    };
 
-    const filteredData = customer?.filter((item) =>
-        item.firstName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredData = data?.data?.filter(filterData);
 
 
     return (
@@ -80,30 +71,8 @@ export function TableHeader({name}) {
 
 const header = ['S/N', 'Channel', 'Customer Ref.', 'Email Address', 'First Name', 'Last Name', 'Amount', 'Tenor', 'Actions' ]
 export function TableData({data, no}) {
-    const [open, setOpen] = useState(false);
-    const [checked, setChecked] = useState(true);
-    const [status, setStatus] = useState("")
-    const [purpose, setPurpose] = useState("")
-    const [id, setId] = useState(0)
-    const dispatch = useDispatch()
-    const [editStatus] = useEditStatusMutation()
     const router = useNavigate()
 
-    const handleEdit = ()=> {
-        editStatus({
-            body: {
-                name: status,
-                status: checked ? "1" : "0",
-                uniqueId: id
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-            setOpen(!open)
-            setStatus("")
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
 
     return (
         <tr>
@@ -140,8 +109,6 @@ export function TableData({data, no}) {
                      onClick={() => router(`/loanUnderwriting/customerDetails?id=${data.uniqueId}&status=review`)}>View
                  </span>
             </td>
-            <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked}
-                                setChecked={setChecked} purpose={purpose} handleAdd={handleEdit}/>
         </tr>
     )
 }

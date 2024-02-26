@@ -18,25 +18,6 @@ const LoanActivity = () => {
     const {data, isFetching, error} = useGetAllCommentQuery(appId)
 
 
-    const activity = [
-        {
-            name: "Requires manual review according to matching rules criteria",
-            date: "Sept 12, 2023 2:19PM",
-            action: "System",
-            status: "UNDER REVIEW"
-        },{
-            name: "Requires manual review according to matching rules criteria",
-            date: "Sept 12, 2023 2:19PM",
-            action: "System",
-            status: "UNDER REVIEW"
-        },{
-            name: "Requires manual review according to matching rules criteria",
-            date: "Sept 12, 2023 2:19PM",
-            action: "System",
-            status: "UNDER REVIEW"
-        },
-    ]
-
     return (
         <div>
             <div>

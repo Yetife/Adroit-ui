@@ -13,7 +13,7 @@ export const getDocumentation = async (size, page) => {
 };
 export const repaymentDetail = async data => {
     const url = '/LoanApplication/Customer/getRepaymentDetails'
-    return authServiceCallEndpoint({method: POST, data: data, url})
+    return authServiceCallEndpoint({method: POST, data: data, url, needsAuth:true})
 };
 export const getComment = async data => {
     const url = '/LoanApplication/Customer/getComments'

@@ -1,7 +1,4 @@
 import {useState} from 'react';
-import {useDispatch} from "react-redux";
-import {useAddGenderMutation} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";

@@ -56,7 +56,7 @@ const Repayment = () => {
                 <div>
                     <RepaymentTable searchTerm={searchTerm} />
                 </div>
-                <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked} setChecked={setChecked} handleAdd={handleAdd}/>
+                {/*<AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked} setChecked={setChecked} handleAdd={handleAdd}/>*/}
             </div>
         </Layout>
     );

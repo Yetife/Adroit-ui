@@ -242,6 +242,42 @@ export const loanApplicationApi = createApi({
             }),
             invalidatesTags: ["updateLoanRestructure"]
         }),
+        getAllLoanTopUp: builder.query({
+            query: ({size, page, bvn, statusName, email,  customerRef, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    // Add optional parameters conditionally
+                    ...(bvn && { Bvn: bvn }),
+                    ...(statusName && { Status: statusName }),
+                    ...(email && { EmailAddress: email }),
+                    ...(customerRef && { CustomerReference: customerRef }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `LoanTopUp/get`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["updateLoanTopUp"]
+        }),
+        getLoanTopUpDetail: builder.query({
+            query: (id) => ({
+                url: `/LoanTopUp/ViewLoan/${id}`,
+            }),
+            providesTags: []
+        }),
+        updateLoanTopUp: builder.mutation({
+            query: ({body}) => ({
+                url: `/LoanTopUp/Update`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["updateLoanTopUp"]
+        }),
     })
 })
 
@@ -263,10 +299,13 @@ export const {
     useReassignLoanMutation,
     useGetReassignedLoanQuery,
     useGetAllLoanRestructuringQuery,
+    useGetAllLoanTopUpQuery,
     useGetAllReviewQuery,
     useAdjustApplicationMutation,
     useReturnApplicationMutation,
     useGetLoanRestructureDetailQuery,
     useUpdateLoanRestructureMutation,
+    useGetLoanTopUpDetailQuery,
+    useUpdateLoanTopUpMutation,
 
 } = loanApplicationApi

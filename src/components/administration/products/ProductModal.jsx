@@ -19,6 +19,8 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
     const [rate, setRate] = useState([])
     const dispatch  = useDispatch()
     const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
     const handleChecked = (event) => {
         setAsEndDate(event.target.checked);
     };
@@ -39,7 +41,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
 
     const fetchTenor = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/Administration/LoanTenor/getall', {
+            const response = await axios.get(`${baseUrl}/Administration/LoanTenor/getall`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -55,7 +57,8 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
     };
     const fetchInterest = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidRegularLoanInterestRate', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidRegularLoanInterestRate`, {
+
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -71,7 +74,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
     };
     const fetchFeeType = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidLateFeeTypes', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidLateFeeTypes`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -87,7 +90,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
     };
     const fetchFeePrincipal = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidLateFeePrincipals', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidLateFeePrincipals`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -103,7 +106,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, id, status, startDate, 
     };
 const fetchFeeFrequency = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidFeeFrequencys', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidFeeFrequencys`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
