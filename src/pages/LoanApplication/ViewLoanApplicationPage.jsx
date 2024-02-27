@@ -83,6 +83,7 @@ const ViewLoanApplicationPage = () => {
         completeReview({
             body: {
                 loanApplicationId: appId,
+                loanCategory: "Regular loan"
             }
         }).then(res => {
             setOpenComplete(true)

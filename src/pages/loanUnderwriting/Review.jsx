@@ -5,6 +5,8 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import ReviewTable from "../../components/loanUnderwritting/review/ReviewTable.jsx";
 import FilterReview from "../../components/loanUnderwritting/review/FilterReview.jsx";
+import ReviewRestructureTable from "../../components/loanUnderwritting/review/ReviewRestructureTable.jsx";
+import ReviewTopupTable from "../../components/loanUnderwritting/review/ReviewTopupTable.jsx";
 
 const Review = () => {
     const router = useNavigate()
@@ -52,28 +54,28 @@ const Review = () => {
                         </Button>
                     </div>
                 </div>
-                <div className="flex space-x-4 mt-4">
+                <div className="flex space-x-4 mt-4 justify-center">
                     <div>
                         <input
                             type="radio"
-                            id="table1"
+                            id="regularLoan"
                             name="tableOption"
                             value="regularLoan"
                             checked={selectedOption === 'regularLoan'}
                             onChange={() => handleOptionChange('regularLoan')}
                         />
-                        <label htmlFor="regularLoan" className="pl-1 font-semibold text-[#4A5D58] text-[16px]">Regular Loan</label>
+                        <label htmlFor="regularLoan" className="pl-1 font-semibold text-[#FF0909] text-[18px]">Regular Loan</label>
                     </div>
                     <div>
                         <input
                             type="radio"
-                            id="table2"
+                            id="loanRestructuring"
                             name="tableOption"
-                            value="table2"
+                            value="loanRestructuring"
                             checked={selectedOption === 'loanRestructuring'}
                             onChange={() => handleOptionChange('loanRestructuring')}
                         />
-                        <label htmlFor="Loan Restructuring" className="pl-1 font-semibold text-[#4A5D58] text-[16px]">Loan Restructuring</label>
+                        <label htmlFor="Loan Restructuring" className="pl-1 font-semibold text-[#00C795] text-[18px]">Loan Restructuring</label>
                     </div>
                     <div>
                         <input
@@ -84,7 +86,7 @@ const Review = () => {
                             checked={selectedOption === 'loanTopUp'}
                             onChange={() => handleOptionChange('loanTopUp')}
                         />
-                        <label htmlFor="Loan Top-up" className="pl-1 pb-3 font-semibold text-[#4A5D58] text-[16px]">Loan Top-up</label>
+                        <label htmlFor="Loan Top-up" className="pl-1 pb-3 font-semibold text-[#1781BC] text-[18px]">Loan Top-up</label>
                     </div>
                 </div>
                 <div>
@@ -92,6 +94,14 @@ const Review = () => {
                                   phone={filters.phone}
                                   startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
                                   channel={filters.channel}/>}
+                    { selectedOption === "loanRestructuring" && <ReviewRestructureTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
+                                                                       phone={filters.phone}
+                                                                       startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
+                                                                       channel={filters.channel}/>}
+                    { selectedOption === "loanTopUp" && <ReviewTopupTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
+                                                                       phone={filters.phone}
+                                                                       startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
+                                                                       channel={filters.channel}/>}
                 </div>
                 <FilterReview open={open} setOpen={setOpen} handleAdd={handleFilter}/>
             </div>

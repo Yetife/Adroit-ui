@@ -16,7 +16,7 @@ import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoa
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
 import DecisionModal from "../../components/loanUnderwritting/approval/DecisionModal.jsx";
 import {
-    useApproveApplicationMutation, useDisburseApplicationMutation,
+    useDisburseApplicationMutation,
     useGetReviewCustomerDetailsQuery, useStopDisbursementMutation
 } from '../../store/features/loanUnderwriting/api.js';
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
@@ -24,7 +24,11 @@ import {useDispatch} from "react-redux";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
 import ReassignModal from '../../components/loanUnderwritting/loanReassignment/ReassignModal.jsx';
-import {useAdjustApplicationMutation, useReturnApplicationMutation} from "../../store/features/loanApplication/api.js";
+import {
+    useAdjustApplicationMutation,
+    useApproveApplicationMutation,
+    useReturnApplicationMutation
+} from "../../store/features/loanApplication/api.js";
 
 const ViewLoanUnderwritingPage = () => {
     const [comment, setComment] = useState("")
@@ -42,6 +46,7 @@ const ViewLoanUnderwritingPage = () => {
     const queryParams = new URLSearchParams(location.search);
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
+    const type = queryParams.get('type');
     const {data, isFetching, error} = useGetReviewCustomerDetailsQuery(custId)
     const status = queryParams.get("status");
     const [approve] = useApproveApplicationMutation()
@@ -109,6 +114,7 @@ const ViewLoanUnderwritingPage = () => {
         approve({
             body: {
                 loanApplicationId: appId,
+                loanCategory: type === "Regular Loan"
             }
         }).then(res => {
             setOpenComplete(true)
@@ -121,6 +127,7 @@ const ViewLoanUnderwritingPage = () => {
         stopDisburse({
             body: {
                 loanApplicationId: appId,
+                loanCategory: "Regular Loan"
             }
         }).then(res => {
             setOpenDisburse(true)
@@ -132,6 +139,7 @@ const ViewLoanUnderwritingPage = () => {
         returnApp({
             body: {
                 loanApplicationId: appId,
+                loanCategory: "Regular Loan"
             }
         }).then(res => {
             router('/loanUnderwriting')
@@ -143,6 +151,7 @@ const ViewLoanUnderwritingPage = () => {
         disburseApp({
             body: {
                 loanApplicationId: appId,
+                loanCategory: "Regular Loan"
             }
         }).then(res => {
             router('/loanUnderwriting/disbursement')
@@ -157,7 +166,8 @@ const ViewLoanUnderwritingPage = () => {
                 loanApplicationId: appId,
                 description: inputs.description,
                 adjustedTenor: inputs.tenor,
-                adjustedAmount: inputs.amount
+                adjustedAmount: inputs.amount,
+                loanCategory: "Regular Loan"
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));

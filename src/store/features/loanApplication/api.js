@@ -183,6 +183,86 @@ export const loanApplicationApi = createApi({
             }),
             invalidatesTags: ["returnApplication"]
         }),
+        approveApplication: builder.mutation({
+            query: ({body}) => ({
+                url: `/LoanUnderwriting/Review/Update`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["approveApplication"]
+        }),
+        getAllApproval: builder.query({
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/Approval/get`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["approveApplication"]
+        }),
+
+        getAllApprovalRestructure: builder.query({
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    category: 2,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `Approval/getbyloantype`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["approveApplication"]
+        }),
+        getAllApprovalTopUp: builder.query({
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    category: 1,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `Approval/getbyloantype`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["approveApplication"]
+        }),
         getAllReview: builder.query({
             query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
                 const queryParams = {
@@ -204,7 +284,57 @@ export const loanApplicationApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["returnApplication", "adjustApplication", "completeReview"]
+            providesTags: ["returnApplication", "adjustApplication", "completeReview", "declineApplication", "approveApplication"]
+        }),
+
+        getAllReviewStructure: builder.query({
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    category: 2,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/LoanUnderwriting/Review/getbyloantype`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["returnApplication", "adjustApplication", "completeReview", "declineApplication", "approveApplication"]
+        }),
+
+        getAllReviewTopUp: builder.query({
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    category: 1,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/LoanUnderwriting/Review/getbyloantype`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["returnApplication", "adjustApplication", "completeReview", "declineApplication", "approveApplication"]
         }),
         getAllLoanRestructuring: builder.query({
             query: ({size, page, bvn, statusName, email,  customerRef, startDate, endDate }) => {
@@ -300,6 +430,8 @@ export const {
     useGetReassignedLoanQuery,
     useGetAllLoanRestructuringQuery,
     useGetAllLoanTopUpQuery,
+    useGetAllReviewStructureQuery,
+    useGetAllReviewTopUpQuery,
     useGetAllReviewQuery,
     useAdjustApplicationMutation,
     useReturnApplicationMutation,
@@ -307,5 +439,9 @@ export const {
     useUpdateLoanRestructureMutation,
     useGetLoanTopUpDetailQuery,
     useUpdateLoanTopUpMutation,
+    useApproveApplicationMutation,
+    useGetAllApprovalQuery,
+    useGetAllApprovalRestructureQuery,
+    useGetAllApprovalTopUpQuery,
 
 } = loanApplicationApi

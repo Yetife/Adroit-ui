@@ -5,10 +5,17 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import ApprovalTable from "../../components/loanUnderwritting/approval/ApprovalTable.jsx";
 import FilterApproval from "../../components/loanUnderwritting/approval/FilterApproval.jsx";
+import ApproveRestructureTable from "../../components/loanUnderwritting/approval/ApproveRestructureTable.jsx";
+import ApproveTopUpTable from "../../components/loanUnderwritting/approval/ApproveTopUpTable.jsx";
 
 const Approval = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedOption, setSelectedOption] = useState('regularLoan');
+
+    const handleOptionChange = (option) => {
+        setSelectedOption(option);
+    };
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -36,16 +43,65 @@ const Approval = () => {
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Filter</Text>
                         </Button>
                     </div>
                 </div>
-                <div>
-                    <ApprovalTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name} phone={filters.phone}
-                                   startDate={filters.startDate} endDate={filters.endDate} email={filters.email} channel={filters.channel}/>
+                <div className="flex space-x-4 mt-4 justify-center">
+                    <div>
+                        <input
+                            type="radio"
+                            id="regularLoan"
+                            name="tableOption"
+                            value="regularLoan"
+                            checked={selectedOption === 'regularLoan'}
+                            onChange={() => handleOptionChange('regularLoan')}
+                        />
+                        <label htmlFor="regularLoan" className="pl-1 font-semibold text-[#FF0909] text-[18px]">Regular
+                            Loan</label>
+                    </div>
+                    <div>
+                        <input
+                            type="radio"
+                            id="loanRestructuring"
+                            name="tableOption"
+                            value="loanRestructuring"
+                            checked={selectedOption === 'loanRestructuring'}
+                            onChange={() => handleOptionChange('loanRestructuring')}
+                        />
+                        <label htmlFor="Loan Restructuring" className="pl-1 font-semibold text-[#00C795] text-[18px]">Loan
+                            Restructuring</label>
+                    </div>
+                    <div>
+                        <input
+                            type="radio"
+                            id="loanTopUp"
+                            name="tableOption"
+                            value="loanTopUp"
+                            checked={selectedOption === 'loanTopUp'}
+                            onChange={() => handleOptionChange('loanTopUp')}
+                        />
+                        <label htmlFor="Loan Top-up" className="pl-1 pb-3 font-semibold text-[#1781BC] text-[18px]">Loan
+                            Top-up</label>
+                    </div>
                 </div>
-                <FilterApproval open={open} setOpen={setOpen} handleFilter={handleFilter} />
+                <div>
+                    { selectedOption === "regularLoan" && <ApprovalTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
+                                    phone={filters.phone}
+                                    startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
+                                    channel={filters.channel}/>}
+                    { selectedOption === "loanRestructuring" && <ApproveRestructureTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
+                                    phone={filters.phone}
+                                    startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
+                                    channel={filters.channel}/>}
+                    { selectedOption === "loanTopUp" && <ApproveTopUpTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
+                                    phone={filters.phone}
+                                    startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
+                                    channel={filters.channel}/>}
+                </div>
+                <FilterApproval open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     );

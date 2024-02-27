@@ -13,7 +13,7 @@ import Pagination from "../../reusables/Pagination.jsx";
 const DocumentationStatusTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllValidDocumentStatusQuery({size, page})
+    const {data, isFetching, error} =  useGetAllValidDocumentStatusQuery()
     if (error) return <p>Network error</p>
 
     const filterData = (item) => {
@@ -53,17 +53,17 @@ const DocumentationStatusTable = ({searchTerm}) => {
                         </tbody>
                     </table>
                 </div>
-                {data && (
-                    <Pagination
-                        totalCount={data?.recordCount || 0}
-                        page={page}
-                        rowsPerPage={size}
-                        rowsPerPageOptions={[10, 20, 50, 70, 100]}
-                        sizes={[10, 20, 50, 70, 100]}
-                        onPageChange={handlePageChange}
-                        onRowsPerPageChange={handleRowPerPageChange}
-                    />
-                )}
+                {/*{data && (*/}
+                {/*    <Pagination*/}
+                {/*        totalCount={data?.recordCount || 0}*/}
+                {/*        page={page}*/}
+                {/*        rowsPerPage={size}*/}
+                {/*        rowsPerPageOptions={[10, 20, 50, 70, 100]}*/}
+                {/*        sizes={[10, 20, 50, 70, 100]}*/}
+                {/*        onPageChange={handlePageChange}*/}
+                {/*        onRowsPerPageChange={handleRowPerPageChange}*/}
+                {/*    />*/}
+                {/*)}*/}
             </div>
         </div>
     );

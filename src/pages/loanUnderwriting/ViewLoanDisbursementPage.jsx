@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {
-    useApproveApplicationMutation, useDisburseApplicationMutation,
+    useDisburseApplicationMutation,
     useGetReviewCustomerDetailsQuery, useStopDisbursementMutation
 } from "../../store/features/loanUnderwriting/api.js";
 import {useDispatch} from "react-redux";
@@ -24,7 +24,11 @@ import StopDisbursementModal from "../../components/loanUnderwritting/disburseme
 import DecisionModal from "../../components/loanUnderwritting/approval/DecisionModal.jsx";
 import ReassignModal from "../../components/loanUnderwritting/loanReassignment/ReassignModal.jsx";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import {useAdjustApplicationMutation, useReturnApplicationMutation} from "../../store/features/loanApplication/api.js";
+import {
+    useAdjustApplicationMutation,
+    useApproveApplicationMutation,
+    useReturnApplicationMutation
+} from "../../store/features/loanApplication/api.js";
 import ManualDisbursementModal from "../../components/loanUnderwritting/disbursement/ManualDisbursementModal.jsx";
 
 const ViewLoanDisbursementPage = () => {
@@ -45,6 +49,7 @@ const ViewLoanDisbursementPage = () => {
     const queryParams = new URLSearchParams(location.search);
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
+    const type = queryParams.get('type');
     const {data, isFetching, error} = useGetReviewCustomerDetailsQuery(custId)
     const status = queryParams.get("status");
     const [approve] = useApproveApplicationMutation()
@@ -115,6 +120,7 @@ const ViewLoanDisbursementPage = () => {
         approve({
             body: {
                 loanApplicationId: appId,
+                loanCategory: type === "regular" ? "Regular Loan" : type === "structure" ? "Loan Restructure" : "Loan topup"
             }
         }).then(res => {
             setOpenComplete(true)
@@ -127,6 +133,7 @@ const ViewLoanDisbursementPage = () => {
         stopDisburse({
             body: {
                 loanApplicationId: appId,
+                loanCategory: type === "regular" ? "Regular Loan" : type === "structure" ? "Loan Restructure" : "Loan topup"
             }
         }).then(res => {
             setOpenDisburse(true)
@@ -138,6 +145,7 @@ const ViewLoanDisbursementPage = () => {
         returnApp({
             body: {
                 loanApplicationId: appId,
+                loanCategory: type === "regular" ? "Regular Loan" : type === "structure" ? "Loan Restructure" : "Loan topup"
             }
         }).then(res => {
             router('/loanUnderwriting')
@@ -149,6 +157,7 @@ const ViewLoanDisbursementPage = () => {
         disburseApp({
             body: {
                 loanApplicationId: appId,
+                loanCategory: type === "regular" ? "Regular Loan" : type === "structure" ? "Loan Restructure" : "Loan topup"
             }
         }).then(res => {
             router('/loanUnderwriting/disbursement')
@@ -163,7 +172,8 @@ const ViewLoanDisbursementPage = () => {
                 loanApplicationId: appId,
                 description: inputs.description,
                 adjustedTenor: inputs.tenor,
-                adjustedAmount: inputs.amount
+                adjustedAmount: inputs.amount,
+                loanCategory: type === "regular" ? "Regular Loan" : type === "structure" ? "Loan Restructure" : "Loan topup"
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));

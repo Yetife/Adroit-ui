@@ -49,19 +49,9 @@ export const bridgeLoanApi = createApi({
             invalidatesTags: ["AddDocumentStatus"]
         }),
         getAllValidDocumentStatus: builder.query({
-            query: ({size, page, searchTerm}) => {
-                const queryParams = {
-                    PasgeSize: size,
-                    PageNumber: page,
-                    // Add optional parameters conditionally
-                    ...(searchTerm && { SearchName: searchTerm }),
-                };
-
-                return {
-                    url: `/BridgeLoan/DocumentationStatus/getallvalid`,
-                    params: queryParams,
-                };
-            },
+            query: () => ({
+                url: `/BridgeLoan/DocumentationStatus/getallvalid`,
+            }),
             providesTags: ["AddDocumentStatus", "EditDocumentStatus"]
         }),
         editDocumentStatus: builder.mutation({

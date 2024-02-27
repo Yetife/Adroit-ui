@@ -3,32 +3,131 @@ import {Link as ReactLink, useNavigate} from "react-router-dom";
 import Layout from "../Layout.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import dayjs from "dayjs";
-import ApproveLoanModal from "../../components/loanApplication/loanRestructuring/ApproveLoanModal.jsx";
 import DeclineModal from "../../components/loanApplication/loanRestructuring/DeclineModal.jsx";
 import {
-    useGetLoanRestructureDetailQuery,
+    useAdjustApplicationMutation, useApproveApplicationMutation,
+    useCompleteReviewMutation,
+    useGetLoanRestructureDetailQuery, useReturnApplicationMutation,
 } from "../../store/features/loanApplication/api.js";
 import {formatAmount} from "../../components/reusables/formatAmount.js";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
+import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
+import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoanModal.jsx";
+import {
+    useDisburseApplicationMutation, useStopDisbursementMutation
+} from "../../store/features/loanUnderwriting/api.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
+import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
 
 const ViewLoanRestructuringPage = () => {
     const [open, setOpen] = useState(false)
-    const [openDec, setOpenDec] = useState(false)
+    const [openDisburse, setOpenDisburse] = useState(false)
     const queryParams = new URLSearchParams(location.search);
     const appId = queryParams.get("id");
     const {data, isFetching, error} = useGetLoanRestructureDetailQuery(appId)
     const router = useNavigate()
     const status = queryParams.get("status");
     const [comment, setComment] = useState("")
+    const [openAdjust, setOpenAdjust] = useState(false)
+    const [openComplete, setOpenComplete] = useState(false)
+    const [openApprove, setOpenApprove] = useState(false)
+    const [completeReview] = useCompleteReviewMutation()
+    const [approve] = useApproveApplicationMutation()
+    const [adjust] = useAdjustApplicationMutation()
+    const [returnApp] = useReturnApplicationMutation()
+    const [disburseApp] = useDisburseApplicationMutation()
+    const [stopDisburse] = useStopDisbursementMutation()
+    const [inputs, setInputs] = useState({
+        amount: "",
+        tenor: "",
+        description: ""
+    })
+    const dispatch = useDispatch()
+
     const handleChange = (e) => {
         setComment(e.target.value)
     };
 
-    const handleOpen = () => {
-        setOpen(true)
+    const handleApprove = () => {
+        approve({
+            body: {
+                loanApplicationId: appId,
+                loanCategory: "Loan Restructure"
+            }
+        }).then(res => {
+            setOpenApprove(true)
+        }).catch(err =>{
+            setOpenApprove(false)
+        })
+    }
+    const handleComplete = () => {
+        completeReview({
+            body: {
+                loanApplicationId: appId,
+                loanCategory: "Loan Restructure"
+            }
+        }).then(res => {
+            setOpenComplete(true)
+        }).catch(err =>{
+            setOpenComplete(false)
+        })
+    }
+    const handleAdjust = () => {
+        adjust({
+            body: {
+                loanApplicationId: appId,
+                description: inputs.description,
+                adjustedTenor: inputs.tenor,
+                adjustedAmount: inputs.amount,
+                loanCategory: "Loan Restructure"
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpenAdjust(!open)
+            router('/loanUnderwriting/review')
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
+    const handleReturn = () => {
+        returnApp({
+            body: {
+                loanApplicationId: appId,
+                loanCategory: "Loan Restructure"
+            }
+        }).then(res => {
+            router('/loanUnderwriting/approval')
+        }).catch(err =>{
+            setOpenComplete(false)
+        })
     }
 
+    const handleStop = () => {
+        stopDisburse({
+            body: {
+                loanApplicationId: appId,
+                loanCategory: "Loan Restructure"
+            }
+        }).then(res => {
+            setOpenDisburse(true)
+        }).catch(err =>{
+            setOpenDisburse(false)
+        })
+    }
+    const handleDisburse = () => {
+        disburseApp({
+            body: {
+                loanApplicationId: appId,
+                loanCategory: "Loan Restructure"
+            }
+        }).then(res => {
+            router('/loanUnderwriting/disbursement')
+        }).catch(err =>{
+            setOpenComplete(false)
+        })
+    }
     return (
         <Layout>
             <div>
@@ -39,7 +138,7 @@ const ViewLoanRestructuringPage = () => {
                         <div className="flex justify-between px-0 py-4  pb-2 md:pt-3 overflow-auto">
                             <div></div>
                             <div>
-                                <Button variant="primary" onClick={() => router('/loanApp/loanRestructuring')}
+                                <Button variant="primary" onClick={() => router(-1)}
                                         bgColor="#00C795" borderRadius="4px"
                                         height="37px" size='md' as={ReactLink} w={'109px'}>
                                     <Text color="white">Back</Text>
@@ -149,27 +248,93 @@ const ViewLoanRestructuringPage = () => {
                                         ></textarea>
                                     </div>
                                     {
-                                        status !== "view" ? (
+                                        status === "review" && (
+                                            <div className="flex float-right space-x-3 my-4">
+                                                <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
+                                                        as={ReactLink} w={'110px'} onClick={handleApprove}>
+                                                    <Text color="white">Approve</Text>
+                                                </Button>
+                                                <Button variant="primary" bgColor="#1781BC" borderRadius="4px" height="37px" size='md'
+                                                        as={ReactLink} w={'110px'} onClick={()=>setOpenAdjust(true)}>
+                                                    <Text color="white">Adjust</Text>
+                                                </Button>
+                                                <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                                                        border={"1px solid #FF0909"} borderRadius="4px" height="37px"
+                                                        size='md' as={ReactLink} w={'110px'} onClick={() => setOpen(true)}>
+                                                    <Text color="#FF0909">Decline</Text>
+                                                </Button>
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        status === "approve" && (
+                                            <div className="flex float-right space-x-3 my-4">
+                                                <Button variant="primary" bgColor="#00C796" borderRadius="4px" height="37px" size='md'
+                                                        as={ReactLink} w={'110px'} onClick={handleDisburse}>
+                                                    <Text color="white">Disburse</Text>
+                                                </Button>
+                                                <Button variant="primary" bgColor="#005F47" borderRadius="4px" height="37px" size='md'
+                                                        as={ReactLink} w={'110px'} onClick={handleReturn}>
+                                                    <Text color="white">Return</Text>
+                                                </Button>
+                                                <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                                                        border={"1px solid #FF0909"} borderRadius="4px" height="37px"
+                                                        size='md' as={ReactLink} w={'110px'} onClick={() => setOpen(true)}>
+                                                    <Text color="#FF0909">Decline</Text>
+                                                </Button>
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        status === "edit" && (
                                             <div className="flex space-x-3 float-right my-8">
                                                 <Button variant="primary" bgColor="#00C795" borderRadius="4px"
-                                                        height="37px" size='md' as={ReactLink} w={'109px'}
-                                                        onClick={handleOpen}>
-                                                    <Text color="white">Approve</Text>
+                                                        height="37px" size='md' as={ReactLink} w={'150px'}
+                                                        onClick={handleComplete}>
+                                                    <Text color="white">Complete Review</Text>
                                                 </Button>
                                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"
                                                         border={"1px solid #FF0909"} borderRadius="4px" height="37px"
                                                         size='md' as={ReactLink} w={'109px'}
-                                                        onClick={() => setOpenDec(true)}>
+                                                        onClick={() => setOpen(true)}>
                                                     <Text color="#FF0909">Decline</Text>
                                                 </Button>
                                             </div>
-                                        ) : <div className="flex space-x-3 float-right my-8">
+                                        )
+                                    }
+                                    {
+                                        status === "disburse" && (
+                                            <div className="float-right my-4">
+                                                <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
+                                                        as={ReactLink} w={'190px'} onClick={handleStop}>
+                                                    <Text color="white">Stop Disbursement</Text>
+                                                </Button>
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        status === "adjust" && (
+                                            <div className="flex float-right space-x-3 my-8">
+                                                <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
+                                                        as={ReactLink} w={'110px'} onClick={handleComplete}>
+                                                    <Text color="white">Review</Text>
+                                                </Button>
+                                                <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                                                        border={"1px solid #FF0909"} borderRadius="4px" height="37px"
+                                                        size='md' as={ReactLink} w={'110px'} onClick={() => setOpen(true)}>
+                                                    <Text color="#FF0909">Decline</Text>
+                                                </Button>
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        status === "view" && ( <div className="flex space-x-3 float-right my-8">
                                             <Button variant="primary" onClick={() => router(-1)} bgColor="#384642"
                                                     borderRadius="4px"
                                                     height="37px" size='md' as={ReactLink} w={'109px'}>
                                                 <Text color="white">Close</Text>
                                             </Button>
-                                        </div>
+                                        </div>)
                                     }
                                 </div>
                             </div>
@@ -178,8 +343,15 @@ const ViewLoanRestructuringPage = () => {
                 }
             </div>
 
-            <ApproveLoanModal open={open} setOpen={setOpen} comment={comment}/>
-            <DeclineModal open={openDec} setOpen={setOpenDec}/>
+            {/*<ApproveLoanModal open={open} setOpen={setOpen} comment={comment}/>*/}
+            <DeclineApplicationModal open={open} setOpen={setOpen}/>
+            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"}
+                                   handleRoute={() => router('/loanUnderwriting/review')}/>
+            <StopDisbursementModal open={openApprove} setOpen={setOpenApprove} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/approval')}/>
+
+            <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs} handleSubmit={handleAdjust}/>
+            <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"} handleRoute={()=>router('/loanUnderwriting/disbursement')}/>
+
         </Layout>
     );
 };

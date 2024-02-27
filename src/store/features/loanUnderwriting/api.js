@@ -108,12 +108,12 @@ export const loanUnderwritingApi = createApi({
 })
 
 export const {
-    useGetAllApprovalQuery,
+    // useGetAllApprovalQuery,
     useEditStatusMutation,
     useGetAllDisbursementQuery,
     useGetReviewCustomerDetailsQuery,
     useStopDisbursementMutation,
-    useApproveApplicationMutation,
+    // useApproveApplicationMutation,
     useDisburseApplicationMutation,
     useGetAdjustmentDetailsQuery,
     useManualDisbursementMutation,
