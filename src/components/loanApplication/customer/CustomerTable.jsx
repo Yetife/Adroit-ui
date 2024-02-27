@@ -91,7 +91,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Channel', 'Customer Ref.', 'Loan Amount', 'Email Address', 'First Name', 'Last Name', 'Application Date', 'Actions' ]
+const header = ['S/N', 'Channel', 'Loan Category', 'Loan Amount', 'Email Address', 'First Name', 'Last Name', 'Application Date', 'Actions' ]
 
 export function TableData({data, no}) {
     const router = useNavigate()
@@ -105,7 +105,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.applicationChannel}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.customerRef}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">Regular Loan</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span

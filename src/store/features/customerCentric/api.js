@@ -216,9 +216,24 @@ export const customerCentricApi = createApi({
             invalidatesTags: [" modifyData"]
         }),
         getAllP2P: builder.query({
-            query: ({size, page}) => ({
-                url: `/CustomerCentric/getallp2ps?PasgeSize=${size}&PageNumber=${page}`,
-            }),
+            query: ({size, page, dropDown, searchTerm, statusName, startDate, endDate}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    // Add optional parameters conditionally
+                    ...(dropDown && { SearchType: dropDown }),
+                    ...(searchTerm && { SearchName: searchTerm }),
+                    ...(statusName && { Status: statusName }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                };
+
+                return {
+                    url: `/CustomerCentric/getallp2ps`,
+                    params: queryParams,
+                };
+            },
             providesTags: []
         }),
         getP2PById: builder.query({

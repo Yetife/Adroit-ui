@@ -10,7 +10,11 @@ const Review = () => {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedOption, setSelectedOption] = useState('regularLoan');
 
+    const handleOptionChange = (option) => {
+        setSelectedOption(option);
+    };
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
     };
@@ -48,9 +52,46 @@ const Review = () => {
                         </Button>
                     </div>
                 </div>
+                <div className="flex space-x-4 mt-4">
+                    <div>
+                        <input
+                            type="radio"
+                            id="table1"
+                            name="tableOption"
+                            value="regularLoan"
+                            checked={selectedOption === 'regularLoan'}
+                            onChange={() => handleOptionChange('regularLoan')}
+                        />
+                        <label htmlFor="regularLoan" className="pl-1 font-semibold text-[#4A5D58] text-[16px]">Regular Loan</label>
+                    </div>
+                    <div>
+                        <input
+                            type="radio"
+                            id="table2"
+                            name="tableOption"
+                            value="table2"
+                            checked={selectedOption === 'loanRestructuring'}
+                            onChange={() => handleOptionChange('loanRestructuring')}
+                        />
+                        <label htmlFor="Loan Restructuring" className="pl-1 font-semibold text-[#4A5D58] text-[16px]">Loan Restructuring</label>
+                    </div>
+                    <div>
+                        <input
+                            type="radio"
+                            id="loanTopUp"
+                            name="tableOption"
+                            value="loanTopUp"
+                            checked={selectedOption === 'loanTopUp'}
+                            onChange={() => handleOptionChange('loanTopUp')}
+                        />
+                        <label htmlFor="Loan Top-up" className="pl-1 pb-3 font-semibold text-[#4A5D58] text-[16px]">Loan Top-up</label>
+                    </div>
+                </div>
                 <div>
-                    <ReviewTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name} phone={filters.phone}
-                                 startDate={filters.startDate} endDate={filters.endDate} email={filters.email} channel={filters.channel} />
+                    { selectedOption === "regularLoan" && <ReviewTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
+                                  phone={filters.phone}
+                                  startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
+                                  channel={filters.channel}/>}
                 </div>
                 <FilterReview open={open} setOpen={setOpen} handleAdd={handleFilter}/>
             </div>

@@ -1,10 +1,8 @@
-import React, {useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import Layout from "../Layout.jsx";
-import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import EscrowTable from "../../components/customerCentric/escrow/EscrowTable.jsx";
-import FilterLoanModal from "../../components/customerCentric/p2p/FilterLoanModal.jsx";
 import FilterEscrowModal from "../../components/customerCentric/escrow/FilterEscrowModal.jsx";
 
 const CustomerEscrow = () => {

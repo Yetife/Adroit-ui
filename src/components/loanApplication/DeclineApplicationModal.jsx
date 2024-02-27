@@ -10,7 +10,7 @@ import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
-const DeclineApplicationModal = ({open, setOpen, handleAdd, id}) => {
+const DeclineApplicationModal = ({open, setOpen, id}) => {
     const [selectedItems, setSelectedItems] = useState([]);
     const [reasons, setReasons] = useState([]);
     const [inputs, setInputs] = useState({
@@ -33,8 +33,10 @@ const DeclineApplicationModal = ({open, setOpen, handleAdd, id}) => {
     const allOption = { uniqueId: 'all', name: 'Others' };
 
     const fetchData = async () => {
+        const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidDeclineReasons', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidDeclineReasons`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -106,7 +108,7 @@ const DeclineApplicationModal = ({open, setOpen, handleAdd, id}) => {
                     <Dialog.Content className="custom-scroll-bar overflow-auto data-[state=open]:animate-contentShow z-[200] fixed top-[49%] left-[50%] max-h-[100vh] overflow-x w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                         <Dialog.Title className="text-[24px] text-[#343434] font-extrabold -mt-8 mb-3 text-center">Review Application</Dialog.Title>
                         <Divider />
-                        <div className="mt-6">
+                        <div className="mt-3">
                             <div>
                                 <p className="font-semibold text-[#4A5D58] text-[16px] whitespace-nowrap">Are you sure you want to decline this loan?</p>
                                 <span className="ml-8">
@@ -118,7 +120,7 @@ const DeclineApplicationModal = ({open, setOpen, handleAdd, id}) => {
                                       value={inputs.applicationId}
                                       onChange={(event) => handleChange(event, "applicationId")}
                                       placeholder="Enter application id"
-                                      className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                      className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                   />
                                 </span>
                                 <span className="ml-8 mt-8">
@@ -165,11 +167,11 @@ const DeclineApplicationModal = ({open, setOpen, handleAdd, id}) => {
                                                    value={inputs.comment}
                                                    onChange={(event) => handleChange(event, "comment")}
                                                    placeholder="Add comment"
-                                                   className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                   className="font-medium w-full text-black leading-relaxed px-4 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                          ></textarea>
                                 </span>
                             </div>
-                            <div className="flex space-x-3 float-right mb-8">
+                            <div className="flex space-x-3 float-right mb-20">
                                 <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8"
                                         onClick={() => setOpen(!open)}>Close
                                 </button>

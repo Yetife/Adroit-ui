@@ -84,7 +84,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'First Name', 'Last Name', 'Email Address', 'Phone Number', 'D.O.B', 'BVN', 'Initial Loan Tenor', 'New Loan Tenor', 'Loan Amount', 'Date Submitted', 'Actions' ]
+const header = ['S/N', 'Loan Category', 'First Name', 'Last Name', 'Email Address', 'Phone Number', 'D.O.B', 'BVN', 'Initial Loan Tenor', 'New Loan Tenor', 'Loan Amount', 'Date Submitted', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
@@ -99,7 +99,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.customerRef}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">Loan Restructuring</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>

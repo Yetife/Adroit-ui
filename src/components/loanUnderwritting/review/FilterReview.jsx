@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
 
 const FilterReview = ({open, setOpen, handleFilter}) => {
     const [inputs, setInputs] = useState({
@@ -13,7 +14,7 @@ const FilterReview = ({open, setOpen, handleFilter}) => {
     const [channel, setChannel] = useState("");
     const [applicationId, setApplicationId] = useState("");
     const [email, setEmail] = useState("");
-
+    const  dispatch = useDispatch()
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;

@@ -12,11 +12,6 @@ const P2P = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [dropdown, setDropDown] = useState("email")
-    const [inputs, setInputs] = useState({
-        status: "",
-        startDate: "",
-        endDate: "",
-    })
 
     const handleOpen = () => {
         setOpen(true)
@@ -34,6 +29,15 @@ const P2P = () => {
         e.preventDefault();
         const form = e.target;
         setSearchTerm(form.searchInput.value);
+    };
+    const [filters, setFilters] = useState({
+        statusName: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
     };
 
     return (
@@ -65,7 +69,6 @@ const P2P = () => {
                                     }}
                                 />
                             </form>
-                            {/*<Search search={searchTerm} setSearch={handleSearch} onKeyPress={handleKeyPress}/>*/}
                         </div>
                     </div>
                     <div>
@@ -76,10 +79,11 @@ const P2P = () => {
                     </div>
                 </div>
                 <div>
-                    <P2PTable searchTerm={searchTerm} dropDown={dropdown}/>
+                    <P2PTable searchTerm={searchTerm} dropDown={dropdown} statusName={filters.statusName}
+                              startDate={filters.startDate} endDate={filters.endDate}/>
                 </div>
 
-                <FilterLoanModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
+                <FilterLoanModal open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     )

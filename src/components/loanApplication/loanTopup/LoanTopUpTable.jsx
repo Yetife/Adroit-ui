@@ -1,9 +1,7 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
-import {
-    useGetAllLoanTopUpQuery,
-} from "../../../store/features/loanApplication/api.js";
+import {useGetAllLoanTopUpQuery} from "../../../store/features/loanApplication/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
@@ -82,7 +80,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'First Name', 'Middle Name', 'Last Name', 'Email Address', 'Phone Number', 'Gender', 'D.O.B', 'BVN', 'Initial Loan Amount', 'Top-up Amount', 'New Loan Amount', 'Status', 'Loan Tenor', 'Date Submitted', 'Actions' ]
+const header = ['S/N', 'Loan Category', 'First Name', 'Middle Name', 'Last Name', 'Email Address', 'Phone Number', 'Gender', 'D.O.B', 'BVN', 'Initial Loan Amount', 'Top-up Amount', 'New Loan Amount', 'Status', 'Loan Tenor', 'Date Submitted', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
@@ -97,7 +95,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.customerRef}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">Loan Top-up</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
