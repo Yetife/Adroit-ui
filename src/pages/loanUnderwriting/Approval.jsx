@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
@@ -15,11 +15,31 @@ const Approval = () => {
 
     const handleOptionChange = (option) => {
         setSelectedOption(option);
+        sessionStorage.setItem("radioOption", JSON.stringify(option));
     };
+
+    useEffect(() => {
+        const storedOption = sessionStorage.getItem('radioOption');
+        if (storedOption !== 'regularLoan') {
+            sessionStorage.setItem('radioOption', JSON.stringify('regularLoan'));
+        } else {
+            setSelectedOption(JSON.parse(storedOption));
+        }
+        // Add event listener to clear stored option when leaving the page
+        const handleBeforeUnload = () => {
+            sessionStorage.removeItem('radioOption');
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
     };
+
+
 
     const handleOpen = () => {
         setOpen(true)
@@ -65,11 +85,11 @@ const Approval = () => {
                     <div>
                         <input
                             type="radio"
-                            id="loanRestructuring"
+                            id="loanRestructure"
                             name="tableOption"
-                            value="loanRestructuring"
-                            checked={selectedOption === 'loanRestructuring'}
-                            onChange={() => handleOptionChange('loanRestructuring')}
+                            value="loanRestructure"
+                            checked={selectedOption === 'loanRestructure'}
+                            onChange={() => handleOptionChange('loanRestructure')}
                         />
                         <label htmlFor="Loan Restructuring" className="pl-1 font-semibold text-[#00C795] text-[18px]">Loan
                             Restructuring</label>
@@ -92,7 +112,7 @@ const Approval = () => {
                                     phone={filters.phone}
                                     startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
                                     channel={filters.channel}/>}
-                    { selectedOption === "loanRestructuring" && <ApproveRestructureTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
+                    { selectedOption === "loanRestructure" && <ApproveRestructureTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
                                     phone={filters.phone}
                                     startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
                                     channel={filters.channel}/>}

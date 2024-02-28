@@ -171,7 +171,7 @@ const DeclineApplicationModal = ({open, setOpen, id}) => {
                                          ></textarea>
                                 </span>
                             </div>
-                            <div className="flex space-x-3 float-right mb-20">
+                            <div className="flex space-x-3 float-right mb-2">
                                 <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8"
                                         onClick={() => setOpen(!open)}>Close
                                 </button>

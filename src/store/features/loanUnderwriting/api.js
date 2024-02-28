@@ -82,6 +82,54 @@ export const loanUnderwritingApi = createApi({
             },
             providesTags: ["disburseApplication", "stopDisbursement", "manualDisbursement"]
         }),
+        getAllDisbursementRestructure: builder.query({
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    category: 2,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/Disbursement/getbyloantype`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["disburseApplication", "stopDisbursement", "manualDisbursement"]
+        }),
+        getAllDisbursementTopUp: builder.query({
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    category: 1,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/Disbursement/getbyloantype`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["disburseApplication", "stopDisbursement", "manualDisbursement"]
+        }),
         stopDisbursement: builder.mutation({
             query: ({body}) => ({
                 url: `/Disbursement/StopDisbursement`,
@@ -111,6 +159,8 @@ export const {
     // useGetAllApprovalQuery,
     useEditStatusMutation,
     useGetAllDisbursementQuery,
+    useGetAllDisbursementRestructureQuery,
+    useGetAllDisbursementTopUpQuery,
     useGetReviewCustomerDetailsQuery,
     useStopDisbursementMutation,
     // useApproveApplicationMutation,

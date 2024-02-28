@@ -3,16 +3,17 @@ import {formatAmount} from "../../reusables/formatAmount.js";
 import dayjs from "dayjs";
 import {useState} from "react";
 import {
-    useGetAllApprovalTopUpQuery,
-} from "../../../store/features/loanApplication/api.js";
+    useGetAllDisbursementQuery,
+    useGetAllDisbursementTopUpQuery
+} from "../../../store/features/loanUnderwriting/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
 
-const ApproveTopUpTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
+const DisburseTopUpTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllApprovalTopUpQuery({
+    const {data, isFetching, error} =  useGetAllDisbursementTopUpQuery({
         size,
         page,
         applicationId, name, phone, email, channel, startDate, endDate
@@ -72,7 +73,7 @@ const ApproveTopUpTable = ({searchTerm, applicationId, name, phone, email, chann
     );
 };
 
-export default ApproveTopUpTable;
+export default DisburseTopUpTable;
 
 export function TableHeader({name}) {
     return (
@@ -145,7 +146,7 @@ export function TableData({data, no}) {
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/loanApp/loanTopUp/edit?id=${data.loanApplicationId}&status=approve&type=topup`)}>View
+                     onClick={() => router(`/loanApp/loanTopUp/edit?id=${data.loanApplicationId}&status=disburse&type=topup`)}>View
                  </span>
             </td>
         </tr>
