@@ -1,22 +1,20 @@
-import React, {useState} from 'react';
-import {useDispatch} from "react-redux";
-import {
-    useGetAllAdjustQuery,
-} from "../../../store/features/loanApplication/api.js";
+import {useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {formatAmount} from "../../reusables/formatAmount.js";
+import dayjs from "dayjs";
+import {useGetAllDeclinedTopUpQuery} from "../../../store/features/loanApplication/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
-import {formatAmount} from "../../reusables/formatAmount.js";
 
-const AdjustTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
+const DeclinedTopUpTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllAdjustQuery({
+    const {data, isFetching, error} =  useGetAllDeclinedTopUpQuery({
         size,
         page,
-        applicationId, name, phone, email, channel, startDate, endDate})
+        applicationId, name, phone, email, channel, startDate, endDate
+    })
     if (error) return <p>Network error</p>
 
     const filterData = (item) => {
@@ -72,7 +70,7 @@ const AdjustTable = ({searchTerm, applicationId, name, phone, email, channel, st
     );
 };
 
-export default AdjustTable;
+export default DeclinedTopUpTable;
 
 export function TableHeader({name}) {
     return (
@@ -82,12 +80,11 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Channel', 'Loan Category', 'Email Address', 'First Name', 'Last Name', 'Amount', 'Tenor', 'Actions' ]
+const header = ['S/N', 'Loan Category', 'First Name', 'Middle Name', 'Last Name', 'Email Address', 'Phone Number', 'Gender', 'D.O.B', 'BVN', 'Initial Loan Amount', 'Top-up Amount', 'New Loan Amount', 'Status', 'Loan Tenor', 'Date Submitted', 'Actions' ]
 
 
 export function TableData({data, no}) {
     const router = useNavigate()
-
 
     return (
         <tr>
@@ -95,33 +92,58 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.applicationChannel}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">Loan Top-up</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">Regular Loan</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.workEmail}</span>
-            </td>
-            <
-                td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.loanAmount)}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.emailAddress}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.phoneNumber}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.gender}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dateOfBirth}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanDuration}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.initialLoanAmount)}</span>
             </td>
-            <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.topUpAmount)}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.newLoanAmount)}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.tenor}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.dateSubmitted).format("YYYY/MM/DD")}</span>
+            </td>
+            <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/loanApp/adjust/customerDetails?id=${data.customerId}&aid=${data.applicantNumber}&status=adjust`)}>View
+                     onClick={() => router(`/loanApp/loanTopUp/edit?id=${data.loanApplicationId}&status=declined&type=topup`)}>View
                  </span>
             </td>
         </tr>

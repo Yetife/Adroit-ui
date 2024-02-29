@@ -230,7 +230,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                           disabled={purpose === "view"}
                                           onChange={(event) => handleChange(event, "lender")}
                                           placeholder="Enter name"
-                                          className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -243,7 +243,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                           disabled={purpose === "view"}
                                           onChange={(event) => handleChange(event, "obName")}
                                           placeholder="Enter name"
-                                          className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -256,7 +256,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                              disabled={purpose === "view"}
                                              onChange={(event) => handleChange(event, "dateOfBirth")}
                                              placeholder="Enter date of birth"
-                                             className="font-medium w-[250px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                             className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 "
                                          />
                                     </span>
                                 </div>
@@ -301,7 +301,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                           disabled={purpose === "view"}
                                           onChange={(event) => handleChange(event, "amount")}
                                           placeholder="Enter amount"
-                                          className="font-medium w-[250px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                 </div>
@@ -312,7 +312,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                       </h3>
                                          <select id="select" value={inputs.facilityType} disabled={purpose === "view"}
                                                  onChange={(event) => handleChange(event, "facilityType")}
-                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300">
                                             <option value="" disabled>Select facility type</option>
                                              {type && type?.map((option) => (
                                                  <option key={option.uniqueId} value={option.docName}>
@@ -327,7 +327,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                       </h3>
                                          <select id="select" value={inputs.docStatus} disabled={purpose === "view"}
                                                  onChange={(event) => handleChange(event, "docStatus")}
-                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300">
                                             <option value="" disabled>Select status</option>
                                              {status && status?.map((option) => (
                                                  <option key={option.uniqueId} value={option.docName}>
@@ -346,7 +346,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                              disabled={purpose === "view"}
                                              onChange={(event) => handleChange(event, "valueDate")}
                                              placeholder="Enter value date"
-                                             className="font-medium w-[250px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                             className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                          />
                                     </span>
                                 </div>
@@ -361,7 +361,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                              disabled={purpose === "view"}
                                              onChange={(event) => handleChange(event, "maturityDate")}
                                              placeholder="Enter maturity date"
-                                             className="font-medium w-[250px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                             className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                          />
                                     </span>
                                     <span className="ml-8">

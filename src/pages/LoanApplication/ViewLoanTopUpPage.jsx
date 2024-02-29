@@ -359,7 +359,7 @@ const ViewLoanTopUpPage = () => {
                     </div>
                 }
             </div>
-            <DeclineApplicationModal open={open} setOpen={setOpen}/>
+            <DeclineApplicationModal open={open} setOpen={setOpen} id={appId}/>
             <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"}
                                    handleRoute={() => router('/loanUnderwriting/review')}/>
             <StopDisbursementModal open={openApprove} setOpen={setOpenApprove} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/approval')}/>

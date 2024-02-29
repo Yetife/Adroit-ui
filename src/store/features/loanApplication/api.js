@@ -108,6 +108,54 @@ export const loanApplicationApi = createApi({
             },
             providesTags: ["completeReview", "declineApplication"]
         }),
+        getAllAdjustRestructure: builder.query({
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    category: 2,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/LoanApplication/Adjust/getbyloantype`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["completeReview", "declineApplication"]
+        }),
+        getAllAdjustTopUp: builder.query({
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    category: 1,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/LoanApplication/Adjust/getbyloantype`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["completeReview", "declineApplication"]
+        }),
         declineApplication: builder.mutation({
             query: ({body}) => ({
                 url: `/LoanApplication/Customer/Decline`,
@@ -134,6 +182,54 @@ export const loanApplicationApi = createApi({
                 };
                 return {
                     url: `/LoanApplication/Declined/get`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["declineApplication"]
+        }),
+        getAllDeclinedRestructure: builder.query({
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    category: 2,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/LoanApplication/Declined/getbyloantype`,
+                    params: queryParams,
+                };
+            },
+            providesTags: ["declineApplication"]
+        }),
+        getAllDeclinedTopUp: builder.query({
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    category: 1,
+                    // Add optional parameters conditionally
+                    ...(applicationId && { ApplicationId: applicationId }),
+                    ...(name && { ApplicantName: name }),
+                    ...(phone && { Status: phone }),
+                    ...(email && { EmailAddress: email }),
+                    ...(channel && { Channel: channel }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                    // ...filters
+                };
+                return {
+                    url: `/LoanApplication/Declined/getbyloantype`,
                     params: queryParams,
                 };
             },
@@ -356,7 +452,7 @@ export const loanApplicationApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["updateLoanRestructure"]
+            providesTags: ["updateLoanRestructure", "returnApplication",]
         }),
         getLoanRestructureDetail: builder.query({
             query: (id) => ({
@@ -392,7 +488,7 @@ export const loanApplicationApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["updateLoanTopUp"]
+            providesTags: ["updateLoanTopUp", "returnApplication",]
         }),
         getLoanTopUpDetail: builder.query({
             query: (id) => ({
@@ -418,7 +514,11 @@ export const {
     useEditStatusMutation,
     useGetAllCustomerQuery,
     useGetAllAdjustQuery,
+    useGetAllAdjustTopUpQuery,
+    useGetAllAdjustRestructureQuery,
     useGetAllDeclinedQuery,
+    useGetAllDeclinedRestructureQuery,
+    useGetAllDeclinedTopUpQuery,
     useGetCustomerDetailsQuery,
     useGetCustomerDataQuery,
     useGetAdjustCustomerDetailsQuery,

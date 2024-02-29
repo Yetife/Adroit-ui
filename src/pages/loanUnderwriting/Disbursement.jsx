@@ -77,6 +77,7 @@ const Disbursement = () => {
                             value="regularLoan"
                             checked={selectedOption === 'regularLoan'}
                             onChange={() => handleOptionChange('regularLoan')}
+                            className="cursor-pointer"
                         />
                         <label htmlFor="regularLoan" className="pl-1 font-semibold text-[#FF0909] text-[18px]">Regular
                             Loan</label>
@@ -89,6 +90,7 @@ const Disbursement = () => {
                             value="loanRestructure"
                             checked={selectedOption === 'loanRestructure'}
                             onChange={() => handleOptionChange('loanRestructure')}
+                            className="cursor-pointer"
                         />
                         <label htmlFor="Loan Restructuring" className="pl-1 font-semibold text-[#00C795] text-[18px]">Loan
                             Restructuring</label>
@@ -101,6 +103,7 @@ const Disbursement = () => {
                             value="loanTopUp"
                             checked={selectedOption === 'loanTopUp'}
                             onChange={() => handleOptionChange('loanTopUp')}
+                            className="cursor-pointer"
                         />
                         <label htmlFor="Loan Top-up" className="pl-1 pb-3 font-semibold text-[#1781BC] text-[18px]">Loan
                             Top-up</label>

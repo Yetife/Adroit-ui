@@ -292,7 +292,7 @@ const ViewLoanUnderwritingPage = () => {
                 }
             </div>
 
-            <DeclineApplicationModal open={open} setOpen={setOpen}/>
+            <DeclineApplicationModal open={open} setOpen={setOpen} id={appId}/>
             <AddCommentModal open={openComment} setOpen={setOpenComment} comment={comment} setComment={setComment}/>
             <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs} handleSubmit={handleAdjust}/>
             <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"} handleRoute={()=>router('/loanUnderwriting/disbursement')}/>

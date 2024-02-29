@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import LoanInformation from "./LoanInformation.jsx";
 import LoanNanoReport from "./LoanNanoReport.jsx";
 import LoanBankStatement from "./LoanBankStatement.jsx";
@@ -88,6 +88,7 @@ const ViewAdjustLoanPage = () => {
         completeReview({
             body: {
                 loanApplicationId: appId,
+                loanCategory: "Regular loan"
             }
         }).then(res => {
             setOpenComplete(true)
@@ -166,7 +167,7 @@ const ViewAdjustLoanPage = () => {
                 </div>
             }
             </div>
-            <DeclineApplicationModal open={open} setOpen={setOpen}/>
+            <DeclineApplicationModal open={open} setOpen={setOpen} id={appId}/>
             <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"} handleRoute={()=>router('/loanApp/adjust')}/>
         </Layout>
     );

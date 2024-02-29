@@ -109,7 +109,7 @@ const FilterDeclined = ({open, setOpen, handleFilter}) => {
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
                     <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[45%] left-[50%] max-h-[90vh] w-[90vw] max-w-[700px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-                        <Dialog.Title className="text-[32px] text-[#343434] font-extrabold -mt-8">Filter</Dialog.Title>
+                        <Dialog.Title className="text-[24px] text-[#343434] font-extrabold -mt-8">Filter</Dialog.Title>
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-2">
                             <div>
@@ -152,7 +152,7 @@ const FilterDeclined = ({open, setOpen, handleFilter}) => {
                                               value={name}
                                               onChange={handleNameChange}
                                               placeholder="Enter applicant name"
-                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                           />
                                         </span>
                                         <span className="ml-4">
@@ -164,7 +164,7 @@ const FilterDeclined = ({open, setOpen, handleFilter}) => {
                                               value={email}
                                               onChange={handleEmailChange}
                                               placeholder="Enter official email address"
-                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                           />
                                         </span>
                                     </div>
@@ -180,7 +180,7 @@ const FilterDeclined = ({open, setOpen, handleFilter}) => {
                                                 value={inputs.startDate}
                                                 onChange={(event) => handleChange(event, "startDate")}
                                                 placeholder="Enter start date"
-                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                             />
                                         </div>
                                         <div className="ml-4">
@@ -192,7 +192,7 @@ const FilterDeclined = ({open, setOpen, handleFilter}) => {
                                                 value={inputs.endDate}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter end date"
-                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                             />
                                         </div>
                                     </div>

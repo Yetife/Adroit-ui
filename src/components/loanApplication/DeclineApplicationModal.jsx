@@ -12,6 +12,8 @@ import {useNavigate} from "react-router-dom";
 
 const DeclineApplicationModal = ({open, setOpen, id}) => {
     const [selectedItems, setSelectedItems] = useState([]);
+    const queryParams = new URLSearchParams(location.search);
+    const type = queryParams.get("type");
     const [reasons, setReasons] = useState([]);
     const [inputs, setInputs] = useState({
         comment: "",
@@ -68,6 +70,7 @@ const DeclineApplicationModal = ({open, setOpen, id}) => {
         }
     };
 
+
    const handleDecline = () => {
        if (others && customReason.trim() !== '') {
            setSelectedItems((prevPermissions) => [
@@ -78,6 +81,7 @@ const DeclineApplicationModal = ({open, setOpen, id}) => {
            addReasons({
                body: {
                    loanApplicationId: inputs.applicationId,
+                   loanCategory: type === "structure" ? "loan restructure" : type === "topup" ? "loan topup" : "regular loan",
                    reasons: selectedItems,
                    comment: inputs.comment
                }

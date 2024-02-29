@@ -206,7 +206,7 @@ const fetchFeeFrequency = async () => {
                                              value={inputs.startDate}
                                              onChange={(event) => handleChange(event, "startDate")}
                                              placeholder="Enter start date"
-                                             className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                             className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                          />
                                          {/*<DatePicker*/}
                                          {/*    className='border broder-gray-700 px-2 rounded-md py-3 text-[14px] focus:outline-none'*/}
@@ -269,21 +269,8 @@ const fetchFeeFrequency = async () => {
                                                 value={inputs.endDate}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter start date"
-                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                             />
-                                         {/*<DatePicker*/}
-                                         {/*    className='border broder-gray-700  px-2 rounded-md py-3 text-[14px] focus:outline-none'*/}
-                                         {/*    // closeOnScroll={true}*/}
-                                         {/*    dateFormat="dd/MM/yyyy"*/}
-                                         {/*    placeholderText="Select a date"*/}
-                                         {/*    disabled={purpose === "view"}*/}
-                                         {/*    selected={endDate}*/}
-                                         {/*    onChange={(date) => setEndDate(date)}*/}
-                                         {/*    showYearDropdown*/}
-                                         {/*    showMonthDropdown*/}
-                                         {/*    showDisabledMonthNavigation*/}
-                                         {/*    dropdownMode="select"*/}
-                                         {/*/>*/}
                                     </span>
                                     )
                                 }

@@ -1,5 +1,5 @@
 import Layout from "../Layout.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {useAddGenderMutation} from "../../store/features/generalSetup/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
@@ -10,10 +10,35 @@ import CustomerTable from "../../components/loanApplication/customer/CustomerTab
 import FilterCustomer from "../../components/loanApplication/customer/FilterCustomer.jsx";
 import AdjustTable from "../../components/loanApplication/adjust/AdjustTable.jsx";
 import FilterAdjust from "../../components/loanApplication/adjust/filterAdjust.jsx";
+import AdjustRestructureTable from "../../components/loanApplication/adjust/AdjustRestructureTable.jsx";
+import AdjustTopUpTable from "../../components/loanApplication/adjust/AdjustTopUpTable.jsx";
 
 const AdjustApplication = () => {
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedOption, setSelectedOption] = useState('regularLoan');
+
+    const handleOptionChange = (option) => {
+        setSelectedOption(option);
+        sessionStorage.setItem("radioOption", JSON.stringify(option));
+    };
+
+    useEffect(() => {
+        const storedOption = sessionStorage.getItem('radioOption');
+        if (storedOption !== 'regularLoan') {
+            sessionStorage.setItem('radioOption', JSON.stringify('regularLoan'));
+        } else {
+            setSelectedOption(JSON.parse(storedOption));
+        }
+        // Add event listener to clear stored option when leaving the page
+        const handleBeforeUnload = () => {
+            sessionStorage.removeItem('radioOption');
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
     };
@@ -40,14 +65,66 @@ const AdjustApplication = () => {
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Filter</Text>
                         </Button>
                     </div>
                 </div>
+                <div className="flex space-x-4 mt-4 justify-center">
+                    <div>
+                        <input
+                            type="radio"
+                            id="regularLoan"
+                            name="tableOption"
+                            value="regularLoan"
+                            checked={selectedOption === 'regularLoan'}
+                            onChange={() => handleOptionChange('regularLoan')}
+                            className="cursor-pointer"
+                        />
+                        <label htmlFor="regularLoan" className="pl-1 font-semibold text-[#FF0909] text-[18px]">Regular
+                            Loan</label>
+                    </div>
+                    <div>
+                        <input
+                            type="radio"
+                            id="loanRestructure"
+                            name="tableOption"
+                            value="loanRestructure"
+                            checked={selectedOption === 'loanRestructure'}
+                            onChange={() => handleOptionChange('loanRestructure')}
+                            className="cursor-pointer"
+                        />
+                        <label htmlFor="Loan Restructuring" className="pl-1 font-semibold text-[#00C795] text-[18px]">Loan
+                            Restructuring</label>
+                    </div>
+                    <div>
+                        <input
+                            type="radio"
+                            id="loanTopUp"
+                            name="tableOption"
+                            value="loanTopUp"
+                            checked={selectedOption === 'loanTopUp'}
+                            onChange={() => handleOptionChange('loanTopUp')}
+                            className="cursor-pointer"
+                        />
+                        <label htmlFor="Loan Top-up" className="pl-1 pb-3 font-semibold text-[#1781BC] text-[18px]">Loan
+                            Top-up</label>
+                    </div>
+                </div>
                 <div>
-                    <AdjustTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name} phone={filters.phone}
-                                 startDate={filters.startDate} endDate={filters.endDate} email={filters.email} channel={filters.channel} />
+                    { selectedOption === "regularLoan" && <AdjustTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
+                                  phone={filters.phone}
+                                  startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
+                                  channel={filters.channel}/>}
+                    { selectedOption === "loanRestructure" && <AdjustRestructureTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
+                                  phone={filters.phone}
+                                  startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
+                                  channel={filters.channel}/>}
+                    { selectedOption === "loanTopUp" && <AdjustTopUpTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
+                                  phone={filters.phone}
+                                  startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
+                                  channel={filters.channel}/>}
                 </div>
                 <FilterAdjust open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
