@@ -20,6 +20,8 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
     const [addLoan] = useAddRegularLoanChargeMutation()
     const [editLoan] = useEditRegularLoanChargeMutation()
     const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
 
 
 
@@ -99,7 +101,7 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
     }
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidEmploymenttypes', {
+            const response = await axios.get(`${baseUrl}GeneralSetUp/getallvalidEmploymenttypes`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -115,7 +117,7 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
     };
     const fetchTenor = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidRegularLoanTenors', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidRegularLoanTenors`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",

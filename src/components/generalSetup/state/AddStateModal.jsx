@@ -18,6 +18,8 @@ const AddStateModal = ({open, setOpen, checked, setChecked, state, setState, pur
     const [addState] = useAddStateMutation()
     const [editState] = useEditStateMutation()
     const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
 
 
     const handleAdd = ()=> {
@@ -73,7 +75,7 @@ const AddStateModal = ({open, setOpen, checked, setChecked, state, setState, pur
 
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidCountry', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidCountry`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',

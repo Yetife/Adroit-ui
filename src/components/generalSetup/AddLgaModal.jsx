@@ -16,6 +16,7 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, selectedV
     const [addLga] = useAddLgaMutation()
     const [editLga] = useEditLgaMutation()
     const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
 
     const handleChange = (event) => {
         setChecked(event.target.checked);
@@ -68,7 +69,7 @@ const AddLgaModal = ({open, setOpen, checked, setChecked, lga, setLga, selectedV
     }
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidStates', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidStates`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
