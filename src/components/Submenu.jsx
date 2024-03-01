@@ -44,7 +44,7 @@ const Submenu = ({data}) => {
                                                 each.dropdown?.map((sub, index) => (
                                                     <div key={index} className="flex">
                                                         <div className="flex font-bold items-center px-12 py-1  text-gray-100 bg-white bg-opacity-25" onClick={()=>router(sub.href)}>
-                                                            <span className={`${ location.pathname === each.href && 'medium'} mx-3 text-sm font-normal cursor-pointer ${ location.pathname === sub.href ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}> - {sub.applicationPageName}</span>
+                                                            <span className={`${ location.pathname === each.href && 'medium'} mx-3 text-sm cursor-pointer ${ location.pathname === sub.href ? 'text-[#0C3A35] font-medium' : 'text-[#6F8B84] font-normal'}`}> - {sub.applicationPageName}</span>
                                                         </div>
                                                     </div>
                                                 ))

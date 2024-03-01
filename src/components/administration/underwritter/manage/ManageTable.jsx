@@ -109,7 +109,7 @@ export function TableData({data, no}) {
         setPurpose("view")
         setInputs({
             staff: data.firstName,
-            firstName: data.firstName + " " + data.lastName ,
+            firstName: data.firstName,
             lastName: data.lastName,
             emailAddress: data.emailAddress,
             level: data.level,
@@ -151,7 +151,7 @@ export function TableData({data, no}) {
         setPurpose("edit")
         setInputs({
             staff: data.firstName,
-            firstName: data.firstName + " " + data.lastName ,
+            firstName: data.firstName ,
             lastName: data.lastName,
             emailAddress: data.emailAddress,
             middleName: data?.middleName,
@@ -190,7 +190,7 @@ export function TableData({data, no}) {
                     </svg>
                 </a>
                 <span onMouseLeave={handleBlurDropdown}
-                      className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer"
+                      className="absolute z-10 w-32 right--1 md:right-10 mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
