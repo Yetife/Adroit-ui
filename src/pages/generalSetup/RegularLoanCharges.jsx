@@ -16,6 +16,8 @@ const RegularLoanCharges = () => {
     const [depositTo, setDepositTo] = useState("")
     const [cAmount, setCAmount] = useState('')
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedPer, setSelectedPer] = useState("");
+
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -45,7 +47,7 @@ const RegularLoanCharges = () => {
                     <RegularLoanChargesTable searchTerm={searchTerm}/>
                 </div>
                 <AddRegularLoanChargeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom}
-                                           depositTo={depositTo} setDepositTo={setDepositTo} cAmount={cAmount} setCAmount={setCAmount}
+                                           depositTo={depositTo} setDepositTo={setDepositTo} cAmount={cAmount} setCAmount={setCAmount} setSelectedPer={setSelectedPer} selectedPer={selectedPer}
                                            selectedValue={selectedValue} setSelectedValue={setSelectedValue} selectedLoan={selectedLoan} setSelectedLoan={setSelectedLoan}/>
             </div>
         </Layout>

@@ -111,7 +111,7 @@ const FilterLoanModal = ({open, setOpen, handleFilter}) => {
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
                     <Dialog.Content className="custom-scroll-bar overflow-auto data-[state=open]:animate-contentShow z-[200] fixed top-[50%] left-[50%] max-h-[100vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-                        <Dialog.Title className="text-[24px] text-[#343434] font-extrabold -mt-8 mb-4 border-b">Filter</Dialog.Title>
+                        <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-8 mb-4 border-b">Filter</Dialog.Title>
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-1">
                             <div>

@@ -143,7 +143,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                         docStatus: "",
                         amount: "",
                     })
-                    await dispatch(fetchDocumentation())
+                    await dispatch(fetchDocumentation(10, 1))
                 }
             } catch (error) {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
@@ -196,7 +196,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                         docStatus: "",
                         amount: "",
                     })
-                    await dispatch(fetchDocumentation())
+                    await dispatch(fetchDocumentation(10, 1))
                 }
             } catch (error) {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));

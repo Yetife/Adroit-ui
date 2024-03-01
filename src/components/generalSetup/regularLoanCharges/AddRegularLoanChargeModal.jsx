@@ -10,11 +10,10 @@ import {Checkbox} from "@mui/material";
 import {Close} from "@mui/icons-material";
 import {getUserToken} from "../../../services/storage/index.js";
 
-const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount, setCAmount, depositFrom, setDepositFrom, depositTo, setDepositTo, purpose, selectedValue, selectedLoan, setSelectedLoan, setSelectedValue, id}) => {
+const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount, setCAmount, depositFrom, setDepositFrom, depositTo, setDepositTo, purpose, selectedValue, selectedLoan, setSelectedLoan, setSelectedValue, selectedPer, setSelectedPer, id}) => {
     const [type, setType] = useState([]);
     const [tenor, setTenor] = useState([]);
     const per = [{name: true}, {name: false}]
-    const [selectedPer, setSelectedPer] = useState("");
     const [selectedId, setSelectedId] = useState('');
     const dispatch = useDispatch()
     const [addLoan] = useAddRegularLoanChargeMutation()
@@ -101,7 +100,7 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
     }
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${baseUrl}GeneralSetUp/getallvalidEmploymenttypes`, {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidEmploymenttypes`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -174,7 +173,7 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
                                             Employment Type
                                           </h3>
                                              <select id="select" value={selectedValue} disabled={purpose === "view"} onChange={handleSelectChange}
-                                                     style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}>
+                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center">
                                                 <option value="" disabled>Select a type</option>
                                                  {type && type?.map((option) => (
                                                      <option key={option.id} value={option.name}>
@@ -217,7 +216,9 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
                                           </h3>
                                              <select id="select" value={selectedLoan} disabled={purpose === "view"}
                                                      onChange={handleLoanChange}
-                                                     style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}>
+                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center"
+                                                     // style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
+                                             >
                                                 <option value="" disabled>Select loan tenor</option>
                                                  {tenor && tenor?.map((option) => (
                                                      <option key={option.id} value={option.name}>
@@ -232,7 +233,8 @@ const AddRegularLoanChargeModal = ({open, setOpen, checked, setChecked, cAmount,
                                             IsPercentage
                                           </h3>
                                              <select id="select" disabled={purpose === "view"} value={selectedPer} onChange={handlePercentageChange}
-                                                     style={{ width: '100%', padding: '9px', border: '1px solid #ccc', borderRadius: '4px' }}>
+                                                     className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center"
+                                             >
                                                  <option value="" disabled>Is Percentage</option>
                                                  <option value={true}>True</option>
                                                  <option value={false}>False</option>

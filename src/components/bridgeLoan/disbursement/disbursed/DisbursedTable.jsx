@@ -6,10 +6,10 @@ import {
 } from "../../../../store/features/bridgeLoan/api.js";
 import Pagination from "../../../reusables/Pagination.jsx";
 
-export const DisbursedTable = ({searchTerm}) => {
+export const DisbursedTable = ({searchTerm, startDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllDisbursedDisbursementQuery({size, page})
+    const {data, isFetching, error} =  useGetAllDisbursedDisbursementQuery({size, page, startDate})
     if (error) return <p>Network error</p>
 
     const filterData = (item) => {

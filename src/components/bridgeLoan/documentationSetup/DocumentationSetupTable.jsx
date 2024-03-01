@@ -91,6 +91,7 @@ export function TableData({data, no}) {
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
     const dispatch = useDispatch()
+    const [dateCreated, setDateCreated] = useState("")
     const [editSetup] = useEditDocumentSetupMutation()
 
 
@@ -101,6 +102,7 @@ export function TableData({data, no}) {
         setOpen(true)
         setDocName(data.docName)
         setPurpose("view")
+        setDateCreated(data.dateCreated)
         setChecked(data.status === "1" ? true : false)
     }
 
@@ -123,6 +125,7 @@ export function TableData({data, no}) {
         setOpen(true)
         setPurpose("edit")
         setDocName(data.docName)
+        setDateCreated(data.dateCreated)
         setId(data.uniqueId)
         setChecked(data.status === "1" ? true : false )
     }
@@ -156,7 +159,7 @@ export function TableData({data, no}) {
                     </svg>
                 </a>
                 <span onMouseLeave={handleBlurDropdown}
-                      className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer"
+                      className="absolute z-10 w-32 right--1 md:right-20 mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
@@ -168,7 +171,7 @@ export function TableData({data, no}) {
             </td>
             <AddDocumentationSetupModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked}
                                         docName={docName} setDocName={setDocName} handleAdd={handleEdit}
-                                        purpose={purpose}/>
+                                        purpose={purpose} dateCreated={dateCreated}/>
         </tr>
     )
 }

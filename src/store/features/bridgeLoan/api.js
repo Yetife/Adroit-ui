@@ -129,11 +129,13 @@ export const bridgeLoanApi = createApi({
             providesTags: ["AddDisbursement", "ReturnDisbursement"]
         }),
         getAllDisbursedDisbursement: builder.query({
-            query: ({size, page, searchTerm}) => {
+            query: ({size, page, searchTerm, startDate}) => {
                 const queryParams = {
                     PasgeSize: size,
                     PageNumber: page,
+                    det: startDate ? 1 : 2,
                     ...(searchTerm && { SearchName: searchTerm }),
+                    ...(startDate && { StartDate: startDate }),
                 };
                 return {
                     url: `/BridgeLoan/Disbursement/getdisbursed`,

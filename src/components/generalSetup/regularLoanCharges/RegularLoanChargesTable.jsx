@@ -74,6 +74,7 @@ export function TableData({data, no}) {
     const [depositTo, setDepositTo] = useState("")
     const [selectedValue, setSelectedValue] = useState('');
     const [selectedLoan, setSelectedLoan] = useState('');
+    const [selectedPer, setSelectedPer] = useState("");
     const [cAmount, setCAmount] = useState('')
     const dispatch = useDispatch()
     const [purpose, setPurpose] = useState("")
@@ -92,6 +93,7 @@ export function TableData({data, no}) {
         setCAmount(data.chargeAmount)
         setSelectedValue(data.employmentTypeId)
         setSelectedLoan(data.loanTenorid)
+        setSelectedPer(data.isPercentage)
         setChecked(data.status === 1 ? true : false)
         setId(data.id)
     }
@@ -103,6 +105,7 @@ export function TableData({data, no}) {
         setCAmount(data.chargeAmount)
         setSelectedValue(data.employmentTypeId)
         setSelectedLoan(data.loanTenorid)
+        setSelectedPer(data.isPercentage)
         setId(data.id)
         setChecked(data.status === 1 ? true : false)
     }
@@ -171,8 +174,8 @@ export function TableData({data, no}) {
         </span>
             </td>
             <AddRegularLoanChargeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom}
-                                             depositTo={depositTo} setDepositTo={setDepositTo} cAmount={cAmount} setCAmount={setCAmount} purpose={purpose}
-                                       selectedValue={selectedValue} setSelectedValue={setSelectedValue} selectedLoan={selectedLoan} setSelectedLoan={setSelectedLoan} id={id}/>
+                                             depositTo={depositTo} setDepositTo={setDepositTo} cAmount={cAmount} setCAmount={setCAmount} purpose={purpose} selectedPer={selectedPer}
+                                       setSelectedPer={setSelectedPer} selectedValue={selectedValue} setSelectedValue={setSelectedValue} selectedLoan={selectedLoan} setSelectedLoan={setSelectedLoan} id={id}/>
         </tr>
     )
 }

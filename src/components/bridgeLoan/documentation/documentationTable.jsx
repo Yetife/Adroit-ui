@@ -33,6 +33,7 @@ const DocumentationTable = ({searchTerm}) => {
     const [size, setSize] = useState(10)
     const handlePageChange = (newPage) => {
         setPage(newPage)
+        dispatch(fetchDocumentation(size, newPage))
     }
 
     const handleRowPerPageChange = (event) => {

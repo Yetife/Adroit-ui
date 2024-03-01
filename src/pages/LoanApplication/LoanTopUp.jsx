@@ -1,12 +1,8 @@
-import React, {useState} from 'react';
-import {useDispatch} from "react-redux";
-import {useAddGenderMutation} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useState} from 'react';
 import Layout from "../Layout.jsx";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
-import LoanRestructuringTable from "../../components/loanApplication/loanRestructuring/LoanRestructuringTable.jsx";
 import FilterLoanModal from "../../components/loanApplication/loanRestructuring/FilterLoanModal.jsx";
 import LoanTopUpTable from "../../components/loanApplication/loanTopup/LoanTopUpTable.jsx";
 

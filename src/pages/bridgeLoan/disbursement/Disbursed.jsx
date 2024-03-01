@@ -5,17 +5,31 @@ import Layout from "../../Layout.jsx";
 import {DisbursedTable} from "../../../components/bridgeLoan/disbursement/disbursed/DisbursedTable.jsx";
 import DisburseBulkUpload from "../../../components/bridgeLoan/disbursement/disbursed/DisburseBulkUpload.jsx";
 import {useState} from "react";
+import FilterDisbursedModal from "../../../components/bridgeLoan/disbursement/disbursed/FilterDisbursedModal.jsx";
 
 const Disbursed = () => {
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const handleSearch = (searchValue) => {
+        setSearchTerm(searchValue);
+    };
     const [open, setOpen] = useState(false)
+    const [openFilter, setOpenFilter] = useState(false)
+    const [filters, setFilters] = useState({
+        startDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+    };
     return (
         <Layout>
             <div className="px-2">
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
-                    <Search/>
+                    <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
                         <Button variant="primary"borderColor="#00C795" marginRight="10px"
-                                bgColor="#135D54" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                                bgColor="#135D54" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'} onClick={()=>setOpenFilter(true)}>
                             <Text color="white">Filter</Text>
                         </Button>
                         <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
@@ -25,8 +39,9 @@ const Disbursed = () => {
                     </div>
                 </div>
 
-                <DisbursedTable />
+                <DisbursedTable searchTerm={searchTerm} startDate={filters.startDate}/>
                 <DisburseBulkUpload open={open} setOpen={setOpen}/>
+                <FilterDisbursedModal open={openFilter} setOpen={setOpenFilter} handleFilter={handleFilter}/>
             </div>
         </Layout>
     );
