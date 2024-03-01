@@ -54,7 +54,7 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
 
     const fetchStaff = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/Users/get_all_active_users`, {
+            const response = await axios.get(`http://creditwavetosin-001-site8.ltempurl.com/api/Users/get_all_active_users`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -134,34 +134,34 @@ const AddManageModal = ({open, setOpen, inputs, setInputs,  purpose, handleAdd})
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                         Staff
                                       </h3>
-                                     <CustomAutocomplete
-                                         options={staff}
-                                         disabled={purpose === "view"}
-                                         onSelect={(selectedStaff) => {
-                                             setInputs((values) => ({
-                                                 ...values,
-                                                 firstName: selectedStaff.firstName,
-                                                 emailAddress: selectedStaff.email || '',
-                                                 lastName: selectedStaff.lastName || '',
-                                             }));
-                                         }}
-                                         isDropdownOpen={isDropdownOpen}
-                                         setIsDropdownOpen={setIsDropdownOpen}
-                                         updateInputs={updateInputs}
-                                         // inputValue={inputs.firstName}
-                                         // setInputValue={setInputs}
-                                     />
-                                      {/*<select id="select" value={inputs.firstName}*/}
-                                      {/*        disabled={purpose === "view"}*/}
-                                      {/*        onChange={(event) => handleChange(event, "firstName")}*/}
-                                      {/*        className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">*/}
-                                      {/*      <option value="" disabled>Select staff</option>*/}
-                                      {/*    {staff && staff?.map((option) => (*/}
-                                      {/*        <option key={option.id} value={option.firstName}>*/}
-                                      {/*            {option.firstName} {option.lastName}*/}
-                                      {/*        </option>*/}
-                                      {/*    ))}*/}
-                                      {/*  </select>*/}
+                                     {/*<CustomAutocomplete*/}
+                                     {/*    options={staff}*/}
+                                     {/*    disabled={purpose === "view"}*/}
+                                     {/*    onSelect={(selectedStaff) => {*/}
+                                     {/*        setInputs((values) => ({*/}
+                                     {/*            ...values,*/}
+                                     {/*            firstName: selectedStaff.firstName,*/}
+                                     {/*            emailAddress: selectedStaff.email || '',*/}
+                                     {/*            lastName: selectedStaff.lastName || '',*/}
+                                     {/*        }));*/}
+                                     {/*    }}*/}
+                                     {/*    isDropdownOpen={isDropdownOpen}*/}
+                                     {/*    setIsDropdownOpen={setIsDropdownOpen}*/}
+                                     {/*    updateInputs={updateInputs}*/}
+                                     {/*    // inputValue={inputs.firstName}*/}
+                                     {/*    // setInputValue={setInputs}*/}
+                                     {/*/>*/}
+                                      <select id="select" value={inputs.firstName}
+                                              disabled={purpose === "view"}
+                                              onChange={(event) => handleChange(event, "firstName")}
+                                              className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                            <option value="" disabled>Select staff</option>
+                                          {staff && staff?.map((option) => (
+                                              <option key={option.id} value={option.firstName}>
+                                                  {option.firstName} {option.lastName}
+                                              </option>
+                                          ))}
+                                        </select>
                                 </span>
                                 <div className="pt-8">
                                     <span>
