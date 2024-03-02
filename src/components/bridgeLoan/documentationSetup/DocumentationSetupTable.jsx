@@ -139,7 +139,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.docName}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.createdBy}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.createdBy}</span>
             </td>
             <td className="px-10 py-4 border-b border-gray-200">
                 <span

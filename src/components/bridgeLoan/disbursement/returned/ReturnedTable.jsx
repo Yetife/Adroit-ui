@@ -6,6 +6,7 @@ import {
 } from "../../../../store/features/bridgeLoan/api.js";
 import ReturnedModal from "./ReturnedModal.jsx";
 import Pagination from "../../../reusables/Pagination.jsx";
+import {formatAmount} from "../../../reusables/formatAmount.js";
 
 const ReturnedTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -170,7 +171,8 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.idDateIssued}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.transferAmount}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.transferAmount)}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.preferredNaration}</span>

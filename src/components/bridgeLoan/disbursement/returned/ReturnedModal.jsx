@@ -29,8 +29,9 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
     };
 
     const fetchGender = async () => {
+        const baseUrl = import.meta.env.VITE_APP_BASE_URL
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidGenders', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidGenders`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",

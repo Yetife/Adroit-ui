@@ -5,6 +5,7 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../../reusables/theme.jsx";
 import {useState} from "react";
 import Pagination from "../../../reusables/Pagination.jsx";
+import {formatAmount} from "../../../reusables/formatAmount.js";
 
 const NewDisbursementTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -120,7 +121,8 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.idDateIssued}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.transferAmount}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.transferAmount)}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.preferredNaration}</span>

@@ -177,7 +177,7 @@ const FilterAdjust = ({open, setOpen, handleFilter}) => {
                                                 value={inputs.startDate}
                                                 onChange={(event) => handleChange(event, "startDate")}
                                                 placeholder="Enter start date"
-                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                             />
                                         </div>
                                         <div className="ml-4">
@@ -189,7 +189,7 @@ const FilterAdjust = ({open, setOpen, handleFilter}) => {
                                                 value={inputs.endDate}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter end date"
-                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                                className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                             />
                                         </div>
                                     </div>

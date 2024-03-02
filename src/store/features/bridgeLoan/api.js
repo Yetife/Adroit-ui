@@ -105,6 +105,7 @@ export const bridgeLoanApi = createApi({
                 const queryParams = {
                     PasgeSize: size,
                     PageNumber: page,
+                    det: 2,
                     ...(searchTerm && { SearchName: searchTerm }),
                 };
                 return {
