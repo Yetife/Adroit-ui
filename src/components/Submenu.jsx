@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {useLocation, useNavigate, Link} from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-const Submenu = ({data}) => {
+const Submenu = ({data, isExpanded}) => {
     const router = useNavigate()
     const location = useLocation()
     const currentRoute = '/' + location.pathname.split('/')[1]
@@ -23,10 +23,11 @@ const Submenu = ({data}) => {
                 <div className={`${currentRoute.includes(data.route) && 'border-x-4 border-[#00C795] py-3 bg-[#EAFFFA]'} cursor-pointer flex justify-between`} onClick={handleShowDropdown}>
                     <div className='flex items-center px-6 text-gray-100 bg-white bg-opacity-25' onClick={()=>router(data.href)}>
                         <img alt={`${data.name?.toLowerCase()}_icon`} src={`${data.icon}`} width={20} height={20} />
-                        <span className="mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]">{data.name}</span>
+                        {isExpanded && <span
+                            className="mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]">{data.name}</span>}
                     </div>
                     {/*{data.hasDropdown && showDropdown ? <img src={data.iconClosed} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> : data.hasDropdown ? <img src={data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> : null}*/}
-                    {data.hasDropdown  && <img src={ showDropdown ?data.iconClosed : data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> }
+                    {(data.hasDropdown && isExpanded) && <img src={ showDropdown ?data.iconClosed : data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> }
                 </div>
                 {
                     data.hasDropdown && showDropdown && (

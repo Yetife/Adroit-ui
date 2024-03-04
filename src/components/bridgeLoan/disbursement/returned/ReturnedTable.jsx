@@ -7,6 +7,7 @@ import {
 import ReturnedModal from "./ReturnedModal.jsx";
 import Pagination from "../../../reusables/Pagination.jsx";
 import {formatAmount} from "../../../reusables/formatAmount.js";
+import dayjs from "dayjs";
 
 const ReturnedTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -77,7 +78,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Surname', 'First Name', 'Middle Name', 'Email Address', 'House No.', 'Street Name', 'City', 'State', 'D.O.B', 'BVN', 'ID NO. (International Passport Only)',
+const header = ['S/N', 'Surname', 'First Name', 'Middle Name', 'Email Address', 'Gender', 'House No.', 'Street Name', 'City', 'State', 'D.O.B', 'BVN', 'ID NO. (International Passport Only)',
     'ID Date Issued', 'Transfer Amount', 'Preferred Narration', 'Re-Payment Date', 'Action' ]
 
 export function TableData({data, no}) {
@@ -145,6 +146,8 @@ export function TableData({data, no}) {
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.emailAddress}</span>
+            </td> <td className="px-3 py-4 border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.gender}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.houseNo}</span>
@@ -159,7 +162,8 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.state}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.dob}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{dayjs(data.dob).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
@@ -168,7 +172,8 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.idNo}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.idDateIssued}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.idDateIssued).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <span
@@ -178,7 +183,8 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.preferredNaration}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.repaymentDate}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.repaymentDate).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200 cursor-pointer">
                 <span className="text-[16px] leading-5 text-[#FF4B12] font-semibold" onClick={()=>handleOpenReturn(data)}>Edit</span>

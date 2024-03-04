@@ -9,6 +9,7 @@ const Layout = ({children}) => {
     const router = useNavigate();
     const location = useLocation();
     const currentRoute = location.pathname.split('/')
+    const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
 
     const updateSidebarOpen = (val) => {
         setMenuOpen(val)
@@ -25,10 +26,13 @@ const Layout = ({children}) => {
     return (
         <div className={` flex bg-gray-200`}>
             <div className={`fixed z-20 transition-opacity bg-black lg:hidden ${ menuOpen ? 'opacity-50 block' : 'opacity-0'} `} ></div>
-            <Sidebar  openSidebar={menuOpen} updateSidebarOpen={updateSidebarOpen} />
+            <Sidebar  openSidebar={menuOpen}
+                      updateSidebarOpen={updateSidebarOpen}
+                      isExpanded={isSidebarExpanded}
+                      setIsExpanded={setIsSidebarExpanded}/>
             <div className="flex flex-col flex-1 overflow-hidden">
                 <Navbar openSidebar={updateSidebarOpen} name={user.FirstName + " " + user.LastName} email={user.email} />
-                <main className="flex-1 bg-white md:pl-20 md:pr-8 w-full">
+                <main className={`${isSidebarExpanded ? 'md:pl-20 md:pr-8' : 'md:pr-20'} flex-1 bg-white  w-full`}>
                     <div className="px-6 py-6 pt-28 mx-auto w-full">
                         {location.pathname !== '/dashboard' && <h3 className="flex text-xs md:ml-[15rem] font-medium">{currentRoute.map(((breadcrumb, ind) => (
                             <span key={ind} className='flex flex-row'>

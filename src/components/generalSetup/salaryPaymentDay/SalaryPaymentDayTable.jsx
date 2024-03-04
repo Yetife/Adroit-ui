@@ -98,7 +98,7 @@ export function TableData({data, no}) {
             dispatch(
                 updateSnackbar({
                     type: "TOGGLE_SNACKBAR_OPEN",
-                    message: res?.data?.message,
+                    message: "Record Deleted Successfully",
                     success: true,
                 })
             );

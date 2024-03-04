@@ -90,8 +90,9 @@ const AddRegularLoanInterestRateModal = ({open, setOpen, checked, setChecked, ra
         }
     }
     const fetchData = async () => {
+        const baseUrl = import.meta.env.VITE_APP_BASE_URL
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidEmploymenttypes',{
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidEmploymenttypes`,{
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',

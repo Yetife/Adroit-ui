@@ -263,7 +263,7 @@ export const generalSetUpApi = createApi({
         }),
         deleteResidency: builder.mutation({
             query:(id)=>({
-                url:`/GeneralSetUp/deleteNoofyearofresidencesbyid/id?id=${id}`,
+                url:`/GeneralSetUp/deleteNoofyearofresidencebyid/id?id=${id}`,
                 method:"DELETE"
             }),
             invalidatesTags:["DelResidency"]

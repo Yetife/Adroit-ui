@@ -170,7 +170,7 @@ const AddNewPage = () => {
                                      className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 h-[52px] rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                 <option value="" disabled>Select gender</option>
                                  {gender && gender?.map((option) => (
-                                     <option key={option.uniqueId} value={option.id}>
+                                     <option key={option.uniqueId} value={option.name}>
                                          {option.name}
                                      </option>
                                  ))}
@@ -237,7 +237,7 @@ const AddNewPage = () => {
                                value={inputs.date}
                                onChange={(event) => handleChange(event, "date")}
                                placeholder="Enter date"
-                               className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                               className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300"
                            />
                         </span>
                         <span className="ml-8">
@@ -313,7 +313,7 @@ const AddNewPage = () => {
                               value={inputs.repayment}
                               onChange={(event) => handleChange(event, "repayment")}
                               placeholder="Enter repayment date"
-                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300"
                           />
                         </span>
                     </div>

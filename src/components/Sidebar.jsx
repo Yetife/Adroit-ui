@@ -15,8 +15,9 @@ import receipt from '../assets/receipt-edit.svg'
 import arrowDown from '../assets/arrow-down.svg'
 import arrowUp from '../assets/arrowUp.svg'
 import Submenu from "./Submenu.jsx";
+import MenuIcon from '@mui/icons-material/Menu';
 
-const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
+const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) => {
 
     const sidebarData = [
         {
@@ -333,118 +334,144 @@ const Sidebar = ({ openSidebar, updateSidebarOpen}) => {
         updateSidebarOpen(false)
     }
 
+    const handleToggleExpand = () => {
+        setIsExpanded((prev) => !prev);
+    };
+
     return (
-        <div onBlur={ handleOnBlur } className={`fixed inset-y-0 left-0 z-30 overflow-hidden w-72 drop-shadow-2xl overflow-y-auto transition duration-300 transform bg-white lg:translate-x-0 lg:static lg:inset-0 ${openSidebar ? 'translate-x-0 ease-out block ' : '-translate-x-full ease-in'} `} style={{position: 'fixed'}}>
-            <div className="flex items-center justify-center mt-6">
-                <div className="flex justify-between  items-center ml-8">
-                    <img src={logo} alt="brand" width={109} height={32} className="cursor-pointer" />
-                    { openSidebar && <img className='ml-8' onClick={ handleClick } src={exit} alt="exit" width={30} height={30} /> }
-                    <span className="mx-2 text-2xl font-normal focus:outline-none outline-none border-none text-white">Dashboard</span>
+        <div onBlur={handleOnBlur}
+             className={`${isExpanded ? 'w-72' : 'w-24'} fixed inset-y-0 left-0 z-30 overflow-hidden drop-shadow-2xl overflow-y-auto transition duration-300 transform bg-white lg:translate-x-0 lg:static lg:inset-0 ${
+                 openSidebar ? 'translate-x-0 ease-out block' : '-translate-x-full ease-in'
+             }`}
+             style={{ position: 'fixed', minWidth: isExpanded ? '18rem' : '3rem' }}>
+            <div className="flex items-center justify-center mt-4">
+                <div className="flex justify-between items-center ml-8">
+                    {isExpanded ? <img
+                        src={logo}
+                        onClick={handleToggleExpand}
+                        alt="brand"
+                        width={109}
+                        height={32}
+                        className="cursor-pointer"
+                    /> : <MenuIcon onClick={handleToggleExpand} sx={{cursor: 'pointer', marginLeft: "100px"}}/>}
+                    {openSidebar && (
+                        <img
+                            className="ml-8"
+                            onClick={handleClick}
+                            src={exit}
+                            alt="exit"
+                            width={30}
+                            height={30}
+                        />
+                    )}
+                    <span className="mx-2 text-2xl font-normal focus:outline-none outline-none border-none text-white">
+            Dashboard
+          </span>
                 </div>
             </div>
             <div className="mt-12">
                 {sidebarData?.map((data, ind) => (
-                    <Submenu data={data} key={ind}/>
+                    <Submenu data={data} key={ind} isExpanded={isExpanded}/>
                 ))}
-            {/*    <div className={currentRoute === '/dashboard' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}>*/}
-            {/*        <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/dashboard'}>*/}
-            {/*            <img alt={'Dashboard_icon'} src={dashboard} width={20} height={20}/>*/}
-            {/*            <span className={"mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]"}>Dashboard</span>*/}
-            {/*        </a>*/}
-            {/*    </div>*/}
-            {/*    <div className="mt-8">*/}
-            {/*        <div className={currentRoute === '/loanApp' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}>*/}
-            {/*            <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/loanApp'}>*/}
-            {/*                <img alt={'Dashboard_icon'} src={receipt} width={20} height={20}/>*/}
-            {/*                <span className={"mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]"}>StaffLoan Application</span>*/}
-            {/*            </a>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*    <div className="mt-8">*/}
-            {/*        <div>*/}
-            {/*            <div*/}
-            {/*                onClick={handleShowDropdown}*/}
-            {/*                className={currentRoute === '/underwriting' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}*/}
-            {/*                style={{display: 'flex', justifyContent: 'space-between'}}*/}
-            {/*            >*/}
-            {/*                <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/underwriting'}>*/}
-            {/*                    <img alt={`application_icon`} src={receipt} width={20} height={20}/>*/}
-            {/*                    <span*/}
-            {/*                        className="mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]">StaffLoan Underwriting</span>*/}
-            {/*                </a>*/}
-            {/*                <img*/}
-            {/*                    className='pl-2 mr-10'*/}
-            {/*                    alt={`application_icon`}*/}
-            {/*                    src={showDropdown ? arrowUp : arrowDown}*/}
-            {/*                    width={20}*/}
-            {/*                    height={20}*/}
-            {/*                />*/}
-            {/*            </div>*/}
-            {/*            {showDropdown &&*/}
-            {/*                <div className='flex flex-col items-left px-6 py-1 mt-4 text-gray-100 bg-white bg-opacity-25'>*/}
-            {/*                    <div>*/}
-            {/*                         <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-            {/*                                                            href={'/application/manage'}>*/}
-            {/*                            <span className={`${ location.pathname === '/application/manage' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/application/manage' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>Review</span>*/}
-            {/*                        </a>*/}
-            {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-            {/*                                                           href={'/application/module'}>*/}
-            {/*                            <span className={`mx-3 text-sm font-normal text-[#0C3A35]`}>Repayment</span>*/}
-            {/*                        </a>*/}
-            {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-            {/*                                                          href={'/application/roles'}>*/}
-            {/*                            <span className={`mx-3 text-sm font-normal text-[#0C3A35]`}>Summary</span>*/}
-            {/*                        </a>*/}
-            {/*                       <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-            {/*                                                               href={'/application/permission'}>*/}
-            {/*                            <span className={`mx-3 text-sm font-normal text-[#0C3A35]`}>StaffLoan Re-assignment</span>*/}
-            {/*                        </a>*/}
-            {/*                    </div>*/}
-            {/*                </div>}*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*    <div className="mt-8">*/}
-            {/*        <div>*/}
-            {/*            <div*/}
-            {/*                onClick={handleShowDropdown}*/}
-            {/*                className={currentRoute === '/collection' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}*/}
-            {/*                style={{display: 'flex', justifyContent: 'space-between'}}*/}
-            {/*            >*/}
-            {/*                <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/collection'}>*/}
-            {/*                    <img alt={`application_icon`} src={receipt} width={20} height={20}/>*/}
-            {/*                    <span*/}
-            {/*                        className="mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]">Collection</span>*/}
-            {/*                </a>*/}
-            {/*                <img*/}
-            {/*                    className='pl-2 mr-10'*/}
-            {/*                    alt={`application_icon`}*/}
-            {/*                    src={showDropdown ? arrowUp : arrowDown}*/}
-            {/*                    width={20}*/}
-            {/*                    height={20}*/}
-            {/*                />*/}
-            {/*            </div>*/}
-            {/*            {showDropdown &&*/}
-            {/*                <div className='flex flex-col items-left px-6 py-1 mt-4 text-gray-100 bg-white bg-opacity-25'>*/}
-            {/*                    <div>*/}
-            {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-            {/*                           href={'/collection/approval'}>*/}
-            {/*                            <span className={`${ location.pathname === '/collection' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/collection' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>Approval</span>*/}
-            {/*                        </a>*/}
-            {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-            {/*                           href={'/collection/disbursement'}>*/}
-            {/*                            <span className={`${ location.pathname === '/collection/disbursement' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/collection/disbursement' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>Disbursement</span>*/}
-            {/*                        </a>*/}
-            {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-            {/*                           href={'/collection/re-assignment'}>*/}
-            {/*                            <span className={`${ location.pathname === '/collection/re-assignment' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/collection/re-assignment' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>StaffLoan Re-assignment</span>*/}
-            {/*                        </a>*/}
-            {/*                    </div>*/}
-            {/*                </div>}*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
+                {/*    <div className={currentRoute === '/dashboard' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}>*/}
+                {/*        <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/dashboard'}>*/}
+                {/*            <img alt={'Dashboard_icon'} src={dashboard} width={20} height={20}/>*/}
+                {/*            <span className={"mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]"}>Dashboard</span>*/}
+                {/*        </a>*/}
+                {/*    </div>*/}
+                {/*    <div className="mt-8">*/}
+                {/*        <div className={currentRoute === '/loanApp' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}>*/}
+                {/*            <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/loanApp'}>*/}
+                {/*                <img alt={'Dashboard_icon'} src={receipt} width={20} height={20}/>*/}
+                {/*                <span className={"mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]"}>StaffLoan Application</span>*/}
+                {/*            </a>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*    <div className="mt-8">*/}
+                {/*        <div>*/}
+                {/*            <div*/}
+                {/*                onClick={handleShowDropdown}*/}
+                {/*                className={currentRoute === '/underwriting' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}*/}
+                {/*                style={{display: 'flex', justifyContent: 'space-between'}}*/}
+                {/*            >*/}
+                {/*                <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/underwriting'}>*/}
+                {/*                    <img alt={`application_icon`} src={receipt} width={20} height={20}/>*/}
+                {/*                    <span*/}
+                {/*                        className="mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]">StaffLoan Underwriting</span>*/}
+                {/*                </a>*/}
+                {/*                <img*/}
+                {/*                    className='pl-2 mr-10'*/}
+                {/*                    alt={`application_icon`}*/}
+                {/*                    src={showDropdown ? arrowUp : arrowDown}*/}
+                {/*                    width={20}*/}
+                {/*                    height={20}*/}
+                {/*                />*/}
+                {/*            </div>*/}
+                {/*            {showDropdown &&*/}
+                {/*                <div className='flex flex-col items-left px-6 py-1 mt-4 text-gray-100 bg-white bg-opacity-25'>*/}
+                {/*                    <div>*/}
+                {/*                         <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
+                {/*                                                            href={'/application/manage'}>*/}
+                {/*                            <span className={`${ location.pathname === '/application/manage' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/application/manage' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>Review</span>*/}
+                {/*                        </a>*/}
+                {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
+                {/*                                                           href={'/application/module'}>*/}
+                {/*                            <span className={`mx-3 text-sm font-normal text-[#0C3A35]`}>Repayment</span>*/}
+                {/*                        </a>*/}
+                {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
+                {/*                                                          href={'/application/roles'}>*/}
+                {/*                            <span className={`mx-3 text-sm font-normal text-[#0C3A35]`}>Summary</span>*/}
+                {/*                        </a>*/}
+                {/*                       <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
+                {/*                                                               href={'/application/permission'}>*/}
+                {/*                            <span className={`mx-3 text-sm font-normal text-[#0C3A35]`}>StaffLoan Re-assignment</span>*/}
+                {/*                        </a>*/}
+                {/*                    </div>*/}
+                {/*                </div>}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*    <div className="mt-8">*/}
+                {/*        <div>*/}
+                {/*            <div*/}
+                {/*                onClick={handleShowDropdown}*/}
+                {/*                className={currentRoute === '/collection' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}*/}
+                {/*                style={{display: 'flex', justifyContent: 'space-between'}}*/}
+                {/*            >*/}
+                {/*                <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/collection'}>*/}
+                {/*                    <img alt={`application_icon`} src={receipt} width={20} height={20}/>*/}
+                {/*                    <span*/}
+                {/*                        className="mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]">Collection</span>*/}
+                {/*                </a>*/}
+                {/*                <img*/}
+                {/*                    className='pl-2 mr-10'*/}
+                {/*                    alt={`application_icon`}*/}
+                {/*                    src={showDropdown ? arrowUp : arrowDown}*/}
+                {/*                    width={20}*/}
+                {/*                    height={20}*/}
+                {/*                />*/}
+                {/*            </div>*/}
+                {/*            {showDropdown &&*/}
+                {/*                <div className='flex flex-col items-left px-6 py-1 mt-4 text-gray-100 bg-white bg-opacity-25'>*/}
+                {/*                    <div>*/}
+                {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
+                {/*                           href={'/collection/approval'}>*/}
+                {/*                            <span className={`${ location.pathname === '/collection' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/collection' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>Approval</span>*/}
+                {/*                        </a>*/}
+                {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
+                {/*                           href={'/collection/disbursement'}>*/}
+                {/*                            <span className={`${ location.pathname === '/collection/disbursement' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/collection/disbursement' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>Disbursement</span>*/}
+                {/*                        </a>*/}
+                {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
+                {/*                           href={'/collection/re-assignment'}>*/}
+                {/*                            <span className={`${ location.pathname === '/collection/re-assignment' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/collection/re-assignment' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>StaffLoan Re-assignment</span>*/}
+                {/*                        </a>*/}
+                {/*                    </div>*/}
+                {/*                </div>}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
 
-            {/*</div>*/}
-        </div>
+                {/*</div>*/}
+            </div>
         </div>
     );
 };

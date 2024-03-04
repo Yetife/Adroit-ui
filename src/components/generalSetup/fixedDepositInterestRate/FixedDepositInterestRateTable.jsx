@@ -22,7 +22,7 @@ const FixedDepositInterestRateTable = ({searchTerm}) => {
                 return true; // Found a match
             }
         }
-        return false; // No match found
+        return false;
     };
 
     const filteredData = data?.data?.filter(filterData);
@@ -89,16 +89,17 @@ export function TableData({data, no}) {
     const handleOpenView = (data) =>{
         setOpen(true)
         setPurpose("view")
-        setDepositFrom(data.fromAmount)
-        setDepositTo(data.toAmount)
+        setDepositFrom(data.loanAmountFrom)
+        setDepositTo(data.loanAmountTo)
         setRate(data.interestRate)
         setChecked(data.status === 1 ? true : false )
     }
     const handleOpenEdit = (data) =>{
         setOpen(true)
         setPurpose("edit")
-        setDepositFrom(data.fromAmount)
-        setDepositTo(data.toAmount)
+        setDepositFrom(data.loanAmountFrom)
+        setDepositTo(data.loanAmountTo)
+        setRate(data.interestRate)
         setId(data.id)
         setChecked(data.status === 1 ? true : false )
     }
@@ -119,6 +120,7 @@ export function TableData({data, no}) {
             body: {
                 loanAmountFrom: depositFrom,
                 loanAmountTo: depositTo,
+                interestRate: rate,
                 status: checked ? 1 : 0,
                 id: id
             }
@@ -164,7 +166,8 @@ export function TableData({data, no}) {
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.id)}>Remove</span>
         </span>
             </td>
-            <AddFixedDepositInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} handleAdd={handleEdit} purpose={purpose}/>
+            <AddFixedDepositInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo}
+                                              rate={rate} setRate={setRate} handleAdd={handleEdit} purpose={purpose}/>
         </tr>
     )
 }

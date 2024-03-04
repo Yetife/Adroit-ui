@@ -5,6 +5,7 @@ import {useState} from "react";
 import ProcessedModal from "./ProcessedModal.jsx";
 import Pagination from "../../../reusables/Pagination.jsx";
 import {formatAmount} from "../../../reusables/formatAmount.js";
+import dayjs from "dayjs";
 
 const ProcessedTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -157,7 +158,8 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.state}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.dob}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{dayjs(data.dob).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
@@ -166,7 +168,8 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.idNo}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.idDateIssued}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.idDateIssued).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.transferAmount)}</span>
@@ -175,7 +178,8 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.preferredNaration}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.repaymentDate}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.repaymentDate).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200 cursor-pointer">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium" onClick={()=>handleOpenReturn(data)}>Return</span>

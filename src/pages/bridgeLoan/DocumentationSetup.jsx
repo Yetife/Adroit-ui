@@ -55,7 +55,7 @@ const DocumentationSetup = () => {
                 <div>
                     <DocumentationSetupTable searchTerm={searchTerm}/>
                 </div>
-                <AddDocumentationSetupModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} docName={docName} setDocName={setDocName}  handleAdd={handleAdd}/>
+                <AddDocumentationSetupModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} docName={docName} setDocName={setDocName}  purpose="add"  handleAdd={handleAdd}/>
             </div>
         </Layout>
     );
