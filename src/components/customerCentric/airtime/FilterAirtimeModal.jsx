@@ -57,7 +57,7 @@ const FilterAirtimeModal = ({open, setOpen, handleFilter}) => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"End date is required",success:false}));
             return;
         }
-        // Gather filter parameters
+
         const filters = {
             statusName,
             startDate: inputs.startDate,

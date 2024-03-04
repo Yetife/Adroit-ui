@@ -14,7 +14,6 @@ const AddNewPage = () => {
     const [gender, setGender] = useState([])
     const [selectedGender, setSelectedGender] = useState("")
     const [selectedId, setSelectedId] = useState('');
-    const [searchTerm, setSearchTerm] = useState("");
     const initialState = {
         surname: "",
         firstName: "",
@@ -41,10 +40,6 @@ const AddNewPage = () => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
     };
-    const handleSearch = (searchValue) => {
-        setSearchTerm(searchValue);
-    };
-
     const handleGenderChange = (event) => {
         const selectedOption = event.target.value;
         const selectedOptionObject = gender.find((option) => option.name === selectedOption);
@@ -110,15 +105,6 @@ const AddNewPage = () => {
     }
     return (
         <Layout>
-            {/*<div className="flex justify-between px-0 py-4  pb-2 md:pt-3 overflow-x-auto">*/}
-            {/*    <Search search={searchTerm} setSearch={handleSearch}/>*/}
-            {/*    <div>*/}
-            {/*        <Button variant="primary" onClick={() => router(-1)} bgColor="#00C795" borderRadius="4px"*/}
-            {/*                height="37px" size='md' as={ReactLink} w={'109px'}>*/}
-            {/*            <Text color="white">Back</Text>*/}
-            {/*        </Button>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
             <div
                 className="scroll-container inline-block min-w-full align-middle c-border shadow sm:rounded-lg mt-8 px-8">
                 <div className="py-12">

@@ -117,8 +117,8 @@ export function TableData({data, no}) {
     const handleEdit = ()=> {
         editInterestRate({
             body: {
-                fromAmount: depositFrom,
-                toAmount: depositTo,
+                loanAmountFrom: depositFrom,
+                loanAmountTo: depositTo,
                 status: checked ? 1 : 0,
                 id: id
             }
@@ -138,10 +138,10 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.fromAmount)}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.loanAmountFrom)}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.toAmount)}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.loanAmountTo )}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.interestRate}</span>

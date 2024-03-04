@@ -9,10 +9,8 @@ import axios from "axios";
 import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
 
 const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGender, setSelectedGender}) => {
-    const router = useNavigate()
     const [gender, setGender] = useState([])
     const [selectedId, setSelectedId] = useState('');
-    const [searchTerm, setSearchTerm] = useState("");
     const dispatch  = useDispatch()
     const [returnDisbursement] = useReturnDisbursementMutation()
     const token = getUserToken();
@@ -20,9 +18,6 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
-    };
-    const handleSearch = (searchValue) => {
-        setSearchTerm(searchValue);
     };
 
     const handleGenderChange = (event) => {

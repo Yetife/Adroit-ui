@@ -33,8 +33,8 @@ const FixedDepositInterestRate = () => {
     const handleAdd = ()=> {
         addInterestRate({
             body: {
-                fromAmount: depositFrom,
-                toAmount: depositTo,
+                loanAmountFrom: parseFloat(depositFrom),
+                loanAmountTo: parseFloat(depositTo),
                 interestRate: rate,
                 status: checked ? 1 : 0
             }
@@ -43,6 +43,7 @@ const FixedDepositInterestRate = () => {
             setOpen(!open)
             setDepositFrom("")
             setDepositTo("")
+            setRate("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })

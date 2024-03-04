@@ -11,8 +11,6 @@ import DatePicker from "react-datepicker";
 const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGender, setSelectedGender}) => {
     const [gender, setGender] = useState([])
     const [selectedId, setSelectedId] = useState('');
-    const dispatch  = useDispatch()
-    const [returnDisbursement] = useReturnDisbursementMutation()
     const token = getUserToken();
 
     const handleChange = (e, fieldName) => {
@@ -40,7 +38,6 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
                 }
             });
             setGender(response.data.data);
-            console.log('Fetched state:', response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -50,39 +47,7 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
         fetchGender();
     }, []);
 
-    // const handleAdd = () => {
-    //     const user = JSON.parse(sessionStorage.getItem("userData"));
-    //
-    //     returnDisbursement({
-    //         body: {
-    //             surname: inputs.surname,
-    //             firstname: inputs.firstName,
-    //             middlename: inputs.middleName,
-    //             emailAddress: inputs.emailAddress,
-    //             gender: selectedGender,
-    //             houseNo: inputs.houseNo,
-    //             streetName: inputs.streetName,
-    //             city: inputs.city,
-    //             state: inputs.state,
-    //             dob: inputs.date,
-    //             bvn: inputs.bvn,
-    //             idNo: inputs.idNo,
-    //             idDateIssued: inputs.idDateIssued,
-    //             transferAmount: inputs.transferAmount,
-    //             preferredNaration: inputs.preferredNaration,
-    //             repaymentDate: inputs.repayment,
-    //             createdBy: user.FirstName,
-    //             status: status,
-    //             uniqueId: id,
-    //
-    //         }
-    //     }).then(res => {
-    //         dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-    //         setOpen(!open)
-    //     }).catch(err =>{
-    //         dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-    //     })
-    // }
+
     return (
         <div>
             <Dialog.Root
