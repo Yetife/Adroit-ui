@@ -104,6 +104,7 @@ export function TableData({data, no}) {
         preferredNaration: "",
         repayment: "",
         comments: "",
+        docStage: "",
     }
     const [inputs, setInputs] = useState(initialState)
 
@@ -127,7 +128,8 @@ export function TableData({data, no}) {
             idDateIssued: data?.idDateIssued,
             transferAmount: data?.transferAmount,
             preferredNaration: data?.preferredNaration,
-            repayment: data?.repaymentDate
+            repayment: data?.repaymentDate,
+            docStage: data?.documentStage,
         })
     }
     return (

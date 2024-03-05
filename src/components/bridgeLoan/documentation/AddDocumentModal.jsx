@@ -108,7 +108,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                 formData.append('DocumentationStatus', inputs.docStatus);
                 formData.append('ValueDate', inputs.valueDate);
                 formData.append('MaturityDate', inputs.maturityDate);
-                formData.append('Comment', inputs.comment);
+                formData.append('Comment', inputs.comment ? inputs.comment : "No comment");
                 formData.append('CreatedBy', user.UserName);
                 formData.append('DocumentationDoc', selectedFiles);
                 formData.append('Tenor', inputs.tenor);
@@ -160,7 +160,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                 formData.append('DocumentationStatus', inputs.docStatus);
                 formData.append('ValueDate', inputs.valueDate);
                 formData.append('MaturityDate', inputs.maturityDate);
-                formData.append('Comment', inputs.comment);
+                formData.append('Comment', inputs.comment ? inputs.comment : "No comment");
                 formData.append('CreatedBy', user.UserName);
                 formData.append('DocumentationDoc', selectedFiles);
                 formData.append('Tenor', inputs.tenor);

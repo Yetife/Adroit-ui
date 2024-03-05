@@ -56,7 +56,7 @@ const DocumentationStatus = () => {
                 <div>
                     <DocumentationStatusTable searchTerm={searchTerm}/>
                 </div>
-                <AddDocumentationStatusModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} docStatus={docStatus} setDocStatus={setDocStatus} handleAdd={handleAdd}/>
+                <AddDocumentationStatusModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} docStatus={docStatus} setDocStatus={setDocStatus} purpose="add" handleAdd={handleAdd}/>
             </div>
         </Layout>
     );

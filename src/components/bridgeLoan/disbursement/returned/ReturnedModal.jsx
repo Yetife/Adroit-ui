@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 import {useReturnDisbursementMutation} from "../../../../store/features/bridgeLoan/api.js";
 import {getUserToken} from "../../../../services/storage/index.js";
@@ -10,8 +10,11 @@ import DatePicker from "react-datepicker";
 
 const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGender, setSelectedGender}) => {
     const [gender, setGender] = useState([])
+    const [stages, setStages] = useState([]);
     const [selectedId, setSelectedId] = useState('');
     const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
@@ -27,7 +30,6 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
     };
 
     const fetchGender = async () => {
-        const baseUrl = import.meta.env.VITE_APP_BASE_URL
         try {
             const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidGenders`, {
                 headers: {
@@ -38,6 +40,23 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
                 }
             });
             setGender(response.data.data);
+            console.log('Fetched state:', response.data.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    const fetchStage = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/BridgeLoan/GeneralSetUpDocumentationStage/getallvalid`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*',
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setStages(response.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -45,6 +64,7 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
 
     useEffect(() => {
         fetchGender();
+        fetchStage()
     }, []);
 
 
@@ -279,11 +299,30 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
                                           className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
+                                    <span className="ml-8">
+                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                       Documentation Stages
+                                      </h3>
+                                         <select id="select" value={inputs.docStage}
+                                                 onChange={(event) => handleChange(event, "docStage")}
+                                                 className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300">
+                                            <option value="" disabled>Select status</option>
+                                             {stages && stages?.map((option) => (
+                                                 <option key={option.uniqueId} value={option.docName}>
+                                                     {option.docName}
+                                                 </option>
+                                             ))}
+                                        </select>
+                                    </span>
                                 </div>
                             </div>
                             <div className="flex space-x-3 float-right">
-                                <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-2" onClick={()=>setOpen(!open)}>Close</button>
-                                <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-2" onClick={()=>setOpen(!open)}>Save</button>
+                                <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-2"
+                                        onClick={() => setOpen(!open)}>Close
+                                </button>
+                                <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-2"
+                                        onClick={() => setOpen(!open)}>Save
+                                </button>
                             </div>
                         </div>
 
@@ -292,7 +331,7 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
                                 className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[20px] right-[40px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                                 aria-label="Close"
                             >
-                                <Close />
+                                <Close/>
                             </button>
                         </Dialog.Close>
                     </Dialog.Content>

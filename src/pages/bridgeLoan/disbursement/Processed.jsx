@@ -1,11 +1,10 @@
 import  {useState} from 'react';
 import Layout from "../../Layout.jsx";
 import Search from "../../../components/reusables/Search.jsx";
-import {Button, Text} from "@chakra-ui/react";
-import {Link as ReactLink} from "react-router-dom";
 import DatePicker from "react-datepicker";
 import ProcessedTable from "../../../components/bridgeLoan/disbursement/processed/ProcessedTable.jsx";
 import "react-datepicker/dist/react-datepicker.css";
+import DownloadExcelButton from "../../../components/reusables/DownloadExcelButton.jsx";
 
 
 const Processed = () => {
@@ -15,6 +14,12 @@ const Processed = () => {
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
     };
+
+    const backendData = [
+        { id: 1, name: 'John Doe', age: 25 },
+        { id: 2, name: 'Jane Smith', age: 30 },
+        // ... more data
+    ];
 
     return (
         <Layout>
@@ -36,9 +41,7 @@ const Processed = () => {
                                 dropdownMode="select"
                             />
                         </div>
-                        <Button variant="primary" to={'/bridgeLoan/disbursement/new/add'} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'139px'}>
-                            <Text color="white">Download</Text>
-                        </Button>
+                        <DownloadExcelButton data={backendData} filename="example.xlsx" />
                     </div>
                 </div>
                 <ProcessedTable searchTerm={searchTerm}/>

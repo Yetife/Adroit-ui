@@ -89,6 +89,7 @@ export function TableData({data, no}) {
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
     const dispatch = useDispatch()
+    const [dateCreated, setDateCreated] = useState("")
     const [editStatus] = useEditDocumentStatusMutation()
 
 
@@ -99,6 +100,7 @@ export function TableData({data, no}) {
         setOpen(true)
         setDocStatus(data.docName)
         setPurpose("view")
+        setDateCreated(data.dateCreated)
         setChecked(data.status === "1" ? true : false)
     }
 
@@ -121,6 +123,7 @@ export function TableData({data, no}) {
         setOpen(true)
         setPurpose("edit")
         setDocStatus(data.docName)
+        setDateCreated(data.dateCreated)
         setId(data.uniqueId)
         setChecked(data.status === "1" ? true : false )
     }
@@ -166,7 +169,7 @@ export function TableData({data, no}) {
             </td>
             <AddDocumentationStatusModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked}
                                          docStatus={docStatus} setDocStatus={setDocStatus} handleAdd={handleEdit}
-                                         purpose={purpose}/>
+                                         purpose={purpose} dateCreated={dateCreated}/>
         </tr>
     )
 }

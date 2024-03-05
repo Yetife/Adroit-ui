@@ -12,8 +12,11 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
     const [gender, setGender] = useState([])
     const [selectedId, setSelectedId] = useState('');
     const dispatch  = useDispatch()
+    const [stages, setStages] = useState([]);
     const [returnDisbursement] = useReturnDisbursementMutation()
     const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
@@ -29,8 +32,6 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
     };
 
     const fetchGender = async () => {
-        const baseUrl = import.meta.env.VITE_APP_BASE_URL
-
         try {
             const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidGenders`, {
                 headers: {
@@ -47,8 +48,25 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
         }
     };
 
+    const fetchStage = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/BridgeLoan/GeneralSetUpDocumentationStage/getallvalid`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*',
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setStages(response.data.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     useEffect(() => {
         fetchGender();
+        fetchStage()
     }, []);
 
     const handleAdd = () => {
@@ -110,7 +128,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs.surname}
                                           onChange={(event) => handleChange(event, "surname")}
                                           placeholder="Enter surname"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -122,7 +140,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs.firstName}
                                           onChange={(event) => handleChange(event, "firstName")}
                                           placeholder="Enter firstName"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -134,7 +152,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs.middleName}
                                           onChange={(event) => handleChange(event, "middleName")}
                                           placeholder="Enter middleName"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                 </div>
@@ -150,7 +168,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs.emailAddress}
                                           onChange={(event) => handleChange(event, "emailAddress")}
                                           placeholder="Enter name"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -159,7 +177,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                       </h3>
                                          <select id="select" value={selectedGender}
                                                  onChange={handleGenderChange}
-                                                 className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                                 className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select gender</option>
                                              {gender && gender?.map((option) => (
                                                  <option key={option.uniqueId} value={option.id}>
@@ -177,7 +195,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs.houseNo}
                                           onChange={(event) => handleChange(event, "houseNo")}
                                           placeholder="Enter house number"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     </div>
@@ -193,7 +211,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs.streetName}
                                           onChange={(event) => handleChange(event, "streetName")}
                                           placeholder="Enter street name"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -205,7 +223,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs.city}
                                           onChange={(event) => handleChange(event, "city")}
                                           placeholder="Enter city"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -217,7 +235,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs.state}
                                           onChange={(event) => handleChange(event, "state")}
                                           placeholder="Enter state"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                 </div>
@@ -233,7 +251,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                            value={inputs.date}
                                            onChange={(event) => handleChange(event, "date")}
                                            placeholder="Enter date"
-                                           className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                           className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                        />
                                     </span>
                                     <span className="ml-8">
@@ -257,7 +275,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs.idNo}
                                           onChange={(event) => handleChange(event, "idNo")}
                                           placeholder="Enter id number"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                 </div>
@@ -273,7 +291,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs.idDateIssued}
                                           onChange={(event) => handleChange(event, "idDate")}
                                           placeholder="Enter id date"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -285,7 +303,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs. transferAmount}
                                           onChange={(event) => handleChange(event, "transferAmt")}
                                           placeholder="Enter transfer amount"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                     <span className="ml-8">
@@ -297,7 +315,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs.preferredNaration}
                                           onChange={(event) => handleChange(event, "narration")}
                                           placeholder="Enter preferred narration"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
                                     </span>
                                 </div>
@@ -313,8 +331,23 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                           value={inputs.repayment}
                                           onChange={(event) => handleChange(event, "repayment")}
                                           placeholder="Enter repayment date"
-                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                       />
+                                    </span>
+                                    <span className="ml-8">
+                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                       Documentation Stages
+                                      </h3>
+                                         <select id="select" value={inputs.docStage}
+                                                 onChange={(event) => handleChange(event, "docStage")}
+                                                className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300">
+                                            <option value="" disabled>Select status</option>
+                                             {stages && stages?.map((option) => (
+                                                 <option key={option.uniqueId} value={option.docName}>
+                                                     {option.docName}
+                                                 </option>
+                                             ))}
+                                        </select>
                                     </span>
                                 </div>
                             </div>

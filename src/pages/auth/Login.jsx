@@ -52,26 +52,30 @@ const Login = () => {
     },[])
 
     const handleClick = ()=> {
-        setLoading(true)
-        validateUser({
-            body: {
-                username: inputs.username,
-                userPassword: inputs.password,
-                ipAddress: "192.168.1.100",
-                latitude: "-123.4567",
-                longitude: "45.6789",
-                applicationId: import.meta.env.VITE_APP_APPLICATION_ID,
-                clientId: import.meta.env.VITE_APP_CLIENT_ID
-            }
-        }).then(res => {
-            sessionStorage.setItem("userOtp", JSON.stringify(res.data.id));
-            sessionStorage.setItem("userName", JSON.stringify(inputs.username));
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
-            route('/verify')
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
-            setLoading(false)
-        })
+        if (!inputs.username || !inputs.password) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Username and Password is required",success:false}));
+        }else{
+            setLoading(true)
+            validateUser({
+                body: {
+                    username: inputs.username,
+                    userPassword: inputs.password,
+                    ipAddress: "192.168.1.100",
+                    latitude: "-123.4567",
+                    longitude: "45.6789",
+                    applicationId: import.meta.env.VITE_APP_APPLICATION_ID,
+                    clientId: import.meta.env.VITE_APP_CLIENT_ID
+                }
+            }).then(res => {
+                sessionStorage.setItem("userOtp", JSON.stringify(res.data.id));
+                sessionStorage.setItem("userName", JSON.stringify(inputs.username));
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
+                route('/verify')
+            }).catch(err =>{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
+                setLoading(false)
+            })
+        }
     }
 
     return (
