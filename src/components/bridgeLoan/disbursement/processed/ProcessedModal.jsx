@@ -8,7 +8,7 @@ import {getUserToken} from "../../../../services/storage/index.js";
 import axios from "axios";
 import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
 
-const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGender, setSelectedGender}) => {
+const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, phone, setPhone, selectedGender, setSelectedGender}) => {
     const [gender, setGender] = useState([])
     const [selectedId, setSelectedId] = useState('');
     const dispatch  = useDispatch()
@@ -17,7 +17,12 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
     const token = getUserToken();
     const baseUrl = import.meta.env.VITE_APP_BASE_URL
 
-
+    const handlePhoneChange = (e, isNumeric= false) => {
+        const numericRegex = /^\d{0,11}$/;
+        if ((isNumeric && numericRegex.test(e.target.value)) || !isNumeric) {
+            setPhone(e.target.value)
+        }
+    }
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
@@ -77,10 +82,11 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                 surname: inputs.surname,
                 firstname: inputs.firstName,
                 middlename: inputs.middleName,
-                emailAddress: inputs.emailAddress,
+                email: inputs.emailAddress,
                 gender: selectedGender,
                 houseNo: inputs.houseNo,
                 streetName: inputs.streetName,
+                phoneno: phone,
                 city: inputs.city,
                 state: inputs.state,
                 dob: inputs.date,
@@ -102,7 +108,7 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
-}
+    }
     return (
         <div>
             <Dialog.Root
@@ -335,12 +341,24 @@ const ProcessedModal = ({open, setOpen, inputs, setInputs, id, status, selectedG
                                       />
                                     </span>
                                     <span className="ml-8">
+                                        <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                            Phone Number
+                                        </h3>
+                                          <input
+                                              type="number"
+                                              value={phone}
+                                              onChange={(e) => handlePhoneChange(e, true)}
+                                              placeholder="Enter phone"
+                                              className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          />
+                                    </span>
+                                    <span className="ml-8">
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                        Documentation Stages
                                       </h3>
                                          <select id="select" value={inputs.docStage}
                                                  onChange={(event) => handleChange(event, "docStage")}
-                                                className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300">
+                                                 className="font-medium w-[245px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300">
                                             <option value="" disabled>Select status</option>
                                              {stages && stages?.map((option) => (
                                                  <option key={option.uniqueId} value={option.docName}>

@@ -11,6 +11,10 @@ export const getDocumentation = async (size, page) => {
     const url = `/BridgeLoan/Documentation/get?PasgeSize=${size}&PageNumber=${page}`;
     return authServiceCallEndpoint({url, needsAuth:true})
 };
+export const getProcessedDisbursement = async () => {
+    const url = `/BridgeLoan/Disbursement/getNew`;
+    return authServiceCallEndpoint({url, needsAuth:true})
+};
 export const repaymentDetail = async data => {
     const url = '/LoanApplication/Customer/getRepaymentDetails'
     return authServiceCallEndpoint({method: POST, data: data, url, needsAuth:true})

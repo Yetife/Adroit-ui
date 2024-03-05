@@ -3,16 +3,21 @@ import {
 } from "../../../../store/features/bridgeLoan/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../../reusables/theme.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Pagination from "../../../reusables/Pagination.jsx";
 import {formatAmount} from "../../../reusables/formatAmount.js";
 import dayjs from "dayjs";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchProcessed} from "../../../../store/documentationSlice.js";
 
 const NewDisbursementTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllProcessedDisbursementQuery({size, page})
-    if (error) return <p>Network error</p>
+    // const {data, isFetching, error} =  useGetAllProcessedDisbursementQuery({size, page})
+
+    const processed = useSelector((state) => state.documentation.allProcessed);
+    const loading = useSelector((state) => state.documentation.loading);
+    const dispatch = useDispatch()
 
     const filterData = (item) => {
         for (const key in item) {
@@ -23,21 +28,16 @@ const NewDisbursementTable = ({searchTerm}) => {
         return false; // No match found
     };
 
-    const filteredData = data?.data?.filter(filterData);
-    const handlePageChange = (newPage) => {
-        setPage(newPage)
-    }
-
-    const handleRowPerPageChange = (event) => {
-        setSize(parseInt(event.target.value, 10));
-    }
-
+    const filteredData = processed?.filter(filterData);
+    useEffect(() => {
+        dispatch(fetchProcessed())
+    }, []);
 
     return (
         <div className="flex rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2 inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
                 <div className="scroll-container">
-                    {isFetching && <ThemeProvider theme={themes}>
+                    {loading && <ThemeProvider theme={themes}>
                         <LinearProgress color={"waveGreen"}/>
                     </ThemeProvider>}
                     <table className="table-auto md:w-full px-20">
@@ -51,17 +51,17 @@ const NewDisbursementTable = ({searchTerm}) => {
                         </tbody>
                     </table>
                 </div>
-                {data && (
-                    <Pagination
-                        totalCount={data?.recordCount || 0}
-                        page={page}
-                        rowsPerPage={size}
-                        rowsPerPageOptions={[10, 20, 50, 70, 100]}
-                        sizes={[10, 20, 50, 70, 100]}
-                        onPageChange={handlePageChange}
-                        onRowsPerPageChange={handleRowPerPageChange}
-                    />
-                )}
+                {/*{processed && (*/}
+                {/*    <Pagination*/}
+                {/*        totalCount={totalCount|| 0}*/}
+                {/*        page={page}*/}
+                {/*        rowsPerPage={size}*/}
+                {/*        rowsPerPageOptions={[10, 20, 50, 70, 100]}*/}
+                {/*        sizes={[10, 20, 50, 70, 100]}*/}
+                {/*        onPageChange={handlePageChange}*/}
+                {/*        onRowsPerPageChange={handleRowPerPageChange}*/}
+                {/*    />*/}
+                {/*)}*/}
             </div>
         </div>
     );

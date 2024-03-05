@@ -17,6 +17,7 @@ const Disbursed = () => {
     const [openFilter, setOpenFilter] = useState(false)
     const [filters, setFilters] = useState({
         startDate: "",
+        bvn: "",
     });
 
     const handleFilter = (newFilters) => {
@@ -29,17 +30,17 @@ const Disbursed = () => {
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
                         <Button variant="primary"borderColor="#00C795" marginRight="10px"
-                                bgColor="#135D54" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'} onClick={()=>setOpenFilter(true)}>
+                                bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'} onClick={()=>setOpenFilter(true)}>
                             <Text color="white">Filter</Text>
                         </Button>
-                        <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
+                        <Button variant="primary" bgColor="#135D54" borderRadius="4px" height="37px" size='md'
                                 as={ReactLink} w={'109px'} onClick={()=>setOpen(true)}>
                             <Text color="white">Upload</Text>
                         </Button>
                     </div>
                 </div>
 
-                <DisbursedTable searchTerm={searchTerm} startDate={filters.startDate}/>
+                <DisbursedTable searchTerm={searchTerm} startDate={filters.startDate} bvn={filters.bvn}/>
                 <DisburseBulkUpload open={open} setOpen={setOpen}/>
                 <FilterDisbursedModal open={openFilter} setOpen={setOpenFilter} handleFilter={handleFilter}/>
             </div>

@@ -86,6 +86,7 @@ export function TableData({data, no}) {
     const [id, setId] = useState(0)
     const [status, setStatus] = useState("")
     const [selectedGender, setSelectedGender] = useState('')
+    const [phone, setPhone] = useState("");
 
     const initialState = {
         surname: "",
@@ -105,6 +106,7 @@ export function TableData({data, no}) {
         repayment: "",
         comments: "",
         docStage: "",
+        phoneNumber: "",
     }
     const [inputs, setInputs] = useState(initialState)
 
@@ -113,6 +115,7 @@ export function TableData({data, no}) {
         setId(data.uniqueId)
         setStatus(data.status)
         setSelectedGender(data?.gender)
+        setPhone(data?.phoneno)
         setInputs({
             surname: data?.surname,
             firstName: data?.firstname,
@@ -130,6 +133,7 @@ export function TableData({data, no}) {
             preferredNaration: data?.preferredNaration,
             repayment: data?.repaymentDate,
             docStage: data?.documentStage,
+            phoneNumber: data?.phoneno
         })
     }
     return (
@@ -192,7 +196,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#FF4B12] font-semibold" onClick={()=>handleOpenReturn(data)}>Edit</span>
             </td>
 
-            <ReturnedModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} id={id} status={status} selectedGender={selectedGender} setSelectedGender={setSelectedGender}/>
+            <ReturnedModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} id={id} phone={phone} setPhone={setPhone} status={status} selectedGender={selectedGender} setSelectedGender={setSelectedGender}/>
         </tr>
     )
 }

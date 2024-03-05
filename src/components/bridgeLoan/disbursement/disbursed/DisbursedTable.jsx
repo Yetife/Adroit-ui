@@ -8,10 +8,10 @@ import Pagination from "../../../reusables/Pagination.jsx";
 import {formatAmount} from "../../../reusables/formatAmount.js";
 import dayjs from "dayjs";
 
-export const DisbursedTable = ({searchTerm, startDate}) => {
+export const DisbursedTable = ({searchTerm, startDate, bvn}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllDisbursedDisbursementQuery({size, page, startDate})
+    const {data, isFetching, error} =  useGetAllDisbursedDisbursementQuery({size, page, startDate, bvn})
     if (error) return <p>Network error</p>
 
     const filterData = (item) => {

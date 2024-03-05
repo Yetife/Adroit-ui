@@ -7,6 +7,10 @@ import AddDocumentModal from "./AddDocumentModal.jsx";
 import dayjs from "dayjs";
 import {useGetAllAirtimeQuery} from "../../../store/features/customerCentric/api.js";
 import Pagination from "../../reusables/Pagination.jsx";
+import {Button, Text} from "@chakra-ui/react";
+import {Link as ReactLink} from "react-router-dom";
+import axios from "axios";
+import {getUserToken} from "../../../services/storage/index.js";
 
 const DocumentationTable = ({searchTerm}) => {
     const dispatch = useDispatch()
@@ -85,7 +89,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Lender', 'Obligor Name', 'Obligor DOB', 'Facility Type', 'Interest Rate', 'Status', 'Download', 'Value Date',
+const header = ['S/N', 'Lender', 'Obligor Name', 'Obligor DOB', 'Phone Number', 'Facility Type', 'Interest Rate', 'Status', 'Download', 'Value Date',
     'Maturity Date', 'Amount', 'Tenor', 'Action' ]
 
 export function TableData({data, no}) {
@@ -108,7 +112,10 @@ export function TableData({data, no}) {
         comment: "",
     }
     const [inputs, setInputs] = useState(initialState)
-
+    const [loading, setLoading] = useState(false);
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
+    const token = getUserToken();
+    const [doc, setDoc] = useState(null)
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
     const handleBlurDropdown = () => setShowDropdown(false)
     const handleOpenView = (data) =>{
@@ -171,6 +178,43 @@ export function TableData({data, no}) {
             });
     };
 
+    const fetchData = async (id) => {
+        // setLoading(true)
+        try {
+            const response = await axios.get(`${baseUrl}/BridgeLoan/Documentation/DownloadbyuniqueidForPdf/${id}`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            // setLoading(false)
+
+            // setDoc(response.data);
+            // const byteCharacters = atob(doc);
+            // const byteNumbers = new Array(byteCharacters.length);
+            // for (let i = 0; i < byteCharacters.length; i++) {
+            //     byteNumbers[i] = byteCharacters.charCodeAt(i);
+            // }
+            // const byteArray = new Uint8Array(byteNumbers);
+            // const blob = new Blob([byteArray], { type: 'application/pdf' });
+            //
+            // // Create a download link and trigger the download
+            // const url = URL.createObjectURL(blob);
+            // const a = document.createElement('a');
+            // a.href = url;
+            // a.download = 'document.pdf';
+            // document.body.appendChild(a);
+            // a.click();
+            // document.body.removeChild(a);
+            // URL.revokeObjectURL(url);
+            console.log(doc)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     return (
         <tr>
             <td className="px-3 py-4 border-b border-gray-200">
@@ -183,7 +227,11 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.obligorName}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.obligorDob).format("YYYY/MM/DD")}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.obligorDob).format("YYYY/MM/DD")}</span>
+            </td>
+            <td className="px-3 py-4 border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.phoneNo}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.facilityType}</span>
@@ -192,23 +240,31 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.interestRate}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.documentationStatus}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.documentationStatus}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <a
-                    href={data?.documentSting}  // Replace with the image URL
-                    download
-                    // onClick={(e) => download(e)}
+                    href={`data:application/pdf;base64,${data?.documentSting}`}  // Replace with the image URL
+                    download="document.pdf"
+                    onClick={() => fetchData(data?.uniqueId)}
                 >
-                    <button className="px-3 py-2 rounded text-white text-sm bg-[#135D54] rounded-lg">Download</button>
+                    <Button variant="primary" bgColor="#135D54" height="35px" size='md'
+                            p={{base: "5px 3px", md: "2px 10px"}} as={ReactLink} borderRadius="8px" isDisabled={true}
+                            colorScheme={"brand"} loadingText=''>
+                        <Text color="white">Download</Text>
+                    </Button>
+                    {/*<button className="px-3 py-2 rounded text-white text-sm bg-[#135D54] rounded-lg">Download</button>*/}
                 </a>
                 {/*<span className="text-[16px] leading-5 text-[#4A5D58] font-medium">Download</span>*/}
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.valueDate).format("YYYY/MM/DD")}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.valueDate).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.maturityDate).format("YYYY/MM/DD")}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.maturityDate).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.amount}</span>
@@ -239,9 +295,11 @@ export function TableData({data, no}) {
 
             <AddDocumentModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}
                               setSelectedType={setSelectedType} selectedType={selectedType}
-                              selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} selectedTenor={selectedTenor}
+                              selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus}
+                              selectedTenor={selectedTenor}
                               setSelectedTenor={setSelectedTenor} selectedFiles={selectedFiles}
-                              setSelectedFiles={setSelectedFiles} selectedRate={selectedRate} setSelectedRate={setSelectedRate} purpose={purpose} id={id}/>
+                              setSelectedFiles={setSelectedFiles} selectedRate={selectedRate}
+                              setSelectedRate={setSelectedRate} purpose={purpose} id={id}/>
         </tr>
     )
 }

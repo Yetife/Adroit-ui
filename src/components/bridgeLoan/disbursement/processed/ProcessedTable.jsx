@@ -7,10 +7,10 @@ import Pagination from "../../../reusables/Pagination.jsx";
 import {formatAmount} from "../../../reusables/formatAmount.js";
 import dayjs from "dayjs";
 
-const ProcessedTable = ({searchTerm}) => {
+const ProcessedTable = ({searchTerm, startDate}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllProcessedDisbursementQuery({size, page})
+    const {data, isFetching, error} =  useGetAllProcessedDisbursementQuery({size, page, startDate})
     if (error) return <p>Network error</p>
 
     const filterData = (item) => {
@@ -84,6 +84,8 @@ export function TableData({data, no}) {
     const [id, setId] = useState(0)
     const [status, setStatus] = useState("")
     const [selectedGender, setSelectedGender] = useState('')
+    const [phone, setPhone] = useState("");
+
 
     const initialState = {
         surname: "",
@@ -112,6 +114,7 @@ export function TableData({data, no}) {
        setId(data.uniqueId)
        setStatus(data.status)
        setSelectedGender(data?.gender)
+       setPhone(data?.phoneno)
         setInputs({
             surname: data?.surname,
             firstName: data?.firstname,
@@ -128,7 +131,8 @@ export function TableData({data, no}) {
             idDateIssued: data?.idDateIssued,
             transferAmount: data?.transferAmount,
             preferredNaration: data?.preferredNaration,
-            repayment: data?.repaymentDate
+            repayment: data?.repaymentDate,
+            docStage: data?.documentationStage,
         })
    }
     return (
@@ -191,7 +195,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium" onClick={()=>handleOpenReturn(data)}>Return</span>
             </td>
 
-            <ProcessedModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} id={id} status={status} selectedGender={selectedGender} setSelectedGender={setSelectedGender}/>
+            <ProcessedModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} id={id} status={status} setPhone={setPhone} phone={phone} selectedGender={selectedGender} setSelectedGender={setSelectedGender}/>
         </tr>
     )
 }

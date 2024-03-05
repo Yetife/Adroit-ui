@@ -8,13 +8,14 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import DatePicker from "react-datepicker";
 
-const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGender, setSelectedGender}) => {
+const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGender, phone, setPhone, setSelectedGender}) => {
     const [gender, setGender] = useState([])
     const [stages, setStages] = useState([]);
     const [selectedId, setSelectedId] = useState('');
     const token = getUserToken();
     const baseUrl = import.meta.env.VITE_APP_BASE_URL
-
+    const [returnDisbursement] = useReturnDisbursementMutation()
+    const dispatch = useDispatch()
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
@@ -67,6 +68,46 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
         fetchStage()
     }, []);
 
+    const handlePhoneChange = (e, isNumeric= false) => {
+        const numericRegex = /^\d{0,11}$/;
+        if ((isNumeric && numericRegex.test(e.target.value)) || !isNumeric) {
+            setPhone(e.target.value)
+        }
+    }
+    const handleReturn = () => {
+        const user = JSON.parse(sessionStorage.getItem("userData"));
+
+        returnDisbursement({
+            body: {
+                surname: inputs.surname,
+                firstname: inputs.firstName,
+                middlename: inputs.middleName,
+                emailAddress: inputs.emailAddress,
+                gender: selectedGender,
+                houseNo: inputs.houseNo,
+                streetName: inputs.streetName,
+                city: inputs.city,
+                state: inputs.state,
+                dob: inputs.date,
+                bvn: inputs.bvn,
+                idNo: inputs.idNo,
+                idDateIssued: inputs.idDateIssued,
+                transferAmount: inputs.transferAmount,
+                preferredNaration: inputs.preferredNaration,
+                repaymentDate: inputs.repayment,
+                comments: inputs.comments,
+                createdBy: user.FirstName,
+                status: status,
+                uniqueId: id,
+
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpen(!open)
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
 
     return (
         <div>
@@ -265,7 +306,7 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
                                       </h3>
                                       <input
                                           type="text"
-                                          value={inputs. transferAmount}
+                                          value={inputs.transferAmount}
                                           onChange={(event) => handleChange(event, "transferAmt")}
                                           placeholder="Enter transfer amount"
                                           className="font-medium w-[245px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
@@ -300,6 +341,18 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
                                       />
                                     </span>
                                     <span className="ml-8">
+                                        <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                            Phone Number
+                                        </h3>
+                                          <input
+                                              type="number"
+                                              value={phone}
+                                              onChange={(e) => handlePhoneChange(e, true)}
+                                              placeholder="Enter phone"
+                                              className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          />
+                                    </span>
+                                    <span className="ml-8">
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                        Documentation Stages
                                       </h3>
@@ -316,12 +369,26 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
                                     </span>
                                 </div>
                             </div>
+                            <div className="pb-4 -mt-6">
+                                <span className="ml-8">
+                                  <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                    Comment
+                                  </h3>
+                                     <textarea id="message" name="message" rows="4" cols="50"
+                                               value={inputs.comments}
+                                               onChange={(event) => handleChange(event, "comments")}
+                                               placeholder="Add comment"
+                                               disabled={true}
+                                               className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                     ></textarea>
+                                </span>
+                            </div>
                             <div className="flex space-x-3 float-right">
                                 <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-2"
                                         onClick={() => setOpen(!open)}>Close
                                 </button>
                                 <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-2"
-                                        onClick={() => setOpen(!open)}>Save
+                                        onClick={handleReturn}>Save
                                 </button>
                             </div>
                         </div>

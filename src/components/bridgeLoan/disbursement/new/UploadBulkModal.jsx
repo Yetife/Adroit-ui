@@ -4,6 +4,7 @@ import {Close} from "@mui/icons-material";
 import {getUserToken} from "../../../../services/storage/index.js";
 import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
+import {fetchProcessed} from "../../../../store/documentationSlice.js";
 
 const UploadBulkModal = ({open, setOpen}) => {
     const [doc, setDoc] = useState(null)
@@ -46,6 +47,7 @@ const UploadBulkModal = ({open, setOpen}) => {
                 setDoc(null)
                 setStartDate(null)
                 setOpen(!open)
+                dispatch(fetchProcessed())
             }
         } catch (error) {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));

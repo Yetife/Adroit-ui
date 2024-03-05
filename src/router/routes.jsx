@@ -474,12 +474,26 @@ const ROUTES = [
         ]
     },
     {
-        path: "/staff/loan",
-        key: "Staff",
+        path: "/staff",
         exact: true,
-        element: <ProtectedRoute>
-            <StaffLoan />,
-        </ProtectedRoute>
+        children: [
+            {
+                path: "loan",
+                key: "Staff",
+                exact: true,
+                element: <ProtectedRoute>
+                    <StaffLoan />,
+                </ProtectedRoute>
+            },
+            {
+                path: "view",
+                key: "viewStaff",
+                exact: true,
+                element: <ProtectedRoute>
+                    <ViewStaffPage />,
+                </ProtectedRoute>
+            },
+        ]
     },
     {
         path: "/generalSetup",

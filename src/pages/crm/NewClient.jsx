@@ -13,10 +13,11 @@ const NewClient = () => {
     const [employSector, setEmploySector] = useState("")
     const router = useNavigate()
     const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
 
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidEmploymentSector', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidEmploymentSector`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",

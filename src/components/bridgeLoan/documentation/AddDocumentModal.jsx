@@ -16,6 +16,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
     const dispatch = useDispatch()
     const token = getUserToken();
     const baseUrl = import.meta.env.VITE_APP_BASE_URL
+    const [phone, setPhone] = useState("");
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
@@ -95,6 +96,12 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
         fetchInterest()
     }, []);
 
+    const handlePhoneChange = (e, isNumeric= false) => {
+        const numericRegex = /^\d{0,11}$/;
+        if ((isNumeric && numericRegex.test(e.target.value)) || !isNumeric) {
+            setPhone(e.target.value)
+        }
+    }
     const handleAdd = async ()=> {
         if (!id){
             try {
@@ -112,6 +119,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                 formData.append('CreatedBy', user.UserName);
                 formData.append('DocumentationDoc', selectedFiles);
                 formData.append('Tenor', inputs.tenor);
+                formData.append('PhoneNo', phone);
                 formData.append('Amount', inputs.amount);
                 // ... other form data
                 const token = getUserToken();
@@ -165,6 +173,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                 formData.append('DocumentationDoc', selectedFiles);
                 formData.append('Tenor', inputs.tenor);
                 formData.append('Amount', inputs.amount);
+                formData.append('PhoneNo', phone);
                 formData.append('UniqueId', id)
                 // ... other form data
                 const token = getUserToken();
@@ -364,18 +373,30 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                              className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                          />
                                     </span>
+                                     <span className="ml-8">
+                                        <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                            Phone Number
+                                        </h3>
+                                          <input
+                                              type="number"
+                                              value={phone}
+                                              onChange={(e) => handlePhoneChange(e, true)}
+                                              placeholder="Enter phone"
+                                              className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          />
+                                    </span>
                                     <span className="ml-8">
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                         Document Upload
                                       </h3>
                                          <input
-                                             className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                             className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                              type="file"
                                              id="fileInput"
                                              name="files"
                                              // accept="image/*, .csv, .xlsx"
-                                             accept="*/*"
-                                             multiple
+                                             accept="application/pdf"
+                                             // multiple
                                              onChange={handleFileChange}
                                          />
                                     </span>

@@ -6,11 +6,19 @@ import {Close} from "@mui/icons-material";
 
 const FilterDisbursedModal = ({open, setOpen, handleFilter}) => {
     const [startDate, setStartDate] = useState("");
+    const [bvn, setBvn] = useState("");
     const dispatch = useDispatch()
 
     const handleChange = (e) => {
         setStartDate(e.target.value)
     };
+
+    const handleBvn = (e, isNumeric = false) => {
+        const numericRegex = /^\d{0,11}$/;
+        if ((isNumeric && numericRegex.test(e.target.value)) || !isNumeric) {
+            setBvn(e.target.value)
+        }
+    }
     const applyFilters = () => {
         if (!startDate) {
             dispatch(updateSnackbar({type: 'TOGGLE_SNACKBAR_OPEN', message: "Date is required", success: false}));
@@ -18,6 +26,7 @@ const FilterDisbursedModal = ({open, setOpen, handleFilter}) => {
         }
         const filters = {
             startDate: startDate,
+            bvn: bvn,
         };
         handleFilter(filters);
         setOpen(false);
@@ -55,10 +64,22 @@ const FilterDisbursedModal = ({open, setOpen, handleFilter}) => {
                                     </div>
                                 </div>
                             </div>
+                            <span className="ml-8">
+                                  <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                    BVN
+                                  </h3>
+                                  <input
+                                      type="number"
+                                      value={bvn}
+                                      onChange={(event) => handleBvn(event, true)}
+                                      placeholder="Enter bvn"
+                                      className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                  />
+                                </span>
                         </div>
                         <div className="flex space-x-3 float-right">
                             <button className="bg-gray-300 rounded py-1 px-6 flex text-black mt-6"
-                                    onClick={()=>setOpen(!open)}>Close
+                                    onClick={() => setOpen(!open)}>Close
                             </button>
                             <button className="bg-[#00C796] rounded py-1 px-6 flex text-white mt-6"
                                     onClick={applyFilters}>Filter
