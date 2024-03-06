@@ -1,11 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {getDocumentation, getProcessedDisbursement} from "../services/api/authApiService.js";
+import {getDisbursedDisbursement, getDocumentation, getProcessedDisbursement} from "../services/api/authApiService.js";
 
 export const documentationSlice = createSlice({
     name: "documentation",
     initialState: {
         allDoc: [],
         allProcessed: [],
+        allDisbursed: [],
         loading: false,
         totalCount: 0,
     },
@@ -17,6 +18,9 @@ export const documentationSlice = createSlice({
         fetchProcessedDisbursement: (state, action) => {
             state.allProcessed = action.payload;
         },
+        fetchDisbursedDisbursement: (state, action) => {
+            state.allDisbursed = action.payload;
+        },
         fetchCount: (state, action) => {
             state.totalCount = action.payload;
         },
@@ -27,7 +31,8 @@ export const documentationSlice = createSlice({
 });
 
 export const {
-    fetchDoc, fetchCount, fetchProcessedDisbursement, getLoading
+    fetchDoc, fetchCount,
+    fetchProcessedDisbursement, fetchDisbursedDisbursement, getLoading
 } = documentationSlice.actions;
 
 export const fetchDocumentation = (size, page) => async (dispatch) => {
@@ -46,6 +51,16 @@ export const fetchProcessed = () => async (dispatch) => {
         dispatch(getLoading(true));
         const res = await getProcessedDisbursement();
         dispatch(fetchProcessedDisbursement(res.data))
+        dispatch(getLoading(false));
+    }catch (e) {
+        dispatch(getLoading(false));
+    }
+}
+export const fetchDisbursed = (size, page) => async (dispatch) => {
+    try {
+        dispatch(getLoading(true));
+        const res = await getDisbursedDisbursement(size, page);
+        dispatch(fetchDisbursedDisbursement(res.data))
         dispatch(getLoading(false));
     }catch (e) {
         dispatch(getLoading(false));
