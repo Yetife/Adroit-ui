@@ -290,11 +290,11 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                         },
                     ]
                 },
-                {
-                    applicationPageName: 'Report',
-                    href: '/bridgeLoan/report',
-                    route: '/bridgeLoan',
-                },
+                // {
+                //     applicationPageName: 'Report',
+                //     href: '/bridgeLoan/report',
+                //     route: '/bridgeLoan',
+                // },
                 {
                     applicationPageName: 'General Setup',
                     href: '/bridgeLoan/generalSetup',
