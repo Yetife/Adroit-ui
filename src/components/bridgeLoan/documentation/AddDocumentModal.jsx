@@ -379,6 +379,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                         </h3>
                                           <input
                                               type="number"
+                                              disabled={purpose === "view"}
                                               value={phone}
                                               onChange={(e) => handlePhoneChange(e, true)}
                                               placeholder="Enter phone"

@@ -4,6 +4,7 @@ import {Close} from "@mui/icons-material";
 import {getUserToken} from "../../../../services/storage/index.js";
 import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
+import {fetchDisbursed} from "../../../../store/documentationSlice.js";
 
 const DisburseBulkUpload = ({open, setOpen}) => {
     const [doc, setDoc] = useState(null)
@@ -40,6 +41,7 @@ const DisburseBulkUpload = ({open, setOpen}) => {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Record Saved Successfully.", success:true}));
                 setDoc(null)
                 setOpen(!open)
+                dispatch(fetchDisbursed(10, 1))
             }
         } catch (error) {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));

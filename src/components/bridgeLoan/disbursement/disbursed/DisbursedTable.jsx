@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../../reusables/theme.jsx";
 import {
@@ -7,12 +7,19 @@ import {
 import Pagination from "../../../reusables/Pagination.jsx";
 import {formatAmount} from "../../../reusables/formatAmount.js";
 import dayjs from "dayjs";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchDisbursed} from "../../../../store/documentationSlice.js";
 
 export const DisbursedTable = ({searchTerm, startDate, bvn}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllDisbursedDisbursementQuery({size, page, startDate, bvn})
-    if (error) return <p>Network error</p>
+    // const {data, isFetching, error} =  useGetAllDisbursedDisbursementQuery({size, page, startDate, bvn})
+    // if (error) return <p>Network error</p>
+
+    const disbursed = useSelector((state) => state.documentation.allDisbursed);
+    const totalCount = useSelector((state) => state.documentation.totalCount);
+    const loading = useSelector((state) => state.documentation.loading);
+    const dispatch = useDispatch()
 
     const filterData = (item) => {
         for (const key in item) {
@@ -23,9 +30,14 @@ export const DisbursedTable = ({searchTerm, startDate, bvn}) => {
         return false; // No match found
     };
 
-    const filteredData = data?.data?.filter(filterData);
+    useEffect(() => {
+        dispatch(fetchDisbursed(size, page))
+    }, []);
+
+    const filteredData = disbursed?.filter(filterData);
     const handlePageChange = (newPage) => {
         setPage(newPage)
+        dispatch(fetchDisbursed(size, newPage))
     }
 
     const handleRowPerPageChange = (event) => {
@@ -37,7 +49,7 @@ export const DisbursedTable = ({searchTerm, startDate, bvn}) => {
         <div className="flex rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2 inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
                 <div className="scroll-container">
-                    {isFetching && <ThemeProvider theme={themes}>
+                    {loading && <ThemeProvider theme={themes}>
                         <LinearProgress color={"waveGreen"}/>
                     </ThemeProvider>}
                     <table className="table-auto md:w-full px-20">
@@ -51,9 +63,9 @@ export const DisbursedTable = ({searchTerm, startDate, bvn}) => {
                         </tbody>
                     </table>
                 </div>
-                {data && (
+                {disbursed && (
                     <Pagination
-                        totalCount={data?.recordCount || 0}
+                        totalCount={totalCount || 0}
                         page={page}
                         rowsPerPage={size}
                         rowsPerPageOptions={[10, 20, 50, 70, 100]}

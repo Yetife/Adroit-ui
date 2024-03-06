@@ -1,5 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {getDisbursedDisbursement, getDocumentation, getProcessedDisbursement} from "../services/api/authApiService.js";
+import {
+    filterDisbursedDisbursement,
+    getDisbursedDisbursement,
+    getDocumentation,
+    getProcessedDisbursement
+} from "../services/api/authApiService.js";
 
 export const documentationSlice = createSlice({
     name: "documentation",
@@ -61,10 +66,21 @@ export const fetchDisbursed = (size, page) => async (dispatch) => {
         dispatch(getLoading(true));
         const res = await getDisbursedDisbursement(size, page);
         dispatch(fetchDisbursedDisbursement(res.data))
+        dispatch(fetchCount(res.recordCount))
         dispatch(getLoading(false));
     }catch (e) {
         dispatch(getLoading(false));
     }
 }
-
+export const fetchFilterDisbursed = (startDate, bvn) => async (dispatch) => {
+    try {
+        dispatch(getLoading(true));
+        const res = await filterDisbursedDisbursement(startDate, bvn);
+        dispatch(fetchDisbursedDisbursement(res.data))
+        dispatch(fetchCount(res.recordCount))
+        dispatch(getLoading(false));
+    }catch (e) {
+        dispatch(getLoading(false));
+    }
+}
 export default documentationSlice.reducer
