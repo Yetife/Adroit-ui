@@ -100,6 +100,14 @@ export const bridgeLoanApi = createApi({
             }),
             invalidatesTags: ["ReturnDisbursement"]
         }),
+        returnDisbursementToProcess: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/Disbursement/returnToProcess`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["ReturnDisbursementToProcess"]
+        }),
         getAllProcessedDisbursement: builder.query({
             query: ({size, page, searchTerm, startDate}) => {
                 const queryParams = {
@@ -114,7 +122,7 @@ export const bridgeLoanApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["AddDisbursement", "ReturnDisbursement"]
+            providesTags: ["AddDisbursement", "ReturnDisbursement", "ReturnDisbursementToProcess"]
         }),
         getAllReturnedDisbursement: builder.query({
             query: ({size, page, searchTerm}) => {
@@ -128,7 +136,7 @@ export const bridgeLoanApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["AddDisbursement", "ReturnDisbursement"]
+            providesTags: ["AddDisbursement", "ReturnDisbursement", "ReturnDisbursementToProcess"]
         }),
         getAllDisbursedDisbursement: builder.query({
             query: ({size, page, searchTerm, startDate, bvn}) => {
@@ -281,6 +289,7 @@ export const {
     useGetAllReturnedDisbursementQuery,
     useGetAllDisbursedDisbursementQuery,
     useReturnDisbursementMutation,
+    useReturnDisbursementToProcessMutation,
     useAddTenorMutation,
     useGetAllValidTenorQuery,
     useDeleteTenorMutation,

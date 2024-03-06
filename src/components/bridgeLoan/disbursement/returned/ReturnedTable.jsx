@@ -122,17 +122,19 @@ export function TableData({data, no}) {
             middleName: data?.middlename,
             emailAddress: data?.emailAddress,
             houseNo: data?.houseNo,
+            gender: data?.gender,
             streetName: data?.streetName,
             city: data?.city,
+            phoneno: phone,
             state: data?.state,
-            date: data?.dob,
+            date: dayjs(data?.dob).format("YYYY-MM-DD"),
             bvn: data?.bvn,
             idNo: data?.idNo,
-            idDateIssued: data?.idDateIssued,
+            idDateIssued: dayjs(data?.idDateIssued).format("YYYY-MM-DD"),
             transferAmount: data?.transferAmount,
             preferredNaration: data?.preferredNaration,
-            repayment: data?.repaymentDate,
-            docStage: data?.documentStage,
+            repayment: dayjs(data?.repaymentDate).format("YYYY-MM-DD"),
+            docStage: data?.documentationStage,
             phoneNumber: data?.phoneno
         })
     }

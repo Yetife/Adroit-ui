@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
-import {useReturnDisbursementMutation} from "../../../../store/features/bridgeLoan/api.js";
+import {
+    useReturnDisbursementMutation,
+    useReturnDisbursementToProcessMutation
+} from "../../../../store/features/bridgeLoan/api.js";
 import {getUserToken} from "../../../../services/storage/index.js";
 import axios from "axios";
 import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
@@ -14,7 +17,7 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
     const [selectedId, setSelectedId] = useState('');
     const token = getUserToken();
     const baseUrl = import.meta.env.VITE_APP_BASE_URL
-    const [returnDisbursement] = useReturnDisbursementMutation()
+    const [returnDisbursement] = useReturnDisbursementToProcessMutation()
     const dispatch = useDispatch()
 
     const handleChange = (e, fieldName) => {
@@ -82,10 +85,11 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
                 surname: inputs.surname,
                 firstname: inputs.firstName,
                 middlename: inputs.middleName,
-                emailAddress: inputs.emailAddress,
+                email: inputs.emailAddress,
                 gender: selectedGender,
                 houseNo: inputs.houseNo,
                 streetName: inputs.streetName,
+                phoneno: phone,
                 city: inputs.city,
                 state: inputs.state,
                 dob: inputs.date,
@@ -95,7 +99,7 @@ const ReturnedModal = ({open, setOpen, inputs, setInputs, id, status, selectedGe
                 transferAmount: inputs.transferAmount,
                 preferredNaration: inputs.preferredNaration,
                 repaymentDate: inputs.repayment,
-                comments: inputs.comments,
+                // comments: inputs.comments,
                 createdBy: user.FirstName,
                 status: status,
                 uniqueId: id,

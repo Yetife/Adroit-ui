@@ -16,6 +16,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, asEndDate, setAsEndDate
     const [feeFreq, setFeeFreq] = useState([])
     const [feePrincipal, setFeePrincipal] = useState([])
     const [rate, setRate] = useState([])
+    const [isFormValid, setIsFormValid] = useState(false);
     const token = getUserToken();
     const baseUrl = import.meta.env.VITE_APP_BASE_URL
 
@@ -27,7 +28,31 @@ const ProductModal = ({open, setOpen, inputs, setInputs, asEndDate, setAsEndDate
     };
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
-        setInputs((values) => ({...values, [fieldName]: value}))
+        setInputs((prevInputs) => {
+            const updatedInputs = { ...prevInputs, [fieldName]: value };
+
+            // Add validation logic for each field
+            const isNameValid = updatedInputs.name.trim() !== '';
+            const isMinimumAmountValid = updatedInputs.minimumamount !== '';
+            const isMaximumAmountValid = updatedInputs.maximumamount !== '';
+            const isStartDateValid = updatedInputs.startDate !== '';
+            const isEndDateValid = updatedInputs.endDate !== '';
+            const isLateFeePrincipalValid = updatedInputs.lateFeePrincipal !== '';
+            const isLateFeeTypeValid = updatedInputs.lateFeeType !== '';
+            const isFixedPriceValid = updatedInputs.fixedPrice !== 0;
+            const isGracePeriodValid = updatedInputs.gracePeriod !== '';
+            const isPrincipalValid = updatedInputs.principal !== 0;
+            const isTenorValid = updatedInputs.tenor !== '';
+            const isInterestRateValid = updatedInputs.interest !== '';
+            const isFeeFrequencyValid = updatedInputs.feeFrequency !== '';
+
+
+            setIsFormValid(isNameValid && isMinimumAmountValid && isMaximumAmountValid && isStartDateValid && isEndDateValid
+            && isTenorValid && isFeeFrequencyValid && isFixedPriceValid && isGracePeriodValid && isInterestRateValid && isLateFeePrincipalValid &&
+            isLateFeeTypeValid && isPrincipalValid);
+
+            return updatedInputs;
+        });
     };
 
     const fetchTenor = async () => {
@@ -418,8 +443,11 @@ const fetchFeeFrequency = async () => {
                                 <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-2"
                                         onClick={() => setOpen(!open)}>Close
                                 </button>
-                                {purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-12 flex text-white mt-2"
+                                {purpose === "add" && <button className={`bg-[#00C796] rounded py-2 px-12 flex text-white mt-2 ${!isFormValid && 'opacity-50 cursor-not-allowed'}`}
                                          onClick={handleAdd}>Save
+                                </button>}
+                                {purpose === "edit" && <button className={`bg-[#00C796] rounded py-2 px-12 flex text-white mt-2`}
+                                                               onClick={handleAdd}>Save
                                 </button>}
                             </div>
                         </div>

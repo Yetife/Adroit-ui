@@ -125,16 +125,19 @@ export function TableData({data, no}) {
             streetName: data?.streetName,
             city: data?.city,
             state: data?.state,
-            date: data?.dob,
+            date: dayjs(data?.dob).format("YYYY-MM-DD"),
             bvn: data?.bvn,
             idNo: data?.idNo,
-            idDateIssued: data?.idDateIssued,
+            idDateIssued: dayjs(data?.idDateIssued).format("YYYY-MM-DD"),
             transferAmount: data?.transferAmount,
             preferredNaration: data?.preferredNaration,
-            repayment: data?.repaymentDate,
+            repayment: dayjs(data?.repaymentDate).format("YYYY-MM-DD"),
             docStage: data?.documentationStage,
+            phoneNumber: data?.phoneno
         })
    }
+
+   console.log(dayjs(data?.repaymentDate).format("YYYY-MM-DD"))
     return (
         <tr>
             <td className="px-3 py-4 border-b border-gray-200">

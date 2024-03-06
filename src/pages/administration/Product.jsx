@@ -103,7 +103,7 @@ const Product = () => {
                     <ProductsTable searchTerm={searchTerm}/>
                 </div>
                 <ProductModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
-                              asEndDate={asEndDate} setAsEndDate={setAsEndDate} setIsOptInProcessingFee={setIsOptInProcessingFee} isOptInProcessingFee={isOptInProcessingFee} handleAdd={handleAdd}/>
+                              asEndDate={asEndDate} setAsEndDate={setAsEndDate} setIsOptInProcessingFee={setIsOptInProcessingFee} purpose="add" isOptInProcessingFee={isOptInProcessingFee} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );

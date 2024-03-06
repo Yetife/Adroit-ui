@@ -78,7 +78,7 @@ const UploadBulkModal = ({open, setOpen}) => {
                                     value={startDate}
                                     onChange={handleStartDate}
                                     placeholder="Enter start date"
-                                    className="font-medium w-[315px] text-black leading-relaxed px-4 py-1 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                    className="font-medium w-[315px] text-black leading-relaxed px-4 py-1 rounded  border border-neutral-300"
                                 />
                             </div>
                             <div className="flex items-center space-x-4 mt-6">
@@ -91,7 +91,7 @@ const UploadBulkModal = ({open, setOpen}) => {
                                             value={doc?.name}
                                             disabled
                                             placeholder="No file chosen"
-                                            className="font-medium w-[200px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                            className="font-medium w-[200px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                         />
                                     </span>
                                 <span onClick={openExplorer}>

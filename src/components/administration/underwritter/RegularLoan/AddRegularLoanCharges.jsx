@@ -18,18 +18,48 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
     const [addLoan] = useAddRegularLoanChargesMutation()
     const [editLoan] = useEditRegularLoanChargesMutation()
     const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
 
 
 
     const handleFromChange = (e) => {
-        setDepositFrom(e.target.value)
+        let value = e.target.value;
+
+        // value = value.replace(/[^0-9]/g, '');
+        //
+        // // Format the amount with commas
+        // const formattedValue = value.replace(/\B(?=(\d{9})+(?!\d))/g, ',');
+        // const formattedAmount = new Intl.NumberFormat('en-US').format(value);
+        setDepositFrom(value)
+    };
+
+    const handleAmountBlur = (e) => {
+        // Set the value without leading zeros
+     const formattedAmount = formatAmount(depositFrom)
+        setDepositFrom(formattedAmount)
     };
     const handleToChange = (e) => {
         setDepositTo(e.target.value)
     };
-    const handleCAmountChange = (e) => {
-        setCAmount(e.target.value)
+    const handleCAmountChange = (e) => {// Format the amount
+
+        setCAmount(e.target.value);
     };
+
+// Function to format the amount with commas
+    const formatAmount = (amount) => {
+        // Remove non-numeric characters and format the amount
+        // const numericValue = amount.replace(/[^0-9]/g, '');
+        const formattedAmount = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'NGN'
+        }).format(amount);
+
+        return formattedAmount;
+    };
+
+    console.log(formatAmount(depositFrom))
     const handlePercentageChange = (e) => {
         setSelectedPer(e.target.value);
     };
@@ -93,7 +123,7 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
     }
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/GeneralSetUp/getallvalidEmploymenttypes', {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidEmploymenttypes`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -109,7 +139,7 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
     };
     const fetchTenor = async () => {
         try {
-            const response = await axios.get('http://prananettech-001-site27.ftempurl.com/api/Administration/LoanTenor/getallvalidLoanTenors',{
+            const response = await axios.get(`${baseUrl}/Administration/LoanTenor/getallvalidLoanTenors?PasgeSize=10&PageNumber=1`,{
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -198,6 +228,7 @@ const AddRegularLoanCharges = ({open, setOpen, cAmount, setCAmount, depositFrom,
                                               type="number"
                                               value={depositFrom}
                                               disabled={purpose === "view"}
+                                              // onBlur={handleAmountBlur}
                                               onChange={handleFromChange}
                                               placeholder="Enter loan amount from"
                                               className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"

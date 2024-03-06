@@ -104,7 +104,7 @@ const AddNewPage = () => {
                 bvn: inputs.bvn,
                 idNo: inputs.idNo,
                 idDateIssued: inputs.idDate,
-                phoneno: inputs.phoneNumber,
+                phoneno: phone,
                 transferAmount: inputs.transferAmt,
                 preferredNaration: inputs.narration,
                 repaymentDate: inputs.repayment,
@@ -271,7 +271,7 @@ const AddNewPage = () => {
                               value={inputs.bvn}
                               onChange={(event) => handleChange(event, "bvn", true)}
                               placeholder="Enter bvn"
-                              className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                              className="font-medium w-[220px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                           />
                         </span>
                         <span className="ml-8">
