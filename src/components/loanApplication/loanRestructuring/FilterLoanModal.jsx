@@ -7,6 +7,7 @@ import axios from "axios";
 import {getUserToken} from "../../../services/storage/index.js";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
+import {getCurrentDate} from "../../reusables/getCurrentDate.js";
 
 const FilterLoanModal = ({open, setOpen, handleFilter}) => {
     const [status, setStatus] = useState([]);
@@ -20,7 +21,6 @@ const FilterLoanModal = ({open, setOpen, handleFilter}) => {
     const [email, setEmail] = useState("");
     const token = getUserToken();
     const dispatch = useDispatch()
-
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value)
@@ -139,6 +139,7 @@ const FilterLoanModal = ({open, setOpen, handleFilter}) => {
                                                 value={inputs.endDate}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter end date"
+                                                max={getCurrentDate()}
                                                 className="font-medium w-[160px] text-black leading-relaxed px-4 py-1 rounded  border border-neutral-300"
                                             />
                                         </div>

@@ -56,7 +56,7 @@ const Processed = () => {
     return (
         <Layout>
             <div className="px-2">
-                <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
+                <div className="flex items-center justify-between px-0 py-4  pb-2 md:pt-3">
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div className="flex items-center">
                         <div className='py-2 w-full'>
@@ -67,7 +67,8 @@ const Processed = () => {
                                     value={startDate}
                                     onChange={handleChange}
                                     placeholder="Enter start date"
-                                    className="font-medium w-[160px] text-black leading-relaxed ml-2 px-4 py-2 rounded  border border-neutral-300"
+                                    max={getCurrentDate()}
+                                    className="font-medium w-[160px] text-black leading-relaxed ml-2 px-4 py-1 rounded  border border-neutral-300"
                                 />
                             {/*<DatePicker*/}
                             {/*    className='border broder-gray-700 ml-3 px-2 rounded-md py-3 text-[14px] focus:outline-none'*/}

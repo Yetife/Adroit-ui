@@ -5,6 +5,7 @@ import {getUserToken} from "../../../services/storage/index.js";
 import {useDispatch} from "react-redux";
 import axios from "axios";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {getCurrentDate} from "../../reusables/getCurrentDate.js";
 
 const FilterSavingsModal = ({open, setOpen, handleFilter}) => {
     const [status, setStatus] = useState([]);
@@ -122,6 +123,7 @@ const FilterSavingsModal = ({open, setOpen, handleFilter}) => {
                                             <input
                                                 type="date"
                                                 value={inputs.endDate}
+                                                max={getCurrentDate()}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter end date"
                                                 className="font-medium w-[170px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
