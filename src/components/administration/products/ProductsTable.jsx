@@ -89,7 +89,7 @@ export function TableData({data, no}) {
     const [open, setOpen] = useState(false);
     const [asEndDate, setAsEndDate] = useState(false)
     const [isOptInProcessingFee, setIsOptInProcessingFee] = useState(false)
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const dispatch = useDispatch()
     const [purpose, setPurpose] = useState("")
@@ -100,8 +100,8 @@ export function TableData({data, no}) {
         name: "",
         minimumamount: 0,
         maximumamount: 0,
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: "",
+        endDate: "",
         lateFeePrincipal: "",
         lateFeeType: "",
         fixedPrice: 0,
@@ -182,8 +182,8 @@ export function TableData({data, no}) {
                 name: inputs.name,
                 minimuimamount: inputs.minimumamount,
                 maximuimamount: inputs.maximumamount,
-                startdate: dayjs(startDate).format('YYYY-MM-DD'),
-                enddate: asEndDate ? dayjs(endDate).format('YYYY-MM-DD') : "",
+                startdate: dayjs(inputs.startDate).format('YYYY-MM-DD'),
+                enddate: asEndDate ? dayjs(inputs.endDate).format('YYYY-MM-DD') : "",
                 lateFeePrincipal: inputs.lateFeePrincipal,
                 lateFeeType: inputs.lateFeeType,
                 fixedPrice: inputs.fixedPrice,
@@ -229,7 +229,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.adminProduct.startdate).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.adminProduct.enddate).format("YYYY/MM/DD")}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data.adminProduct.enddate ? dayjs(data.adminProduct.enddate).format("YYYY/MM/DD") : ""}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.adminProduct.datecreated).format("YYYY/MM/DD")}</span>

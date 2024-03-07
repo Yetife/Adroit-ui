@@ -47,7 +47,7 @@ const ProductModal = ({open, setOpen, inputs, setInputs, asEndDate, setAsEndDate
             const isFeeFrequencyValid = updatedInputs.feeFrequency !== '';
 
 
-            setIsFormValid(isNameValid && isMinimumAmountValid && isMaximumAmountValid && isStartDateValid && isEndDateValid
+            setIsFormValid(isNameValid && isMinimumAmountValid && isMaximumAmountValid && isStartDateValid
             && isTenorValid && isFeeFrequencyValid && isFixedPriceValid && isGracePeriodValid && isInterestRateValid && isLateFeePrincipalValid &&
             isLateFeeTypeValid && isPrincipalValid);
 
@@ -447,7 +447,7 @@ const fetchFeeFrequency = async () => {
                                          onClick={handleAdd}>Save
                                 </button>}
                                 {purpose === "edit" && <button className={`bg-[#00C796] rounded py-2 px-12 flex text-white mt-2`}
-                                                               onClick={handleAdd}>Save
+                                                               onClick={handleAdd}>Update
                                 </button>}
                             </div>
                         </div>
