@@ -53,7 +53,7 @@ const Product = () => {
                 minimuimamount: inputs.minimumamount,
                 maximuimamount: inputs.maximumamount,
                 startdate: dayjs(startDate).format('YYYY-MM-DD'),
-                enddate: asEndDate ? dayjs(endDate).format('YYYY-MM-DD') : "",
+                enddate: asEndDate ? dayjs(endDate).format('YYYY-MM-DD') : "2000-01-01",
                 lateFeePrincipal: inputs.lateFeePrincipal,
                 lateFeeType: inputs.lateFeeType,
                 fixedPrice: inputs.fixedPrice,

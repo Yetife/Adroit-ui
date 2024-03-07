@@ -213,11 +213,11 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                             href: '/administration/staff/disbursedLoan',
                             route: '/administration',
                         },
-                        {
-                            applicationPageName: 'Loan Collection',
-                            href: '/administration/staff/loanCollection',
-                            route: '/administration',
-                        },
+                        // {
+                        //     applicationPageName: 'Loan Collection',
+                        //     href: '/administration/staff/loanCollection',
+                        //     route: '/administration',
+                        // },
                     ]
                 },
                 {
@@ -290,11 +290,11 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                         },
                     ]
                 },
-                {
-                    applicationPageName: 'Report',
-                    href: '/bridgeLoan/report',
-                    route: '/bridgeLoan',
-                },
+                // {
+                //     applicationPageName: 'Report',
+                //     href: '/bridgeLoan/report',
+                //     route: '/bridgeLoan',
+                // },
                 {
                     applicationPageName: 'General Setup',
                     href: '/bridgeLoan/generalSetup',

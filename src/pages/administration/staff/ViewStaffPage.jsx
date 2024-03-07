@@ -157,7 +157,7 @@ const ViewStaffPage = () => {
                             </div>
                         </div>
                         {
-                            status !== "loan" && (
+                            status === "loan" && (
                                 <div className="flex space-x-3 float-right my-8">
                                     <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'180px'}>
                                         <Text color="white">Approve & Disburse</Text>
