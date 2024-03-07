@@ -7,10 +7,10 @@ import Pagination from "../../../reusables/Pagination.jsx";
 import {formatAmount} from "../../../reusables/formatAmount.js";
 import dayjs from "dayjs";
 
-const ProcessedTable = ({searchTerm, startDate}) => {
-    const [page, setPage] = useState(1)
-    const [size, setSize] = useState(10)
-    const {data, isFetching, error} =  useGetAllProcessedDisbursementQuery({size, page, startDate})
+const ProcessedTable = ({searchTerm, startDate, page, setPage, size, setSize, data, isFetching, error}) => {
+    // const [page, setPage] = useState(1)
+    // const [size, setSize] = useState(10)
+    // const {data, isFetching, error} =  useGetAllProcessedDisbursementQuery({size, page, startDate})
     if (error) return <p>Network error</p>
 
     const filterData = (item) => {
