@@ -103,7 +103,7 @@ export function TableData({data, no}) {
             </td>
             <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <span className="w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer">
-                    <span className="block px-4 w-full py-2 text-[16px] font-medium text-[#007BEC]" onClick={()=>router(`/administration/staff/view?id=${data.uniqueId}&status=disbursed`)}>View</span>
+                    <span className="block px-4 w-full py-2 text-[16px] font-medium text-[#007BEC]" onClick={()=>router(`/administration/staff/disbursedLoan/view?id=${data.uniqueId}&status=disbursed`)}>View</span>
                 </span>
             </td>
         </tr>

@@ -162,7 +162,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.houseNo}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.streetName}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.streetName}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.city}</span>
@@ -188,7 +188,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.transferAmount)}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.preferredNaration}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.preferredNaration}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
                 <span

@@ -112,7 +112,7 @@ export function TableData({data, no}) {
             </td>
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                 <span className="w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer">
-                    <span className="block px-4 w-full py-2 text-[16px] font-medium text-[#007BEC]" onClick={()=>router(`/staff/view?id=${data.uniqueId}&status=loan`)}>View</span>
+                    <span className="block px-4 w-full py-2 text-[16px] font-medium text-[#007BEC]" onClick={()=>router(`/staff/loan/view?id=${data.uniqueId}`)}>View</span>
                 </span>
             </td>
         </tr>
