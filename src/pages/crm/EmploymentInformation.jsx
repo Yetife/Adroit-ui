@@ -406,7 +406,7 @@ const EmploymentInformation = () => {
                                     value={inputs.dateOfEmployment}
                                     onChange={(event) => handleChange(event, "dateOfEmployment")}
                                     placeholder="Enter date of employment"
-                                    className="font-medium w-[232px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                    className="font-medium w-[232px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300"
                                 />
                             </span>
                         </div>

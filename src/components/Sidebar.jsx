@@ -38,31 +38,31 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 {
                     applicationPageName: 'Customer',
                     href: '/loanApp/customer',
-                    route: '/loanApp',
+                    route: '/customers',
                 },
                 {
                     applicationPageName: 'Declined',
                     href: '/loanApp/declined',
-                    route: '/loanApp',
+                    route: '/declined',
                 },
                 {
                     applicationPageName: 'Adjust',
                     href: '/loanApp/adjust',
-                    route: '/loanApp',
+                    route: '/adjust',
                 },
                 {
                     applicationPageName: 'Loan Status',
                     href: '/loanApp/loanStatus',
-                    route: '/loanApp',
+                    route: '/loanStatus',
                 },
                 {
                     applicationPageName: 'Loan Restructuring',
                     href: '/loanApp/loanRestructuring',
-                    route: '/loanApp',
+                    route: '/loanRestructuring',
                 },{
                     applicationPageName: 'Loan Top-up',
                     href: '/loanApp/loanTopUp',
-                    route: '/loanApp',
+                    route: '/loanTopUp',
                 },
             ]
         },
@@ -77,22 +77,22 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 {
                     applicationPageName: 'Review',
                     href: '/loanUnderwriting/review',
-                    route: '/underwriting',
+                    route: '/review',
                 },
                 {
                     applicationPageName: 'Approval',
                     href: '/loanUnderwriting/approval',
-                    route: '/underwriting',
+                    route: '/approval',
                 },
                 {
                     applicationPageName: 'Disbursement',
                     href: '/loanUnderwriting/disbursement',
-                    route: '/underwriting',
+                    route: '/disbursement',
                 },
                 {
                     applicationPageName: 'Loan Re-assignment',
                     href: '/loanUnderwriting/loanRe-assignment',
-                    route: '/underwriting',
+                    route: '/loanRe-assignment',
                 }
             ]
         },
@@ -107,17 +107,17 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 {
                     applicationPageName: 'Repayment',
                     href: '/collection/repayment',
-                    route: '/collection',
+                    route: '/repayment',
                 },
                 {
                     applicationPageName: 'Summary',
                     href: '/collection/summary',
-                    route: '/collection',
+                    route: '/summary',
                 },
                 {
                     applicationPageName: 'Report',
                     href: '/collection/report',
-                    route: '/collection',
+                    route: '/report',
                 },
             ]
         },
@@ -132,7 +132,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 {
                     applicationPageName: 'Loan',
                     href: '/staff/loan',
-                    route: '/staff',
+                    route: '/loan',
                 },
             ]
         },
@@ -147,12 +147,12 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 {
                     applicationPageName: 'Add Client',
                     href: '/crm/addClient',
-                    route: '/crm',
+                    route: '/addClient',
                 },
                 {
                     applicationPageName: 'Clients',
                     href: '/crm/clients',
-                    route: '/crm',
+                    route: '/clients',
                 },
                 // {
                 //     applicationPageName: 'Notification',
@@ -172,63 +172,63 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 {
                     applicationPageName: 'Product',
                     href: '/administration',
-                    route: '/administration',
+                    route: '/product',
                 },
                 {
                     applicationPageName: 'Underwriter',
                     href: '/administration/underwriter/level',
-                    route: '/administration',
+                    route: '/underwriter',
                     hasDropdown: true,
                     dropdown: [
                         {
                             applicationPageName: 'Level',
                             href: '/administration/underwriter/level',
-                            route: '/administration',
+                            route: '/level',
                         },
                         {
                             applicationPageName: 'Manage',
                             href: '/administration/underwriter/manage',
-                            route: '/administration',
+                            route: '/manage',
                         },
                         {
                             applicationPageName: 'Regular Loan',
                             href: '/administration/underwriter/regularLoan',
-                            route: '/administration',
+                            route: '/regularLoan',
                         },
                     ]
                 },
                 {
                     applicationPageName: 'Staff',
-                    href: '/administration/staff/loan',
-                    route: '/administration',
+                    href: '/administration/staff/staffLoan',
+                    route: '/staff',
                     hasDropdown: true,
                     dropdown: [
                         {
                             applicationPageName: 'Loan',
-                            href: '/administration/staff/loan',
-                            route: '/administration',
+                            href: '/administration/staff/staffLoan',
+                            route: '/staffLoan',
                         },
                         {
                             applicationPageName: 'Disbursed Loan',
                             href: '/administration/staff/disbursedLoan',
-                            route: '/administration',
+                            route: '/disbursedLoan',
                         },
-                        {
-                            applicationPageName: 'Loan Collection',
-                            href: '/administration/staff/loanCollection',
-                            route: '/administration',
-                        },
+                        // {
+                        //     applicationPageName: 'Loan Collection',
+                        //     href: '/administration/staff/loanCollection',
+                        //     route: '/loanCollection',
+                        // },
                     ]
                 },
                 {
                     applicationPageName: 'Loan Tenor',
                     href: '/administration/loanTenor',
-                    route: '/administration',
+                    route: '/loanTenor',
                 },
                 {
                     applicationPageName: 'Report',
                     href: '/administration/report',
-                    route: '/administration',
+                    route: '/report',
                 },
             ]
         },
@@ -250,17 +250,17 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 {
                     applicationPageName: 'Documentation Setup',
                     href: '/bridgeLoan',
-                    route: '/bridgeLoan',
+                    route: '/documentationSetUp',
                 },
                 {
                     applicationPageName: 'Documentation',
                     href: '/bridgeLoan/documentation',
-                    route: '/bridgeLoan',
+                    route: '/documentation',
                 },
                 {
                     applicationPageName: 'Documentation Status',
                     href: '/bridgeLoan/documentationStatus',
-                    route: '/bridgeLoan',
+                    route: '/documentationStatus',
                 },
                 {
                     applicationPageName: 'Disbursement',
@@ -271,22 +271,22 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                         {
                             applicationPageName: 'Returned',
                             href: '/bridgeLoan/disbursement/returned',
-                            route: '/bridgeLoan',
+                            route: '/returned',
                         },
                         {
                             applicationPageName: 'Process',
                             href: '/bridgeLoan/disbursement/processed',
-                            route: '/bridgeLoan',
+                            route: '/processed',
                         },
                         {
                             applicationPageName: 'New',
                             href: '/bridgeLoan/disbursement/new',
-                            route: '/bridgeLoan',
+                            route: '/new',
                         },
                         {
                             applicationPageName: 'Disbursed',
                             href: '/bridgeLoan/disbursement/disbursed',
-                            route: '/bridgeLoan',
+                            route: '/disbursed',
                         },
                     ]
                 },
@@ -298,7 +298,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 {
                     applicationPageName: 'General Setup',
                     href: '/bridgeLoan/generalSetup',
-                    route: '/bridgeLoan',
+                    route: '/generalSetup',
                 },
             ]
         },

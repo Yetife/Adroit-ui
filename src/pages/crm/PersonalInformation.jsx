@@ -33,7 +33,8 @@ const PersonalInformation = () => {
         email: "",
         phoneNumber: "",
         alternatePhoneNumber: "",
-        bvn: 0
+        bvn: "",
+        uniqueId: ""
     })
     const navigate = useNavigate();
     const location = useLocation();
@@ -123,7 +124,7 @@ const PersonalInformation = () => {
     const handleNext = async (e) => {
         e.preventDefault();
         const input = JSON.parse(sessionStorage.getItem("client"));
-        if (custId || clientId){
+        if (inputs.uniqueId){
             console.log(inputs)
             editClient({
                 body: {
@@ -291,6 +292,7 @@ const PersonalInformation = () => {
                 email: response.data?.data.personalandcontactInformation?.email,
                 phoneNumber: response.data?.data.personalandcontactInformation?.phone,
                 alternatePhoneNumber: response.data?.data.personalandcontactInformation?.altPhone,
+                uniqueId: response.data?.data.personalandcontactInformation?.uniqueId,
             })
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -427,7 +429,7 @@ const PersonalInformation = () => {
                                         value={inputs.dateOfBirth}
                                         onChange={(event) => handleChange(event, "dateOfBirth")}
                                         placeholder="Enter date of birth"
-                                        className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                        className="font-medium w-[240px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300"
                                     />
                             </span>
                             <span>

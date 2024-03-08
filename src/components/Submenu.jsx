@@ -17,6 +17,12 @@ const Submenu = ({data, isExpanded}) => {
         setShowSubDropdown((initValue) => !initValue);
     };
 
+    const isHighlighted = (route) => {
+        return (
+            currentRoute === route || location.pathname.includes(route.slice(1))
+        );
+    };
+
     return (
         <div>
             <div className={`flex flex-col min-w-64 py-2 mt-4`}>
@@ -36,7 +42,7 @@ const Submenu = ({data, isExpanded}) => {
                                     <div key={ind}>
                                         <div className="flex cursor-pointer" onClick={handleShowSubDropdown}>
                                             <div className="flex font-bold items-center px-12 py-1  text-gray-100 bg-white bg-opacity-25" onClick={()=>router(each.href)} >
-                                                <span className={` mx-3 text-sm ${ location.pathname === each.href ? 'text-[#135D54] font-bold' : 'text-[#6F8B84] font-medium'}`}>{each.applicationPageName}</span>
+                                                <span className={` mx-3 text-sm ${ isHighlighted(each.route) ? 'text-[#135D54] font-bold' : 'text-[#6F8B84] font-medium'}`}>{each.applicationPageName}</span>
                                             </div>
                                             {each.hasDropdown &&  <img src={showSubDropdown ? data.iconClosed : data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/>}
                                         </div>
@@ -45,7 +51,7 @@ const Submenu = ({data, isExpanded}) => {
                                                 each.dropdown?.map((sub, index) => (
                                                     <div key={index} className="flex">
                                                         <div className="flex font-bold items-center px-12 py-1  text-gray-100 bg-white bg-opacity-25" onClick={()=>router(sub.href)}>
-                                                            <span className={`${ location.pathname === each.href && 'medium'} mx-3 text-sm cursor-pointer ${ location.pathname === sub.href ? 'text-[#0C3A35] font-medium' : 'text-[#6F8B84] font-normal'}`}> - {sub.applicationPageName}</span>
+                                                            <span className={`${ isHighlighted(sub.route) && 'medium'} mx-3 text-sm cursor-pointer ${ isHighlighted(sub.route) ? 'text-[#0C3A35] font-medium' : 'text-[#6F8B84] font-normal'}`}> - {sub.applicationPageName}</span>
                                                         </div>
                                                     </div>
                                                 ))

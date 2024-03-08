@@ -5,6 +5,7 @@ import axios from "axios";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
+import {getCurrentDate} from "../../reusables/getCurrentDate.js";
 
 const FilterTransferModal = ({open, setOpen, handleFilter}) => {
     const [status, setStatus] = useState([]);
@@ -124,6 +125,7 @@ const FilterTransferModal = ({open, setOpen, handleFilter}) => {
                                                 value={inputs.endDate}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter end date"
+                                                max={getCurrentDate()}
                                                 className="font-medium w-[170px] text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                             />
                                         </div>

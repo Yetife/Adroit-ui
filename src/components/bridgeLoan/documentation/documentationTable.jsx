@@ -189,26 +189,6 @@ export function TableData({data, no}) {
                     'authorization': `Bearer ${token}`
                 }
             });
-            // setLoading(false)
-
-            // setDoc(response.data);
-            // const byteCharacters = atob(doc);
-            // const byteNumbers = new Array(byteCharacters.length);
-            // for (let i = 0; i < byteCharacters.length; i++) {
-            //     byteNumbers[i] = byteCharacters.charCodeAt(i);
-            // }
-            // const byteArray = new Uint8Array(byteNumbers);
-            // const blob = new Blob([byteArray], { type: 'application/pdf' });
-            //
-            // // Create a download link and trigger the download
-            // const url = URL.createObjectURL(blob);
-            // const a = document.createElement('a');
-            // a.href = url;
-            // a.download = 'document.pdf';
-            // document.body.appendChild(a);
-            // a.click();
-            // document.body.removeChild(a);
-            // URL.revokeObjectURL(url);
             console.log(doc)
         } catch (error) {
             console.error('Error fetching data:', error);

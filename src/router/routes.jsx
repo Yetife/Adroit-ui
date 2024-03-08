@@ -486,7 +486,15 @@ const ROUTES = [
                 </ProtectedRoute>
             },
             {
-                path: "view",
+                path: "loan/view",
+                key: "viewStaff",
+                exact: true,
+                element: <ProtectedRoute>
+                    <ViewStaffPage />,
+                </ProtectedRoute>
+            },
+            {
+                path: "disbursedLoan/view",
                 key: "viewStaff",
                 exact: true,
                 element: <ProtectedRoute>
@@ -773,7 +781,7 @@ const ROUTES = [
                 exact: true,
                 children: [
                     {
-                        path: "loan",
+                        path: "staffLoan",
                         key: "loan",
                         exact: true,
                         element: <ProtectedRoute>
@@ -797,7 +805,15 @@ const ROUTES = [
                         </ProtectedRoute>
                     },
                     {
-                        path: "view",
+                        path: "staffLoan/view",
+                        key: "viewStaff",
+                        exact: true,
+                        element: <ProtectedRoute>
+                            <ViewStaffPage />,
+                        </ProtectedRoute>
+                    },
+                    {
+                        path: "disbursedLoan/view",
                         key: "viewStaff",
                         exact: true,
                         element: <ProtectedRoute>

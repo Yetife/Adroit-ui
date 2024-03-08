@@ -5,6 +5,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
+import {getCurrentDate} from "../../reusables/getCurrentDate.js";
 
 const FilterDeclined = ({open, setOpen, handleFilter}) => {
     const [inputs, setInputs] = useState({
@@ -17,7 +18,6 @@ const FilterDeclined = ({open, setOpen, handleFilter}) => {
     const [applicationId, setApplicationId] = useState("");
     const [email, setEmail] = useState("");
     const dispatch = useDispatch()
-
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
@@ -192,6 +192,7 @@ const FilterDeclined = ({open, setOpen, handleFilter}) => {
                                                 value={inputs.endDate}
                                                 onChange={(event) => handleChange(event, "endDate")}
                                                 placeholder="Enter end date"
+                                                max={getCurrentDate()}
                                                 className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                             />
                                         </div>

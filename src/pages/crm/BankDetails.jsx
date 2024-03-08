@@ -56,7 +56,7 @@ const BankDetails = () => {
             editBank({
                 body: {
                     bankId: inputs.bank,
-                    customerId: custId.toString(),
+                    customerId: cusId.toString(),
                     accountNumber: inputs.accNumber,
                     accountName: inputs.accName,
                     uniqueId: inputs.uniqueId
