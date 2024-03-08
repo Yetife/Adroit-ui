@@ -14,6 +14,7 @@ const PreviewPage = () => {
 
     const handleNext = () => {
         sessionStorage.removeItem('cusId');
+        sessionStorage.removeItem('client');
         router('/crm/clients')
     }
     return (

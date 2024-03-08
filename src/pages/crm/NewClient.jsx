@@ -36,6 +36,8 @@ const NewClient = () => {
     };
 
     useEffect(() => {
+        sessionStorage.removeItem('cusId');
+        sessionStorage.removeItem('client');
         fetchData();
     }, []);
 
