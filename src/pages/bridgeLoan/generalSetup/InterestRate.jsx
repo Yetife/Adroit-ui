@@ -8,12 +8,14 @@ import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import TenorTable from "../../../components/bridgeLoan/generalSetup/tenor/TenorTable.jsx";
 import AddTenorModal from "../../../components/bridgeLoan/generalSetup/tenor/AddTenorModal.jsx";
+import AddInterestRateModal from "../../../components/bridgeLoan/generalSetup/interestRate/AddInterestRateModal.jsx";
+import InterestRateTable from "../../../components/bridgeLoan/generalSetup/interestRate/InterestRateTable.jsx";
 
 const InterestRate = () => {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
     const [checked, setChecked] = useState(true);
-    const [tenor, setTenor] = useState("")
+    const [rate, setRate] = useState("")
     const dispatch = useDispatch()
     const [searchTerm, setSearchTerm] = useState("");
     const [addTenor] = useAddTenorMutation()
@@ -58,9 +60,9 @@ const InterestRate = () => {
                     </div>
                 </div>
                 <div>
-                    <TenorTable searchTerm={searchTerm}/>
+                    <InterestRateTable searchTerm={searchTerm}/>
                 </div>
-                <AddTenorModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} tenor={tenor} setTenor={setTenor} handleAdd={handleAdd}/>
+                <AddInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} tenor={rate} setTenor={setRate} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );

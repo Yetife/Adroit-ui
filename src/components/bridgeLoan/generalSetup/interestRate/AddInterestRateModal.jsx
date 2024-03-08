@@ -3,12 +3,12 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Checkbox} from "@mui/material";
 import {Close} from "@mui/icons-material";
 
-const AddInterestRateModal = ({open, setOpen, checked, setChecked, tenor, setTenor, purpose, handleAdd}) => {
+const AddInterestRateModal = ({open, setOpen, checked, setChecked, rate, setRate, purpose, handleAdd}) => {
     const handleChange = (event) => {
         setChecked(event.target.checked);
     };
-    const handleTenorChange = (e) => {
-        setTenor(e.target.value)
+    const handleRateChange = (e) => {
+        setRate(e.target.value)
     };
 
 
@@ -29,14 +29,14 @@ const AddInterestRateModal = ({open, setOpen, checked, setChecked, tenor, setTen
                             <div>
                                 <span className="ml-8">
                                   <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                    Tenor
+                                    Interest Rate
                                   </h3>
                                   <input
                                       type="text"
-                                      value={tenor}
+                                      value={rate}
                                       disabled={purpose === "view"}
-                                      onChange={handleTenorChange}
-                                      placeholder="Enter tenor"
+                                      onChange={handleRateChange}
+                                      placeholder="Enter interest rate"
                                       className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                   />
                                 </span>
