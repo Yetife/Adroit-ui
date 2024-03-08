@@ -98,6 +98,7 @@ import {getUserToken} from "../services/storage/index.js";
 import Repayment from "../pages/collection/Repayment.jsx";
 import RepaymentDetails from "../pages/collection/RepaymentDetails.jsx";
 import Summary from "../pages/collection/Summary.jsx";
+import InterestRate from "../pages/bridgeLoan/generalSetup/InterestRate.jsx";
 
 export const ProtectedRoute = ({ children }) => {
     const navigate = useNavigate();
@@ -845,7 +846,7 @@ const ROUTES = [
                 </ProtectedRoute>
             },
             {
-                path: "documentationStatus",
+                path: "status",
                 key: "DOCUMENTATION STATUS",
                 exact: true,
                 element: <ProtectedRoute>
@@ -916,6 +917,14 @@ const ROUTES = [
                         exact: true,
                         element: <ProtectedRoute>
                             <Tenor />,
+                        </ProtectedRoute>
+                    },
+                    {
+                        path: "interestRate",
+                        key: "INTEREST RATE",
+                        exact: true,
+                        element: <ProtectedRoute>
+                            <InterestRate />,
                         </ProtectedRoute>
                     },
                     {

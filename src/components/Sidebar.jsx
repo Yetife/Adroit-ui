@@ -259,13 +259,13 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 },
                 {
                     applicationPageName: 'Documentation Status',
-                    href: '/bridgeLoan/documentationStatus',
-                    route: '/documentationStatus',
+                    href: '/bridgeLoan/status',
+                    route: '/status',
                 },
                 {
                     applicationPageName: 'Disbursement',
                     href: '/bridgeLoan/disbursement/returned',
-                    route: '/bridgeLoan',
+                    route: '/disbursement',
                     hasDropdown: true,
                     dropdown: [
                         {

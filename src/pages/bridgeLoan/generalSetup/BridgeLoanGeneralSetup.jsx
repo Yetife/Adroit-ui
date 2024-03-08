@@ -21,7 +21,12 @@ const BridgeLoanGeneralSetup = () => {
             name: "Disbursement Status",
             path: "/bridgeLoan/generalSetup/disbursementStatus"
         },
+        {
+            name: "Interest Rate",
+            path: "/bridgeLoan/generalSetup/interestRate"
+        },
     ]
+
     return (
         <Layout>
             <div className="px-2">
