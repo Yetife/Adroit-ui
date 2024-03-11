@@ -11,8 +11,13 @@ const ViewFixedDepositPage = () => {
     const [open, setOpen] = useState(false)
     const queryParams = new URLSearchParams(location.search);
     const custId = queryParams.get("id");
+    const [id, setId] = useState(null)
     const {data, isFetching, error} =  useGetFixedDepositByIdQuery(custId)
 
+    const handleOpen = (id) => {
+        setId(id)
+        setOpen(true)
+    }
 
     const header = ['S/N', 'Amount', 'Status', 'Interest', 'Tenor', 'Date Submitted', 'Start Date', 'Maturity Date', 'Actions' ]
 
@@ -97,9 +102,13 @@ const ViewFixedDepositPage = () => {
                                             </td> <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.maturityDate).format("YYYY/MM/DD")}</span>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span onClick={()=>setOpen(true)} className={`text-[16px] leading-5 font-[inter] truncate ${item.status === "Pending" ? 'text-[#00C795] cursor-pointer' : 'text-[#4A5D58] italic font-[300]'}  font-medium`}>{item.status === "Pending" ? "Approve Now" : "No action"}</span>
-                                            </td>
+                                            {item.statusName === "Pending" && <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span  onClick={()=> handleOpen(item.referenceId)}
+                                                      className={`text-[16px] leading-5 font-[inter] truncate text-[#00C795] cursor-pointer font-medium italic`}>Approve Now</span>
+                                            </td>}
+                                            {item.statusName !== "Pending" && <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span className={`text-[16px] leading-5 font-[inter] truncate text-[#4A5D58] italic font-medium italic`}>No action</span>
+                                            </td>}
                                         </tr>
                                     ))
                                 }
@@ -109,7 +118,7 @@ const ViewFixedDepositPage = () => {
                     </div>
                 </div>
             </div>
-            <ApproveDepositModal open={open} setOpen={setOpen}/>
+            <ApproveDepositModal open={open} setOpen={setOpen} id={id}/>
         </Layout>
     )
         ;

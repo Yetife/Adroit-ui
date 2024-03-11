@@ -3,8 +3,30 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import {Close} from "@mui/icons-material";
+import {
+    useModifyBillsPaymentMutation,
+    useModifyFixedDepositMutation
+} from "../../../store/features/customerCentric/api.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
 
-const ApproveDepositModal = ({open, setOpen}) => {
+const ApproveDepositModal = ({open, setOpen, id}) => {
+    const dispatch = useDispatch()
+    const [modifyBills] = useModifyFixedDepositMutation()
+
+    const handleSubmit = (status) => {
+        modifyBills({
+            body: {
+                entityId: id,
+                status: status
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpen(!open)
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
     return (
         <div>
             <Dialog.Root
@@ -21,13 +43,13 @@ const ApproveDepositModal = ({open, setOpen}) => {
                         <div className="mt-4">
                             <div className="flex tw-items-center m-auto tw-text-center mt-10">
                                 <Button className="ml-6" variant="primary" bgColor="#00C795" borderRadius="4px"
-                                        height="37px" size='md' as={ReactLink} w={'290px'}>
+                                        height="37px" size='md' as={ReactLink} w={'290px'} onClick={()=>handleSubmit("1")}>
                                     <Text color="white">Approve</Text>
                                 </Button>
                             </div>
                             <div className="flex tw-items-center m-auto tw-text-center mt-3">
                                 <Button className="ml-6" variant="primary" bgColor="#FF0909" borderRadius="4px"
-                                        height="37px" size='md' as={ReactLink} w={'290px'}>
+                                        height="37px" size='md' as={ReactLink} w={'290px'} onClick={()=>handleSubmit("2")}>
                                     <Text color="white">Reject</Text>
                                 </Button>
                             </div>

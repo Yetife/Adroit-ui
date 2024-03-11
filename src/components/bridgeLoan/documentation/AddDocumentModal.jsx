@@ -75,7 +75,7 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
     };
     const fetchInterest = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidRegularLoanInterestRate`, {
+            const response = await axios.get(`${baseUrl}/BridgeLoan/GeneralSetUpInterestRate/getallvalid`, {
                 headers: {
                     'Content-Type': "application/json",
                     'Accept': "application/json",
@@ -294,8 +294,8 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
                                                  className="font-medium w-[240px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select interest</option>
                                              {interest && interest?.map((option) => (
-                                                 <option key={option.id} value={option.interestRate}>
-                                                     {option.interestRate}
+                                                 <option key={option.id} value={option.name}>
+                                                     {option.name}
                                                  </option>
                                              ))}
                                         </select>

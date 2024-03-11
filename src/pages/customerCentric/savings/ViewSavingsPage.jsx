@@ -66,7 +66,7 @@ const ViewSavingsPage = () => {
         ]
     }
 
-    const header = ['S/N', 'Purpose', 'Tenor', 'Start Date', 'End Date', 'Amount', 'Email Notification', 'Sms Notification', 'Transaction Date', 'Status', 'Actions' ]
+    const header = ['S/N', 'Purpose', 'Tenor', 'Start Date', 'End Date', 'Amount', 'Target Amount','Email Notification', 'Sms Notification', 'Transaction Date', 'Status', 'Actions' ]
 
     return (
         <Layout>
@@ -149,6 +149,10 @@ const ViewSavingsPage = () => {
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
                                                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item.amount)}</span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item.targetAmount)}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span

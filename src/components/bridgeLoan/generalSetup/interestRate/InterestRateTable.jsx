@@ -1,9 +1,7 @@
 import {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {
-    useDeleteTenorMutation,
-    useEditTenorMutation,
-    useGetAllValidTenorQuery
+    useDeleteInterestRateMutation, useEditInterestRateMutation, useGetAllValidInterestRateQuery,
 } from "../../../../store/features/bridgeLoan/api.js";
 import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
@@ -11,7 +9,7 @@ import themes from "../../../reusables/theme.jsx";
 import AddInterestRateModal from "./AddInterestRateModal.jsx";
 
 const InterestRateTable = ({searchTerm}) => {
-    const {data, isFetching, error} = useGetAllValidTenorQuery()
+    const {data, isFetching, error} = useGetAllValidInterestRateQuery()
     if (error) return <p>Network error</p>
 
     const filteredData = data?.data?.filter((item) =>
@@ -68,8 +66,8 @@ export function TableData({data, no}) {
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
     const dispatch = useDispatch()
-    const [deleteTenor] = useDeleteTenorMutation()
-    const [editTenor] = useEditTenorMutation()
+    const [deleteTenor] = useDeleteInterestRateMutation()
+    const [editTenor] = useEditInterestRateMutation()
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)

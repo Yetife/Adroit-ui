@@ -58,7 +58,7 @@ export const customerCentricApi = createApi({
             query: (id) => ({
                 url: `/CustomerCentric/GetfixeddepositByCusId/${id}`,
             }),
-            providesTags: []
+            providesTags: [" modifyFixedDeposit"]
         }),
         searchFixedDeposit: builder.mutation({
             query: ({body}) => ({

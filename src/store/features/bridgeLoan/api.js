@@ -184,6 +184,35 @@ export const bridgeLoanApi = createApi({
             }),
             invalidatesTags: ["EditTenor"]
         }),
+        addInterestRate: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/GeneralSetUpInterestRate/add`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["AddInterestRate"]
+        }),
+        getAllValidInterestRate: builder.query({
+            query: () => ({
+                url: `/BridgeLoan/GeneralSetUpInterestRate/getallvalid`,
+            }),
+            providesTags: ["AddInterestRate", "DelInterestRate", "EditInterestRate"]
+        }),
+        deleteInterestRate: builder.mutation({
+            query:(id)=>({
+                url:`/BridgeLoan/GeneralSetUpInterestRate/deletebyuniqueid/id?id=${id}`,
+                method:"DELETE"
+            }),
+            invalidatesTags:["DelInterestRate"]
+        }),
+        editInterestRate: builder.mutation({
+            query: ({body}) => ({
+                url: `/BridgeLoan/GeneralSetUpInterestRate/Update`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["EditInterestRate"]
+        }),
         addFacilityType: builder.mutation({
             query: ({body}) => ({
                 url: `/BridgeLoan/GeneralSetUpFacilityType/add`,
@@ -294,6 +323,10 @@ export const {
     useGetAllValidTenorQuery,
     useDeleteTenorMutation,
     useEditTenorMutation,
+    useAddInterestRateMutation,
+    useGetAllValidInterestRateQuery,
+    useDeleteInterestRateMutation,
+    useEditInterestRateMutation,
     useAddFacilityTypeMutation,
     useGetAllValidFacilityTypeQuery,
     useDeleteFacilityTypeMutation,

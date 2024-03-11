@@ -1,13 +1,11 @@
 import {useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {useAddTenorMutation} from "../../../store/features/bridgeLoan/api.js";
+import {useAddInterestRateMutation} from "../../../store/features/bridgeLoan/api.js";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import Layout from "../../Layout.jsx";
 import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
-import TenorTable from "../../../components/bridgeLoan/generalSetup/tenor/TenorTable.jsx";
-import AddTenorModal from "../../../components/bridgeLoan/generalSetup/tenor/AddTenorModal.jsx";
 import AddInterestRateModal from "../../../components/bridgeLoan/generalSetup/interestRate/AddInterestRateModal.jsx";
 import InterestRateTable from "../../../components/bridgeLoan/generalSetup/interestRate/InterestRateTable.jsx";
 
@@ -18,7 +16,7 @@ const InterestRate = () => {
     const [rate, setRate] = useState("")
     const dispatch = useDispatch()
     const [searchTerm, setSearchTerm] = useState("");
-    const [addTenor] = useAddTenorMutation()
+    const [addTenor] = useAddInterestRateMutation()
 
     const handleOpen = () => {
         setOpen(true)
@@ -31,14 +29,14 @@ const InterestRate = () => {
         const user = JSON.parse(sessionStorage.getItem("userData"));
         addTenor({
             body: {
-                name: tenor,
+                name: rate,
                 createdBy: user.FirstName + " " +  user.LastName,
                 status: checked ? "1" : "0"
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
-            setTenor("")
+            setRate("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
@@ -62,7 +60,7 @@ const InterestRate = () => {
                 <div>
                     <InterestRateTable searchTerm={searchTerm}/>
                 </div>
-                <AddInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} tenor={rate} setTenor={setRate} handleAdd={handleAdd}/>
+                <AddInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} rate={rate} setRate={setRate} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );
