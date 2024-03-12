@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
@@ -9,13 +9,17 @@ import {
 } from "../../../store/features/customerCentric/api.js";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
+import ApproveModal from "./ApproveModal.jsx";
+import RejectModal from "./RejectModal.jsx";
 
 const ApproveDepositModal = ({open, setOpen, id}) => {
     const dispatch = useDispatch()
-    const [modifyBills] = useModifyFixedDepositMutation()
+    const [modifyFixedDeposit] = useModifyFixedDepositMutation()
+    const [openModal, setOpenModal] = useState(false)
+    const [openReject, setOpenReject] = useState(false)
 
     const handleSubmit = (status) => {
-        modifyBills({
+        modifyFixedDeposit({
             body: {
                 entityId: id,
                 status: status
@@ -23,9 +27,15 @@ const ApproveDepositModal = ({open, setOpen, id}) => {
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
+            setOpenModal(true)
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
         })
+    }
+
+    const handleOpen = () => {
+        setOpen(!open)
+        setOpenReject(true)
     }
     return (
         <div>
@@ -43,14 +53,14 @@ const ApproveDepositModal = ({open, setOpen, id}) => {
                         <div className="mt-4">
                             <div className="flex tw-items-center m-auto tw-text-center mt-10">
                                 <Button className="ml-6" variant="primary" bgColor="#00C795" borderRadius="4px"
-                                        height="37px" size='md' as={ReactLink} w={'290px'} onClick={()=>handleSubmit("1")}>
+                                        height="37px" size='md' as={ReactLink} w={'290px'} onClick={()=>handleSubmit("2")}>
                                     <Text color="white">Approve</Text>
                                 </Button>
                             </div>
                             <div className="flex tw-items-center m-auto tw-text-center mt-3">
                                 <Button className="ml-6" variant="primary" bgColor="#FF0909" borderRadius="4px"
-                                        height="37px" size='md' as={ReactLink} w={'290px'} onClick={()=>handleSubmit("2")}>
-                                    <Text color="white">Reject</Text>
+                                        height="37px" size='md' as={ReactLink} w={'290px'} onClick={handleOpen}>
+                                    <Text color="white">Decline</Text>
                                 </Button>
                             </div>
                             <div className="flex tw-items-center m-auto tw-text-center mt-3">
@@ -72,6 +82,8 @@ const ApproveDepositModal = ({open, setOpen, id}) => {
                     </Dialog.Content>
                 </Dialog.Portal>
             </Dialog.Root>
+            <RejectModal open={openReject} setOpen={setOpenReject} id={id}/>
+            <ApproveModal open={openModal} setOpen={setOpenModal} title={"Approval Successful"}/>
         </div>
     );
 };

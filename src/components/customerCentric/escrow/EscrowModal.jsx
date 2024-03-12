@@ -3,9 +3,28 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import {Close} from "@mui/icons-material";
+import {useDispatch} from "react-redux";
+import {useModifyEscrowMutation, useModifyFixedDepositMutation} from "../../../store/features/customerCentric/api.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 
-const EscrowModal = ({open, setOpen}) => {
+const EscrowModal = ({open, setOpen, id}) => {
     const [dropdown, setDropDown] = useState("reverse")
+    const dispatch = useDispatch()
+    const [modifyEscrow] = useModifyEscrowMutation()
+
+    const handleSubmit = () => {
+        modifyEscrow({
+            body: {
+                entityId: id,
+                status: dropdown
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpen(!open)
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
 
     return (
         <div>
@@ -38,7 +57,7 @@ const EscrowModal = ({open, setOpen}) => {
 
                             <div className="flex tw-items-center m-auto tw-text-center mt-6">
                                 <Button className="ml-6" variant="primary" bgColor="#00C795" borderRadius="4px"
-                                        height="55px" size='md' as={ReactLink} w={'300px'}>
+                                        height="55px" size='md' as={ReactLink} w={'300px'} onClick={handleSubmit}>
                                     <Text color="white">Complete Transaction Now</Text>
                                 </Button>
                             </div>

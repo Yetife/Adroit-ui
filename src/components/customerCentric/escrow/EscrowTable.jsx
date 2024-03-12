@@ -70,9 +70,13 @@ export function TableHeader({name}) {
 const header = ['S/N', 'Seller Name', 'Seller Email Address', 'Seller Phone Number', 'Buyer Name', 'Buyer Email Address', 'Buyer Phone Number', 'Transaction Date', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
-    const router = useNavigate()
+    const [id, setId] = useState(null)
     const [open, setOpen] = useState(false)
 
+    const handleOpen = (id) => {
+        setId(id)
+        setOpen(true)
+    }
     return (
         <tr>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -96,19 +100,19 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.buyerPhoneNumber}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.transactionDate).format("YYYY/MM/DD")}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.transactionDate).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium capitalize">{data?.status}</span>
             </td>
 
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => setOpen(true)}>View
+                     onClick={() => handleOpen(data?.transactionReference)}>View
                  </span>
             </td>
-            <EscrowModal open={open} setOpen={setOpen}/>
+            <EscrowModal open={open} setOpen={setOpen} id={id}/>
         </tr>
     )
 }

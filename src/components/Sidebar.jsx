@@ -16,6 +16,7 @@ import arrowDown from '../assets/arrow-down.svg'
 import arrowUp from '../assets/arrowUp.svg'
 import Submenu from "./Submenu.jsx";
 import MenuIcon from '@mui/icons-material/Menu';
+import SyncAltIcon from '@mui/icons-material/SyncAlt';
 
 const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) => {
 
@@ -345,15 +346,17 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
              }`}
              style={{ position: 'fixed', minWidth: isExpanded ? '18rem' : '3rem' }}>
             <div className="flex items-center justify-center mt-4">
-                <div className="flex justify-between items-center ml-8">
-                    {isExpanded ? <img
-                        src={logo}
-                        onClick={handleToggleExpand}
-                        alt="brand"
-                        width={109}
-                        height={32}
-                        className="cursor-pointer"
-                    /> : <MenuIcon onClick={handleToggleExpand} sx={{cursor: 'pointer', marginLeft: "100px"}}/>}
+                <div className="flex justify-between items-center">
+                    {isExpanded ? <div className="flex space-x-20 items-center">
+                        <img
+                            src={logo}
+                            alt="brand"
+                            width={109}
+                            height={32}
+                            className="cursor-pointer"
+                        />
+                        <SyncAltIcon onClick={handleToggleExpand} sx={{cursor: 'pointer'}}/>
+                    </div> : <SyncAltIcon onClick={handleToggleExpand} sx={{cursor: 'pointer'}}/>}
                     {openSidebar && (
                         <img
                             className="ml-8"
@@ -365,7 +368,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                         />
                     )}
                     <span className="mx-2 text-2xl font-normal focus:outline-none outline-none border-none text-white">
-            Dashboard
+            {/*Dashboard*/}
           </span>
                 </div>
             </div>

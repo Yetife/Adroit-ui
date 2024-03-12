@@ -58,7 +58,7 @@ export const customerCentricApi = createApi({
             query: (id) => ({
                 url: `/CustomerCentric/GetfixeddepositByCusId/${id}`,
             }),
-            providesTags: [" modifyFixedDeposit"]
+            providesTags: ["modifyFixedDeposit"]
         }),
         searchFixedDeposit: builder.mutation({
             query: ({body}) => ({
@@ -261,7 +261,15 @@ export const customerCentricApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: []
+            providesTags: ["modifyEscrow"]
+        }),
+        modifyEscrow: builder.mutation({
+            query: ({body}) => ({
+                url: `/CustomerCentric/ModifyescrowPaymentsStatusWithTransactionReference`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["modifyEscrow"]
         }),
     })
 })
@@ -288,4 +296,5 @@ export const {
     useGetAllP2PQuery,
     useGetP2PByIdQuery,
     useGetAllEscrowQuery,
+    useModifyEscrowMutation
 } = customerCentricApi
