@@ -1,8 +1,10 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import dayjs from "dayjs";
+import {useGetLoanBiddingByIdQuery} from "../../../store/features/customerCentric/api.js";
 
-const LoanBiddingModal = ({open, setOpen}) => {
+const LoanBiddingModal = ({open, setOpen, id}) => {
+    const {data, isFetching, error} =  useGetLoanBiddingByIdQuery(id)
     const details = {
             lenderName: "Olakunle Dami",
             lenderEmail: "olageshidami@gmail.com",

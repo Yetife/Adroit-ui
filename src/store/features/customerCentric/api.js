@@ -271,6 +271,33 @@ export const customerCentricApi = createApi({
             }),
             invalidatesTags: ["modifyEscrow"]
         }),
+        getAllLoanBidding: builder.query({
+            query: ({size, page, dropDown, searchTerm, statusName, startDate, endDate}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    // Add optional parameters conditionally
+                    ...(dropDown && { SearchType: dropDown }),
+                    ...(searchTerm && { SearchName: searchTerm }),
+                    ...(statusName && { Status: statusName }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                };
+
+                return {
+                    url: `/CustomerCentric/getallloanbiddings`,
+                    params: queryParams,
+                };
+            },
+            providesTags: []
+        }),
+        getLoanBiddingById: builder.query({
+            query: (id) => ({
+                url: `/CustomerCentric/GetloanbiddingByLoanOfferId/${id}`,
+            }),
+            providesTags: []
+        }),
     })
 })
 
@@ -295,6 +322,8 @@ export const {
     useModifyDataMutation,
     useGetAllP2PQuery,
     useGetP2PByIdQuery,
+    useGetAllLoanBiddingQuery,
+    useGetLoanBiddingByIdQuery,
     useGetAllEscrowQuery,
     useModifyEscrowMutation
 } = customerCentricApi

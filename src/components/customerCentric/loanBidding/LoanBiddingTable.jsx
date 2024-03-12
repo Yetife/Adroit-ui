@@ -1,88 +1,55 @@
-import {useNavigate} from "react-router-dom";
-import React, {useState} from "react";
-import EscrowModal from "../escrow/EscrowModal.jsx";
-import {useGetAllCustomerQuery} from "../../../store/features/loanApplication/api.js";
+import {useState} from "react";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import LoanBiddingModal from "./LoanBiddingModal.jsx";
+import {useGetAllLoanBiddingQuery} from "../../../store/features/customerCentric/api.js";
+import Pagination from "../../reusables/Pagination.jsx";
+import dayjs from "dayjs";
 
-const LoanBiddingTable = ({searchTerm, dropDown}) => {
-    const {data, isFetching, error} =  useGetAllCustomerQuery()
+const LoanBiddingTable = ({searchTerm, dropDown, statusName, startDate, endDate}) => {
+    const [page, setPage] = useState(1)
+    const [size, setSize] = useState(10)
+    const {data, isFetching, error} =  useGetAllLoanBiddingQuery({size, page, dropDown, searchTerm, statusName, startDate, endDate})
     if (error) return <p>Network error</p>
 
-    const customer = [
-        {
-            id: 1,
-            lenderName: "Adegeshi Dami",
-            lenderEmail: "adegeshidami@gmail.com",
-            lenderPhoneNumber: "08110239494",
-            borrowerName: "Adegeshi Dami",
-            borrowerEmailAddress: "adegeshidami@gmail.com",
-            borrowerPhoneNumber: "08110239494",
-            amount: "N200,000",
-            tenor: 12,
-            startDate: "09/03/1991",
-            endDate: "09/03/1991",
-            status: "Pending",
-        }, {
-            id: 2,
-            lenderName: "Adegeshi Dami",
-            lenderEmail: "adegeshidami@gmail.com",
-            lenderPhoneNumber: "08110221394",
-            borrowerName: "Bakare Dami",
-            borrowerEmailAddress: "adegeshidami@gmail.com",
-            borrowerPhoneNumber: "08110239494",
-            amount: "N200,000",
-            tenor: 12,
-            startDate: "09/03/1991",
-            endDate: "09/03/1991",
-            status: "Completed",
-        }, {
-            id: 2,
-            lenderName: "Olakunle Dami",
-            lenderEmail: "olageshidami@gmail.com",
-            lenderPhoneNumber: "08110239494",
-            borrowerName: "Adegeshi Dami",
-            borrowerEmailAddress: "adegeshidami@gmail.com",
-            borrowerPhoneNumber: "08110239494",
-            amount: "N200,000",
-            tenor: 12,
-            startDate: "09/03/1991",
-            endDate: "09/03/1991",
-            status: "Pending",
-        },
-    ]
+    const handlePageChange = (newPage) => {
+        setPage(newPage)
+    }
 
-    const filteredData = customer.filter((item) =>
-        item[dropDown].toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
+    const handleRowPerPageChange = (event) => {
+        setSize(parseInt(event.target.value, 10));
+    }
 
     return (
-        <div className="scroll-container flex rounded-3xl flex-col mt-8">
-            <div className="py-2 md:px-2 sm:px-2">
-                <div className="inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+        <div className="flex rounded-3xl flex-col mt-8">
+            <div className="py-2 md:px-2 sm:px-2 inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
+                <div className="scroll-container">
                     {isFetching && <ThemeProvider theme={themes}>
                         <LinearProgress color={"waveGreen"}/>
                     </ThemeProvider>}
-                    <table className="table-auto md:w-full px-40">
+                    <table className="table-auto md:w-full px-20">
                         <thead>
                         <tr>
-                            { header?.map((val, ind) => <TableHeader key={ind + val} name={val} />)}
+                            {header?.map((val, ind) => <TableHeader key={ind + val} name={val}/>)}
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
+                        {data?.data.length > 0 && data?.data.map((val, ind) => <TableData key={"00" + ind} no={ind + 1}
+                                                                                          data={val}/>)}
                         </tbody>
                     </table>
-                    {/*{ data?.data?.length > 0 && <Pagination totalCount={data?.resultCount} getPage={getPage} /> }*/}
-                    {/*{ err || data?.data?.length === 0 && <div className='w-full flex align-center'>*/}
-                    {/*    <div className="m-auto py-5">*/}
-                    {/*        <Image src={'../img/no-data.svg'} width="150" height="150" alt="no data" />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*}*/}
                 </div>
+                {data && (
+                    <Pagination
+                        totalCount={data?.recordCount || 0}
+                        page={page}
+                        rowsPerPage={size}
+                        rowsPerPageOptions={[10, 20, 50, 70, 100]}
+                        sizes={[10, 20, 50, 70, 100]}
+                        onPageChange={handlePageChange}
+                        onRowsPerPageChange={handleRowPerPageChange}
+                    />
+                )}
             </div>
         </div>
     );
@@ -102,6 +69,11 @@ const header = ['S/N', 'Lender Name', 'Lender Email Address', 'Lender Phone Numb
 export function TableData({data, no}) {
     const [open, setOpen] = useState(false)
 
+    const handleOpen = (id) => {
+        setId(id)
+        setOpen(true)
+    }
+
     return (
         <tr>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -111,39 +83,42 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.lenderName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lenderEmail}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lenderEmailAddress}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lenderPhoneNumber}</span>
-            </td><td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.borrowerName}</span>
-        </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.borrowerEmailAddress}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.borrowerPhoneNumber}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.biddersName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font -medium">{data?.amount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.biddersEmailAddress}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.biddersPhoneNumber}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font -medium">{data?.loanAmount}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.tenor}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.startDate}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{dayjs(data.startDate).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.endDate}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{dayjs(data.endDate).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.statusName}</span>
             </td>
 
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => setOpen(true)}>View
+                     onClick={() => handleOpen(data?.loanOfferId)}>View
                  </span>
             </td>
             <LoanBiddingModal open={open} setOpen={setOpen}/>

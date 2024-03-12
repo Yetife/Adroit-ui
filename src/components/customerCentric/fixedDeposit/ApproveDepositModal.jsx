@@ -25,7 +25,7 @@ const ApproveDepositModal = ({open, setOpen, id}) => {
                 status: status
             }
         }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Approved successfully",success:true}));
             setOpen(!open)
             setOpenModal(true)
         }).catch(err =>{

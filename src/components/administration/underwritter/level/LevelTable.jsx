@@ -9,6 +9,7 @@ import themes from "../../../reusables/theme.jsx";
 import AddLevelModal from "./AddLevelModal.jsx";
 import dayjs from "dayjs";
 import Pagination from "../../../reusables/Pagination.jsx";
+import {formatAmount} from "../../../reusables/formatAmount.js";
 
 const LevelTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -159,7 +160,7 @@ export function TableData({data, no}) {
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data.minimuimAmount} - {data?.maximuimAmount}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{formatAmount(data.minimuimAmount)} - {formatAmount(data?.maximuimAmount)}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
