@@ -240,7 +240,15 @@ export const customerCentricApi = createApi({
             query: (id) => ({
                 url: `/CustomerCentric/Getp2pByP2PLoanRequestId/${id}`,
             }),
-            providesTags: []
+            providesTags: ["updateRepayment"]
+        }),
+        updateRepayment: builder.mutation({
+            query: ({body}) => ({
+                url: `/CustomerCentric/Updatep2pById/${body.id}`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["updateRepayment"]
         }),
         getAllEscrow: builder.query({
             query: ({size, page, dropDown, searchTerm, statusName, startDate, endDate}) => {
@@ -322,6 +330,7 @@ export const {
     useModifyDataMutation,
     useGetAllP2PQuery,
     useGetP2PByIdQuery,
+    useUpdateRepaymentMutation,
     useGetAllLoanBiddingQuery,
     useGetLoanBiddingByIdQuery,
     useGetAllEscrowQuery,

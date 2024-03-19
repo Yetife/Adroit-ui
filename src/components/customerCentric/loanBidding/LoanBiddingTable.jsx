@@ -68,6 +68,8 @@ export function TableHeader({name}) {
 const header = ['S/N', 'Lender Name', 'Lender Email Address', 'Lender Phone Number', 'Borrower Name', 'Borrower Email Address', 'Borrower Phone Number', 'Amount', 'Tenor', 'Start Date', 'End Date', 'Status', 'Actions' ]
 export function TableData({data, no}) {
     const [open, setOpen] = useState(false)
+    const [id, setId] = useState(null)
+
 
     const handleOpen = (id) => {
         setId(id)
@@ -121,7 +123,7 @@ export function TableData({data, no}) {
                      onClick={() => handleOpen(data?.loanOfferId)}>View
                  </span>
             </td>
-            <LoanBiddingModal open={open} setOpen={setOpen}/>
+            <LoanBiddingModal open={open} setOpen={setOpen} id={id}/>
         </tr>
     )
 }

@@ -114,7 +114,7 @@ const ViewLoanUnderwritingPage = () => {
         approve({
             body: {
                 loanApplicationId: appId,
-                loanCategory: type === "Regular Loan"
+                loanCategory: "Regular Loan"
             }
         }).then(res => {
             setOpenComplete(true)

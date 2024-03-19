@@ -54,17 +54,17 @@ const LoanBiddingModal = ({open, setOpen, id}) => {
                                     <p className="text-[14px] leading-5 text-[#007970] font-[600]">Lender Details</p>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Name:</p>
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.lenderName}</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500] capitalize">{data?.data.lenderName}</p>
                                     </div>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Email
                                             Address:</p>
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.lenderEmail}</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.lenderEmailAddress}</p>
                                     </div>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Phone
                                             Number:</p>
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.lenderPhoneNumber}</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.lenderPhoneNumber}</p>
                                     </div>
                                 </div>
                                 <div className="rounded-[5px] my-3 px-4 py-2"
@@ -72,15 +72,17 @@ const LoanBiddingModal = ({open, setOpen, id}) => {
                                     <p className="text-[14px] leading-5 text-[#007970] font-[600]">Borrower Details</p>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Name:</p>
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.borrowerName}</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500] capitalize">{data?.data.biddersName}</p>
                                     </div>
                                     <div className="flex space-x-4 py-1">
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Email Address:</p>
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.borrowerEmailAddress}</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Email
+                                            Address:</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.biddersEmailAddress}</p>
                                     </div>
                                     <div className="flex space-x-4 py-1">
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Phone Number:</p>
-                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.borrowerPhoneNumber}</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">Phone
+                                            Number:</p>
+                                        <p className="text-[13px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.biddersPhoneNumber}</p>
                                     </div>
                                 </div>
                             </div>
@@ -88,25 +90,29 @@ const LoanBiddingModal = ({open, setOpen, id}) => {
                                 <div className="mt-2">
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[500]">Tenor:</p>
-                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.tenor}</p>
+                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.tenor}</p>
                                     </div>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[500]">Start
                                             Date:</p>
-                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.startDate}</p>
+                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{dayjs(data?.data.startDate).format("YYYY/MM/DD")}</p>
                                     </div>
                                     <div className="flex space-x-4 py-1">
                                         <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[600]">End
                                             Date:</p>
-                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{details.endDate}</p>
+                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{dayjs(data?.data.endDate).format("YYYY/MM/DD")}</p>
                                     </div>
                                 </div>
-                                <div  className="rounded-[5px] my-3 p-2 scroll-container"
-                                      style={{border: "1px solid #C9D4D1", background: "#FFF",  boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"}}>
-                                    <table className="table-auto">
+                                <div className="rounded-[5px] my-3 p-2"
+                                     style={{
+                                         border: "1px solid #C9D4D1",
+                                         background: "#FFF",
+                                         boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"
+                                     }}>
+                                    <table className="scroll-container table-auto">
                                         <thead>
                                         <tr>
-                                            <th className="py-1 px-3 text-[10px] font-medium leading-4 text-[#007970] text-left border-b">
+                                            <th className="py-1 px-3 text-[10px] font-medium leading-4 text-[#007970] text-left border-b truncate">
                                                 Repayment Date
                                             </th>
                                             <th className="py-1 px-3 text-[10px] font-medium leading-4 text-[#007970] text-left border-b">
@@ -116,15 +122,15 @@ const LoanBiddingModal = ({open, setOpen, id}) => {
                                         </thead>
                                         <tbody className="bg-white">
                                         {
-                                            details.repaymentSchedule.map((item, index) => (
+                                            data?.data?.biddersRepaymentSchedule?.length && data?.data?.biddersRepaymentSchedule.map((item, index) => (
                                                 <tr key={index}>
                                                     <td className="py-1 px-3 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[10px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.repaymentSchedule).format("YYYY/MM/DD")}</span>
+                                                    className="text-[10px] leading-5 text-[#4A5D58] font-medium">{dayjs(item?.actualRepaymentDate).format("YYYY/MM/DD")}</span>
                                                     </td>
                                                     <td className="py-1 px-3 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[10px] leading-5 text-[#4A5D58] font-medium">{item.amount}</span>
+                                                    className="text-[10px] leading-5 text-[#4A5D58] font-medium">{item?.monthlyLoanRepaymentAmount}</span>
                                                     </td>
                                                 </tr>
                                             ))

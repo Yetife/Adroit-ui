@@ -5,7 +5,6 @@ import {fetchDocumentation} from "../../../store/documentationSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 import AddDocumentModal from "./AddDocumentModal.jsx";
 import dayjs from "dayjs";
-import {useGetAllAirtimeQuery} from "../../../store/features/customerCentric/api.js";
 import Pagination from "../../reusables/Pagination.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
