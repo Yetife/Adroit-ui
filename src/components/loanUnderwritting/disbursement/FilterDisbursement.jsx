@@ -8,7 +8,8 @@ import {getCurrentDate} from "../../reusables/getCurrentDate.js";
 const FilterDisbursement = ({open, setOpen, handleFilter}) => {
     const [inputs, setInputs] = useState({
         startDate: "",
-        endDate: ""
+        endDate: "",
+        category: "",
     })
     const [phone, setPhone] = useState("");
     const [name, setName] = useState("");
@@ -16,6 +17,11 @@ const FilterDisbursement = ({open, setOpen, handleFilter}) => {
     const [applicationId, setApplicationId] = useState("");
     const [email, setEmail] = useState("");
     const dispatch = useDispatch()
+    const categories = [
+        {name: "All", value: "all"},
+        {name: "Regular Loan", value: "regular loan"},
+        {name: "Loan Topup", value: "loan topup"},
+        {name: "Loan Restructuring", value: "loan restructuring"},]
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
@@ -68,12 +74,15 @@ const FilterDisbursement = ({open, setOpen, handleFilter}) => {
         setPhone("")
         setInputs({
             startDate: "",
-            endDate: ""
+            endDate: "",
+            category: "",
         })
     }
 
     const applyFilters = () => {
-        if (!inputs.startDate) {
+        if (!inputs.category){
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Loan Category is required",success:false}));
+        } else if (!inputs.startDate) {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Start date is required",success:false}));
             return;
         }else if (!inputs.endDate) {
@@ -87,6 +96,7 @@ const FilterDisbursement = ({open, setOpen, handleFilter}) => {
             name,
             email,
             channel,
+            category: inputs.category,
             startDate: inputs.startDate,
             endDate: inputs.endDate,
         };
@@ -165,6 +175,23 @@ const FilterDisbursement = ({open, setOpen, handleFilter}) => {
                                           />
                                         </span>
                                     </div>
+                                </div>
+                                <div>
+                                    <span className="ml-4">
+                                          <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                           Loan Category
+                                          </h3>
+                                             <select id="select" value={inputs.category}
+                                                     onChange={(event) => handleChange(event, "category")}
+                                                     className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded h-[50px]  border border-neutral-300">
+                                                <option value="" disabled>Select loan category</option>
+                                                 {categories && categories?.map((option) => (
+                                                     <option key={option.value} value={option.name}>
+                                                         {option.name}
+                                                     </option>
+                                                 ))}
+                                            </select>
+                                        </span>
                                 </div>
                                 <div className="flex items-center mt-2">
                                     <div className='py-2 flex items-center'>

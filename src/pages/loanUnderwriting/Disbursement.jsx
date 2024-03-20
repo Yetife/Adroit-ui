@@ -52,6 +52,7 @@ const Disbursement = () => {
         channel: "",
         startDate: "",
         endDate: "",
+        category: "",
     });
 
     const handleFilter = (newFilters) => {
@@ -68,60 +69,60 @@ const Disbursement = () => {
                         </Button>
                     </div>
                 </div>
-                <div className="flex space-x-4 mt-4 justify-center">
-                    <div>
-                        <input
-                            type="radio"
-                            id="regularLoan"
-                            name="tableOption"
-                            value="regularLoan"
-                            checked={selectedOption === 'regularLoan'}
-                            onChange={() => handleOptionChange('regularLoan')}
-                            className="cursor-pointer"
-                        />
-                        <label htmlFor="regularLoan" className="pl-1 font-semibold text-[#FF0909] text-[18px]">Regular
-                            Loan</label>
-                    </div>
-                    <div>
-                        <input
-                            type="radio"
-                            id="loanRestructure"
-                            name="tableOption"
-                            value="loanRestructure"
-                            checked={selectedOption === 'loanRestructure'}
-                            onChange={() => handleOptionChange('loanRestructure')}
-                            className="cursor-pointer"
-                        />
-                        <label htmlFor="Loan Restructuring" className="pl-1 font-semibold text-[#00C795] text-[18px]">Loan
-                            Restructuring</label>
-                    </div>
-                    <div>
-                        <input
-                            type="radio"
-                            id="loanTopUp"
-                            name="tableOption"
-                            value="loanTopUp"
-                            checked={selectedOption === 'loanTopUp'}
-                            onChange={() => handleOptionChange('loanTopUp')}
-                            className="cursor-pointer"
-                        />
-                        <label htmlFor="Loan Top-up" className="pl-1 pb-3 font-semibold text-[#1781BC] text-[18px]">Loan
-                            Top-up</label>
-                    </div>
-                </div>
+                {/*<div className="flex space-x-4 mt-4 justify-center">*/}
+                {/*    <div>*/}
+                {/*        <input*/}
+                {/*            type="radio"*/}
+                {/*            id="regularLoan"*/}
+                {/*            name="tableOption"*/}
+                {/*            value="regularLoan"*/}
+                {/*            checked={selectedOption === 'regularLoan'}*/}
+                {/*            onChange={() => handleOptionChange('regularLoan')}*/}
+                {/*            className="cursor-pointer"*/}
+                {/*        />*/}
+                {/*        <label htmlFor="regularLoan" className="pl-1 font-semibold text-[#FF0909] text-[18px]">Regular*/}
+                {/*            Loan</label>*/}
+                {/*    </div>*/}
+                {/*    <div>*/}
+                {/*        <input*/}
+                {/*            type="radio"*/}
+                {/*            id="loanRestructure"*/}
+                {/*            name="tableOption"*/}
+                {/*            value="loanRestructure"*/}
+                {/*            checked={selectedOption === 'loanRestructure'}*/}
+                {/*            onChange={() => handleOptionChange('loanRestructure')}*/}
+                {/*            className="cursor-pointer"*/}
+                {/*        />*/}
+                {/*        <label htmlFor="Loan Restructuring" className="pl-1 font-semibold text-[#00C795] text-[18px]">Loan*/}
+                {/*            Restructuring</label>*/}
+                {/*    </div>*/}
+                {/*    <div>*/}
+                {/*        <input*/}
+                {/*            type="radio"*/}
+                {/*            id="loanTopUp"*/}
+                {/*            name="tableOption"*/}
+                {/*            value="loanTopUp"*/}
+                {/*            checked={selectedOption === 'loanTopUp'}*/}
+                {/*            onChange={() => handleOptionChange('loanTopUp')}*/}
+                {/*            className="cursor-pointer"*/}
+                {/*        />*/}
+                {/*        <label htmlFor="Loan Top-up" className="pl-1 pb-3 font-semibold text-[#1781BC] text-[18px]">Loan*/}
+                {/*            Top-up</label>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 <div>
-                    {selectedOption === "regularLoan" && <DisburseTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
+                     <DisburseTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
                                     phone={filters.phone}
                                     startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
-                                    channel={filters.channel}/>}
-                    {selectedOption === "loanRestructure" && <DisburseRestructureTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
-                                    phone={filters.phone}
-                                    startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
-                                    channel={filters.channel}/>}
-                    {selectedOption === "loanTopUp" && <DisburseTopUpTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}
-                                    phone={filters.phone}
-                                    startDate={filters.startDate} endDate={filters.endDate} email={filters.email}
-                                    channel={filters.channel}/>}
+                                    channel={filters.channel} loanCategory={filters.category}/>
+                    {/*{selectedOption === "loanRestructure" && <DisburseRestructureTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}*/}
+                    {/*                phone={filters.phone}*/}
+                    {/*                startDate={filters.startDate} endDate={filters.endDate} email={filters.email}*/}
+                    {/*                channel={filters.channel}/>}*/}
+                    {/*{selectedOption === "loanTopUp" && <DisburseTopUpTable searchTerm={searchTerm} applicationId={filters.applicationId} name={filters.name}*/}
+                    {/*                phone={filters.phone}*/}
+                    {/*                startDate={filters.startDate} endDate={filters.endDate} email={filters.email}*/}
+                    {/*                channel={filters.channel}/>}*/}
                 </div>
                 <FilterDisbursement open={open} setOpen={setOpen}  handleFilter={handleFilter}/>
             </div>

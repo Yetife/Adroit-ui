@@ -4,19 +4,17 @@ import themes from "../../reusables/theme.jsx";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {updateSnackbar} from "../../../store/snackbar/reducer.js";
-import AddLoanStatusModal from "../../loanApplication/loanStatus/AddLoanStatusModal.jsx";
 import {useGetAllDisbursementQuery} from "../../../store/features/loanUnderwriting/api.js";
 import Pagination from "../../reusables/Pagination.jsx";
 import {formatAmount} from "../../reusables/formatAmount.js";
 
-const DisburseTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
+const DisburseTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate, loanCategory}) => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
     const {data, isFetching, error} =  useGetAllDisbursementQuery({
         size,
         page,
-        applicationId, name, phone, email, channel, startDate, endDate
+        applicationId, name, phone, email, channel, startDate, endDate, loanCategory
     })
     if (error) return <p>Network error</p>
 

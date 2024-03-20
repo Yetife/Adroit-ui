@@ -60,7 +60,7 @@ export const loanUnderwritingApi = createApi({
             invalidatesTags: ["disburseApplication"]
         }),
         getAllDisbursement: builder.query({
-            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
+            query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate, loanCategory }) => {
                 const queryParams = {
                     PasgeSize: size,
                     PageNumber: page,
@@ -73,6 +73,8 @@ export const loanUnderwritingApi = createApi({
                     ...(channel && { Channel: channel }),
                     ...(startDate && { StartDate: startDate }),
                     ...(endDate && { EndDate: endDate }),
+                    ...(loanCategory && { LoanCategory: loanCategory }),
+
                     // ...filters
                 };
                 return {
