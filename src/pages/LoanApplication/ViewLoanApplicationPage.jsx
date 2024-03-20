@@ -160,7 +160,7 @@ const ViewLoanApplicationPage = () => {
                 }
             </div>
             <DeclineApplicationModal open={open} setOpen={setOpen} id={appId}/>
-            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"} handleRoute={()=>router('/loanApp/customer')}/>
+            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"} handleRoute={()=>router('/loanUnderwriting/review')}/>
         </Layout>
     );
 };

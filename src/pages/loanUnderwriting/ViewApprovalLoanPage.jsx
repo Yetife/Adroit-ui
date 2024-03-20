@@ -151,7 +151,7 @@ const ViewApprovalLoanPage = () => {
         disburseApp({
             body: {
                 loanApplicationId: appId,
-                loanCategory: "Regular Loan"
+                loanCategory: "regularloan"
             }
         }).then(res => {
             router('/loanUnderwriting/disbursement')

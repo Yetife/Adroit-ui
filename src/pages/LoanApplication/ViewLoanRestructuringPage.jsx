@@ -120,7 +120,7 @@ const ViewLoanRestructuringPage = () => {
         disburseApp({
             body: {
                 loanApplicationId: appId,
-                loanCategory: "Loan Restructure"
+                loanCategory: "loanrestructure"
             }
         }).then(res => {
             router('/loanUnderwriting/disbursement')
