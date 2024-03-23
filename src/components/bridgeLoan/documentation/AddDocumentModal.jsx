@@ -8,7 +8,7 @@ import {useDispatch} from "react-redux";
 import {fetchDocumentation} from "../../../store/documentationSlice.js";
 
 
-const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFiles, setSelectedFiles, id}) => {
+const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFiles, setSelectedFiles, phone, setPhone, id}) => {
     const [type, setType] = useState([]);
     const [status, setStatus] = useState([]);
     const [tenor, setTenor] = useState([]);
@@ -16,7 +16,6 @@ const AddDocumentModal = ({open, setOpen, purpose, inputs, setInputs, selectedFi
     const dispatch = useDispatch()
     const token = getUserToken();
     const baseUrl = import.meta.env.VITE_APP_BASE_URL
-    const [phone, setPhone] = useState("");
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;

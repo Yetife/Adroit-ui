@@ -51,7 +51,7 @@ const P2PModal = ({open, setOpen, id}) => {
                                 isFetching ? <ThemeProvider theme={themes}>
                                     <CircularProgress color={"waveGreen"}
                                                       sx={{display: "flex", margin: "auto", justifyContent: "center"}}/>
-                                </ThemeProvider> : <div className="flex mt-4 space-x-6">
+                                </ThemeProvider> : <div className="flex mt-4 space-x-4">
                                     <div>
                                         <div className="rounded-[5px] px-4 py-2"
                                              style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
@@ -92,7 +92,7 @@ const P2PModal = ({open, setOpen, id}) => {
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="mt-2">
+                                        <div className="flex justify-between">
                                             <div>
                                                 <div className="flex space-x-4 py-1">
                                                     <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[500]">Tenor:</p>
@@ -109,19 +109,19 @@ const P2PModal = ({open, setOpen, id}) => {
                                                     <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{dayjs(data?.data.endDate).format("YYYY/MM/DD")}</p>
                                                 </div>
                                             </div>
-                                            <div className="flex space-x-4 py-1">
+                                            <div className="text-right">
                                                 <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[600]">Date
                                                     Requested:</p>
                                                 <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{dayjs(data?.data.p2pDateCreated).format('YYYY-MM-DD HH:mm:ss')}</p>
                                             </div>
                                         </div>
-                                        <div className="rounded-[5px] my-3 p-2"
+                                        <div className="custom-scroll-bar overflow-auto max-h-[10rem] rounded-[5px] my-4 p-2 "
                                              style={{
                                                  border: "1px solid #C9D4D1",
                                                  background: "#FFF",
-                                                 boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"
+                                                 // boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"
                                              }}>
-                                            <table className="scroll-container table-auto">
+                                            <table className="">
                                                 <thead>
                                                 <tr>
                                                     <th className="py-1 px-3 text-[12px] font-medium leading-4 text-[#007970] text-left border-b truncate">
@@ -135,7 +135,7 @@ const P2PModal = ({open, setOpen, id}) => {
                                                     </th>
                                                 </tr>
                                                 </thead>
-                                                <tbody className="bg-white">
+                                                <tbody className="bg-white h-[10rem]">
                                                 {
                                                     data?.data?.repaymentDetail?.length > 0 && data?.data?.repaymentDetail.map((item, index) => (
                                                         <tr key={index}>
@@ -149,10 +149,10 @@ const P2PModal = ({open, setOpen, id}) => {
                                                             </td>
                                                             <td
                                                                 className="py-1 px-3 whitespace-no-wrap border-b border-gray-200">
-                                                                {item?.mRepaymentStatus === "Paid" && <span
+                                                                {item?.repaymentStatus === "Paid" && <span
                                                                     className="text-[12px] leading-5 text-[#4A5D58] font-medium">Paid</span>}
-                                                                {item?.mRepaymentStatus === "Not Paid" && <span
-                                                                    className="text-[12px] leading-5 text-[#00C795] font-medium" onClick={()=>updatePayment(item?.monthlyRepaymentId)}>Mark as Paid</span>}
+                                                                {item?.repaymentStatus === "Not Paid" && <span
+                                                                    className="text-[12px] leading-5 text-[#00C795] font-medium cursor-pointer" onClick={()=>updatePayment(item?.monthlyRepaymentId)}>Mark as Paid</span>}
                                                             </td>
                                                         </tr>
                                                     ))

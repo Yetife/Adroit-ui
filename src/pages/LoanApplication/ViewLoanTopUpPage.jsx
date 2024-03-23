@@ -26,6 +26,7 @@ const ViewLoanTopUpPage = () => {
     const [open, setOpen] = useState(false)
     const queryParams = new URLSearchParams(location.search);
     const appId = queryParams.get("id");
+    const cId = queryParams.get("cid");
     const {data, isFetching, error} = useGetLoanTopUpDetailQuery(appId)
     const router = useNavigate()
     const status = queryParams.get("status");
@@ -54,7 +55,7 @@ const ViewLoanTopUpPage = () => {
     const handleApprove = () => {
         approve({
             body: {
-                loanApplicationId: appId,
+                loanApplicationId: cId,
                 loanCategory: "Loan topup"
             }
         }).then(res => {
@@ -66,7 +67,7 @@ const ViewLoanTopUpPage = () => {
     const handleComplete = () => {
         completeReview({
             body: {
-                loanApplicationId: appId,
+                loanApplicationId: cId,
                 loanCategory: "Loan topup"
             }
         }).then(res => {
@@ -78,7 +79,7 @@ const ViewLoanTopUpPage = () => {
     const handleAdjust = () => {
         adjust({
             body: {
-                loanApplicationId: appId,
+                loanApplicationId: cId,
                 description: inputs.description,
                 adjustedTenor: inputs.tenor,
                 adjustedAmount: inputs.amount,
@@ -95,7 +96,7 @@ const ViewLoanTopUpPage = () => {
     const handleReturn = () => {
         returnApp({
             body: {
-                loanApplicationId: appId,
+                loanApplicationId: cId,
                 loanCategory: "Loan topup"
             }
         }).then(res => {
@@ -108,7 +109,7 @@ const ViewLoanTopUpPage = () => {
     const handleStop = () => {
         stopDisburse({
             body: {
-                loanApplicationId: appId,
+                loanApplicationId: cId,
                 loanCategory: "Loan topup"
             }
         }).then(res => {
@@ -120,7 +121,7 @@ const ViewLoanTopUpPage = () => {
     const handleDisburse = () => {
         disburseApp({
             body: {
-                loanApplicationId: appId,
+                loanApplicationId: cId,
                 loanCategory: "loantopup"
             }
         }).then(res => {
@@ -129,7 +130,14 @@ const ViewLoanTopUpPage = () => {
             setOpenComplete(false)
         })
     }
-
+    function formatRepayment(amount) {
+        const number = parseFloat(amount);
+        if (isNaN(number)) {
+            return '';
+        }
+        const formattedNumber = number.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return formattedNumber;
+    }
 
     return (
         <Layout>
@@ -245,7 +253,7 @@ const ViewLoanTopUpPage = () => {
                                                             </td>
                                                             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item?.monthlyRepaymentAmount)}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(item?.monthlyRepaymentAmount)}</span>
                                                             </td>
                                                         </tr>
                                                     ))

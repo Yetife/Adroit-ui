@@ -101,6 +101,7 @@ export function TableData({data, no}) {
     const [selectedRate, setSelectedRate] = useState("")
     const [selectedFiles, setSelectedFiles] = useState(null);
     const [selectedStatus, setSelectedStatus] = useState("")
+    const [phone, setPhone] = useState("")
     const [ showDropdown, setShowDropdown ] = useState(false)
     const initialState = {
         lender: "",
@@ -121,6 +122,7 @@ export function TableData({data, no}) {
         setOpen(true)
         setPurpose("view")
         setStatus(data.status)
+        setPhone(data?.phoneNo)
         setInputs({
             lender: data?.lender,
             obName: data?.obligorName,
@@ -140,6 +142,7 @@ export function TableData({data, no}) {
         setPurpose("edit")
         setId(data.uniqueId)
         setStatus(data.status)
+        setPhone(data?.phoneNo)
         setInputs({
             lender: data?.lender,
             obName: data?.obligorName,
@@ -275,7 +278,7 @@ export function TableData({data, no}) {
             <AddDocumentModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}
                               setSelectedType={setSelectedType} selectedType={selectedType}
                               selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus}
-                              selectedTenor={selectedTenor}
+                              selectedTenor={selectedTenor} phone={phone} setPhone={setPhone}
                               setSelectedTenor={setSelectedTenor} selectedFiles={selectedFiles}
                               setSelectedFiles={setSelectedFiles} selectedRate={selectedRate}
                               setSelectedRate={setSelectedRate} purpose={purpose} id={id}/>

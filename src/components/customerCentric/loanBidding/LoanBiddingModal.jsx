@@ -6,11 +6,11 @@ import {useDispatch} from "react-redux";
 import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
+import {useEffect, useState} from "react";
 
 const LoanBiddingModal = ({open, setOpen, id}) => {
     const {data, isFetching, error} =  useGetLoanBiddingByIdQuery(id)
-    const [updateRepayment] = useUpdateRepaymentMutation()
-    const dispatch = useDispatch()
+    const [totalRepaymentAmount, setTotalRepaymentAmount] = useState(0);
 
     function formatRepayment(amount) {
         const number = parseFloat(amount);
@@ -21,17 +21,23 @@ const LoanBiddingModal = ({open, setOpen, id}) => {
         return formattedNumber;
     }
 
-    const updatePayment = (id) => {
-        updateRepayment({
-            body: {
-                id: id
-            }
-        }).then(res => {
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
-        }).catch(err =>{
-            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
-        })
-    }
+    const calculateTotal = (amountArray) => {
+        const total = amountArray.reduce((acc, amount) => acc + amount, 0);
+        return total;
+    };
+
+    useEffect(() => {
+        if (data && data?.data?.biddersRepaymentSchedule) {
+            const total = calculateTotal(
+                data?.data?.biddersRepaymentSchedule.map(item => {
+                    const amountString = String(item.monthlyLoanRepaymentAmount); // Ensure it's a string
+                    const amountValue = parseFloat(amountString.replace("N", "").replace(/,/g, ""));
+                    return isNaN(amountValue) ? 0 : amountValue; // Handle non-numeric values
+                })
+            );
+            setTotalRepaymentAmount(total);
+        }
+    }, [data]);
 
     return (
         <div>
@@ -93,33 +99,36 @@ const LoanBiddingModal = ({open, setOpen, id}) => {
                                             </div>
                                         </div>
                                         <div>
-                                            <div className="mt-2">
-                                                <div className="flex space-x-4 py-1">
-                                                    <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[500]">Tenor:</p>
-                                                    <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.tenor}</p>
+                                            <div className="mt-2 flex justify-between">
+                                                <div>
+                                                    <div className="flex space-x-4 py-1">
+                                                        <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[500]">Tenor:</p>
+                                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{data?.data.tenor}</p>
+                                                    </div>
+                                                    <div className="flex space-x-4 py-1">
+                                                        <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[500]">Start
+                                                            Date:</p>
+                                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{dayjs(data?.data.startDate).format("YYYY/MM/DD")}</p>
+                                                    </div>
+                                                    <div className="flex space-x-4 py-1">
+                                                        <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[600]">End
+                                                            Date:</p>
+                                                        <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{dayjs(data?.data.endDate).format("YYYY/MM/DD")}</p>
+                                                    </div>
                                                 </div>
-                                                <div className="flex space-x-4 py-1">
-                                                    <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[500]">Start
-                                                        Date:</p>
-                                                    <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{dayjs(data?.data.startDate).format("YYYY/MM/DD")}</p>
-                                                </div>
-                                                <div className="flex space-x-4 py-1">
-                                                    <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[600]">End
-                                                        Date:</p>
-                                                    <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{dayjs(data?.data.endDate).format("YYYY/MM/DD")}</p>
-                                                </div>
-                                                <div className="flex space-x-4 py-1">
+                                                <div className="text-right">
                                                     <p className="text-[12px] font-[inter] leading-5 text-[#007970] font-[600]">Date
                                                         Requested:</p>
                                                     <p className="text-[12px] font-[inter] leading-5 text-[#4A5D58] font-[500]">{dayjs(data?.data.dateCreated).format('YYYY-MM-DD HH:mm:ss')}</p>
                                                 </div>
                                             </div>
-                                            <div className="rounded-[5px] my-3 p-2"
-                                                 style={{
-                                                     border: "1px solid #C9D4D1",
-                                                     background: "#FFF",
-                                                     boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"
-                                                 }}>
+                                            <div
+                                                className="custom-scroll-bar overflow-auto max-h-[10rem] rounded-[5px] my-3 p-2"
+                                                style={{
+                                                    border: "1px solid #C9D4D1",
+                                                    background: "#FFF",
+                                                    boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"
+                                                }}>
                                                 <table className="scroll-container table-auto">
                                                     <thead>
                                                     <tr>
@@ -144,7 +153,7 @@ const LoanBiddingModal = ({open, setOpen, id}) => {
                                                                 </td>
                                                                 <td className="py-1 px-3 whitespace-no-wrap border-b border-gray-200">
                                                                     <span
-                                                                        className="text-[12px] leading-5 text-[#4A5D58] font-medium">{formatRepayment(item?.monthlyLoanRepaymentAmount)}</span>
+                                                                        className="text-[12px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(item?.monthlyLoanRepaymentAmount)}</span>
                                                                 </td>
                                                                 <td className="py-1 px-3 whitespace-no-wrap border-b border-gray-200">
                                                                     <span
@@ -156,9 +165,16 @@ const LoanBiddingModal = ({open, setOpen, id}) => {
                                                     }
                                                     </tbody>
                                                 </table>
+                                                <p className="text-[14px] pt-3 pl-2 leading-5 text-[#4A5D58] font-[600]">
+                                                    Total Repayment
+                                                    Amount: {totalRepaymentAmount.toLocaleString("en-US", {
+                                                    style: "currency",
+                                                    currency: "NGN"
+                                                })}
+                                                </p>
                                             </div>
                                         </div>
-                                    </div>
+                                </div>
                             }
                         </div>
                         <Dialog.Close asChild>
