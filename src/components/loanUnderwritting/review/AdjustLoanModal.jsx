@@ -10,6 +10,7 @@ const AdjustLoanModal = ({open, setOpen, inputs, setInputs, handleSubmit}) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
     };
+    console.log(inputs)
     return (
         <div>
             <Dialog.Root

@@ -17,6 +17,7 @@ const FixedDepositInterestRate = () => {
     const [checked, setChecked] = useState(true);
     const [depositFrom, setDepositFrom] = useState("")
     const [depositTo, setDepositTo] = useState("")
+    const [selectedValue, setSelectedValue] = useState("")
     const [rate, setRate] = useState("")
     const dispatch = useDispatch()
     const [addInterestRate] = useAddFixedDepositInterestRateMutation()
@@ -36,6 +37,7 @@ const FixedDepositInterestRate = () => {
                 loanAmountFrom: parseFloat(depositFrom),
                 loanAmountTo: parseFloat(depositTo),
                 interestRate: rate,
+                fixedDepositTenor: selectedValue,
                 status: checked ? 1 : 0
             }
         }).then(res => {
@@ -67,7 +69,9 @@ const FixedDepositInterestRate = () => {
                 <div>
                     <FixedDepositInterestRateTable searchTerm={searchTerm}/>
                 </div>
-                <AddFixedDepositInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} rate={rate} setRate={setRate} handleAdd={handleAdd}/>
+                <AddFixedDepositInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom}
+                                                  setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo} rate={rate} setRate={setRate}
+                                                  selectedValue={selectedValue} setSelectedValue={setSelectedValue} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );

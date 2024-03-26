@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import LoanInformation from "../LoanApplication/LoanInformation.jsx";
 import LoanNanoReport from "../LoanApplication/LoanNanoReport.jsx";
 import LoanBankStatement from "../LoanApplication/LoanBankStatement.jsx";
@@ -38,16 +38,16 @@ const ViewLoanUnderwritingPage = () => {
     const [openReassign, setOpenReassign] = useState(false)
     const [openDisburse, setOpenDisburse] = useState(false)
     const [openDecision, setOpenDecision] = useState(false)
-    const [inputs, setInputs] = useState({
-        amount: "",
-        tenor: "",
-        description: ""
-    })
     const queryParams = new URLSearchParams(location.search);
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
     const type = queryParams.get('type');
     const {data, isFetching, error} = useGetReviewCustomerDetailsQuery(custId)
+    const [inputs, setInputs] = useState({
+        amount: "",
+        tenor: "",
+        description: ""
+    })
     const status = queryParams.get("status");
     const [approve] = useApproveApplicationMutation()
     const [adjust] = useAdjustApplicationMutation()
@@ -56,6 +56,8 @@ const ViewLoanUnderwritingPage = () => {
     const [stopDisburse] = useStopDisbursementMutation()
     const dispatch = useDispatch()
 
+    console.log("ffgfgdsdg", inputs.amount)
+    console.log("ffgfgdsdg", data?.data.information.duration)
     const tabMenu = [
         {id:0, name:'Information'},
         {id:1, name:'CRC Nano Report'},
@@ -75,7 +77,7 @@ const ViewLoanUnderwritingPage = () => {
             step: 1
         },
         'bank statement':{
-            component: <LoanBankStatement />,
+            component: <LoanBankStatement data={data}/>,
             step: 2
         },
         'activity':{
@@ -110,6 +112,15 @@ const ViewLoanUnderwritingPage = () => {
         setOpen(true)
     }
 
+    useEffect(() => {
+        if (data) {
+            setInputs({
+                amount: data?.data.information.amountRequested,
+                tenor: data?.data.information.duration,
+                description: ""
+            });
+        }
+    }, [data]);
     const handleApprove = () => {
         approve({
             body: {

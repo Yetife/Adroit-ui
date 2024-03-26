@@ -45,7 +45,7 @@ const ViewLoanApplicationPage = () => {
             step: 1
         },
         'bank statement':{
-            component: <LoanBankStatement />,
+            component: <LoanBankStatement data={data}/>,
             step: 2
         },
         'activity':{
@@ -160,7 +160,7 @@ const ViewLoanApplicationPage = () => {
                 }
             </div>
             <DeclineApplicationModal open={open} setOpen={setOpen} id={appId}/>
-            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"} handleRoute={()=>router('/loanUnderwriting/review')}/>
+            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"} handleRoute={()=>router('/loanApp/customer')}/>
         </Layout>
     );
 };

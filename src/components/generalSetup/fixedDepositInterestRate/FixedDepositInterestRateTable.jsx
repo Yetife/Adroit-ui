@@ -67,7 +67,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Loan Amount From', 'Loan Amount To', 'Interest Rate', 'Status', 'Actions' ]
+const header = ['S/N', 'Loan Amount From', 'Loan Amount To', 'Interest Rate(percent)', 'Tenor', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
@@ -76,6 +76,7 @@ export function TableData({data, no}) {
     const dispatch = useDispatch()
     const [depositFrom, setDepositFrom] = useState("")
     const [depositTo, setDepositTo] = useState("")
+    const [selectedValue, setSelectedValue] = useState("")
     const [rate, setRate] = useState("")
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
@@ -92,6 +93,7 @@ export function TableData({data, no}) {
         setDepositFrom(data.loanAmountFrom)
         setDepositTo(data.loanAmountTo)
         setRate(data.interestRate)
+        setSelectedValue(data?.fixedDepositTenor)
         setChecked(data.status === 1 ? true : false )
     }
     const handleOpenEdit = (data) =>{
@@ -100,6 +102,7 @@ export function TableData({data, no}) {
         setDepositFrom(data.loanAmountFrom)
         setDepositTo(data.loanAmountTo)
         setRate(data.interestRate)
+        setSelectedValue(data?.fixedDepositTenor)
         setId(data.id)
         setChecked(data.status === 1 ? true : false )
     }
@@ -121,6 +124,7 @@ export function TableData({data, no}) {
                 loanAmountFrom: depositFrom,
                 loanAmountTo: depositTo,
                 interestRate: rate,
+                fixedDepositTenor: selectedValue,
                 status: checked ? 1 : 0,
                 id: id
             }
@@ -146,7 +150,10 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.loanAmountTo )}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.interestRate}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.interestRate}%</span>
+            </td>
+            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.fixedDepositTenor}</span>
             </td>
             <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status === 1 ? "Active" : "Inactive"}</span>
@@ -167,7 +174,7 @@ export function TableData({data, no}) {
         </span>
             </td>
             <AddFixedDepositInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} depositFrom={depositFrom} setDepositFrom={setDepositFrom} depositTo={depositTo} setDepositTo={setDepositTo}
-                                              rate={rate} setRate={setRate} handleAdd={handleEdit} purpose={purpose}/>
+                                              rate={rate} setRate={setRate} handleAdd={handleEdit} purpose={purpose} selectedValue={selectedValue} setSelectedValue={setSelectedValue}/>
         </tr>
     )
 }

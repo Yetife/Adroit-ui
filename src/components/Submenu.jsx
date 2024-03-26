@@ -26,14 +26,15 @@ const Submenu = ({data, isExpanded}) => {
     return (
         <div>
             <div className={`flex flex-col min-w-64 py-2 mt-4`}>
-                <div className={`${currentRoute.includes(data.route) && 'border-x-4 border-[#00C795] py-3 bg-[#EAFFFA]'} cursor-pointer flex justify-between`} onClick={handleShowDropdown}>
+                <div className={`${currentRoute.includes(data.route) && 'border-x-4 border-[#00C795] py-3 bg-[#EAFFFA]'} cursor-pointer flex justify-between`} style={{ transition: 'background-color 0.3s ease' }} onClick={handleShowDropdown}>
                     <div className='flex items-center px-6 text-gray-100 bg-white bg-opacity-25' onClick={()=>router(data.href)}>
                         <img alt={`${data.name?.toLowerCase()}_icon`} src={`${data.icon}`} width={20} height={20} />
                         {isExpanded && <span
                             className="mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]">{data.name}</span>}
                     </div>
                     {/*{data.hasDropdown && showDropdown ? <img src={data.iconClosed} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> : data.hasDropdown ? <img src={data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> : null}*/}
-                    {(data.hasDropdown && isExpanded) && <img src={ showDropdown ?data.iconClosed : data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> }
+                    {(data.hasDropdown && isExpanded) && <img
+                        src={ showDropdown ?data.iconClosed : data.iconOpened} e  alt={'arrowDown'} className='pl-2 mr-10' style={{ transition: 'transform 0.3s ease' }} width={20} height={20}/> }
                 </div>
                 {
                     data.hasDropdown && showDropdown && (

@@ -19,7 +19,6 @@ import {
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
-import {useGetAdjustmentDetailsQuery} from "../../store/features/loanUnderwriting/api.js";
 
 const ViewAdjustLoanPage = () => {
     const [open, setOpen] = useState(false)
@@ -27,7 +26,7 @@ const ViewAdjustLoanPage = () => {
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
     const {data, isFetching, error} = useGetAdjustCustomerDetailsQuery(custId)
-    const {dataa} = useGetAdjustmentDetailsQuery(custId)
+    // const {dataa} = useGetAdjustmentDetailsQuery(custId)
     const status = queryParams.get("status");
     const [openComplete, setOpenComplete] = useState(false)
     const [completeReview] = useCompleteReviewMutation()
@@ -38,7 +37,7 @@ const ViewAdjustLoanPage = () => {
         {id:3, name:'Activity'},
         {id:4, name:'Repayment Details'},
         {id:5, name:'Supporting Documents'},
-        {id:6, name:'Adjust Details'},
+        {id:6, name:'Adjustment'},
     ];
 
     const components = {
@@ -51,7 +50,7 @@ const ViewAdjustLoanPage = () => {
             step: 1
         },
         'bank statement':{
-            component: <LoanBankStatement />,
+            component: <LoanBankStatement data={data}/>,
             step: 2
         },
         'activity':{
@@ -66,8 +65,8 @@ const ViewAdjustLoanPage = () => {
             component: <LoanSupportingDocument />,
             step: 5
         },
-        'adjust details':{
-            component: <LoanAdjustDetails />,
+        'adjustment':{
+            component: <LoanAdjustDetails data={data}/>,
             step: 6
         },
     }

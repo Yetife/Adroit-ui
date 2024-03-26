@@ -28,9 +28,9 @@ const ViewTransfersPage = () => {
     return (
         <Layout>
             <div>
-                isFetching ? <ThemeProvider theme={themes}>
+                {isFetching ? <ThemeProvider theme={themes}>
                 <CircularProgress color={"waveGreen"} sx={{display: "flex", margin: "auto", justifyContent: "center" }}/>
-            </ThemeProvider> : <div>
+                </ThemeProvider> : <div>
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3 overflow-auto">
                     <div></div>
                     <div>
@@ -117,7 +117,7 @@ const ViewTransfersPage = () => {
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{item.status}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{item.statusName}</span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span onClick={() => handleOpen(item.transactionReference)}
@@ -132,7 +132,7 @@ const ViewTransfersPage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
             </div>
             <TransferModal open={open} setOpen={setOpen} id={id}/>
         </Layout>

@@ -55,7 +55,7 @@ const ViewLoanTopUpPage = () => {
     const handleApprove = () => {
         approve({
             body: {
-                loanApplicationId: cId,
+                loanApplicationId: appId,
                 loanCategory: "Loan topup"
             }
         }).then(res => {
@@ -67,7 +67,7 @@ const ViewLoanTopUpPage = () => {
     const handleComplete = () => {
         completeReview({
             body: {
-                loanApplicationId: cId,
+                loanApplicationId: appId,
                 loanCategory: "Loan topup"
             }
         }).then(res => {
@@ -79,7 +79,7 @@ const ViewLoanTopUpPage = () => {
     const handleAdjust = () => {
         adjust({
             body: {
-                loanApplicationId: cId,
+                loanApplicationId: appId,
                 description: inputs.description,
                 adjustedTenor: inputs.tenor,
                 adjustedAmount: inputs.amount,
@@ -96,7 +96,7 @@ const ViewLoanTopUpPage = () => {
     const handleReturn = () => {
         returnApp({
             body: {
-                loanApplicationId: cId,
+                loanApplicationId: appId,
                 loanCategory: "Loan topup"
             }
         }).then(res => {
@@ -109,7 +109,7 @@ const ViewLoanTopUpPage = () => {
     const handleStop = () => {
         stopDisburse({
             body: {
-                loanApplicationId: cId,
+                loanApplicationId: appId,
                 loanCategory: "Loan topup"
             }
         }).then(res => {

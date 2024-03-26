@@ -75,7 +75,7 @@ const ViewBillPaymentPage = () => {
                                 </div>
                             </div>
                             <div className="mb-12">
-                                <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Fixed Deposit</p>
+                                <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Bills Payment</p>
                                 <div className="scroll-container rounded-[10px] my-3" style={{
                                     border: "1px solid #C9D4D1",
                                     background: "#FFF",

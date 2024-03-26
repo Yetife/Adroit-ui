@@ -79,7 +79,7 @@ const ViewLoanDisbursementPage = () => {
             step: 1
         },
         'bank statement':{
-            component: <LoanBankStatement />,
+            component: <LoanBankStatement data={data}/>,
             step: 2
         },
         'activity':{

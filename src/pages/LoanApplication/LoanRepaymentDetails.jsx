@@ -8,7 +8,7 @@ const LoanRepaymentDetails = () => {
     const [data, setData] = useState({})
 
     useEffect(() => {
-        repaymentDetail({loanApplicationId: appId}).then(res=>{
+        repaymentDetail({loanApplicationId: appId, loanCategory: 'regular loan'}).then(res=>{
             setData(res.data)
         })
     }, []);
