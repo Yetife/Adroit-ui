@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import Layout from "../Layout.jsx";
 import {Button, Text} from "@chakra-ui/react";
@@ -20,6 +20,7 @@ import {
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
+import ModifyRestructuringModal from "../../components/loanApplication/loanRestructuring/ModifyRestructuringModal.jsx";
 
 const ViewLoanRestructuringPage = () => {
     const [open, setOpen] = useState(false)
@@ -44,8 +45,22 @@ const ViewLoanRestructuringPage = () => {
         tenor: "",
         description: ""
     })
+    const [openModify, setOpenModify] = useState(false)
+    const [modifyInputs, setModifyInputs] = useState({
+        amount: "",
+        tenor: "",
+        file: ""
+    })
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        if (data) {
+            setModifyInputs({
+                amount: data?.data?.cusDetail?.loanAmount,
+                tenor: data?.data?.cusDetail?.initialTenorValue,
+            });
+        }
+    }, [data]);
     const handleChange = (e) => {
         setComment(e.target.value)
     };
@@ -148,9 +163,9 @@ const ViewLoanRestructuringPage = () => {
                         <div
                             className="custom-scroll-bar min-w-full align-middle h-[630px] c-border w-full shadow-xl overflow-auto sm:rounded-lg mt-4 px-20">
                             <div className="flex">
-                                <div className="w-5/12">
+                                <div className="w-6/12">
                                     <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Customer Details</p>
-                                    <div className="rounded-[10px] my-6 p-8"
+                                    <div className="rounded-[10px] mt-2 py-4 px-8"
                                          style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
                                         <div className="flex space-x-8">
                                             <div className="pb-6">
@@ -163,12 +178,12 @@ const ViewLoanRestructuringPage = () => {
                                             </div>
                                         </div>
 
-                                        <div className="py-6">
+                                        <div className="pb-2">
                                             <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Email
                                                 Address</p>
                                             <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.emailAddress}</p>
                                         </div>
-                                        <div className="flex  space-x-8 py-6">
+                                        <div className="flex  space-x-12 py-2">
                                             <div>
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Phone
                                                     Number</p>
@@ -179,9 +194,9 @@ const ViewLoanRestructuringPage = () => {
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.bvn}</p>
                                             </div>
                                         </div>
-                                        <div className="flex  space-x-8 py-6">
+                                        <div className="flex space-x-12 py-2">
                                             <div>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Initial
+                                                <p className="text-[16px] leading-5 text-[#FF0909] font-[600]">Existing
                                                     Loan Tenor</p>
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.initialTenorValue}</p>
                                             </div>
@@ -191,55 +206,22 @@ const ViewLoanRestructuringPage = () => {
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.tenorValue}</p>
                                             </div>
                                         </div>
-                                        <div className="py-6">
-                                            <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Date
-                                                Submitted</p>
-                                            <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{dayjs(data?.data?.cusDetail?.dateSubmitted).format("YYYY/MM/DD")}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="w-7/12 ml-8 mt-8">
-                                    <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Repayment
-                                        Schedule</p>
-                                    <div className="scroll-container h-[300px] rounded-[10px] my-3 p-8" style={{
-                                        border: "1px solid #C9D4D1",
-                                        background: "#FFF",
-                                        boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"
-                                    }}>
-                                        <div>
-                                            <table className="table-auto md:w-full px-20">
-                                                <thead>
-                                                <tr>
-                                                    <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] truncate text-left border-b bg-gray-50">
-                                                        Repayment Date
-                                                    </th>
-                                                    <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
-                                                        Amount
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody className="bg-white">
-                                                {
-                                                    data?.data?.repaymentSchedule.map((item, index) => (
-                                                        <tr key={index}>
-                                                            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item?.monthlyRepaymentDate).format("YYYY/MM/DD")}</span>
-                                                            </td>
-                                                            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item?.monthlyRepaymentAmount)}</span>
-                                                            </td>
-                                                        </tr>
-                                                    ))
-                                                }
-                                                </tbody>
-                                            </table>
+                                        <div className="flex space-x-12 pt-2">
+                                            <div>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Loan
+                                                    Amount</p>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">&#8358;{formatAmount(data?.data?.cusDetail?.loanAmount)}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Date
+                                                    Submitted</p>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{dayjs(data?.data?.cusDetail?.dateSubmitted).format("YYYY/MM/DD")}</p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="mt-8">
                                         <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pb-3">Comment</p>
-                                        <textarea id="message" name="message" rows="4" cols="50"
+                                        <textarea id="message" name="message" rows="3" cols="50"
                                                   value={status === "view" ? "" : comment}
                                                   disabled={status === "view"}
                                                   onChange={handleChange}
@@ -247,15 +229,123 @@ const ViewLoanRestructuringPage = () => {
                                                   className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                         ></textarea>
                                     </div>
+                                    <div>
+                                        <div className="flex items-center cursor-pointer mt-12"
+                                             style={{
+                                                 border: "1px solid #4A5D58",
+                                                 padding: "10px 15px",
+                                                 width: "230px"
+                                             }}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                 viewBox="0 0 20 20"
+                                                 fill="none">
+                                                <path
+                                                    d="M3.33325 10.8333V15.8333C3.33325 16.2754 3.50885 16.6993 3.82141 17.0118C4.13397 17.3244 4.55789 17.5 4.99992 17.5H14.9999C15.4419 17.5 15.8659 17.3244 16.1784 17.0118C16.491 16.6993 16.6666 16.2754 16.6666 15.8333V10.8333M9.99992 2.5V12.5M9.99992 12.5L7.08325 9.58333M9.99992 12.5L12.9166 9.58333"
+                                                    stroke="#4A5D58"
+                                                    strokeWidth="1.25"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
+                                            <p className="text-[16px] leading-5 font-[Inter] text-[#4A5D58] font-[600] pl-3">View
+                                                Bank Statement</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-6/12 ml-8 mt-6">
+                                    <div>
+                                        <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Existing Repayment
+                                            Schedule</p>
+                                        <div className="scroll-container h-[220px] rounded-[10px] my-3 px-8 py-4" style={{
+                                            border: "1px solid #C9D4D1",
+                                            background: "#FFF",
+                                            boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"
+                                        }}>
+                                            <div>
+                                                <table className="table-auto md:w-full px-20">
+                                                    <thead>
+                                                    <tr>
+                                                        <th className="px-10 py-2 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] truncate text-left border-b bg-gray-50">
+                                                            Repayment Date
+                                                        </th>
+                                                        <th className="px-10 py-2 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
+                                                            Amount
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody className="bg-white">
+                                                    {
+                                                        data?.data?.repaymentSchedule.map((item, index) => (
+                                                            <tr key={index}>
+                                                                <td className="px-10 py-2 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item?.monthlyRepaymentDate).format("YYYY/MM/DD")}</span>
+                                                                </td>
+                                                                <td className="px-10 py-2 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item?.monthlyRepaymentAmount)}</span>
+                                                                </td>
+                                                            </tr>
+                                                        ))
+                                                    }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div className="mt-4">
+                                            <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">New Repayment
+                                                Schedule</p>
+                                            <div className="scroll-container h-[220px] rounded-[10px] my-4 px-8 py-4" style={{
+                                                border: "1px solid #C9D4D1",
+                                                background: "#FFF",
+                                                boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"
+                                            }}>
+                                                <div>
+                                                    <table className="table-auto md:w-full px-20">
+                                                        <thead>
+                                                        <tr>
+                                                            <th className="px-10 py-2 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] truncate text-left border-b bg-gray-50">
+                                                                Repayment Date
+                                                            </th>
+                                                            <th className="px-10 py-2 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
+                                                                Amount
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody className="bg-white">
+                                                        {
+                                                            data?.data?.repaymentSchedule.map((item, index) => (
+                                                                <tr key={index}>
+                                                                    <td className="px-10 py-2 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item?.monthlyRepaymentDate).format("YYYY/MM/DD")}</span>
+                                                                    </td>
+                                                                    <td className="px-10 py-2 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item?.monthlyRepaymentAmount)}</span>
+                                                                    </td>
+                                                                </tr>
+                                                            ))
+                                                        }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     {
                                         status === "review" && (
                                             <div className="flex float-right space-x-3 my-4">
-                                                <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
+                                                <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px"
+                                                        size='md'
                                                         as={ReactLink} w={'110px'} onClick={handleApprove}>
                                                     <Text color="white">Approve</Text>
                                                 </Button>
-                                                <Button variant="primary" bgColor="#1781BC" borderRadius="4px" height="37px" size='md'
-                                                        as={ReactLink} w={'110px'} onClick={()=>setOpenAdjust(true)}>
+                                                <Button variant="primary" bgColor="#1781BC" borderRadius="4px" height="37px"
+                                                        size='md'
+                                                        as={ReactLink} w={'110px'} onClick={() => setOpenAdjust(true)}>
                                                     <Text color="white">Adjust</Text>
                                                 </Button>
                                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"
@@ -269,18 +359,20 @@ const ViewLoanRestructuringPage = () => {
                                     {
                                         status === "approve" && (
                                             <div className="flex float-right space-x-3 my-4">
-                                                <Button variant="primary" bgColor="#00C796" borderRadius="4px" height="37px" size='md'
+                                                <Button variant="primary" bgColor="#00C796" borderRadius="4px" height="37px"
+                                                        size='md'
                                                         as={ReactLink} w={'110px'} onClick={handleDisburse}>
                                                     <Text color="white">Disburse</Text>
                                                 </Button>
-                                                <Button variant="primary" bgColor="#005F47" borderRadius="4px" height="37px" size='md'
+                                                <Button variant="primary" bgColor="#005F47" borderRadius="4px" height="37px"
+                                                        size='md'
                                                         as={ReactLink} w={'110px'} onClick={handleReturn}>
                                                     <Text color="white">Return</Text>
                                                 </Button>
                                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"
                                                         border={"1px solid #FF0909"} borderRadius="4px" height="37px"
                                                         size='md' as={ReactLink} w={'110px'} onClick={() => setOpen(true)}>
-                                                    <Text color="#FF0909">Decline</Text>
+                                                <Text color="#FF0909">Decline</Text>
                                                 </Button>
                                             </div>
                                         )
@@ -288,6 +380,11 @@ const ViewLoanRestructuringPage = () => {
                                     {
                                         status === "edit" && (
                                             <div className="flex space-x-3 float-right my-8">
+                                                <Button variant="primary" bgColor="#007BEC" borderRadius="4px"
+                                                        height="37px" size='md' as={ReactLink} w={'100px'}
+                                                        onClick={()=>setOpenModify(true)}>
+                                                    <Text color="white">Modify</Text>
+                                                </Button>
                                                 <Button variant="primary" bgColor="#00C795" borderRadius="4px"
                                                         height="37px" size='md' as={ReactLink} w={'150px'}
                                                         onClick={handleComplete}>
@@ -337,6 +434,7 @@ const ViewLoanRestructuringPage = () => {
                                         </div>)
                                     }
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -351,7 +449,7 @@ const ViewLoanRestructuringPage = () => {
 
             <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs} handleSubmit={handleAdjust}/>
             <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"} handleRoute={()=>router('/loanUnderwriting/disbursement')}/>
-
+            <ModifyRestructuringModal open={openModify} setOpen={setOpenModify} inputs={modifyInputs} setInputs={setModifyInputs}/>
         </Layout>
     );
 };

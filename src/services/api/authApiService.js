@@ -15,10 +15,15 @@ export const getProcessedDisbursement = async () => {
     const url = `/BridgeLoan/Disbursement/getNew`;
     return authServiceCallEndpoint({url, needsAuth:true})
 };
+export const getLoanTopUpDetails = async (id) => {
+    const url = `/LoanTopUp/ViewLoan/${id}`;
+    return authServiceCallEndpoint({url, needsAuth:true})
+};
 export const getDisbursedDisbursement = async (size, page) => {
     const url = `/BridgeLoan/Disbursement/getdisbursed?det=2&PasgeSize=${size}&PageNumber=${page}`;
     return authServiceCallEndpoint({url, needsAuth:true})
-};export const filterDisbursedDisbursement = async (date, bvn,) => {
+};
+export const filterDisbursedDisbursement = async (date, bvn,) => {
     const url = `/BridgeLoan/Disbursement/getNew?det=1&PasgeSize=10&PageNumber=1&StartDate=${date}&Bvn=${bvn}`;
     return authServiceCallEndpoint({url, needsAuth:true})
 };

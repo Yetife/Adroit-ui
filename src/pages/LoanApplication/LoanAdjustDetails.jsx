@@ -1,14 +1,23 @@
-import {Link as ReactLink} from "react-router-dom";
+import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {Button, Text} from "@chakra-ui/react";
 import AdjustDetailsModal from "../../components/loanApplication/adjust/AdjustDetailsModal.jsx";
 import {useState} from "react";
+import {getUserToken} from "../../services/storage/index.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useDispatch} from "react-redux";
 
 const LoanAdjustDetails = ({data}) => {
     const [openAdjust, setOpenAdjust] = useState(false)
+    const queryParams = new URLSearchParams(location.search);
+    const router = useNavigate()
+    const appId = queryParams.get("aid");
     const [inputs, setInputs] = useState({
         amount: data.data.adjustedDetail.adjustAmount,
         tenor: data.data.adjustedDetail.adjustedLoanTenor
     })
+    const [file, setFile] = useState(null)
+    const dispatch = useDispatch()
+
 
     const downloadPDF = () => {
         // Convert base64 string to a blob
@@ -35,6 +44,35 @@ const LoanAdjustDetails = ({data}) => {
         URL.revokeObjectURL(url);
     };
 
+    const handleAdjust = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('AdjustedAmount', inputs.amount);
+            formData.append('AdjustedTenor', inputs.tenor);
+            formData.append('BankStatement', file);
+            formData.append('LoanApplicationId', appId);
+            formData.append('LoanCategory', 'Regular Loan');
+            const token = getUserToken();
+            const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+
+            const res = await fetch(`${baseUrl}/LoanApplication/Adjust/UpdateWithBankStatement`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'multipart/form-data',
+                    'XApiKey': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    // 'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+            if (res.status === 200) {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record adjusted successfully", success:true}));
+                router('/loanApp/adjust')
+            }
+        } catch (error) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
+        }
+    }
     return (
         <div>
             <div className="flex justify-between">
@@ -84,7 +122,7 @@ const LoanAdjustDetails = ({data}) => {
                 </div>
             </div>
 
-            <AdjustDetailsModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs}/>
+            <AdjustDetailsModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs} file={file} setFile={setFile} handleSubmit={handleAdjust}/>
         </div>
     );
 };

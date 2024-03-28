@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import Layout from "../Layout.jsx";
 import {Button, Text} from "@chakra-ui/react";
@@ -17,17 +17,20 @@ import {
     useDisburseApplicationMutation,
     useStopDisbursementMutation
 } from "../../store/features/loanUnderwriting/api.js";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
 import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoanModal.jsx";
+import ModifyTopUpModal from "../../components/loanApplication/loanTopup/ModifyTopUpModal.jsx";
+import {fetchTopUpDetail, fetchTopUpLoanDetails} from "../../store/documentationSlice.js";
+import {getUserToken} from "../../services/storage/index.js";
 
 const ViewLoanTopUpPage = () => {
     const [open, setOpen] = useState(false)
     const queryParams = new URLSearchParams(location.search);
     const appId = queryParams.get("id");
     const cId = queryParams.get("cid");
-    const {data, isFetching, error} = useGetLoanTopUpDetailQuery(appId)
+    // const {data, isFetching, error} = useGetLoanTopUpDetailQuery(appId)
     const router = useNavigate()
     const status = queryParams.get("status");
     const [comment, setComment] = useState("")
@@ -41,13 +44,28 @@ const ViewLoanTopUpPage = () => {
     const [returnApp] = useReturnApplicationMutation()
     const [disburseApp] = useDisburseApplicationMutation()
     const [stopDisburse] = useStopDisbursementMutation()
+    const [file, setFile] = useState(null)
+
     const [inputs, setInputs] = useState({
         amount: "",
         tenor: "",
         description: ""
     })
     const dispatch = useDispatch()
+    const [openModify, setOpenModify] = useState(false)
+    const [modifyInputs, setModifyInputs] = useState({
+        amount: "",
+        tenor: "",
+        description: ""
+    })
+    const data = useSelector((state) => state.documentation.topUpDetail);
+    const loading = useSelector((state) => state.documentation.loading);
 
+    console.log(data)
+
+    useEffect(() => {
+        dispatch(fetchTopUpLoanDetails(appId))
+    }, []);
     const handleChange = (e) => {
         setComment(e.target.value)
     };
@@ -67,6 +85,9 @@ const ViewLoanTopUpPage = () => {
     const handleComplete = () => {
         completeReview({
             body: {
+                adjustedTenor: data?.data?.cusDetail?.newLoanTopUpTenor ? data?.data?.cusDetail?.newLoanTopUpTenor : data?.data?.cusDetail?.tenor,
+                adjustedAmount: data?.data?.cusDetail?.newLoanTopUpAmount ? data?.data?.cusDetail?.newLoanTopUpAmount : data?.data?.cusDetail?.initialLoanAmount,
+                comment : comment,
                 loanApplicationId: appId,
                 loanCategory: "Loan topup"
             }
@@ -130,6 +151,34 @@ const ViewLoanTopUpPage = () => {
             setOpenComplete(false)
         })
     }
+    const handleModify = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('AdjustedAmount', modifyInputs.amount);
+            formData.append('AdjustedTenor', modifyInputs.tenor);
+            formData.append('BankStatement', file);
+            formData.append('LoanApplicationId', appId);
+            formData.append('LoanCategory', 'Loan topup');
+            const token = getUserToken();
+            const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+
+            const res = await fetch(`${baseUrl}/LoanApplication/Adjust/UpdateWithBankStatement`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'multipart/form-data',
+                    'XApiKey': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    // 'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+            if (res.status === 200) {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record adjusted successfully", success:true}));
+            }
+        } catch (error) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
+        }
+    }
     function formatRepayment(amount) {
         const number = parseFloat(amount);
         if (isNaN(number)) {
@@ -138,12 +187,20 @@ const ViewLoanTopUpPage = () => {
         const formattedNumber = number.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         return formattedNumber;
     }
+    useEffect(() => {
+        if (data) {
+            setModifyInputs({
+                amount: data?.data?.cusDetail?.initialLoanAmount,
+                tenor: data?.data?.cusDetail?.tenor,
+            });
+        }
+    }, [data]);
 
     return (
         <Layout>
             <div>
                 {
-                    isFetching ? <ThemeProvider theme={themes}>
+                    loading ? <ThemeProvider theme={themes}>
                         <CircularProgress color={"waveGreen"} sx={{display: "flex", margin: "auto", justifyContent: "center" }}/>
                     </ThemeProvider> : <div>
                         <div className="flex justify-between px-0 py-4  pb-2 md:pt-3 overflow-auto">
@@ -161,7 +218,7 @@ const ViewLoanTopUpPage = () => {
                             <div className="flex">
                                 <div className="w-6/12">
                                     <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Customer Details</p>
-                                    <div className="rounded-[10px] my-6 p-8"
+                                    <div className="rounded-[10px] my-4 p-8"
                                          style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
                                         <div className="flex space-x-8">
                                             <div className="pb-6">
@@ -174,12 +231,12 @@ const ViewLoanTopUpPage = () => {
                                             </div>
                                         </div>
 
-                                        <div className="py-6">
+                                        <div className="py-4">
                                             <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Email
                                                 Address</p>
                                             <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.emailAddress}</p>
                                         </div>
-                                        <div className="flex  space-x-8 py-6">
+                                        <div className="flex  space-x-8 py-4">
                                             <div>
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Phone
                                                     Number</p>
@@ -194,32 +251,64 @@ const ViewLoanTopUpPage = () => {
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.status}</p>
                                             </div>
                                         </div>
-                                        <div className="flex  space-x-8 py-6">
+                                        <div className="flex  space-x-8 py-4">
                                             <div>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Initial
+                                                <p className="text-[16px] leading-5 text-[#FF0909] font-[600]">Original
                                                     Loan Amount</p>
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">&#8358;{formatAmount(data?.data?.cusDetail?.initialLoanAmount)}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Top-up Amount</p>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">&#8358;{formatAmount(data?.data?.cusDetail?.topUpAmount)}</p>
+                                                <p className="text-[16px] leading-5 text-[#FF0909] font-[600]">Original
+                                                    Loan Tenor</p>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.tenor}</p>
                                             </div>
+
                                         </div>
-                                        <div className="flex  space-x-8 py-6">
+                                        <div className="flex space-x-8 py-4">
                                             <div>
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] truncate">New
                                                     Loan Amount</p>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">&#8358;{formatAmount(data?.data?.cusDetail?.newLoanAmount)}</p>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">&#8358;{data?.data?.cusDetail?.newLoanTopUpAmount ? formatAmount(data?.data?.cusDetail?.newLoanTopUpAmount) : formatAmount(data?.data?.cusDetail?.initialLoanAmount)}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Tenor</p>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.tenor}</p>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">New Loan
+                                                    Tenor</p>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.newLoanTopUpTenor ? data?.data?.cusDetail?.newLoanTopUpTenor : data?.data?.cusDetail?.tenor}</p>
                                             </div>
+                                        </div>
+                                        <div className="flex  space-x-8 pt-4">
+                                            {/*<div>*/}
+                                            {/*    <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Top-up*/}
+                                            {/*        Amount</p>*/}
+                                            {/*    <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">&#8358;{formatAmount(data?.data?.cusDetail?.topUpAmount)}</p>*/}
+                                            {/*</div>*/}
                                             <div>
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] truncate">Date
                                                     Submitted</p>
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{dayjs(data?.data?.cusDetail?.dateSubmitted).format("YYYY/MM/DD")}</p>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="flex items-center cursor-pointer"
+                                             style={{
+                                                 border: "1px solid #4A5D58",
+                                                 padding: "10px 15px",
+                                                 width: "230px"
+                                             }}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                 viewBox="0 0 20 20"
+                                                 fill="none">
+                                                <path
+                                                    d="M3.33325 10.8333V15.8333C3.33325 16.2754 3.50885 16.6993 3.82141 17.0118C4.13397 17.3244 4.55789 17.5 4.99992 17.5H14.9999C15.4419 17.5 15.8659 17.3244 16.1784 17.0118C16.491 16.6993 16.6666 16.2754 16.6666 15.8333V10.8333M9.99992 2.5V12.5M9.99992 12.5L7.08325 9.58333M9.99992 12.5L12.9166 9.58333"
+                                                    stroke="#4A5D58"
+                                                    strokeWidth="1.25"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
+                                            <p className="text-[15px] leading-5 font-[Inter] text-[#4A5D58] font-[600] pl-3">View
+                                                Bank Statement</p>
                                         </div>
                                     </div>
                                 </div>
@@ -265,7 +354,7 @@ const ViewLoanTopUpPage = () => {
                                     <div className="mt-8">
                                         <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pb-3">Comment</p>
                                         <textarea id="message" name="message" rows="4" cols="50"
-                                                  value={status === "view" ? "" : comment}
+                                                  value={data?.data?.cusDetail?.comment === "" ?comment : data?.data?.cusDetail?.comment}
                                                   disabled={status === "view"}
                                                   onChange={handleChange}
                                                   placeholder="Add comment"
@@ -313,6 +402,11 @@ const ViewLoanTopUpPage = () => {
                                     {
                                         status === "edit" && (
                                             <div className="flex space-x-3 float-right my-8">
+                                                <Button variant="primary" bgColor="#007BEC" borderRadius="4px"
+                                                        height="37px" size='md' as={ReactLink} w={'100px'}
+                                                        onClick={()=>setOpenModify(true)}>
+                                                    <Text color="white">Modify</Text>
+                                                </Button>
                                                 <Button variant="primary" bgColor="#00C795" borderRadius="4px"
                                                         height="37px" size='md' as={ReactLink} w={'150px'}
                                                         onClick={handleComplete}>
@@ -369,11 +463,11 @@ const ViewLoanTopUpPage = () => {
             </div>
             <DeclineApplicationModal open={open} setOpen={setOpen} id={appId}/>
             <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"}
-                                   handleRoute={() => router('/loanUnderwriting/review')}/>
+                                   handleRoute={() => router('/loanApp/loanTopUp')}/>
             <StopDisbursementModal open={openApprove} setOpen={setOpenApprove} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/approval')}/>
-
             <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs} handleSubmit={handleAdjust}/>
             <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"} handleRoute={()=>router('/loanUnderwriting/disbursement')}/>
+            <ModifyTopUpModal open={openModify} setOpen={setOpenModify} inputs={modifyInputs} setInputs={setModifyInputs} file={file} setFile={setFile} handleSubmit={handleModify}/>
         </Layout>
     );
 };
