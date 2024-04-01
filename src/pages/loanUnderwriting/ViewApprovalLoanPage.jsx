@@ -117,7 +117,9 @@ const ViewApprovalLoanPage = () => {
                 loanCategory: "Regular Loan"
             }
         }).then(res => {
-            setOpenComplete(true)
+            if (res.data.status === true){
+                setOpenComplete(true)
+            }
         }).catch(err =>{
             setOpenComplete(false)
         })

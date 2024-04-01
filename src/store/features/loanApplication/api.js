@@ -49,7 +49,7 @@ export const loanApplicationApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["completeReview"]
+            providesTags: ["completeReview", "declineApplication"]
         }),
         getCustomerDetails: builder.query({
             query: (id) => ({

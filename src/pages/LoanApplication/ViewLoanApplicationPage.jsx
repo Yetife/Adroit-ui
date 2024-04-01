@@ -83,10 +83,15 @@ const ViewLoanApplicationPage = () => {
         completeReview({
             body: {
                 loanApplicationId: appId,
-                loanCategory: "Regular loan"
+                loanCategory: "Regular loan",
+                adjustedTenor: "",
+                adjustedAmount: 0,
+                comment: ""
             }
         }).then(res => {
-            setOpenComplete(true)
+          if (res.data.status === true){
+                setOpenComplete(true)
+            }
         }).catch(err =>{
             setOpenComplete(false)
         })
