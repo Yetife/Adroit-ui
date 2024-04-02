@@ -19,6 +19,10 @@ export const getLoanTopUpDetails = async (id) => {
     const url = `/LoanTopUp/ViewLoan/${id}`;
     return authServiceCallEndpoint({url, needsAuth:true})
 };
+export const getLoanRestructuringDetails = async (id) => {
+    const url = `/LoanRestructuring/ViewLoan/${id}`;
+    return authServiceCallEndpoint({url, needsAuth:true})
+};
 export const getDisbursedDisbursement = async (size, page) => {
     const url = `/BridgeLoan/Disbursement/getdisbursed?det=2&PasgeSize=${size}&PageNumber=${page}`;
     return authServiceCallEndpoint({url, needsAuth:true})

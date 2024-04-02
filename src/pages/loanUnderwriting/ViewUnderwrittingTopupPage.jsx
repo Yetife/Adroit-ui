@@ -1,36 +1,39 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
-import Layout from "../Layout.jsx";
-import {Button, Text} from "@chakra-ui/react";
-import dayjs from "dayjs";
 import {
-    useAdjustApplicationMutation, useApproveApplicationMutation,
-    useCompleteReviewMutation,
-    useGetLoanRestructureDetailQuery, useReturnApplicationMutation,
+    useAdjustApplicationMutation,
+    useApproveApplicationMutation,
+    useCompleteReviewMutation, useReturnApplicationMutation
 } from "../../store/features/loanApplication/api.js";
-import {formatAmount} from "../../components/reusables/formatAmount.js";
+import {
+    useDisburseApplicationMutation,
+    useStopDisbursementMutation
+} from "../../store/features/loanUnderwriting/api.js";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchTopUpLoanDetails} from "../../store/documentationSlice.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {getUserToken} from "../../services/storage/index.js";
+import Layout from "../Layout.jsx";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
+import {Button, Text} from "@chakra-ui/react";
+import {formatAmount, formatRepayment} from "../../components/reusables/formatAmount.js";
+import dayjs from "dayjs";
+import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
 import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoanModal.jsx";
-import {
-    useDisburseApplicationMutation, useStopDisbursementMutation
-} from "../../store/features/loanUnderwriting/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import {useDispatch, useSelector} from "react-redux";
-import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
-import ModifyRestructuringModal from "../../components/loanApplication/loanRestructuring/ModifyRestructuringModal.jsx";
-import {fetchRestructuringLoanDetails, fetchTopUpLoanDetails} from "../../store/documentationSlice.js";
+import ModifyTopUpModal from "../../components/loanApplication/loanTopup/ModifyTopUpModal.jsx";
 
-const ViewLoanRestructuringPage = () => {
+const ViewUnderwrittingTopupPage = () => {
     const [open, setOpen] = useState(false)
-    const [openDisburse, setOpenDisburse] = useState(false)
     const queryParams = new URLSearchParams(location.search);
     const appId = queryParams.get("id");
-    // const {data, isFetching, error} = useGetLoanRestructureDetailQuery(appId)
+    const cId = queryParams.get("cid");
+    // const {data, isFetching, error} = useGetLoanTopUpDetailQuery(appId)
     const router = useNavigate()
     const status = queryParams.get("status");
     const [comment, setComment] = useState("")
+    const [openDisburse, setOpenDisburse] = useState(false)
     const [openAdjust, setOpenAdjust] = useState(false)
     const [openComplete, setOpenComplete] = useState(false)
     const [openApprove, setOpenApprove] = useState(false)
@@ -40,33 +43,26 @@ const ViewLoanRestructuringPage = () => {
     const [returnApp] = useReturnApplicationMutation()
     const [disburseApp] = useDisburseApplicationMutation()
     const [stopDisburse] = useStopDisbursementMutation()
+    const [file, setFile] = useState(null)
+
     const [inputs, setInputs] = useState({
         amount: "",
         tenor: "",
         description: ""
     })
+    const dispatch = useDispatch()
     const [openModify, setOpenModify] = useState(false)
     const [modifyInputs, setModifyInputs] = useState({
         amount: "",
         tenor: "",
-        file: ""
+        description: ""
     })
-    const dispatch = useDispatch()
-    const data = useSelector((state) => state.documentation.restructuringDetail);
+    const data = useSelector((state) => state.documentation.topUpDetail);
     const loading = useSelector((state) => state.documentation.loading);
 
     useEffect(() => {
-        dispatch(fetchRestructuringLoanDetails(appId))
+        dispatch(fetchTopUpLoanDetails(appId))
     }, []);
-
-    useEffect(() => {
-        if (data) {
-            setModifyInputs({
-                amount: data?.data?.cusDetail?.loanAmount,
-                tenor: data?.data?.cusDetail?.initialTenorValue,
-            });
-        }
-    }, [data]);
     const handleChange = (e) => {
         setComment(e.target.value)
     };
@@ -75,7 +71,7 @@ const ViewLoanRestructuringPage = () => {
         approve({
             body: {
                 loanApplicationId: appId,
-                loanCategory: "Loan Restructure"
+                loanCategory: "Loan topup"
             }
         }).then(res => {
             setOpenApprove(true)
@@ -86,8 +82,11 @@ const ViewLoanRestructuringPage = () => {
     const handleComplete = () => {
         completeReview({
             body: {
+                adjustedTenor: data?.data?.cusDetail?.newLoanTopUpTenor ? data?.data?.cusDetail?.newLoanTopUpTenor : data?.data?.cusDetail?.tenor,
+                adjustedAmount: data?.data?.cusDetail?.newLoanTopUpAmount ? data?.data?.cusDetail?.newLoanTopUpAmount : data?.data?.cusDetail?.initialLoanAmount,
+                comment : comment,
                 loanApplicationId: appId,
-                loanCategory: "Loan Restructure"
+                loanCategory: "Loan topup"
             }
         }).then(res => {
             setOpenComplete(true)
@@ -102,7 +101,7 @@ const ViewLoanRestructuringPage = () => {
                 description: inputs.description,
                 adjustedTenor: inputs.tenor,
                 adjustedAmount: inputs.amount,
-                loanCategory: "Loan Restructure"
+                loanCategory: "Loan topup"
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
@@ -116,7 +115,7 @@ const ViewLoanRestructuringPage = () => {
         returnApp({
             body: {
                 loanApplicationId: appId,
-                loanCategory: "Loan Restructure"
+                loanCategory: "Loan topup"
             }
         }).then(res => {
             router('/loanUnderwriting/approval')
@@ -129,7 +128,7 @@ const ViewLoanRestructuringPage = () => {
         stopDisburse({
             body: {
                 loanApplicationId: appId,
-                loanCategory: "Loan Restructure"
+                loanCategory: "Loan topup"
             }
         }).then(res => {
             setOpenDisburse(true)
@@ -140,8 +139,8 @@ const ViewLoanRestructuringPage = () => {
     const handleDisburse = () => {
         disburseApp({
             body: {
-                loanApplicationId: appId,
-                loanCategory: "loanrestructure"
+                loanApplicationId: cId,
+                loanCategory: "loantopup"
             }
         }).then(res => {
             router('/loanUnderwriting/disbursement')
@@ -149,6 +148,47 @@ const ViewLoanRestructuringPage = () => {
             setOpenComplete(false)
         })
     }
+    const handleModify = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('AdjustedAmount', modifyInputs.amount);
+            formData.append('AdjustedTenor', modifyInputs.tenor);
+            formData.append('BankStatement', file);
+            formData.append('Comment', comment);
+            formData.append('LoanApplicationId', appId);
+            formData.append('LoanCategory', 'Loan topup');
+            const token = getUserToken();
+            const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+
+            const res = await fetch(`${baseUrl}/LoanApplication/Adjust/UpdateWithBankStatement`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'multipart/form-data',
+                    'XApiKey': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    // 'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+            if (res.status === 200) {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record adjusted successfully", success:true}));
+                setOpenModify(false)
+                dispatch(fetchTopUpLoanDetails(appId))
+            }
+        } catch (error) {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
+        }
+    }
+
+    useEffect(() => {
+        if (data) {
+            setModifyInputs({
+                amount:  data?.data?.cusDetail?.newLoanTopUpAmount ? data?.data?.cusDetail?.newLoanTopUpAmount : data?.data?.cusDetail?.initialLoanAmount,
+                tenor: data?.data?.cusDetail?.newLoanTopUpTenor ? data?.data?.cusDetail?.newLoanTopUpTenor : data?.data?.cusDetail?.tenor,
+            });
+        }
+    }, [data]);
+
     return (
         <Layout>
             <div>
@@ -167,11 +207,11 @@ const ViewLoanRestructuringPage = () => {
                             </div>
                         </div>
                         <div
-                            className="custom-scroll-bar min-w-full align-middle h-[630px] c-border w-full shadow-xl overflow-auto sm:rounded-lg mt-4 px-20">
+                            className="custom-scroll-bar min-w-full align-middle h-[630px] c-border w-full shadow-xl overflow-auto sm:rounded-lg mt-4 px-12">
                             <div className="flex">
                                 <div className="w-6/12">
                                     <p className="text-[20px] leading-5 text-[#4A5D58] font-[600]">Customer Details</p>
-                                    <div className="rounded-[10px] mt-2 py-4 px-8"
+                                    <div className="rounded-[10px] my-4 p-8"
                                          style={{border: "1px solid #C9D4D1", background: "#FFF"}}>
                                         <div className="flex space-x-8">
                                             <div className="pb-6">
@@ -184,12 +224,12 @@ const ViewLoanRestructuringPage = () => {
                                             </div>
                                         </div>
 
-                                        <div className="pb-2">
+                                        <div className="py-4">
                                             <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Email
                                                 Address</p>
                                             <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.emailAddress}</p>
                                         </div>
-                                        <div className="flex  space-x-12 py-2">
+                                        <div className="flex  space-x-8 py-4">
                                             <div>
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Phone
                                                     Number</p>
@@ -199,47 +239,55 @@ const ViewLoanRestructuringPage = () => {
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">BVN</p>
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.bvn}</p>
                                             </div>
+                                            <div>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Status</p>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.status}</p>
+                                            </div>
                                         </div>
-                                        <div className="flex space-x-12 py-2">
+                                        <div className="flex  space-x-8 py-4">
+                                            <div>
+                                                <p className="text-[16px] leading-5 text-[#FF0909] font-[600]">Original
+                                                    Loan Amount</p>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">&#8358;{formatAmount(data?.data?.cusDetail?.initialLoanAmount)}</p>
+                                            </div>
                                             <div>
                                                 <p className="text-[16px] leading-5 text-[#FF0909] font-[600]">Original
                                                     Loan Tenor</p>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.initialTenorValue}</p>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.tenor}</p>
+                                            </div>
+
+                                        </div>
+                                        <div className="flex space-x-8 py-4">
+                                            <div>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] truncate">New
+                                                    Loan Amount</p>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">&#8358;{data?.data?.cusDetail?.newLoanTopUpAmount ? formatAmount(data?.data?.cusDetail?.newLoanTopUpAmount) : formatAmount(data?.data?.cusDetail?.initialLoanAmount)}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">New
-                                                    Tenor<span className="text-[10px] font-[600]">(Customer's request)</span></p>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.tenorValue}</p>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">New Loan
+                                                    Tenor</p>
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{data?.data?.cusDetail?.newLoanTopUpTenor ? data?.data?.cusDetail?.newLoanTopUpTenor : data?.data?.cusDetail?.tenor}</p>
                                             </div>
                                         </div>
-                                        <div className="flex space-x-12 pt-2">
+                                        <div className="flex  space-x-8 pt-4">
+                                            {/*<div>*/}
+                                            {/*    <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Top-up*/}
+                                            {/*        Amount</p>*/}
+                                            {/*    <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">&#8358;{formatAmount(data?.data?.cusDetail?.topUpAmount)}</p>*/}
+                                            {/*</div>*/}
                                             <div>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Loan
-                                                    Amount</p>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">&#8358;{formatAmount(data?.data?.cusDetail?.loanAmount)}</p>
-                                            </div>
-                                            <div>
-                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Date
+                                                <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] truncate">Date
                                                     Submitted</p>
                                                 <p className="text-[16px] leading-5 text-[#4A5D58] font-[500] pt-2">{dayjs(data?.data?.cusDetail?.dateSubmitted).format("YYYY/MM/DD")}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="mt-8">
-                                        <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pb-3">Comment</p>
-                                        <textarea id="message" name="message" rows="3" cols="50"
-                                                  value={status === "view" ? "" : comment}
-                                                  disabled={status === "view"}
-                                                  onChange={handleChange}
-                                                  placeholder="Add comment"
-                                                  className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                        ></textarea>
-                                    </div>
                                     <div>
-                                        <div className="flex items-center cursor-pointer md:w-[250px] mt-12"
+                                        <div className="flex items-center cursor-pointer"
                                              style={{
                                                  border: "1px solid #4A5D58",
                                                  padding: "10px 15px",
+                                                 width: "230px"
                                              }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                  viewBox="0 0 20 20"
@@ -252,101 +300,69 @@ const ViewLoanRestructuringPage = () => {
                                                     strokeLinejoin="round"
                                                 />
                                             </svg>
-                                            <p className="text-[16px] leading-5 font-[Inter] text-[#4A5D58] font-[600] pl-3">View
+                                            <p className="text-[15px] leading-5 font-[Inter] text-[#4A5D58] font-[600] pl-3">View
                                                 Bank Statement</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-6/12 ml-8 mt-6">
-                                    <div>
-                                        <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Existing Repayment
-                                            Schedule</p>
-                                        <div className="scroll-container h-[220px] rounded-[10px] my-3 px-8 py-4" style={{
-                                            border: "1px solid #C9D4D1",
-                                            background: "#FFF",
-                                            boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"
-                                        }}>
-                                            <div>
-                                                <table className="table-auto md:w-full px-20">
-                                                    <thead>
-                                                    <tr>
-                                                        <th className="px-10 py-2 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] truncate text-left border-b bg-gray-50">
-                                                            Repayment Date
-                                                        </th>
-                                                        <th className="px-10 py-2 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
-                                                            Amount
-                                                        </th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody className="bg-white">
-                                                    {
-                                                        data?.data?.oldrepaymentSchedule && data?.data?.oldrepaymentSchedule.map((item, index) => (
-                                                            <tr key={index}>
-                                                                <td className="px-10 py-2 whitespace-no-wrap border-b border-gray-200">
-                                                                    <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item?.monthlyRepaymentDate).format("YYYY/MM/DD")}</span>
-                                                                </td>
-                                                                <td className="px-10 py-2 whitespace-no-wrap border-b border-gray-200">
-                                                                    <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item?.monthlyRepaymentAmount)}</span>
-                                                                </td>
-                                                            </tr>
-                                                        ))
-                                                    }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div className="mt-4">
-                                            <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">New Repayment
-                                                Schedule</p>
-                                            <div className="scroll-container h-[220px] rounded-[10px] my-4 px-8 py-4" style={{
-                                                border: "1px solid #C9D4D1",
-                                                background: "#FFF",
-                                                boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"
-                                            }}>
-                                                <div>
-                                                    <table className="table-auto md:w-full px-20">
-                                                        <thead>
-                                                        <tr>
-                                                            <th className="px-10 py-2 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] truncate text-left border-b bg-gray-50">
-                                                                Repayment Date
-                                                            </th>
-                                                            <th className="px-10 py-2 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
-                                                                Amount
-                                                            </th>
+                                <div className="w-6/12 ml-8 mt-8">
+                                    <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">Repayment
+                                        Schedule</p>
+                                    <div className="scroll-container h-[300px] rounded-[10px] my-3 p-8" style={{
+                                        border: "1px solid #C9D4D1",
+                                        background: "#FFF",
+                                        boxShadow: "0px 6px 19px 0px rgba(0, 0, 0, 0.15)"
+                                    }}>
+                                        <div>
+                                            <table className="table-auto md:w-full px-20">
+                                                <thead>
+                                                <tr>
+                                                    <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] truncate text-left border-b bg-gray-50">
+                                                        Repayment Date
+                                                    </th>
+                                                    <th className="px-10 py-3 text-[16px] font-medium leading-4 tracking-wider text-[#4A5D58] text-left border-b truncate bg-gray-50">
+                                                        Amount
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody className="bg-white">
+                                                {
+                                                    data?.data?.repaymentSchedule.map((item, index) => (
+                                                        <tr key={index}>
+                                                            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item?.monthlyRepaymentDate).format("YYYY/MM/DD")}</span>
+                                                            </td>
+                                                            <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(item?.monthlyRepaymentAmount)}</span>
+                                                            </td>
                                                         </tr>
-                                                        </thead>
-                                                        <tbody className="bg-white">
-                                                        {
-                                                            data?.data?.repaymentSchedule && data?.data?.repaymentSchedule.map((item, index) => (
-                                                                <tr key={index}>
-                                                                    <td className="px-10 py-2 whitespace-no-wrap border-b border-gray-200">
-                                                                        <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item?.monthlyRepaymentDate).format("YYYY/MM/DD")}</span>
-                                                                    </td>
-                                                                    <td className="px-10 py-2 whitespace-no-wrap border-b border-gray-200">
-                                                                        <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(item?.monthlyRepaymentAmount)}</span>
-                                                                    </td>
-                                                                </tr>
-                                                            ))
-                                                        }
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
+                                                    ))
+                                                }
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-
-
+                                    <div className="mt-8">
+                                        <p className="text-[16px] leading-5 text-[#4A5D58] font-[600] pb-3">Comment</p>
+                                        <textarea id="message" name="message" rows="4" cols="50"
+                                                  value={data?.data?.cusDetail?.comment === "" ?comment : data?.data?.cusDetail?.comment}
+                                                  disabled={status === "view"}
+                                                  onChange={handleChange}
+                                                  placeholder="Add comment"
+                                                  className="font-medium w-full text-black leading-relaxed px-4 py-3 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                        ></textarea>
+                                    </div>
                                     {
                                         status === "review" && (
                                             <div className="flex float-right space-x-3 my-4">
-                                                <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px"
-                                                        size='md'
+                                                <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
                                                         as={ReactLink} w={'110px'} onClick={handleApprove}>
                                                     <Text color="white">Approve</Text>
                                                 </Button>
-                                                <Button variant="primary" bgColor="#1781BC" borderRadius="4px" height="37px"
-                                                        size='md'
-                                                        as={ReactLink} w={'110px'} onClick={() => setOpenAdjust(true)}>
+                                                <Button variant="primary" bgColor="#1781BC" borderRadius="4px" height="37px" size='md'
+                                                        as={ReactLink} w={'110px'} onClick={()=>setOpenAdjust(true)}>
                                                     <Text color="white">Adjust</Text>
                                                 </Button>
                                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"
@@ -360,20 +376,18 @@ const ViewLoanRestructuringPage = () => {
                                     {
                                         status === "approve" && (
                                             <div className="flex float-right space-x-3 my-4">
-                                                <Button variant="primary" bgColor="#00C796" borderRadius="4px" height="37px"
-                                                        size='md'
+                                                <Button variant="primary" bgColor="#00C796" borderRadius="4px" height="37px" size='md'
                                                         as={ReactLink} w={'110px'} onClick={handleDisburse}>
                                                     <Text color="white">Disburse</Text>
                                                 </Button>
-                                                <Button variant="primary" bgColor="#005F47" borderRadius="4px" height="37px"
-                                                        size='md'
+                                                <Button variant="primary" bgColor="#005F47" borderRadius="4px" height="37px" size='md'
                                                         as={ReactLink} w={'110px'} onClick={handleReturn}>
                                                     <Text color="white">Return</Text>
                                                 </Button>
                                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"
                                                         border={"1px solid #FF0909"} borderRadius="4px" height="37px"
                                                         size='md' as={ReactLink} w={'110px'} onClick={() => setOpen(true)}>
-                                                <Text color="#FF0909">Decline</Text>
+                                                    <Text color="#FF0909">Decline</Text>
                                                 </Button>
                                             </div>
                                         )
@@ -435,24 +449,20 @@ const ViewLoanRestructuringPage = () => {
                                         </div>)
                                     }
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 }
             </div>
-
-            {/*<ApproveLoanModal open={open} setOpen={setOpen} comment={comment}/>*/}
             <DeclineApplicationModal open={open} setOpen={setOpen} id={appId}/>
             <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"}
-                                   handleRoute={() => router('/loanUnderwriting/review')}/>
+                                   handleRoute={() => router('/loanApp/loanTopUp')}/>
             <StopDisbursementModal open={openApprove} setOpen={setOpenApprove} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/approval')}/>
-
             <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs} handleSubmit={handleAdjust}/>
             <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"} handleRoute={()=>router('/loanUnderwriting/disbursement')}/>
-            <ModifyRestructuringModal open={openModify} setOpen={setOpenModify} inputs={modifyInputs} setInputs={setModifyInputs}/>
+            <ModifyTopUpModal open={openModify} setOpen={setOpenModify} inputs={modifyInputs} setInputs={setModifyInputs} file={file} setFile={setFile} handleSubmit={handleModify}/>
         </Layout>
     );
 };
 
-export default ViewLoanRestructuringPage;
+export default ViewUnderwrittingTopupPage;

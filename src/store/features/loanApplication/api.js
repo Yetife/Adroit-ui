@@ -504,6 +504,12 @@ export const loanApplicationApi = createApi({
             }),
             invalidatesTags: ["updateLoanTopUp"]
         }),
+        getLoanRepaymentDetail: builder.query({
+            query: ({id, category}) => ({
+                url: `/LoanApplication/Customer/getRepaymentDetails?LoanApplicationId=${id}&LoanCategory=${category}`,
+            }),
+            providesTags: []
+        }),
     })
 })
 
@@ -543,5 +549,6 @@ export const {
     useGetAllApprovalQuery,
     useGetAllApprovalRestructureQuery,
     useGetAllApprovalTopUpQuery,
+    useGetLoanRepaymentDetailQuery,
 
 } = loanApplicationApi

@@ -20,7 +20,7 @@ const HorizontalMenu = ({activeTab, handleChange, tabMenu }) => {
                         indicatorColor={"transparent"}
                         value={currentTab}
                         onChange={(event, newValue) => handleChange(event,newValue)}
-                        style={{ display: 'block', cursor:'pointer' }}
+                        style={{ cursor:'pointer' }}
                         orientation="horizontal"
                     >
                         {tabMenu.map((menu) =>(

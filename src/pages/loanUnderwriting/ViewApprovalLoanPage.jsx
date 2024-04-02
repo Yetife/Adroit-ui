@@ -156,7 +156,9 @@ const ViewApprovalLoanPage = () => {
                 loanCategory: "regularloan"
             }
         }).then(res => {
-            router('/loanUnderwriting/disbursement')
+            if (res.data.status === true){
+                router('/loanUnderwriting/disbursement')
+            }
         }).catch(err =>{
             setOpenComplete(false)
         })

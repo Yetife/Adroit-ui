@@ -3,26 +3,20 @@ import {Link as ReactLink, useNavigate} from "react-router-dom";
 import Layout from "../Layout.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import dayjs from "dayjs";
-import {
-    useAdjustApplicationMutation,
-    useApproveApplicationMutation,
-    useCompleteReviewMutation,
-    useGetLoanTopUpDetailQuery, useReturnApplicationMutation
+import { useAdjustApplicationMutation, useApproveApplicationMutation, useCompleteReviewMutation, useReturnApplicationMutation
 } from "../../store/features/loanApplication/api.js";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
-import {formatAmount} from "../../components/reusables/formatAmount.js";
+import {formatAmount, formatRepayment} from "../../components/reusables/formatAmount.js";
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
-import {
-    useDisburseApplicationMutation,
-    useStopDisbursementMutation
+import {useDisburseApplicationMutation, useStopDisbursementMutation
 } from "../../store/features/loanUnderwriting/api.js";
 import {useDispatch, useSelector} from "react-redux";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
 import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoanModal.jsx";
 import ModifyTopUpModal from "../../components/loanApplication/loanTopup/ModifyTopUpModal.jsx";
-import {fetchTopUpDetail, fetchTopUpLoanDetails} from "../../store/documentationSlice.js";
+import {fetchTopUpLoanDetails} from "../../store/documentationSlice.js";
 import {getUserToken} from "../../services/storage/index.js";
 
 const ViewLoanTopUpPage = () => {
@@ -60,8 +54,6 @@ const ViewLoanTopUpPage = () => {
     })
     const data = useSelector((state) => state.documentation.topUpDetail);
     const loading = useSelector((state) => state.documentation.loading);
-
-    console.log(data)
 
     useEffect(() => {
         dispatch(fetchTopUpLoanDetails(appId))
@@ -157,6 +149,7 @@ const ViewLoanTopUpPage = () => {
             formData.append('AdjustedAmount', modifyInputs.amount);
             formData.append('AdjustedTenor', modifyInputs.tenor);
             formData.append('BankStatement', file);
+            formData.append('Comment', comment);
             formData.append('LoanApplicationId', appId);
             formData.append('LoanCategory', 'Loan topup');
             const token = getUserToken();
@@ -174,24 +167,19 @@ const ViewLoanTopUpPage = () => {
             });
             if (res.status === 200) {
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record adjusted successfully", success:true}));
+                setOpenModify(false)
+                dispatch(fetchTopUpLoanDetails(appId))
             }
         } catch (error) {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:error.data.message,success:false}));
         }
     }
-    function formatRepayment(amount) {
-        const number = parseFloat(amount);
-        if (isNaN(number)) {
-            return '';
-        }
-        const formattedNumber = number.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return formattedNumber;
-    }
+
     useEffect(() => {
         if (data) {
             setModifyInputs({
-                amount: data?.data?.cusDetail?.initialLoanAmount,
-                tenor: data?.data?.cusDetail?.tenor,
+                amount:  data?.data?.cusDetail?.newLoanTopUpAmount ? data?.data?.cusDetail?.newLoanTopUpAmount : data?.data?.cusDetail?.initialLoanAmount,
+                tenor: data?.data?.cusDetail?.newLoanTopUpTenor ? data?.data?.cusDetail?.newLoanTopUpTenor : data?.data?.cusDetail?.tenor,
             });
         }
     }, [data]);

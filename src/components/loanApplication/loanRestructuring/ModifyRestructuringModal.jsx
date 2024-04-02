@@ -1,13 +1,17 @@
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import {Close} from "@mui/icons-material";
+import axios from "axios";
+import {getUserToken} from "../../../services/storage/index.js";
 
 const ModifyRestructuringModal = ({open, setOpen, handleSubmit, inputs, setInputs,}) => {
     const [file, setFile] = useState(null)
     const fileInputRef = useRef(null);
-    const tenor = [3, 6, 9, 12]
+    const [tenor, setTenor] = useState([]);
+    const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
@@ -24,6 +28,27 @@ const ModifyRestructuringModal = ({open, setOpen, handleSubmit, inputs, setInput
         setFile(file);
     };
 
+    const fetchTenor = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidRegularLoanTenors`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setTenor(response.data.data);
+            console.log('Fetched state:', response.data.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchTenor()
+    }, []);
+
     return (
         <div>
             <Dialog.Root
@@ -34,41 +59,105 @@ const ModifyRestructuringModal = ({open, setOpen, handleSubmit, inputs, setInput
             >
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black bg-opacity-20 z-[100] data-[state=open]:animate-overlayShow fixed inset-0" />
-                    <Dialog.Content className="data-[state=open]:animate-contentShow z-[200] fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                    <Dialog.Content className="data-[state=open]:animate-contentShow custom-scroll-bar overflow-y-auto z-[200] fixed top-[50%] left-[50%] max-h-[100vh] w-[90vw] max-w-[600px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[45px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                         <Dialog.Title className="text-[24px] text-[#343434] font-bold -mt-8">Modify Loan Restructuring</Dialog.Title>
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-3">
-                            <div>
-                                <span className="ml-8">
-                                  <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                   Loan Amount
-                                  </h3>
-                                  <input
-                                      type="text"
-                                      value={inputs.amount}
-                                      onChange={(event) => handleChange(event, "amount")}
-                                      placeholder="Enter amount"
-                                      className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
-                                  />
-                                </span>
-                            </div>
-                            <div>
-                                <span className="ml-4">
+                            <div className="flex items-center space-x-8">
+                                <div>
+                                    <div>
+                                        <span className="ml-8">
                                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
-                                           Loan Tenor
+                                           Original Loan Amount
+                                          </h3>
+                                          <input
+                                              type="text"
+                                              disabled
+                                              value={inputs.amount}
+                                              onChange={(event) => handleChange(event, "amount")}
+                                              placeholder="Enter amount"
+                                              className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          />
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span className="ml-8">
+                                          <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                           Remaining Loan Balance
+                                          </h3>
+                                          <input
+                                              type="text"
+                                              value={inputs.amount}
+                                              disabled
+                                              onChange={(event) => handleChange(event, "amount")}
+                                              placeholder="Enter amount"
+                                              className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                          />
+                                        </span>
+                                    </div>
+
+                                </div>
+                                <div>
+                                    <div>
+                                        <span className="ml-4">
+                                          <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                           Original Loan Tenor
                                           </h3>
                                              <select id="select" value={inputs.tenor}
+                                                     disabled
                                                      onChange={(event) => handleChange(event, "tenor")}
-                                                     className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
+                                                     className="font-medium w-[250px] text-black leading-relaxed px-4 py-2 rounded h-[45px]  border border-neutral-300 justify-between items-center gap-4 flex">
                                                 <option value="" disabled>Select tenor</option>
                                                  {tenor && tenor?.map((option, index) => (
-                                                     <option key={index} value={option}>
-                                                         {option}
+                                                     <option key={option.uniqueId} value={option.name}>
+                                                         {option.name}
                                                      </option>
                                                  ))}
                                             </select>
                                         </span>
+                                    </div>
+                                    <div>
+                                        <span className="ml-4">
+                                          <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                           Remaining Loan Tenor
+                                          </h3>
+                                             <select id="select" value={inputs.tenor}
+                                                     disabled
+                                                     onChange={(event) => handleChange(event, "tenor")}
+                                                     className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded h-[45px]  border border-neutral-300 justify-between items-center gap-4 flex">
+                                                <option value="" disabled>Select tenor</option>
+                                                 {tenor && tenor?.map((option, index) => (
+                                                     <option key={option.uniqueId} value={option.name}>
+                                                         {option.name}
+                                                     </option>
+                                                 ))}
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
+                            <div>
+                                <div>
+                                    <span className="ml-4">
+                                        <p>Customer Request</p>
+                                      <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
+                                       Loan Tenor
+                                      </h3>
+                                         <select id="select" value={inputs.tenor}
+                                                 onChange={(event) => handleChange(event, "tenor")}
+                                                 className="font-medium w-[220px] text-black leading-relaxed px-4 py-2 rounded h-[45px]  border border-neutral-300 justify-between items-center gap-4 flex">
+                                            <option value="" disabled>Select tenor</option>
+                                             {tenor && tenor?.map((option, index) => (
+                                                 <option key={option.uniqueId} value={option.name}>
+                                                     {option.name}
+                                                 </option>
+                                             ))}
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+
+
                             <div className="mt-6 w-full">
                                 <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                     Bank Statement Upload (Optional)

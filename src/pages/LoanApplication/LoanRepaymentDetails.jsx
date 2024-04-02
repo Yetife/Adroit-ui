@@ -1,17 +1,54 @@
 import dayjs from "dayjs";
 import {useEffect, useState} from "react";
 import {repaymentDetail} from "../../services/api/authApiService.js";
+import {useGetLoanRepaymentDetailQuery} from "../../store/features/loanApplication/api.js";
+import {formatRepayment} from "../../components/reusables/formatAmount.js";
 
 const LoanRepaymentDetails = () => {
     const queryParams = new URLSearchParams(location.search);
-    const appId = queryParams.get("aid");
-    const [data, setData] = useState({})
+    const id = queryParams.get("aid");
+    const category = "regular loan"
+    const {data, isFetching, error} = useGetLoanRepaymentDetailQuery({id, category})
+    const [totalRepaymentAmount, setTotalRepaymentAmount] = useState(0);
+    const [totalPrincipalAmount, setTotalPrincipalAmount] = useState(0);
+    const [totalInterestAmount, setTotalInterestAmount] = useState(0);
+
+    const calculateTotal = (amountArray) => {
+        const total = amountArray.reduce((acc, amount) => acc + amount, 0);
+        return total;
+    };
 
     useEffect(() => {
-        repaymentDetail({loanApplicationId: appId, loanCategory: 'regular loan'}).then(res=>{
-            setData(res.data)
-        })
-    }, []);
+        if (data && data?.data) {
+            const total = calculateTotal(
+                data && data?.data.map(item => {
+                    const amountString = String(item.principal); // Ensure it's a string
+                    const amountValue = parseFloat(amountString.replace("N", "").replace(/,/g, ""));
+                    return isNaN(amountValue) ? 0 : amountValue; // Handle non-numeric values
+                })
+            );
+            setTotalPrincipalAmount(total);
+
+            const interest = calculateTotal(
+                data && data?.data.map(item => {
+                    const amountString = String(item.interest); // Ensure it's a string
+                    const amountValue = parseFloat(amountString.replace("N", "").replace(/,/g, ""));
+                    return isNaN(amountValue) ? 0 : amountValue; // Handle non-numeric values
+                })
+            );
+            setTotalInterestAmount(interest);
+
+            const totalPayment = calculateTotal(
+                data && data?.data.map(item => {
+                    const amountString = String(item.totalPayment); // Ensure it's a string
+                    const amountValue = parseFloat(amountString.replace("N", "").replace(/,/g, ""));
+                    return isNaN(amountValue) ? 0 : amountValue; // Handle non-numeric values
+                })
+            );
+            setTotalRepaymentAmount(totalPayment);
+        }
+    }, [data]);
+
 
     return (
         <div>
@@ -33,42 +70,41 @@ const LoanRepaymentDetails = () => {
                     </tr>
                     </thead>
                     <tbody className="bg-white">
-                    <tr>
-                        <td className="px-10 pb-8 pt-4 whitespace-no-wrap  border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.repaymentDate).format("MMMM D[th], YYYY")}</span>
-                        </td>
-                        <td className="px-10 pb-8 pt-4 whitespace-no-wrap  border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.principal}</span>
-                        </td>
-                        <td className="px-10 pb-8 pt-4 whitespace-no-wrap  border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.interest}</span>
-                        </td>
-                        <td className="px-10 pb-8 pt-4 whitespace-no-wrap  border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.totalPayment}</span>
-                        </td>
-                    </tr>
+                    {
+                        data && data?.data?.map((item, index) => (
+                            <tr key={index}>
+                                <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.repaymentDate).format("YYYY/MM/DD")}</span>
+                                </td>
+                                <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(item.principal)}</span>
+                                </td>
+                                <td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(item.interest)}</span>
+                                </td><td className="px-10 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(item.totalPayment)}</span>
+                                </td>
+                            </tr>
+                        ))
+                    }
                     <tr>
                         <td className="px-10 py-4 whitespace-no-wrap border-b border-t border-gray-200">
                             <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">Total</span>
                         </td>
                         <td className="px-10 py-4 whitespace-no-wrap border-b border-t border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">{data?.principal}</span>
+                            <p className="text-[16px] leading-5 text-[#4A5D58] font-[600]">
+                                &#8358;{formatRepayment(totalPrincipalAmount)}</p>
                         </td>
                         <td className="px-10 py-4 whitespace-no-wrap border-b border-t border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">{data?.interest}</span>
+                            <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">&#8358;{formatRepayment(totalInterestAmount)}</span>
                         </td>
                         <td className="px-10 py-4 whitespace-no-wrap border-b border-t border-gray-200">
-                            <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">{data?.totalPayment}</span>
+                            <span className="text-[16px] leading-5 text-[#4A5D58] font-semibold">&#8358;{formatRepayment(totalRepaymentAmount)}</span>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                {/*<p className="text-[16px] pt-8 pl-8 leading-5 text-[#4A5D58] font-[600]">*/}
-                {/*    Total Repayment Amount: {totalRepaymentAmount.toLocaleString("en-US", {*/}
-                {/*    style: "currency",*/}
-                {/*    currency: "NGN"*/}
-                {/*})}*/}
-                {/*</p>*/}
             </div>
         </div>
     );

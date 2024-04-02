@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {
     filterDisbursedDisbursement,
     getDisbursedDisbursement,
-    getDocumentation, getLoanTopUpDetails,
+    getDocumentation, getLoanRestructuringDetails, getLoanTopUpDetails,
     getProcessedDisbursement
 } from "../services/api/authApiService.js";
 
@@ -14,7 +14,8 @@ export const documentationSlice = createSlice({
         allDisbursed: [],
         loading: false,
         totalCount: 0,
-        topUpDetail: {}
+        topUpDetail: {},
+        restructuringDetail: {}
     },
 
     reducers: {
@@ -33,6 +34,9 @@ export const documentationSlice = createSlice({
         fetchTopUpDetail: (state, action) => {
             state.topUpDetail = action.payload;
         },
+        fetchRestructuringDetail: (state, action) => {
+            state.restructuringDetail = action.payload;
+        },
         getLoading: (state, action) => {
             state.loading = action.payload;
         },
@@ -42,7 +46,7 @@ export const documentationSlice = createSlice({
 export const {
     fetchDoc, fetchCount,
     fetchProcessedDisbursement, fetchDisbursedDisbursement,
-    getLoading, fetchTopUpDetail
+    getLoading, fetchTopUpDetail, fetchRestructuringDetail
 } = documentationSlice.actions;
 
 export const fetchDocumentation = (size, page) => async (dispatch) => {
@@ -93,6 +97,16 @@ export const fetchTopUpLoanDetails = (id) => async (dispatch) => {
         dispatch(getLoading(true));
         const res = await getLoanTopUpDetails(id);
         dispatch(fetchTopUpDetail(res))
+        dispatch(getLoading(false));
+    }catch (e) {
+        dispatch(getLoading(false));
+    }
+}
+export const fetchRestructuringLoanDetails = (id) => async (dispatch) => {
+    try {
+        dispatch(getLoading(true));
+        const res = await getLoanRestructuringDetails(id);
+        dispatch(fetchRestructuringDetail(res))
         dispatch(getLoading(false));
     }catch (e) {
         dispatch(getLoading(false));
