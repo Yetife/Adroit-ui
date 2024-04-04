@@ -99,6 +99,11 @@ import Repayment from "../pages/collection/Repayment.jsx";
 import RepaymentDetails from "../pages/collection/RepaymentDetails.jsx";
 import Summary from "../pages/collection/Summary.jsx";
 import InterestRate from "../pages/bridgeLoan/generalSetup/InterestRate.jsx";
+import ViewReviewLoanRestructuringPage from "../pages/loanUnderwriting/ViewReviewLoanRestructuringPage.jsx";
+import ViewApprovalLoanRestructuringPage from "../pages/loanUnderwriting/ViewApprovalLoanRestructuringPage.jsx";
+import ViewReviewTopupPage from "../pages/loanUnderwriting/ViewReviewTopupPage.jsx";
+import ViewAdjustLoanRestructuringPage from "../pages/LoanApplication/ViewAdjustLoanRestructuringPage.jsx";
+import ViewAdjustLoanTopUpPage from "../pages/LoanApplication/ViewAdjustLoanTopUpPage.jsx";
 
 export const ProtectedRoute = ({ children }) => {
     const navigate = useNavigate();
@@ -211,6 +216,20 @@ const ROUTES = [
                 </ProtectedRoute>
             },
             {
+                path: "restructuring/adjust",
+                exact: true,
+                element: <ProtectedRoute>
+                    <ViewAdjustLoanRestructuringPage  />
+                </ProtectedRoute>
+            },
+            {
+                path: "topUp/adjust",
+                exact: true,
+                element: <ProtectedRoute>
+                    <ViewAdjustLoanTopUpPage />
+                </ProtectedRoute>
+            },
+            {
                 path: "loanTopUp/view",
                 exact: true,
                 element: <ProtectedRoute>
@@ -270,6 +289,34 @@ const ROUTES = [
                 exact: true,
                 element: <ProtectedRoute>
                     <ViewLoanUnderwritingPage />,
+                </ProtectedRoute>
+            },
+            {
+                path: "restructuring/review",
+                exact: true,
+                element: <ProtectedRoute>
+                    <ViewReviewLoanRestructuringPage />
+                </ProtectedRoute>
+            },
+            {
+                path: "restructuring/approval",
+                exact: true,
+                element: <ProtectedRoute>
+                    <ViewApprovalLoanRestructuringPage />
+                </ProtectedRoute>
+            },
+            {
+                path: "topUp/review",
+                exact: true,
+                element: <ProtectedRoute>
+                    <ViewReviewTopupPage />
+                </ProtectedRoute>
+            },
+            {
+                path: "topUp/approval",
+                exact: true,
+                element: <ProtectedRoute>
+                    <ViewReviewTopupPage />
                 </ProtectedRoute>
             },
             {

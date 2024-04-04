@@ -84,7 +84,9 @@ const ViewLoanTopUpPage = () => {
                 loanCategory: "Loan topup"
             }
         }).then(res => {
-            setOpenComplete(true)
+            if (res.data.status === true){
+                setOpenComplete(true)
+            }
         }).catch(err =>{
             setOpenComplete(false)
         })
@@ -166,7 +168,7 @@ const ViewLoanTopUpPage = () => {
                 },
             });
             if (res.status === 200) {
-                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record adjusted successfully", success:true}));
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: "Record modified successfully", success:true}));
                 setOpenModify(false)
                 dispatch(fetchTopUpLoanDetails(appId))
             }

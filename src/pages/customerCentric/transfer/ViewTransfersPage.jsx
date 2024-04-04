@@ -35,7 +35,7 @@ const ViewTransfersPage = () => {
                     <div></div>
                     <div>
                         <Button variant="outline" borderColor="#00C795" marginRight="10px"
-                                border={"2px solid #00C795"} borderRadius="4px" onClick={() => router(-1)}
+                                border={"2px solid #00C795"} borderRadius="4px" onClick={() => router('/customerCentric/transfer')}
                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="#00C795">Back</Text>
                         </Button>

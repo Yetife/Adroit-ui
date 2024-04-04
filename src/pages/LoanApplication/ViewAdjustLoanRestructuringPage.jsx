@@ -1,28 +1,30 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
-import Layout from "../Layout.jsx";
-import {Button, Text} from "@chakra-ui/react";
-import dayjs from "dayjs";
 import {
-    useAdjustApplicationMutation, useApproveApplicationMutation,
-    useCompleteReviewMutation, useReturnApplicationMutation,
+    useAdjustApplicationMutation,
+    useApproveApplicationMutation,
+    useCompleteReviewMutation, useReturnApplicationMutation
 } from "../../store/features/loanApplication/api.js";
-import {formatAmount, formatRepayment} from "../../components/reusables/formatAmount.js";
+import {
+    useDisburseApplicationMutation,
+    useStopDisbursementMutation
+} from "../../store/features/loanUnderwriting/api.js";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchRestructuringLoanDetails} from "../../store/documentationSlice.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {getUserToken} from "../../services/storage/index.js";
+import Layout from "../Layout.jsx";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
+import {Button, Text} from "@chakra-ui/react";
+import {formatAmount, formatRepayment} from "../../components/reusables/formatAmount.js";
+import dayjs from "dayjs";
+import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
 import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoanModal.jsx";
-import {
-    useDisburseApplicationMutation, useStopDisbursementMutation
-} from "../../store/features/loanUnderwriting/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
-import {useDispatch, useSelector} from "react-redux";
-import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
 import ModifyRestructuringModal from "../../components/loanApplication/loanRestructuring/ModifyRestructuringModal.jsx";
-import {fetchRestructuringLoanDetails, fetchTopUpLoanDetails} from "../../store/documentationSlice.js";
-import {getUserToken} from "../../services/storage/index.js";
 
-const ViewLoanRestructuringPage = () => {
+const ViewAdjustLoanRestructuringPage = () => {
     const [open, setOpen] = useState(false)
     const [openDisburse, setOpenDisburse] = useState(false)
     const queryParams = new URLSearchParams(location.search);
@@ -414,7 +416,7 @@ const ViewLoanRestructuringPage = () => {
                                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"
                                                         border={"1px solid #FF0909"} borderRadius="4px" height="37px"
                                                         size='md' as={ReactLink} w={'110px'} onClick={() => setOpen(true)}>
-                                                <Text color="#FF0909">Decline</Text>
+                                                    <Text color="#FF0909">Decline</Text>
                                                 </Button>
                                             </div>
                                         )
@@ -496,4 +498,4 @@ const ViewLoanRestructuringPage = () => {
     );
 };
 
-export default ViewLoanRestructuringPage;
+export default ViewAdjustLoanRestructuringPage;

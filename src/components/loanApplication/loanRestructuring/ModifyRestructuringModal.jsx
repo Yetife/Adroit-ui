@@ -6,8 +6,7 @@ import {Close} from "@mui/icons-material";
 import axios from "axios";
 import {getUserToken} from "../../../services/storage/index.js";
 
-const ModifyRestructuringModal = ({open, setOpen, handleSubmit, inputs, setInputs,}) => {
-    const [file, setFile] = useState(null)
+const ModifyRestructuringModal = ({open, setOpen, handleSubmit, inputs, setInputs,file, setFile}) => {
     const fileInputRef = useRef(null);
     const [tenor, setTenor] = useState([]);
     const token = getUserToken();
@@ -87,9 +86,9 @@ const ModifyRestructuringModal = ({open, setOpen, handleSubmit, inputs, setInput
                                           </h3>
                                           <input
                                               type="text"
-                                              value={inputs.amount}
+                                              value={inputs.remainingAmount}
                                               disabled
-                                              onChange={(event) => handleChange(event, "amount")}
+                                              onChange={(event) => handleChange(event, "remainingAmount")}
                                               placeholder="Enter amount"
                                               className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
                                           />
@@ -121,17 +120,25 @@ const ModifyRestructuringModal = ({open, setOpen, handleSubmit, inputs, setInput
                                           <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                            Remaining Loan Tenor
                                           </h3>
-                                             <select id="select" value={inputs.tenor}
-                                                     disabled
-                                                     onChange={(event) => handleChange(event, "tenor")}
-                                                     className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded h-[45px]  border border-neutral-300 justify-between items-center gap-4 flex">
-                                                <option value="" disabled>Select tenor</option>
-                                                 {tenor && tenor?.map((option, index) => (
-                                                     <option key={option.uniqueId} value={option.name}>
-                                                         {option.name}
-                                                     </option>
-                                                 ))}
-                                            </select>
+                                            <input
+                                                type="text"
+                                                value={inputs.remainingTenor}
+                                                disabled
+                                                onChange={(event) => handleChange(event, "remainingTenor")}
+                                                placeholder="Enter amount"
+                                                className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300 justify-between items-center gap-4 flex"
+                                            />
+                                            {/* <select id="select" value={inputs.remainingTenor}*/}
+                                            {/*         disabled*/}
+                                            {/*         onChange={(event) => handleChange(event, "tenor")}*/}
+                                            {/*         className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded h-[45px]  border border-neutral-300 justify-between items-center gap-4 flex">*/}
+                                            {/*    <option value="" disabled>Select tenor</option>*/}
+                                            {/*     {tenor && tenor?.map((option, index) => (*/}
+                                            {/*         <option key={option.uniqueId} value={option.name}>*/}
+                                            {/*             {option.name}*/}
+                                            {/*         </option>*/}
+                                            {/*     ))}*/}
+                                            {/*</select>*/}
                                         </span>
                                     </div>
                                 </div>
@@ -143,8 +150,8 @@ const ModifyRestructuringModal = ({open, setOpen, handleSubmit, inputs, setInput
                                       <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">
                                        Loan Tenor
                                       </h3>
-                                         <select id="select" value={inputs.tenor}
-                                                 onChange={(event) => handleChange(event, "tenor")}
+                                         <select id="select" value={inputs.customerTenor}
+                                                 onChange={(event) => handleChange(event, "customerTenor")}
                                                  className="font-medium w-[220px] text-black leading-relaxed px-4 py-2 rounded h-[45px]  border border-neutral-300 justify-between items-center gap-4 flex">
                                             <option value="" disabled>Select tenor</option>
                                              {tenor && tenor?.map((option, index) => (

@@ -135,7 +135,7 @@ export const customerCentricApi = createApi({
             query: (id) => ({
                 url: `/CustomerCentric/GettransferByCusId/${id}`,
             }),
-            providesTags: []
+            providesTags: ["modifyTransfer"]
         }),
         modifyTransfer: builder.mutation({
             query: ({body}) => ({
@@ -143,7 +143,7 @@ export const customerCentricApi = createApi({
                 method: "PUT",
                 body
             }),
-            invalidatesTags: [" modifyTransfer"]
+            invalidatesTags: ["modifyTransfer"]
         }),
         getAllAirtime: builder.query({
             query: ({size, page, dropDown, searchTerm, statusName, startDate, endDate}) => {
