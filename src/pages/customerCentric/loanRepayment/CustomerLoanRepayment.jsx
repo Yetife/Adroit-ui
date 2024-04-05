@@ -1,32 +1,40 @@
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import Layout from "../../Layout.jsx";
-import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import CustomerLoanRepaymentTable
     from "../../../components/customerCentric/loanRepayment/CustomerLoanRepaymentTable.jsx";
-import FilterLoanRepaymentModal from "../../../components/customerCentric/loanRepayment/FilterLoanRepaymentModal.jsx";
+import FilterFixedDepositModal from "../../../components/customerCentric/fixedDeposit/FilterFixedDepositModal.jsx";
 
 const CustomerLoanRepayment = () => {
+    const formRef = useRef(null);
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
-    const [dropdown, setDropDown] = useState("emailAddress")
-    const [inputs, setInputs] = useState({
-        status: "",
-        startDate: "",
-        endDate: "",
-    })
-
+    const [dropdown, setDropDown] = useState("email")
     const handleOpen = () => {
         setOpen(true)
     }
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
     };
-
     const handleChange = (e) => {
         setDropDown(e.target.value);
         handleSearch(searchTerm, e.target.value); // Pass the selected dropdown value to handleSearch
+    };
+    const handleEmailSubmit = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        setSearchTerm(form.searchInput.value);
+    };
+
+    const [filters, setFilters] = useState({
+        statusName: "",
+        startDate: "",
+        endDate: "",
+    });
+
+    const handleFilter = (newFilters) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
     };
 
     return (
@@ -38,26 +46,41 @@ const CustomerLoanRepayment = () => {
                              <select
                                  id="select" value={dropdown}
                                  onChange={(event) => handleChange(event)}
-                                 className="font-medium w-[150px] text-black h-[40px]  leading-relaxed py-1 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
-                                 <option value={'emailAddress'}>Email</option>
-                                 <option value={'phoneNumber'}>Phone Number</option>
-                                  <option value={'firstName'}>Customer Name</option>
+                                 className="font-medium w-[150px] text-black h-[44px]  leading-relaxed py-1 rounded  border border-neutral-300 justify-between items-center gap-4 flex">
+                                 <option value={'email'}>Email</option>
+                                 <option value={'phone'}>Phone Number</option>
+                                  <option value={'name'}>Customer Name</option>
                             </select>
                         </span>
                         <div className="ml-3 w-[200px]">
-                            <Search search={searchTerm} setSearch={handleSearch}/>
+                            <form ref={formRef} onSubmit={handleEmailSubmit}>
+                                <input
+                                    type="text"
+                                    name="searchInput"
+                                    placeholder="Search for customer details by email"
+                                    className="text-zinc-800 outline-zinc-500 outline-1 w-full border border-neutral-300 leading-relaxed bg-transparent pl-2 p-2 rounded"
+                                    onKeyUp={(e) => {
+                                        if (e.key === "Enter") {
+                                            formRef.current.requestSubmit();
+                                        }
+                                    }}
+                                />
+                            </form>
+                            {/*<Search search={searchTerm} setSearch={handleSearch} onKeyPress={handleKeyPress}/>*/}
                         </div>
                     </div>
                     <div>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Filter</Text>
                         </Button>
                     </div>
                 </div>
                 <div>
-                    <CustomerLoanRepaymentTable searchTerm={searchTerm} dropDown={dropdown}/>
+                    <CustomerLoanRepaymentTable searchTerm={searchTerm} dropDown={dropdown} statusName={filters.statusName}
+                                               startDate={filters.startDate} endDate={filters.endDate} />
                 </div>
-                <FilterLoanRepaymentModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs}/>
+                <FilterFixedDepositModal open={open} setOpen={setOpen} handleFilter={handleFilter}/>
             </div>
         </Layout>
     )

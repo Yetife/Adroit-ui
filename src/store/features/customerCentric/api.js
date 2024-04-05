@@ -306,6 +306,33 @@ export const customerCentricApi = createApi({
             }),
             providesTags: []
         }),
+        getAllLoanRepayment: builder.query({
+            query: ({size, page, dropDown, searchTerm, statusName, startDate, endDate}) => {
+                const queryParams = {
+                    PasgeSize: size,
+                    PageNumber: page,
+                    det: startDate ? 1 : 2,
+                    // Add optional parameters conditionally
+                    ...(dropDown && { SearchType: dropDown }),
+                    ...(searchTerm && { SearchName: searchTerm }),
+                    ...(statusName && { Status: statusName }),
+                    ...(startDate && { StartDate: startDate }),
+                    ...(endDate && { EndDate: endDate }),
+                };
+
+                return {
+                    url: `/CustomerCentric/getallloanRepayment`,
+                    params: queryParams,
+                };
+            },
+            providesTags: []
+        }),
+        getLoanRepaymentById: builder.query({
+            query: (id) => ({
+                url: `/CustomerCentric/GetloanRepaymentByCusId/${id}`,
+            }),
+            providesTags: ["modifyTransfer"]
+        }),
     })
 })
 
@@ -333,6 +360,8 @@ export const {
     useUpdateRepaymentMutation,
     useGetAllLoanBiddingQuery,
     useGetLoanBiddingByIdQuery,
+    useGetAllLoanRepaymentQuery,
+    useGetLoanRepaymentByIdQuery,
     useGetAllEscrowQuery,
     useModifyEscrowMutation
 } = customerCentricApi
