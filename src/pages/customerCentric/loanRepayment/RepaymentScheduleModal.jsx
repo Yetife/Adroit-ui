@@ -5,32 +5,37 @@ import {Link as ReactLink} from "react-router-dom";
 import {Close} from "@mui/icons-material";
 import dayjs from "dayjs";
 import {formatRepayment} from "../../../components/reusables/formatAmount.js";
+import {updateSnackbar} from "../../../store/snackbar/reducer.js";
+import {
+    useGetLoanRepaymentPlanQuery,
+    useManualRepaymentMutation
+} from "../../../store/features/customerCentric/api.js";
+import {useDispatch} from "react-redux";
 
-const RepaymentScheduleModal = ({open, setOpen}) => {
+const RepaymentScheduleModal = ({open, setOpen, id, loanId}) => {
+    const queryParams = new URLSearchParams(location.search);
+    const custId = queryParams.get("id");
     const [totalRepaymentAmount, setTotalRepaymentAmount] = useState(0);
+    const [manualRepayment] =  useManualRepaymentMutation()
+    const dispatch = useDispatch()
+    const {data, isFetching, error} =  useGetLoanRepaymentPlanQuery(custId)
 
-    const repayment = [
-        {
-            date: "01/04/2024",
-            amount: 20000
-        },{
-            date: "01/05/2024",
-            amount: 20000
-        },{
-            date: "01/06/2024",
-            amount: 20000
-        },
-        // {
-        //     date: "01/07/2024",
-        //     amount: 20000
-        // },{
-        //     date: "01/08/2024",
-        //     amount: 20000
-        // },{
-        //     date: "01/09/2024",
-        //     amount: 20000
-        // },
-    ]
+
+    const handleSubmit = () => {
+        manualRepayment({
+            body: {
+                customerId: custId,
+                repaymentId: id,
+                loanApplicationId: loanId,
+                amount: totalRepaymentAmount.toString()
+            }
+        }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setOpen(!open)
+        }).catch(err =>{
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
+        })
+    }
 
     const calculateTotal = (amountArray) => {
         const total = amountArray.reduce((acc, amount) => acc + amount, 0);
@@ -38,17 +43,17 @@ const RepaymentScheduleModal = ({open, setOpen}) => {
     };
 
     useEffect(() => {
-        if (repayment && repayment) {
+        if (data?.data && data?.data) {
             const total = calculateTotal(
-                repayment.map(item => {
-                    const amountString = String(item.amount); // Ensure it's a string
+                data?.data.map(item => {
+                    const amountString = String(item.repaymentAmount); // Ensure it's a string
                     const amountValue = parseFloat(amountString.replace("N", "").replace(/,/g, ""));
                     return isNaN(amountValue) ? 0 : amountValue; // Handle non-numeric values
                 })
             );
             setTotalRepaymentAmount(total);
         }
-    }, [repayment]);
+    }, [data?.data]);
     return (
         <div>
             <Dialog.Root
@@ -64,7 +69,7 @@ const RepaymentScheduleModal = ({open, setOpen}) => {
                         {/*<Divider className="pt-4"/>*/}
                         <div className="mt-6">
                             <div
-                                className="custom-scroll-bar overflow-auto  rounded-[5px] my-3 p-3"
+                                className="custom-scroll-bar overflow-auto h-[200px]  rounded-[5px] my-3 p-3"
                                 style={{
                                     border: "1px solid #C9D4D1",
                                     background: "#FFF",
@@ -83,15 +88,15 @@ const RepaymentScheduleModal = ({open, setOpen}) => {
                                     </thead>
                                     <tbody className="bg-white">
                                     {
-                                        repayment?.length && repayment.map((item, index) => (
+                                        data?.data?.length && data?.data?.map((item, index) => (
                                             <tr key={index}>
                                                 <td className="py-1 px-6 whitespace-no-wrap border-b border-gray-200">
                                                     <span
-                                                        className="text-[14px] leading-5 text-[#4A5D58] font-medium">{dayjs(item?.date).format("YYYY/MM/DD")}</span>
+                                                        className="text-[14px] leading-5 text-[#4A5D58] font-medium">{dayjs(item?.repaymentDate).format("YYYY/MM/DD")}</span>
                                                 </td>
                                                 <td className="py-1 px-6 whitespace-no-wrap border-b border-gray-200">
                                                     <span
-                                                        className="text-[14px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(item?.amount)}</span>
+                                                        className="text-[14px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(item?.repaymentAmount)}</span>
                                                 </td>
 
 
@@ -109,7 +114,7 @@ const RepaymentScheduleModal = ({open, setOpen}) => {
                             </div>
                             <div className="flex tw-items-center m-auto tw-text-center mt-10">
                                 <Button className="ml-2" variant="primary" bgColor="#00C795" borderRadius="4px"
-                                        height="50px" size='md' as={ReactLink} w={'290px'}>
+                                        height="50px" size='md' as={ReactLink} w={'290px'} onClick={handleSubmit}>
                                     <Text color="white">Debit Customer Account Now</Text>
                                 </Button>
                             </div>

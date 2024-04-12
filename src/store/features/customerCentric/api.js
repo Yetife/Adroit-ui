@@ -333,6 +333,20 @@ export const customerCentricApi = createApi({
             }),
             providesTags: ["modifyTransfer"]
         }),
+        getLoanRepaymentPlan: builder.query({
+            query: (id) => ({
+                url: `/CustomerCentric/GetRepaymentPlanByCusId/${id}`,
+            }),
+            providesTags: ["manualRepayment"]
+        }),
+        manualRepayment: builder.mutation({
+            query: ({body}) => ({
+                url: `/CustomerCentric/ManualRepayment`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["manualRepayment"]
+        }),
     })
 })
 
@@ -362,6 +376,8 @@ export const {
     useGetLoanBiddingByIdQuery,
     useGetAllLoanRepaymentQuery,
     useGetLoanRepaymentByIdQuery,
+    useGetLoanRepaymentPlanQuery,
     useGetAllEscrowQuery,
-    useModifyEscrowMutation
+    useModifyEscrowMutation,
+    useManualRepaymentMutation,
 } = customerCentricApi

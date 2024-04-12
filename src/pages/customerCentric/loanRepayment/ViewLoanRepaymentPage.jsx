@@ -4,7 +4,6 @@ import Layout from "../../Layout.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {TableHeader} from "../fixedDeposit/ViewFixedDepositPage.jsx";
 import dayjs from "dayjs";
-import LoanRepaymentModal from "../../../components/customerCentric/loanRepayment/LoanRepaymentModal.jsx";
 import {
     useGetLoanRepaymentByIdQuery
 } from "../../../store/features/customerCentric/api.js";
@@ -17,7 +16,14 @@ const ViewLoanRepaymentPage = () => {
     const queryParams = new URLSearchParams(location.search);
     const custId = queryParams.get("id");
     const [id, setId] = useState(null)
+    const [loanId, setLoanId] = useState(null)
     const {data, isFetching, error} =  useGetLoanRepaymentByIdQuery(custId)
+
+    const handleOpen = (id, loanId) =>{
+        setId(id)
+        setLoanId(loanId)
+        setOpen(true)
+    }
 
     const details = {
         name: "Adekunle Adebona Samuel",
@@ -131,7 +137,7 @@ const ViewLoanRepaymentPage = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(item.repaymentAmount)}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(item.loanAmount)}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
@@ -143,34 +149,34 @@ const ViewLoanRepaymentPage = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.debit}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.isBankDebit.toString()}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.startDate}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.startDate).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.endDate}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.endDate).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.endDate}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.newRepaymentAmount).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.endDate}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.newReapaymentDate).format("YYYY/MM/DD")}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.repaymentDate).format("YYYY/MM/DD")}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.data?.cusDetail?.transactionDate).format("YYYY/MM/DD")}</span>
                                             </td>
                                             {/*<td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">*/}
-                                            {/*    <span onClick={() => setOpen(true)}*/}
+                                            {/*    <span onClick={() => handleOpen(item.loanRepaymentId, item.loanApplicationId)}*/}
                                             {/*          className={`text-[16px] leading-5 font-[inter] truncate ${item.status === "Failed" || item.status === "Overdue" ? 'text-[#007BEC] cursor-pointer' : 'text-[#4A5D58] italic font-[300]'}  font-medium`}>{item.status === "Failed" || item.status === "Overdue"  ? "View" : "No action"}</span>*/}
-                                            {/*</td> */}
+                                            {/*</td>*/}
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span onClick={() => setOpen(true)} className="text-[16px] leading-5 font-[inter] truncate">View</span>
+                                                <span onClick={() => handleOpen(item.loanRepaymentId, item.loanApplicationId)} className="text-[16px] leading-5 font-[inter] truncate">View</span>
                                             </td>
                                         </tr>
                                     ))
@@ -181,7 +187,7 @@ const ViewLoanRepaymentPage = () => {
                     </div>
                 </div>
             </div>
-            <RepaymentScheduleModal open={open} setOpen={setOpen}/>
+            <RepaymentScheduleModal open={open} setOpen={setOpen} id={id} loanId={loanId}/>
         </Layout>
     )
 };

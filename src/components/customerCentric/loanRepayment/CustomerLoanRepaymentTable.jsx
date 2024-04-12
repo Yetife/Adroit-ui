@@ -73,7 +73,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Last Name', 'Date of birth', 'Status', 'Actions' ]
+const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Last Name', 'Date of birth', 'Phone Number', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const router = useNavigate()
@@ -98,17 +98,17 @@ export function TableData({data, no}) {
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dob}</span>
             </td>
-            {/*<td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">*/}
-            {/*    <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>*/}
-            {/*</td>*/}
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerCentricStatus}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.phoneNumber}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.statusname}</span>
             </td>
 
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
                  <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/customerCentric/loanRepayment/customerDetails?id=${data.id}`)}>View
+                     onClick={() => router(`/customerCentric/loanRepayment/customerDetails?id=${data.customerId}`)}>View
                  </span>
             </td>
         </tr>
