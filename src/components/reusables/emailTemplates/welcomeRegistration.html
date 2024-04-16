@@ -48,17 +48,23 @@
             margin-left: 10px
         }
         .icon{
-            width: 100px;
+            width: 80px;
         }
         .service{
             display: flex;
             justify-content: center;
             gap: 10px;
         }
+        #mainDiv{
+            padding: 30px 10px 20px 20px;
+        }
         @media (min-width: 769px) {
             #responsiveDiv {
                 width: 100vw;
                 margin: 30px auto;
+            }
+            #mainDiv{
+                padding: 30px 20px 20px 40px;
             }
             #welcome {
                 display: flex;
@@ -76,7 +82,7 @@
             }
             table {
                 width: 100%;
-                max-width: 530px;
+                max-width: 500px;
             }
             .icon{
                 width: 130px;
@@ -126,16 +132,14 @@
                         width="100%"
                 >
                     <tr>
-                        <td
-
-                                style="padding: 45px 20px 20px 40px; color: #344054"
+                        <td id="mainDiv" style="color: #344054"
                         >
                             <div style="display: flex; gap: 24px; justify-content: center">
                                 <div>
                                     <p style="padding-bottom: 24px; margin: 0; font-size: 14px; font-weight: 500;  line-height: 20px">
                                         Hi {{user_name}},
                                     </p>
-                                    <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Congratulations on taking the first step towards financial empowerment by creating your account with CreditWave Finance Limited Mobile App! We are thrilled to have you on board.</p>
+                                    <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Congratulations on taking the first step towards financial empowerment by creating your account with CreditWave Finance Limited! We are thrilled to have you on board.</p>
                                 </div>
                                 <img
                                         id="phone"
@@ -154,43 +158,53 @@
                         border="0"
                         cellpadding="0"
                         cellspacing="0"
-                        style="border-collapse: collapse; margin-top: 50px; margin-bottom: 50px;"
+                        style="border-collapse: collapse; margin-top: 50px; margin-bottom: 40px;"
                         width="100%"
                 >
                     <tr>
                         <td align="center">
-                            <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">As a valued member, here are some exciting features awaiting you on our app:</p>
+                            <p style="padding-bottom: 20px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px; color: #343434;">As a valued member, here are some exciting features awaiting you on our app:</p>
                             <div>
                                 <div class="service">
                                     <div>
                                         <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 700; line-height: 20px; color: #00C795;">Loan Offers:</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 700; line-height: 20px">Explore personalised loan offers tailored to your financial needs and goals.</p>
+                                        <p style="padding-bottom: 20px; margin: 0; font-size: 12px; font-weight: 500; line-height: 20px; color: #343434;">Explore personalised loan offers tailored to your financial needs and goals.</p>
                                     </div>
                                     <div>
                                         <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 700; line-height: 20px; color: #00C795;">Loan Top-up:</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 700; line-height: 20px">Easily top up your existing loans to manage unexpected expenses or seize new opportunities.</p>
+                                        <p style="padding-bottom: 20px; margin: 0; font-size: 12px; font-weight: 500; line-height: 20px; color: #343434;">Easily top up your existing loans to manage unexpected expenses or seize new opportunities.</p>
                                     </div>
                                 </div>
                                 <div class="service">
                                     <div>
                                         <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 700; line-height: 20px; color: #00C795;">Escrow Payments:</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 700; line-height: 20px">
+                                        <p style="padding-bottom: 20px; margin: 0; font-size: 12px; font-weight: 500; line-height: 20px; color: #343434;">
                                             Ensure secure and transparent transactions with our escrow payment feature, providing peace of mind for both buyers and sellers.</p>
                                     </div>
                                     <div>
                                         <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 700; line-height: 20px; color: #00C795;">Peer-to-Peer Loan: </p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 700; line-height: 20px">Connect with other users to lend or borrow funds directly through our secure peer-to-peer lending platform.</p>
+                                        <p style="padding-bottom: 20px; margin: 0; font-size: 12px; font-weight: 500; line-height: 20px; color: #343434;">Connect with other users to lend or borrow funds directly through our secure peer-to-peer lending platform.</p>
                                     </div>
                                 </div>
                                 <div class="service">
                                     <div>
                                         <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 700; line-height: 20px; color: #00C795;">Spend and Save:</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 700; line-height: 20px">Effortlessly track your spending patterns and set savings goals to achieve financial stability.</p>
+                                        <p style="padding-bottom: 20px; margin: 0; font-size: 12px; font-weight: 500; line-height: 20px; color: #343434;">Effortlessly track your spending patterns and set savings goals to achieve financial stability.</p>
                                     </div>
                                     <div>
                                         <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 700; line-height: 20px; color: #00C795;">Fixed Deposit:</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 700; line-height: 20px">Maximise your savings with our fixed deposit feature, offering competitive interest rates and flexible terms.</p>
+                                        <p style="padding-bottom: 20px; margin: 0; font-size: 12px; font-weight: 500; line-height: 20px; color: #343434;">Maximise your savings with our fixed deposit feature, offering competitive interest rates and flexible terms.</p>
                                     </div>
+                                </div>
+
+                                <div style="border-bottom: 1px solid #C7C7C7; border-top: 1px solid #C7C7C7; margin-top: 40px; padding: 20px 0;">
+                                    <p style="margin: 0; font-size: 12px; font-weight: 500; line-height: 20px; color: #343434;">We're excited to see you leverage these features to achieve your financial goals and dreams. Should you have any questions or
+                                        require assistance, our dedicated support team is here to help every step of the way.</p>
+                                </div>
+                                <div style="margin-top: 30px">
+                                    <p style="padding-bottom: 10px; margin: 0; font-size: 12px; font-weight: 500; line-height: 20px; color: #343434;">Once again, congratulations on joining the CreditWave Finance Limited family.
+                                        Here's to a prosperous financial journey ahead!</p>
+
                                 </div>
                             </div>
                         </td>
@@ -215,7 +229,7 @@
                         <td align="center"
                             style="padding: 20px 50px 0 40px; font-size: 14px; line-height: 20px; color: #FFF2C7;"
                         >
-                            <a href="https://twitter.com/enum_africa" target="_blank">
+                            <a href="" target="_blank">
                                 <img
                                         class="icon"
                                         alt="twitterPage"
@@ -223,7 +237,7 @@
                                         src="../../../../src/assets/emailImg/appleIcon.png "
                                 /></a>
 
-                            <a href="https://facebook.com/enum_africa" target="_blank">
+                            <a href="" target="_blank">
                                 <img
                                         class="icon"
                                         alt="facebookPage"

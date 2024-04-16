@@ -20,26 +20,6 @@
             margin-top: 20px;
             height: 60px;
         }
-        #welcome {
-            display: flex;
-            justify-content: center;
-            padding-top: 20px;
-            font-size: 24px;
-        }
-        #emoji{
-            height: 50px;
-            padding: 10px 15px
-        }
-        #responsiveDiv {
-            margin-top: 20px;
-            height: 100px;
-            background: #007970;
-            flex-shrink: 0;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 0;
-            /*border-radius: 15px; !* Adjust border radius *!*/
-        }
         #table-border{
             margin-left: 30px;
             margin-right: 30px;
@@ -47,16 +27,10 @@
         .icon{
             width: 80px;
         }
-        #mainDiv{
-            padding: 30px 10px 20px 20px;
-        }
         @media (min-width: 769px) {
             #responsiveDiv {
-                width: 100vw; /* Set the width for larger screens */
-                margin: 30px auto; /* Center the element */
-            }
-            #mainDiv{
-                padding: 30px 20px 20px 40px;
+                width: 100vw;
+                margin: 30px auto;
             }
             #welcome {
                 display: flex;
@@ -73,9 +47,8 @@
                 margin-right: auto;
             }
             table {
-                width: 100%; /* Make the table full width */
-                max-width: 500px; /* Limit the maximum width */
-                /*margin: 0 auto; !* Center the table *!*/
+                width: 100%;
+                max-width: 450px;
             }
             .icon{
                 width: 130px;
@@ -86,12 +59,6 @@
 <body>
 <div id="logo">
     <img src="../../../../src/assets/emailImg/logo.png" alt="logo"/>
-</div>
-<div id="responsiveDiv">
-    <div id="welcome">
-        <p style="color: #FFFFFF; font-weight: 400; font-family: Inter">Welcome to <span style="color: #00C796; font-weight: 700;">Creditwave</span></p>
-        <img id="emoji" src="../../../../src/assets/emailImg/emoji.png" alt="emoji"/>
-    </div>
 </div>
 <div>
     <table
@@ -112,40 +79,53 @@
                 <table
                         cellpadding="0"
                         cellspacing="0"
-                        style="border: 1px solid #C7C7C7;  border-radius: 14px; padding: 20px; margin-top: 40px; margin-bottom: 20px;"
+                        style="border: 1px solid #C7C7C7;  border-radius: 14px; margin-top: 40px; margin-bottom: 20px;"
                         width="100%"
                 >
                     <tr>
-                        <td id="mainDiv" style="color: #344054">
-                            <p style="padding-bottom: 24px; margin: 0; font-size: 14px; font-weight: 500;  line-height: 20px">
-                                Hi {{user_name}},
-                            </p>
-                            <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Thank you for creating your account on CreditWave Finance Limited.</p>
-                            <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Please confirm your personal email using the OTP below to continue your signup process:</p>
-                            <div style="display: flex; gap: 24px; justify-content: center">
-                                <a href="{{ accept_url }}" style="text-decoration: none;color: white; margin-top: 30px;">
-                                    <button
-                                            style="border: none;
+                        <td>
+                            <div style="border-bottom: 1px solid #C7C7C7; text-align: center; text-transform: uppercase;">
+                                <p style="padding: 15px; margin: 0; font-size: 15px; font-weight: 700; line-height: 20px; color: #007970;">Your loan request has been APPROVED</p>
+                            </div>
+                            <div style="padding: 30px 20px 20px 40px; color: #344054">
+                                <p style="padding-bottom: 24px; margin: 0; font-size: 14px; font-weight: 500;  line-height: 20px">
+                                    Hi {{user_name}},
+                                </p>
+                                <p style="padding-bottom: 40px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Your loan request of NGN 30,000 has been approved.
+                                    Please login to your account to access your funds.</p>
+                                <div style="text-align: center">
+                                    <p style="padding-bottom: 10px; margin: 0; font-size: 15px; font-weight: 400;  line-height: 30px">
+                                        Loan Amount Approved
+                                    </p>
+                                    <p style="padding-bottom: 10px; margin: 0; font-size: 42px; font-weight: 700;  line-height: 30px; color: #007970;">
+                                        &#8358; 36,000.00
+                                    </p>
+                                    <a href="{{ accept_url }}" style="text-decoration: none;color: white; ">
+                                        <button
+                                                style="border: none;
                                                   color: white;
                                                   padding: 10px 18px;
                                                   text-align: center;
                                                   text-decoration: none;
-                                                  font-size: 16px;
-                                                  font-family: 'DM Sans';
-                                                  font-weight: 700;
+                                                  font-size: 12px;
+                                                  font-weight: 600;
                                                   background-color: #00C796;
                                                   border-radius: 4px;
-                                                  cursor: pointer;"
-                                    >
-                                        <span style="white-space: nowrap">Verify Email Address</span>
-                                    </button>
-                                </a>
+                                                  cursor: pointer;
+                                                  margin-top: 30px;"
+
+                                        >
+                                            <span style="white-space: nowrap">Login into your account</span>
+                                        </button>
+                                    </a>
+                                </div>
+                                <p style="padding-top: 40px; padding-bottom: 24px; margin: 0; font-size: 14px; font-weight: 500;  line-height: 20px">
+                                    Cheers,
+                                    <br>
+                                    From Creditwave
+                                </p>
                             </div>
-                            <p style="padding-top: 40px; padding-bottom: 24px; margin: 0; font-size: 14px; font-weight: 500;  line-height: 20px">
-                                With Love,
-                                <br>
-                                From Creditwave
-                            </p>
+
                         </td>
                     </tr>
                 </table>
@@ -171,7 +151,7 @@
                                         class="icon"
                                         alt="twitterPage"
                                         border="0"
-                                        src="../../../../src/assets/emailImg/appleIcon.png "
+                                        src="../../../../src/assets/emailImg/appleIcon.png"
                                 /></a>
 
                             <a href="" target="_blank">
