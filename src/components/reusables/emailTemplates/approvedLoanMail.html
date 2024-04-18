@@ -21,30 +21,42 @@
             height: 60px;
         }
         #table-border{
-            margin-left: 30px;
-            margin-right: 30px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .icon{
             width: 80px;
         }
+        .repayment-sch{
+            padding: 10px 30px;
+            border: 1px solid #dddddd;
+            text-align: left
+        }
+        .repayment{
+            padding: 1px 40px;
+            border: 1px solid #dddddd;
+            text-align: left
+        }
+        #mainDiv{
+            padding: 30px 10px 20px 20px;
+        }
         @media (min-width: 769px) {
-            #responsiveDiv {
-                width: 100vw;
-                margin: 30px auto;
-            }
-            #welcome {
-                display: flex;
-                padding-top: 0px;
-                justify-content: center;
-                font-size: 30px;
-            }
-            #emoji{
-                height: 60px;
-                padding: 20px 30px
-            }
             #table-border{
                 margin-left: auto;
                 margin-right: auto;
+            }
+            #mainDiv{
+                padding: 30px 20px 20px 40px;
+            }
+            .repayment-sch{
+                padding: 10px 30px;
+                border: 1px solid #dddddd;
+                text-align: left;
+            }
+            .repayment{
+                padding: 10px 50px;
+                border: 1px solid #dddddd;
+                text-align: left
             }
             table {
                 width: 100%;
@@ -85,9 +97,9 @@
                     <tr>
                         <td>
                             <div style="border-bottom: 1px solid #C7C7C7; text-align: center; text-transform: uppercase;">
-                                <p style="padding: 15px; margin: 0; font-size: 15px; font-weight: 700; line-height: 20px; color: #007970;">Your loan request has been APPROVED</p>
+                                <p style="padding: 15px; margin: 0; font-size: 15px; font-weight: 700; line-height: 20px; color: #007970;">loan APPROVED</p>
                             </div>
-                            <div style="padding: 30px 20px 20px 40px; color: #344054">
+                            <div id="mainDiv" style="color: #344054">
                                 <p style="padding-bottom: 24px; margin: 0; font-size: 14px; font-weight: 500;  line-height: 20px">
                                     Hi {{user_name}},
                                 </p>
@@ -100,6 +112,30 @@
                                     <p style="padding-bottom: 10px; margin: 0; font-size: 42px; font-weight: 700;  line-height: 30px; color: #007970;">
                                         &#8358; 36,000.00
                                     </p>
+                                    <div style="margin-top: 20px; border-radius: 5px;">
+                                        <table
+                                                border="0"
+                                                cellpadding="0"
+                                                cellspacing="0">
+                                            <tr>
+                                                <th class="repayment-sch" style="font-size: 13px; font-weight: 600;">Repayment Date</th>
+                                                <th class="repayment" style="font-size: 13px; font-weight: 600;">Amount</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="repayment-sch" style="font-size: 11px; font-weight: 500;">Aug 2, 2023</td>
+                                                <td class="repayment" style="font-size: 11px; font-weight: 500;">N50,000.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="repayment-sch" style="font-size: 11px; font-weight: 500;">Aug 2, 2023</td>
+                                                <td class="repayment" style="font-size: 11px; font-weight: 500;">N50,000.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="repayment-sch" style="font-size: 11px; font-weight: 500;">Aug 2, 2023</td>
+                                                <td class="repayment" style="font-size: 11px; font-weight: 500;">N50,000.00</td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
                                     <a href="{{ accept_url }}" style="text-decoration: none;color: white; ">
                                         <button
                                                 style="border: none;
