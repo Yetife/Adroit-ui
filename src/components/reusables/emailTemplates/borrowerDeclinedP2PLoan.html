@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <title></title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <style>
+        body {
+            margin: 0;
+            background-color: #ffffff;
+            font-family: 'Inter';
+        }
+        #logo {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            height: 60px;
+        }
+        #table-border{
+            margin-left: 30px;
+            margin-right: 30px;
+        }
+        .icon{
+            width: 80px;
+        }
+        #amount{
+            font-size: 32px;
+        }
+        #mainDiv{
+            padding: 30px 10px 20px 20px;
+        }
+        @media (min-width: 769px) {
+            #table-border{
+                margin-left: auto;
+                margin-right: auto;
+            }
+            #mainDiv{
+                padding: 30px 20px 20px 40px;
+            }
+            table {
+                width: 100%; /* Make the table full width */
+                max-width: 450px; /* Limit the maximum width */
+                /*margin: 0 auto; !* Center the table *!*/
+            }
+            #amount{
+                font-size: 42px;
+            }
+            .icon{
+                width: 130px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="logo">
+    <img src="../../../../src/assets/emailImg/logo.png" alt="logo"/>
+</div>
+<div>
+    <table
+            align="center"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            role="presentation"
+            id="table-border"
+            style="border-collapse:collapse;"
+    >
+
+        <tr>
+            <td
+                    align="center"
+                    style=""
+            >
+                <table
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="border: 1px solid #C7C7C7;  border-radius: 14px; margin-top: 40px; margin-bottom: 20px;"
+                        width="100%"
+                >
+                    <tr>
+                        <td>
+                            <div style="border-bottom: 1px solid #C7C7C7; text-align: center; text-transform: uppercase;">
+                                <p style="padding: 15px; margin: 0; font-size: 15px; font-weight: 700; line-height: 20px; color: #007970;">P2P LOAN HAS BEEN DECLINED</p>
+                            </div>
+                            <div id="mainDiv" style="color: #344054">
+                                <p style="padding-bottom: 24px; margin: 0; font-size: 14px; font-weight: 500;  line-height: 20px">
+                                    Hi {{user_name}},
+                                </p>
+                                <p style="padding-bottom: 30px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">We would like to inform you that you have declined a Peer-to-Peer (P2P) loan request from Franka.</p>
+                                <p style="margin: 0; font-size: 14px; font-weight: 400; line-height: 20px">Here are the details of your transaction:</p>
+                                <div style="display: flex; align-items: center; gap: 30px;">
+                                    <ul>
+                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Borrower’s Name:</li>
+                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Wallet ID:</li>
+                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Loan Amount:</li>
+                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Interest Rate:</li>
+                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Loan Tenor:</li>
+                                    </ul>
+                                    <div>
+                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Akinlami Franka</p>
+                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">1923884928</p>
+                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">&#8358;300,000.00</p>
+                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">2%</p>
+                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">5 months</p>
+                                    </div>
+                                </div>
+                                <p style="padding-bottom: 4px; margin: 0; font-size: 14px; font-weight: 600; line-height: 20px">Reason for decline:</p>
+                                <p style="padding-bottom: 40px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">The interest rate is too low.</p>
+                                <div style="text-align: center">
+                                    <a href="" style="text-decoration: none;color: white; ">
+                                        <button
+                                                style="border: none;
+                                                  color: white;
+                                                  padding: 10px 18px;
+                                                  text-align: center;
+                                                  text-decoration: none;
+                                                  font-size: 12px;
+                                                  font-weight: 600;
+                                                  background-color: #00C796;
+                                                  border-radius: 4px;
+                                                  cursor: pointer;
+                                                  margin-top: 10px;"
+
+                                        >
+                                            <span style="white-space: nowrap">Login into your account</span>
+                                        </button>
+                                    </a>
+                                </div>
+                                <p style="padding-top: 40px; padding-bottom: 24px; margin: 0; font-size: 14px; font-weight: 500;  line-height: 20px">
+                                    Thanks,
+                                    <br>
+                                    From Creditwave
+                                </p>
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td
+                    align="center"
+            >
+                <table
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="border-collapse: collapse; margin-bottom: 50px;"
+                        width="100%"
+                >
+                    <tr>
+                        <td align="center"
+                            style="padding: 20px 50px 0 40px; font-size: 14px; line-height: 20px; color: #FFF2C7;"
+                        >
+                            <a href="" target="_blank">
+                                <img
+                                        class="icon"
+                                        alt="twitterPage"
+                                        border="0"
+                                        src="../../../../src/assets/emailImg/appleIcon.png "
+                                /></a>
+
+                            <a href="" target="_blank">
+                                <img
+                                        class="icon"
+                                        alt="facebookPage"
+                                        border="0"
+                                        src="../../../../src/assets/emailImg/googleIcon.png"
+                                        style="margin-left: 10px"
+                                /></a>
+
+                            <div style="padding-top: 20px; padding-bottom: 20px">
+                                <p style="color: #000000; margin: 0; font-size: 10px; font-weight: 500;  line-height: 15px">
+                                    Phone: 0912 002 6498 (Mon-Fri from 8am-5pm)
+                                </p>
+                                <p style="color: #000000; margin: 0; font-size: 10px; font-weight: 500;  line-height: 15px">
+                                    Email: help@creditwave.ng.com
+                                </p>
+                                <p style="color: #000000; margin: 0; font-size: 10px; font-weight: 500;  line-height: 15px">
+                                    CreditWave Finance Limited,© 2021 - 2024
+                                </p>
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
