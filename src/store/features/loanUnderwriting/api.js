@@ -12,6 +12,12 @@ export const loanUnderwritingApi = createApi({
             }),
             providesTags: []
         }),
+        getDisbursementCustomerDetails: builder.query({
+            query: (id) => ({
+                url: `/Disbursement/getbyCusId/${id}`,
+            }),
+            providesTags: []
+        }),
         addComment: builder.mutation({
             query: ({body}) => ({
                 url: `/LoanApplication/Customer/addComment`,
@@ -164,6 +170,7 @@ export const {
     useGetAllDisbursementRestructureQuery,
     useGetAllDisbursementTopUpQuery,
     useGetReviewCustomerDetailsQuery,
+    useGetDisbursementCustomerDetailsQuery,
     useStopDisbursementMutation,
     // useApproveApplicationMutation,
     useDisburseApplicationMutation,

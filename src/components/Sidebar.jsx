@@ -39,7 +39,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 {
                     applicationPageName: 'Customer',
                     href: '/loanApp/customer',
-                    route: '/customers',
+                    route: '/customer',
                 },
                 {
                     applicationPageName: 'Declined',

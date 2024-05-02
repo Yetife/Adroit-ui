@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {
-    useDisburseApplicationMutation,
+    useDisburseApplicationMutation, useGetDisbursementCustomerDetailsQuery,
     useGetReviewCustomerDetailsQuery, useStopDisbursementMutation
 } from "../../store/features/loanUnderwriting/api.js";
 import {useDispatch} from "react-redux";
@@ -50,7 +50,8 @@ const ViewLoanDisbursementPage = () => {
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
     const type = queryParams.get('type');
-    const {data, isFetching, error} = useGetReviewCustomerDetailsQuery(custId)
+    const category = queryParams.get('category');
+    const {data, isFetching, error} = useGetDisbursementCustomerDetailsQuery(custId)
     const status = queryParams.get("status");
     const [approve] = useApproveApplicationMutation()
     const [adjust] = useAdjustApplicationMutation()
@@ -133,7 +134,8 @@ const ViewLoanDisbursementPage = () => {
         stopDisburse({
             body: {
                 loanApplicationId: appId,
-                loanCategory: type === "regular" ? "Regular Loan" : type === "structure" ? "Loan Restructure" : "Loan topup"
+                // loanCategory: type === "regular" ? "Regular Loan" : type === "structure" ? "Loan Restructure" : "Loan topup"
+                loanCategory: category === "Regular Loan" ? "regular loan" : category === "Loan Restructure" ? "Loan Restructure" : "Loan Topup"
             }
         }).then(res => {
             setOpenDisburse(true)

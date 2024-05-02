@@ -452,7 +452,7 @@ export const loanApplicationApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["updateLoanRestructure", "returnApplication",]
+            providesTags: ["updateLoanRestructure", "returnApplication", "completeReview"]
         }),
         getLoanRestructureDetail: builder.query({
             query: (id) => ({
@@ -488,7 +488,7 @@ export const loanApplicationApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["updateLoanTopUp", "returnApplication",]
+            providesTags: ["updateLoanTopUp", "returnApplication","completeReview"]
         }),
         getLoanTopUpDetail: builder.query({
             query: (id) => ({
