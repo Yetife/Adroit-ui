@@ -53,7 +53,7 @@ export const loanApplicationApi = createApi({
         }),
         getCustomerDetails: builder.query({
             query: (id) => ({
-                url: `/LoanApplication/Customer/getbyCusId/${id}`,
+                url: `/LoanApplication/Customer/getbyLoanId/${id}`,
             }),
             providesTags: []
         }),

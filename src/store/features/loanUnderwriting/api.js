@@ -8,13 +8,13 @@ export const loanUnderwritingApi = createApi({
     endpoints: (builder) => ({
         getReviewCustomerDetails: builder.query({
             query: (id) => ({
-                url: `/LoanUnderwriting/Review/getbyCusId/${id}`,
+                url: `/LoanUnderwriting/Review/getbyLoanId/${id}`,
             }),
             providesTags: []
         }),
         getDisbursementCustomerDetails: builder.query({
             query: (id) => ({
-                url: `/Disbursement/getbyCusId/${id}`,
+                url: `/Disbursement/getbyLoanId/${id}`,
             }),
             providesTags: []
         }),
@@ -55,7 +55,7 @@ export const loanUnderwritingApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["approveApplication"]
+            providesTags: ["approveApplication", "disburseApplication"]
         }),
         disburseApplication: builder.mutation({
             query: ({body}) => ({

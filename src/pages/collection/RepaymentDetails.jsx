@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {useCompleteReviewMutation, useGetCustomerDetailsQuery} from "../../store/features/loanApplication/api.js";
+import {useCompleteReviewMutation} from "../../store/features/loanApplication/api.js";
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import Layout from "../Layout.jsx";
 import {CircularProgress, ThemeProvider} from "@mui/material";
@@ -20,7 +20,6 @@ const RepaymentDetails = () => {
     const queryParams = new URLSearchParams(location.search);
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
-    // const {data, isFetching, error} = useGetCustomerDetailsQuery(custId)
     const status = queryParams.get("status");
     const [openComplete, setOpenComplete] = useState(false)
     const [completeReview] = useCompleteReviewMutation()

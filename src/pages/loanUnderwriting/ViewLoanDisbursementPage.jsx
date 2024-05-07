@@ -1,7 +1,6 @@
 import {useState} from "react";
 import {
-    useDisburseApplicationMutation, useGetDisbursementCustomerDetailsQuery,
-    useGetReviewCustomerDetailsQuery, useStopDisbursementMutation
+    useDisburseApplicationMutation, useGetDisbursementCustomerDetailsQuery, useStopDisbursementMutation
 } from "../../store/features/loanUnderwriting/api.js";
 import {useDispatch} from "react-redux";
 import LoanInformation from "../LoanApplication/LoanInformation.jsx";
@@ -51,7 +50,7 @@ const ViewLoanDisbursementPage = () => {
     const appId = queryParams.get("aid");
     const type = queryParams.get('type');
     const category = queryParams.get('category');
-    const {data, isFetching, error} = useGetDisbursementCustomerDetailsQuery(custId)
+    const {data, isFetching, error} = useGetDisbursementCustomerDetailsQuery(appId)
     const status = queryParams.get("status");
     const [approve] = useApproveApplicationMutation()
     const [adjust] = useAdjustApplicationMutation()

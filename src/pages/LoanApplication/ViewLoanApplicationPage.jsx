@@ -21,7 +21,7 @@ const ViewLoanApplicationPage = () => {
     const queryParams = new URLSearchParams(location.search);
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
-    const {data, isFetching, error} = useGetCustomerDetailsQuery(custId)
+    const {data, isFetching, error} = useGetCustomerDetailsQuery(appId)
     const status = queryParams.get("status");
     const [openComplete, setOpenComplete] = useState(false)
     const [completeReview] = useCompleteReviewMutation()

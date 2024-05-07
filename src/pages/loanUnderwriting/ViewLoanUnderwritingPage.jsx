@@ -42,7 +42,7 @@ const ViewLoanUnderwritingPage = () => {
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
     const type = queryParams.get('type');
-    const {data, isFetching, error} = useGetReviewCustomerDetailsQuery(custId)
+    const {data, isFetching, error} = useGetReviewCustomerDetailsQuery(appId)
     const [inputs, setInputs] = useState({
         amount: "",
         tenor: "",
@@ -307,7 +307,7 @@ const ViewLoanUnderwritingPage = () => {
             <AddCommentModal open={openComment} setOpen={setOpenComment} comment={comment} setComment={setComment}/>
             <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs} handleSubmit={handleAdjust}/>
             <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"} handleRoute={()=>router('/loanUnderwriting/disbursement')}/>
-            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/approval')}/>
+            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/review')}/>
             <DecisionModal open={openDecision} setOpen={setOpenDecision}/>
             <ReassignModal open={openReassign} setOpen={setOpenReassign}/>
         </Layout>

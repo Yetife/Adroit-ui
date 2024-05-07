@@ -44,7 +44,7 @@ const ViewApprovalLoanPage = () => {
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
     const type = queryParams.get('type');
-    const {data, isFetching, error} = useGetReviewCustomerDetailsQuery(custId)
+    const {data, isFetching, error} = useGetReviewCustomerDetailsQuery(appId)
     const status = queryParams.get("status");
     const [approve] = useApproveApplicationMutation()
     const [adjust] = useAdjustApplicationMutation()
@@ -157,7 +157,7 @@ const ViewApprovalLoanPage = () => {
             }
         }).then(res => {
             if (res.data.status === true){
-                router('/loanUnderwriting/disbursement')
+                router('/loanUnderwriting/approval')
             }
         }).catch(err =>{
             setOpenComplete(false)
