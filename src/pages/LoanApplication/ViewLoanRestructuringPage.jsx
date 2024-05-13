@@ -5,7 +5,7 @@ import {Button, Text} from "@chakra-ui/react";
 import dayjs from "dayjs";
 import {
     useAdjustApplicationMutation, useApproveApplicationMutation,
-    useCompleteReviewMutation, useReturnApplicationMutation,
+    useCompleteReviewMutation, useDisburseApplicationMutation, useReturnApplicationMutation,
 } from "../../store/features/loanApplication/api.js";
 import {formatAmount, formatRepayment} from "../../components/reusables/formatAmount.js";
 import {CircularProgress, ThemeProvider} from "@mui/material";
@@ -13,7 +13,7 @@ import themes from "../../components/reusables/theme.jsx";
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
 import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoanModal.jsx";
 import {
-    useDisburseApplicationMutation, useStopDisbursementMutation
+    useStopDisbursementMutation
 } from "../../store/features/loanUnderwriting/api.js";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch, useSelector} from "react-redux";

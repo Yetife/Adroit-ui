@@ -6,7 +6,10 @@ import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
 import {
-    useAdjustApplicationMutation, useApproveApplicationMutation, useReturnApplicationMutation,
+    useAdjustApplicationMutation,
+    useApproveApplicationMutation,
+    useDisburseApplicationMutation,
+    useReturnApplicationMutation,
 } from "../../store/features/loanApplication/api.js";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
@@ -22,7 +25,7 @@ import AdjustLoanModal from '../../components/loanUnderwritting/review/AdjustLoa
 import StopDisbursementModal from '../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx';
 import DecisionModal from '../../components/loanUnderwritting/approval/DecisionModal.jsx';
 import ReassignModal from '../../components/loanUnderwritting/loanReassignment/ReassignModal.jsx';
-import {useDisburseApplicationMutation, useGetReviewCustomerDetailsQuery, useStopDisbursementMutation } from '../../store/features/loanUnderwriting/api.js';
+import {useGetReviewCustomerDetailsQuery, useStopDisbursementMutation } from '../../store/features/loanUnderwriting/api.js';
 import { useDispatch } from 'react-redux';
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 
@@ -156,6 +159,7 @@ const ViewApprovalLoanPage = () => {
                 loanCategory: "regularloan"
             }
         }).then(res => {
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             if (res.data.status === true){
                 router('/loanUnderwriting/approval')
             }

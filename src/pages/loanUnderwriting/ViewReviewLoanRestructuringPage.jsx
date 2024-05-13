@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
-import {useAdjustApplicationMutation, useApproveApplicationMutation,
-    useCompleteReviewMutation, useReturnApplicationMutation
+import {
+    useAdjustApplicationMutation, useApproveApplicationMutation,
+    useCompleteReviewMutation, useDisburseApplicationMutation, useReturnApplicationMutation
 } from "../../store/features/loanApplication/api.js";
 import {
-    useDisburseApplicationMutation,
     useStopDisbursementMutation
 } from "../../store/features/loanUnderwriting/api.js";
 import {useDispatch, useSelector} from "react-redux";

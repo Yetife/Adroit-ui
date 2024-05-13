@@ -176,7 +176,7 @@ const ViewLoanRepaymentPage = () => {
                                             {/*          className={`text-[16px] leading-5 font-[inter] truncate ${item.status === "Failed" || item.status === "Overdue" ? 'text-[#007BEC] cursor-pointer' : 'text-[#4A5D58] italic font-[300]'}  font-medium`}>{item.status === "Failed" || item.status === "Overdue"  ? "View" : "No action"}</span>*/}
                                             {/*</td>*/}
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span onClick={() => handleOpen(item.loanRepaymentId, item.loanApplicationId)} className="text-[16px] leading-5 font-[inter] truncate">View</span>
+                                                <span onClick={() => handleOpen(item.loanRepaymentId, item.loanApplicationId)} className="text-[16px] leading-5 font-[inter] truncate cursor-pointer">View</span>
                                             </td>
                                         </tr>
                                     ))
@@ -187,7 +187,7 @@ const ViewLoanRepaymentPage = () => {
                     </div>
                 </div>
             </div>
-            <RepaymentScheduleModal open={open} setOpen={setOpen} id={id} loanId={loanId}/>
+            <RepaymentScheduleModal open={open} setOpen={setOpen} id={id} loanId={loanId} name={data?.data.fullName}/>
         </Layout>
     )
 };

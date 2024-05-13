@@ -16,7 +16,6 @@ import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoa
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
 import DecisionModal from "../../components/loanUnderwritting/approval/DecisionModal.jsx";
 import {
-    useDisburseApplicationMutation,
     useGetReviewCustomerDetailsQuery, useStopDisbursementMutation
 } from '../../store/features/loanUnderwriting/api.js';
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
@@ -26,7 +25,7 @@ import themes from "../../components/reusables/theme.jsx";
 import ReassignModal from '../../components/loanUnderwritting/loanReassignment/ReassignModal.jsx';
 import {
     useAdjustApplicationMutation,
-    useApproveApplicationMutation,
+    useApproveApplicationMutation, useDisburseApplicationMutation,
     useReturnApplicationMutation
 } from "../../store/features/loanApplication/api.js";
 
@@ -128,7 +127,9 @@ const ViewLoanUnderwritingPage = () => {
                 loanCategory: "Regular Loan"
             }
         }).then(res => {
-            setOpenComplete(true)
+            if (res.data.status === true){
+                setOpenComplete(true)
+            }
         }).catch(err =>{
             setOpenComplete(false)
         })

@@ -173,7 +173,7 @@ export const {
     useGetDisbursementCustomerDetailsQuery,
     useStopDisbursementMutation,
     // useApproveApplicationMutation,
-    useDisburseApplicationMutation,
+    // useDisburseApplicationMutation,
     useGetAdjustmentDetailsQuery,
     useManualDisbursementMutation,
 

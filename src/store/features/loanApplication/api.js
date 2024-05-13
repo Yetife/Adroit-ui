@@ -308,9 +308,16 @@ export const loanApplicationApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["approveApplication"]
+            providesTags: ["approveApplication", "disburseApplication"]
         }),
-
+        disburseApplication: builder.mutation({
+            query: ({body}) => ({
+                url: `/Approval/Disburse`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["disburseApplication"]
+        }),
         getAllApprovalRestructure: builder.query({
             query: ({size, page, applicationId, name, phone, email, channel, startDate, endDate }) => {
                 const queryParams = {
@@ -550,5 +557,7 @@ export const {
     useGetAllApprovalRestructureQuery,
     useGetAllApprovalTopUpQuery,
     useGetLoanRepaymentDetailQuery,
+    useDisburseApplicationMutation,
+
 
 } = loanApplicationApi

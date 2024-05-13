@@ -347,6 +347,14 @@ export const customerCentricApi = createApi({
             }),
             invalidatesTags: ["manualRepayment"]
         }),
+        manuallyRepay: builder.mutation({
+            query: ({body}) => ({
+                url: `/Disbursement/ManualDisbursement`,
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["manuallyRepay"]
+        }),
     })
 })
 
@@ -380,4 +388,5 @@ export const {
     useGetAllEscrowQuery,
     useModifyEscrowMutation,
     useManualRepaymentMutation,
+    useManuallyRepayMutation,
 } = customerCentricApi

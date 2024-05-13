@@ -1,6 +1,5 @@
 import {useState} from "react";
-import {
-    useDisburseApplicationMutation, useGetDisbursementCustomerDetailsQuery, useStopDisbursementMutation
+import {useGetDisbursementCustomerDetailsQuery, useStopDisbursementMutation
 } from "../../store/features/loanUnderwriting/api.js";
 import {useDispatch} from "react-redux";
 import LoanInformation from "../LoanApplication/LoanInformation.jsx";
@@ -25,7 +24,7 @@ import ReassignModal from "../../components/loanUnderwritting/loanReassignment/R
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {
     useAdjustApplicationMutation,
-    useApproveApplicationMutation,
+    useApproveApplicationMutation, useDisburseApplicationMutation,
     useReturnApplicationMutation
 } from "../../store/features/loanApplication/api.js";
 import ManualDisbursementModal from "../../components/loanUnderwritting/disbursement/ManualDisbursementModal.jsx";
