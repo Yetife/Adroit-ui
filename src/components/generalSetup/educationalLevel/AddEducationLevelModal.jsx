@@ -1,9 +1,11 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import {Checkbox} from "@mui/material";
 import {Close} from "@mui/icons-material";
+import {Button, Stack, Text} from "@chakra-ui/react";
+import {Link as ReactLink} from "react-router-dom";
 
 
-const AddEducationLevelModal = ({open, setOpen, checked, setChecked, level, setLevel, purpose, handleAdd}) => {
+const AddEducationLevelModal = ({open, setOpen, checked, setChecked, level, setLevel, purpose, handleAdd, loading, setLoading}) => {
     const handleChange = (event) => {
         setChecked(event.target.checked);
     };
@@ -48,17 +50,32 @@ const AddEducationLevelModal = ({open, setOpen, checked, setChecked, level, setL
                                      <Checkbox
                                          checked={checked}
                                          disabled={purpose === "view"}
-                                         sx={{'&.Mui-checked': {
+                                         sx={{
+                                             '&.Mui-checked': {
                                                  color: "#00C796",
-                                             },}}
+                                             },
+                                         }}
                                          onChange={handleChange}
-                                         inputProps={{ 'aria-label': 'controlled' }}
+                                         inputProps={{'aria-label': 'controlled'}}
                                      />
                                 </span>
                                 </div>
                                 <div className="flex space-x-3 float-right my-4">
-                                    <button className="bg-gray-300 rounded py-2 px-6 flex text-black mt-8" onClick={()=>setOpen(!open)}>Close</button>
-                                    {purpose!== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white mt-8" onClick={handleAdd}>Save</button>}
+                                    <button className="bg-gray-300 rounded py-2 px-6 flex text-black"
+                                            onClick={() => setOpen(!open)}>Close
+                                    </button>
+                                    {/*{purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white"*/}
+                                    {/*          onClick={handleAdd}>Save</button>}*/}
+                                    {purpose !== "view" &&
+                                        <Stack>
+                                            <Button variant="primary" bgColor="#00C795"
+                                                    p={{base: "5px 20px", md: "8px 20px"}} borderRadius="5px" size='md'
+                                                    as={ReactLink} isLoading={loading} isDisabled={true}
+                                                    colorScheme={"brand"} loadingText='Saving' onClick={handleAdd}>
+                                                <Text color="white">Save</Text>
+                                            </Button>
+                                        </Stack>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -67,7 +84,7 @@ const AddEducationLevelModal = ({open, setOpen, checked, setChecked, level, setL
                                 className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[20px] right-[40px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                                 aria-label="Close"
                             >
-                                <Close />
+                                <Close/>
                             </button>
                         </Dialog.Close>
                     </Dialog.Content>

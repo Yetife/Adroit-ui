@@ -75,6 +75,8 @@ export function TableData({data, no}) {
     const [editEducationalLevel] = useEditEducationalLevelMutation()
     const dispatch = useDispatch()
     const [id, setId] = useState(0)
+    const [loading, setLoading] = useState(false);
+
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
     const handleBlurDropdown = () => setShowDropdown(false)
@@ -105,6 +107,7 @@ export function TableData({data, no}) {
     }
 
     const handleEdit = ()=> {
+        setLoading(true)
         editEducationalLevel({
             body: {
                 name: level,
@@ -114,6 +117,7 @@ export function TableData({data, no}) {
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
+            setLoading(false)
             setLevel("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
@@ -145,7 +149,7 @@ export function TableData({data, no}) {
         </span>
             </td>
 
-            <AddEducationLevelModal open={open} setOpen={setOpen} level={level} setLevel={setLevel} checked={checked} setChecked={setChecked} purpose={purpose} handleAdd={handleEdit}/>
+            <AddEducationLevelModal open={open} setOpen={setOpen} level={level} setLevel={setLevel} checked={checked} setChecked={setChecked} loading={loading} setLoading={setLoading} purpose={purpose} handleAdd={handleEdit}/>
         </tr>
     )
 }

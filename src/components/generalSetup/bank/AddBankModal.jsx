@@ -1,8 +1,10 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import {Close} from "@mui/icons-material";
 import {Checkbox} from "@mui/material";
+import {Button, Stack, Text} from "@chakra-ui/react";
+import {Link as ReactLink} from "react-router-dom";
 
-const AddBankModal = ({open, setOpen, purpose, checked, setChecked, bankName, setBankName, bankCode, setBankCode, handleAdd}) => {
+const AddBankModal = ({open, setOpen, purpose, checked, setChecked, bankName, setBankName, loading, setLoading, bankCode, setBankCode, handleAdd}) => {
 
     const handleChange = (event) => {
         setChecked(event.target.checked);
@@ -75,8 +77,15 @@ const AddBankModal = ({open, setOpen, purpose, checked, setChecked, bankName, se
                                 </div>
                                 <div className="flex space-x-3 float-right my-4">
                                     <button className="bg-gray-300 rounded py-2 px-6 flex text-black" onClick={()=>setOpen(!open)}>Close</button>
-                                    {purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white"
-                                              onClick={handleAdd}>Save</button>}
+                                    {/*{purpose !== "view" && <button className="bg-[#00C796] rounded py-2 px-6 flex text-white"*/}
+                                    {/*          onClick={handleAdd}>Save</button>}*/}
+                                    {purpose !== "view" &&
+                                        <Stack>
+                                            <Button variant="primary" bgColor="#00C795" p={{base:"5px 20px", md: "8px 20px"}} borderRadius="5px" size='md' as={ReactLink} isLoading={loading} isDisabled={true} colorScheme={"brand"} loadingText='Saving' onClick={handleAdd}>
+                                                <Text color="white">Save</Text>
+                                            </Button>
+                                        </Stack>
+                                    }
                                 </div>
                             </div>
                         </div>

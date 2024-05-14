@@ -5,6 +5,7 @@ import LoanBiddingModal from "./LoanBiddingModal.jsx";
 import {useGetAllLoanBiddingQuery} from "../../../store/features/customerCentric/api.js";
 import Pagination from "../../reusables/Pagination.jsx";
 import dayjs from "dayjs";
+import {formatRepayment} from "../../reusables/formatAmount.js";
 
 const LoanBiddingTable = ({searchTerm, dropDown, statusName, startDate, endDate}) => {
     const [page, setPage] = useState(1)
@@ -100,7 +101,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.biddersPhoneNumber}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font -medium">{data?.loanAmount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font -medium">&#8358;{formatRepayment(data?.loanAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.tenor}</span>

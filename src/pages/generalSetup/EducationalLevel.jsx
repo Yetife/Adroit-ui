@@ -17,6 +17,8 @@ const EducationalLevel = () => {
     const dispatch = useDispatch()
     const [addEducationalLevel] = useAddEducationalLevelMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    const [loading, setLoading] = useState(false);
+
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -26,6 +28,7 @@ const EducationalLevel = () => {
         setOpen(true)
     }
     const handleAdd = ()=> {
+        setLoading(true)
         addEducationalLevel({
             body: {
                 name: level,
@@ -34,6 +37,7 @@ const EducationalLevel = () => {
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
+            setLoading(false)
             setLevel("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
@@ -59,7 +63,8 @@ const EducationalLevel = () => {
                 <div>
                     <EducationalLevelTable searchTerm={searchTerm}/>
                 </div>
-                <AddEducationLevelModal open={open} setOpen={setOpen} level={level} setLevel={setLevel} checked={checked} setChecked={setChecked} handleAdd={handleAdd}/>
+                <AddEducationLevelModal open={open} setOpen={setOpen} level={level} setLevel={setLevel} checked={checked} setChecked={setChecked}
+                                       loading={loading} setLoading={setLoading} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );

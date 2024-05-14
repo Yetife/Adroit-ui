@@ -68,6 +68,7 @@ const header = ['S/N', 'Bank Name', 'Bank Code', 'Status', 'Actions' ]
 
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
+    const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [checked, setChecked] = useState(true);
     const [bankName, setBankName] = useState("")
@@ -102,6 +103,7 @@ export function TableData({data, no}) {
     }
 
     const handleEdit = ()=> {
+        setLoading(true)
         editBank({
             body: {
                 name: bankName,
@@ -111,6 +113,7 @@ export function TableData({data, no}) {
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setLoading(false)
             setOpen(!open)
             setBankName("")
             setBankCode("")
@@ -155,7 +158,7 @@ export function TableData({data, no}) {
         </span>
             </td>
 
-            <AddBankModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} bankName={bankName} purpose={purpose} setBankName={setBankName} bankCode={bankCode} setBankCode={setBankCode} handleAdd={handleEdit}/>
+            <AddBankModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} loading={loading} setLoading={setLoading} bankName={bankName} purpose={purpose} setBankName={setBankName} bankCode={bankCode} setBankCode={setBankCode} handleAdd={handleEdit}/>
         </tr>
     )
 }

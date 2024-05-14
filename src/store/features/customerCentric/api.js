@@ -52,7 +52,7 @@ export const customerCentricApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["searchFixedDeposit"]
+            providesTags: ["searchFixedDeposit", "modifyFixedDeposit"]
         }),
         getFixedDepositById: builder.query({
             query: (id) => ({

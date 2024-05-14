@@ -17,6 +17,7 @@ const EmploymentType = () => {
     const dispatch = useDispatch()
     const [addEmploymentType] = useAddEmploymentTypeMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    const [loading, setLoading] = useState(false);
 
 
     const handleSearch = (searchValue) => {
@@ -27,6 +28,7 @@ const EmploymentType = () => {
         setOpen(true)
     }
     const handleAdd = ()=> {
+        setLoading(true)
         addEmploymentType({
             body: {
                 name: type,
@@ -35,6 +37,7 @@ const EmploymentType = () => {
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
+            setLoading(false)
             setType("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
@@ -59,7 +62,7 @@ const EmploymentType = () => {
                 <div>
                     <EmploymentTypeTable searchTerm={searchTerm}/>
                 </div>
-                <AddEmploymentTypeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} type={type} setType={setType} handleAdd={handleAdd}/>
+                <AddEmploymentTypeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} type={type} setType={setType} loading={loading} setLoading={setLoading} handleAdd={handleAdd}/>
             </div>
         </Layout>
     );

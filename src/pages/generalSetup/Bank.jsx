@@ -15,6 +15,7 @@ const Bank = () => {
     const [checked, setChecked] = useState(true);
     const [bankName, setBankName] = useState("")
     const [bankCode, setBankCode] = useState("")
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch()
     const [addBanks] = useAddBanksMutation()
     const [searchTerm, setSearchTerm] = useState("");
@@ -28,6 +29,7 @@ const Bank = () => {
     }
     const handleAdd = ()=> {
         console.log("addd")
+        setLoading(true)
         addBanks({
             body: {
                 name: bankName,
@@ -38,6 +40,7 @@ const Bank = () => {
             console.log(bankName)
             console.log(checked)
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            setLoading(false)
             setOpen(!open)
             setBankName("")
             setBankCode("")
@@ -64,7 +67,8 @@ const Bank = () => {
                 <div>
                     <BankTable searchTerm={searchTerm}/>
                 </div>
-                <AddBankModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} bankName={bankName} setBankName={setBankName} bankCode={bankCode} setBankCode={setBankCode} handleAdd={handleAdd}/>
+                <AddBankModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} bankName={bankName}
+                              setBankName={setBankName} bankCode={bankCode} setBankCode={setBankCode} handleAdd={handleAdd} loading={loading} setLoading={setLoading}/>
             </div>
         </Layout>
     );

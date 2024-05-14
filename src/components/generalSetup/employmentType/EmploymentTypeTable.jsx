@@ -41,13 +41,6 @@ const EmploymentTypeTable = ({searchTerm}) => {
                         { filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} />) }
                         </tbody>
                     </table>
-                    {/*{ data?.data?.length > 0 && <Pagination totalCount={data?.resultCount} getPage={getPage} /> }*/}
-                    {/*{ err || data?.data?.length === 0 && <div className='w-full flex align-center'>*/}
-                    {/*    <div className="m-auto py-5">*/}
-                    {/*        <Image src={'../img/no-data.svg'} width="150" height="150" alt="no data" />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*}*/}
                 </div>
             </div>
         </div>
@@ -75,6 +68,7 @@ export function TableData({data, no}) {
     const [type, setType] = useState("")
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
+    const [loading, setLoading] = useState(false);
     const [delEmploymentType] = useDeleteEmploymentTypeMutation()
     const [editEmploymenType] = useEditEmploymentTypeMutation()
 
@@ -110,6 +104,7 @@ export function TableData({data, no}) {
     }
 
     const handleEdit = ()=> {
+        setLoading(true)
         editEmploymenType({
             body: {
                 name: type,
@@ -119,6 +114,7 @@ export function TableData({data, no}) {
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             setOpen(!open)
+            setLoading(false)
             setType("")
         }).catch(err =>{
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:err.data.message,success:false}));
@@ -150,7 +146,7 @@ export function TableData({data, no}) {
         </span>
             </td>
 
-            <AddEmploymentTypeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} type={type} setType={setType} purpose={purpose} handleAdd={handleEdit}/>
+            <AddEmploymentTypeModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} loading={loading} setLoading={setLoading} type={type} setType={setType} purpose={purpose} handleAdd={handleEdit}/>
         </tr>
     )
 }

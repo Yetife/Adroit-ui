@@ -45,7 +45,7 @@ const Pagination = ({ totalCount, onPageChange, onRowsPerPageChange, page, rowsP
                         <img src={previous} onClick={() => onPageChange(page - 1)}
                              className={page === 1 ? "disabled" : "active"}  alt={"previous"}/>
                     </li>
-                    {pages.map((pageNumber) => (
+                    {visiblePages.map((pageNumber) => (
                         <li key={pageNumber}>
                             {pageNumber === ellipsis ? (
                                 ellipsis
