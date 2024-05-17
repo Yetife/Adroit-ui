@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {formatAmount} from "../../reusables/formatAmount.js";
+import {formatAmount, formatRepayment} from "../../reusables/formatAmount.js";
 import dayjs from "dayjs";
 import {useGetAllDeclinedTopUpQuery} from "../../../store/features/loanApplication/api.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
@@ -80,7 +80,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Loan Category', 'First Name', 'Middle Name', 'Last Name', 'Email Address', 'Phone Number', 'Gender', 'D.O.B', 'BVN', 'Initial Loan Amount', 'Top-up Amount', 'New Loan Amount', 'Status', 'Loan Tenor', 'Date Submitted', 'Actions' ]
+const header = ['S/N', 'Loan Category', 'First Name', 'Middle Name', 'Last Name', 'Email Address', 'Phone Number', 'Gender', 'D.O.B', 'BVN', 'Initial Loan Amount', 'Previous Loan Balance',  'Top-up Amount', 'New Loan Amount', 'Status', 'Loan Tenor', 'Date Submitted', 'Actions' ]
 
 
 export function TableData({data, no}) {
@@ -101,7 +101,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.lastName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.emailAddress}</span>
@@ -124,11 +124,15 @@ export function TableData({data, no}) {
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(data?.previousLoanBalance)}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.topUpAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatAmount(data?.newLoanAmount)}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(data?.newLoanAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.status}</span>

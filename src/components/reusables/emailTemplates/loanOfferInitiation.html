@@ -21,8 +21,8 @@
             height: 60px;
         }
         #table-border{
-            margin-left: 30px;
-            margin-right: 30px;
+            margin-left: 10px;
+            margin-right: 10px;
         }
         .icon{
             width: 80px;
@@ -36,6 +36,19 @@
             padding: 1px 40px;
             border: 1px solid #dddddd;
             text-align: left
+        }
+        .listStyle{
+            font-size: 14px;
+            font-weight: 600;
+            padding-bottom: 7px;
+            line-height: 20px;
+        }
+        .list{
+            font-size: 14px;
+            font-weight: 500;
+            padding-bottom: 7px;
+            /*padding-left: 7px;*/
+            line-height: 20px;
         }
         #mainDiv{
             padding: 30px 10px 20px 20px;
@@ -109,22 +122,56 @@
                                 </p>
                                 <p style="padding-bottom: 30px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">We would like to inform you that you have initiated a loan offer transaction through our platform.</p>
                                 <p style="margin: 0; font-size: 14px; font-weight: 400; line-height: 20px">Here are the details of your loan offer:</p>
-                                <div style="display: flex; align-items: center; gap: 30px;">
-                                    <ul>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Title:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Loan Amount:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Interest Rate:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Loan Tenor:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Description:</li>
-                                    </ul>
-                                    <div>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Giving</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">&#8358;30,000.00</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">1.2%</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">3 months</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Givers no dey lack</p>
-                                    </div>
+                                <div style="margin-bottom: 20px; margin-top: 20px; border-radius: 5px;">
+                                    <table
+                                            border="0"
+                                            cellpadding="10"
+                                            cellspacing="0"
+                                            style="border-collapse:collapse;"
+                                    >
+                                        <tr>
+                                            <th class="listStyle" style="font-size: 13px; font-weight: 600;"></th>
+                                            <th class="list" style="font-size: 13px; font-weight: 600;"></th>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle" >&#x2022; Title:</td>
+                                            <td class="list">Giving</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; Loan Amount:</td>
+                                            <td class="list">&#8358;30,000.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; Interest Rate:</td>
+                                            <td class="list">1.2%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; Loan Tenor:</td>
+                                            <td class="list">3 months</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; Description:</td>
+                                            <td class="list">Givers no dey lack</td>
+                                        </tr>
+
+                                    </table>
                                 </div>
+<!--                                <div style="display: flex; align-items: center; gap: 30px;">-->
+<!--                                    <ul>-->
+<!--                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Title:</li>-->
+<!--                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Loan Amount:</li>-->
+<!--                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Interest Rate:</li>-->
+<!--                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Loan Tenor:</li>-->
+<!--                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Description:</li>-->
+<!--                                    </ul>-->
+<!--                                    <div>-->
+<!--                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Giving</p>-->
+<!--                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">&#8358;30,000.00</p>-->
+<!--                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">1.2%</p>-->
+<!--                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">3 months</p>-->
+<!--                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Givers no dey lack</p>-->
+<!--                                    </div>-->
+<!--                                </div>-->
                                 <div style="margin-bottom: 20px; margin-top: 20px; border-radius: 5px;">
                                     <table
                                             border="0"

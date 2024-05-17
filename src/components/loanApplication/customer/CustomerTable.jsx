@@ -1,13 +1,9 @@
-import {useEffect, useState} from "react";
-import {useDispatch} from "react-redux";
+import {useState} from "react";
 import {
-    useEditStatusMutation,
     useGetAllCustomerQuery,
 } from "../../../store/features/loanApplication/api.js";
 import {useNavigate} from "react-router-dom";
-import {updateSnackbar} from "../../../store/snackbar/reducer.js";
 import dayjs from "dayjs";
-import AddLoanStatusModal from "../loanStatus/AddLoanStatusModal.jsx";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import {formatAmount} from "../../reusables/formatAmount.js";
@@ -116,7 +112,7 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.lastName}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.lastName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.dateCreated).format("YYYY/MM/DD")}</span>
