@@ -9,6 +9,7 @@ import {useDispatch} from "react-redux";
 const AddCommentModal = ({open, setOpen, comment, setComment}) => {
     const queryParams = new URLSearchParams(location.search);
     const appId = queryParams.get("aid");
+    const category = queryParams.get('category');
     const [addComment] = useAddCommentMutation()
     const dispatch = useDispatch()
 
@@ -20,7 +21,8 @@ const AddCommentModal = ({open, setOpen, comment, setComment}) => {
         addComment({
             body: {
                 loanApplicationId: appId,
-                description: comment
+                description: comment,
+                loanCategory: category === "Loan Topup" ? "Loan Topup" : category === "Loan Restructure" ? "Loan Restructure" : "Regular Loan"
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));

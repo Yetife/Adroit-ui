@@ -2,15 +2,40 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import {Close} from "@mui/icons-material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import {getUserToken} from "../../../services/storage/index.js";
 
 const AdjustLoanModal = ({open, setOpen, inputs, setInputs, handleSubmit}) => {
-    const tenor = [3, 6, 9, 12]
+    const [tenor, setTenor] = useState([]);
+    const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
         setInputs((values) => ({...values, [fieldName]: value}))
     };
     console.log(inputs)
+
+    const fetchTenor = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/GeneralSetUp/getallvalidRegularLoanTenors`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setTenor(response.data.data);
+            console.log('Fetched state:', response.data.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchTenor()
+    }, []);
     return (
         <div>
             <Dialog.Root
@@ -49,8 +74,8 @@ const AdjustLoanModal = ({open, setOpen, inputs, setInputs, handleSubmit}) => {
                                                      className="font-medium w-full text-black leading-relaxed px-4 py-2 rounded h-[50px]  border border-neutral-300 justify-between items-center gap-4 flex">
                                                 <option value="" disabled>Select tenor</option>
                                                  {tenor && tenor?.map((option, index) => (
-                                                     <option key={index} value={option}>
-                                                         {option}
+                                                     <option key={option.uniqueId} value={option.name}>
+                                                         {option.name}
                                                      </option>
                                                  ))}
                                             </select>

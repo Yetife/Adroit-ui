@@ -41,6 +41,8 @@ const ViewApprovalLoanRestructuringPage = () => {
     const [returnApp] = useReturnApplicationMutation()
     const [disburseApp] = useDisburseApplicationMutation()
     const [stopDisburse] = useStopDisbursementMutation()
+    const [dLoading, setDLoading] = useState(false)
+    const [rLoading, setRLoading] = useState(false)
     const [inputs, setInputs] = useState({
         amount: "",
         tenor: "",
@@ -125,13 +127,18 @@ const ViewApprovalLoanRestructuringPage = () => {
         })
     }
     const handleReturn = () => {
+        setRLoading(true)
         returnApp({
             body: {
                 loanApplicationId: appId,
                 loanCategory: "Loan Restructure"
             }
         }).then(res => {
-            router('/loanUnderwriting/approval')
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            if (res.data.status === true){
+                setRLoading(false)
+                router('/loanUnderwriting/approval')
+            }
         }).catch(err =>{
             setOpenComplete(false)
         })
@@ -150,13 +157,18 @@ const ViewApprovalLoanRestructuringPage = () => {
         })
     }
     const handleDisburse = () => {
+        setDLoading(true)
         disburseApp({
             body: {
                 loanApplicationId: appId,
                 loanCategory: "loanrestructure"
             }
         }).then(res => {
-            router('/loanUnderwriting/disbursement')
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            if (res.data.status === true){
+                setDLoading(false)
+                router('/loanUnderwriting/approval')
+            }
         }).catch(err =>{
             setOpenComplete(false)
         })
@@ -404,12 +416,12 @@ const ViewApprovalLoanRestructuringPage = () => {
                                             <div className="flex float-right space-x-3 my-4">
                                                 <Button variant="primary" bgColor="#00C796" borderRadius="4px" height="37px"
                                                         size='md'
-                                                        as={ReactLink} w={'110px'} onClick={handleDisburse}>
+                                                        as={ReactLink} w={'110px'} onClick={handleDisburse} isLoading={dLoading} loadingText='Disbursing'>
                                                     <Text color="white">Disburse</Text>
                                                 </Button>
                                                 <Button variant="primary" bgColor="#005F47" borderRadius="4px" height="37px"
                                                         size='md'
-                                                        as={ReactLink} w={'110px'} onClick={handleReturn}>
+                                                        as={ReactLink} w={'110px'} onClick={handleReturn} isLoading={rLoading}>
                                                     <Text color="white">Return</Text>
                                                 </Button>
                                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"

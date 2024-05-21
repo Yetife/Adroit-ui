@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Button, Text} from "@chakra-ui/react";
+import {Button, Stack, Text} from "@chakra-ui/react";
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import Layout from '../Layout.jsx'
 import LoanInformation from "./LoanInformation.jsx";
@@ -23,6 +23,8 @@ const ViewLoanApplicationPage = () => {
     const appId = queryParams.get("aid");
     const {data, isFetching, error} = useGetCustomerDetailsQuery(appId)
     const status = queryParams.get("status");
+    const [loading, setLoading] = useState(false)
+    const [rloading, setRLoading] = useState(false)
     const [openComplete, setOpenComplete] = useState(false)
     const [completeReview] = useCompleteReviewMutation()
 
@@ -80,6 +82,7 @@ const ViewLoanApplicationPage = () => {
     }
 
     const handleComplete = () => {
+        setRLoading(true)
         completeReview({
             body: {
                 loanApplicationId: appId,
@@ -90,9 +93,11 @@ const ViewLoanApplicationPage = () => {
             }
         }).then(res => {
           if (res.data.status === true){
+              setRLoading(false)
                 setOpenComplete(true)
             }
         }).catch(err =>{
+            setRLoading(false)
             setOpenComplete(false)
         })
     }
@@ -138,11 +143,11 @@ const ViewLoanApplicationPage = () => {
                                         <div className="flex space-x-3 my-8 float-right">
                                             <Button variant="outline" borderColor="#FF0909" marginRight="10px"
                                                     border={"1px solid #FF0909"} borderRadius="4px" height="37px"
-                                                    size='md' as={ReactLink} w={'150px'} onClick={handleOpen}>
+                                                    size='md' as={ReactLink} w={'150px'} isLoading={loading} onClick={handleOpen}>
                                                 <Text color="#FF0909">Decline Loan</Text>
                                             </Button>
                                             <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                                    as={ReactLink} w={'180px'} onClick={handleComplete}>
+                                                    as={ReactLink} w={'180px'} onClick={handleComplete} isLoading={rloading} loadingText={"Reviewing"}>
                                                 <Text color="white">Complete Review</Text>
                                             </Button>
 

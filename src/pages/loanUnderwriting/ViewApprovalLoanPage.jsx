@@ -54,6 +54,8 @@ const ViewApprovalLoanPage = () => {
     const [returnApp] = useReturnApplicationMutation()
     const [disburseApp] = useDisburseApplicationMutation()
     const [stopDisburse] = useStopDisbursementMutation()
+    const [dLoading, setDLoading] = useState(false)
+
 
     const dispatch = useDispatch()
     const tabMenu = [
@@ -144,7 +146,7 @@ const ViewApprovalLoanPage = () => {
         returnApp({
             body: {
                 loanApplicationId: appId,
-                loanCategory: type ===  "Regular Loan"
+                loanCategory: "regularloan"
             }
         }).then(res => {
             router('/loanUnderwriting/approval')
@@ -153,6 +155,7 @@ const ViewApprovalLoanPage = () => {
         })
     }
     const handleDisburse = () => {
+        setDLoading(true)
         disburseApp({
             body: {
                 loanApplicationId: appId,
@@ -161,6 +164,7 @@ const ViewApprovalLoanPage = () => {
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
             if (res.data.status === true){
+                setDLoading(false)
                 router('/loanUnderwriting/approval')
             }
         }).catch(err =>{
@@ -251,7 +255,7 @@ const ViewApprovalLoanPage = () => {
                                     status === "approve" && (
                                         <div className="flex space-x-3 my-4">
                                             <Button variant="primary" bgColor="#00C796" borderRadius="4px" height="37px" size='md'
-                                                    as={ReactLink} w={'110px'} onClick={handleDisburse}>
+                                                    as={ReactLink} w={'110px'} onClick={handleDisburse} isLoading={dLoading}>
                                                 <Text color="white">Disburse</Text>
                                             </Button>
                                             <Button variant="primary" bgColor="#005F47" borderRadius="4px" height="37px" size='md'

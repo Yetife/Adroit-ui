@@ -15,9 +15,7 @@ import AddCommentModal from "../../components/loanUnderwritting/review/AddCommen
 import AdjustLoanModal from "../../components/loanUnderwritting/review/AdjustLoanModal.jsx";
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
 import DecisionModal from "../../components/loanUnderwritting/approval/DecisionModal.jsx";
-import {
-    useGetReviewCustomerDetailsQuery, useStopDisbursementMutation
-} from '../../store/features/loanUnderwriting/api.js';
+import {useGetReviewCustomerDetailsQuery, useStopDisbursementMutation} from '../../store/features/loanUnderwriting/api.js';
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 import {CircularProgress, ThemeProvider} from "@mui/material";
@@ -38,6 +36,7 @@ const ViewLoanUnderwritingPage = () => {
     const [openDisburse, setOpenDisburse] = useState(false)
     const [openDecision, setOpenDecision] = useState(false)
     const queryParams = new URLSearchParams(location.search);
+    const [aLoading, setALoading] = useState(false)
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
     const type = queryParams.get('type');
@@ -121,6 +120,7 @@ const ViewLoanUnderwritingPage = () => {
         }
     }, [data]);
     const handleApprove = () => {
+        setALoading(true)
         approve({
             body: {
                 loanApplicationId: appId,
@@ -128,9 +128,11 @@ const ViewLoanUnderwritingPage = () => {
             }
         }).then(res => {
             if (res.data.status === true){
+                setALoading(false)
                 setOpenComplete(true)
             }
         }).catch(err =>{
+            setALoading(false)
             setOpenComplete(false)
         })
     }
@@ -179,7 +181,8 @@ const ViewLoanUnderwritingPage = () => {
                 description: inputs.description,
                 adjustedTenor: inputs.tenor,
                 adjustedAmount: inputs.amount,
-                loanCategory: "Regular Loan"
+                loanCategory: "Regular Loan",
+                comments: []
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
@@ -236,7 +239,7 @@ const ViewLoanUnderwritingPage = () => {
                                     status === "review" && (
                                         <div className="flex space-x-3 my-4">
                                             <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                                    as={ReactLink} w={'110px'} onClick={handleApprove}>
+                                                    as={ReactLink} w={'110px'} onClick={handleApprove} isLoading={aLoading} loadingText={"Approving"}>
                                                 <Text color="white">Approve</Text>
                                             </Button>
                                             <Button variant="primary" bgColor="#1781BC" borderRadius="4px" height="37px" size='md'

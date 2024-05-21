@@ -26,6 +26,8 @@ const ViewAdjustLoanPage = () => {
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
     const {data, isFetching, error} = useGetAdjustCustomerDetailsQuery(custId)
+    const [rloading, setRLoading] = useState(false)
+
     // const {dataa} = useGetAdjustmentDetailsQuery(custId)
     const status = queryParams.get("status");
     const [openComplete, setOpenComplete] = useState(false)
@@ -84,13 +86,20 @@ const ViewAdjustLoanPage = () => {
         }
     };
     const handleComplete = () => {
+        setRLoading(true)
         completeReview({
             body: {
                 loanApplicationId: appId,
-                loanCategory: "Regular loan"
+                loanCategory: "Regular loan",
+                adjustedTenor: "",
+                adjustedAmount: 0,
+                comment: ""
             }
         }).then(res => {
-            setOpenComplete(true)
+            if (res.data.status === true){
+                setRLoading(false)
+                setOpenComplete(true)
+            }
         }).catch(err =>{
             setOpenComplete(false)
         })
@@ -122,7 +131,7 @@ const ViewAdjustLoanPage = () => {
                                 status === "adjust" && (
                                     <div className="flex space-x-3 my-8">
                                         <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                                as={ReactLink} w={'110px'} onClick={handleComplete}>
+                                                as={ReactLink} w={'110px'} onClick={handleComplete} isLoading={rloading} loadingText={"Reviewing"}>
                                             <Text color="white">Review</Text>
                                         </Button>
                                         <Button variant="outline" borderColor="#FF0909" marginRight="10px"
@@ -144,7 +153,7 @@ const ViewAdjustLoanPage = () => {
                                             <Text color="#FF0909">Decline Loan</Text>
                                         </Button>
                                         <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                                as={ReactLink} w={'180px'} onClick={handleComplete}>
+                                                as={ReactLink} w={'180px'} onClick={handleComplete} isLoading={rloading} loadingText={"Reviewing"}>
                                             <Text color="white">Complete Review</Text>
                                         </Button>
 

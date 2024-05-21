@@ -308,7 +308,7 @@ export const loanApplicationApi = createApi({
                     params: queryParams,
                 };
             },
-            providesTags: ["approveApplication", "disburseApplication"]
+            providesTags: ["approveApplication", "disburseApplication", "returnApplication"]
         }),
         disburseApplication: builder.mutation({
             query: ({body}) => ({

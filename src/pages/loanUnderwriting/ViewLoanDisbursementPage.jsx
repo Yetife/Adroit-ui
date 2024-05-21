@@ -39,6 +39,8 @@ const ViewLoanDisbursementPage = () => {
     const [openManual, setOpenManual] = useState(false)
     const [openDecision, setOpenDecision] = useState(false)
     const [openComplete, setOpenComplete] = useState(false)
+    const [dLoading, setDLoading] = useState(false)
+
     const [inputs, setInputs] = useState({
         amount: "",
         tenor: "",
@@ -154,12 +156,14 @@ const ViewLoanDisbursementPage = () => {
         })
     }
     const handleDisburse = () => {
+        setDLoading(true)
         disburseApp({
             body: {
                 loanApplicationId: appId,
                 loanCategory: type === "regular" ? "Regular Loan" : type === "structure" ? "Loan Restructure" : "Loan topup"
             }
         }).then(res => {
+            setDLoading(false)
             router('/loanUnderwriting/disbursement')
         }).catch(err =>{
             setOpenComplete(false)
@@ -249,7 +253,7 @@ const ViewLoanDisbursementPage = () => {
                                     status === "approve" && (
                                         <div className="flex space-x-3 my-4">
                                             <Button variant="primary" bgColor="#00C796" borderRadius="4px" height="37px" size='md'
-                                                    as={ReactLink} w={'110px'} onClick={handleDisburse}>
+                                                    as={ReactLink} w={'110px'} onClick={handleDisburse} isLoading={dLoading} loadingText='Disbursing'>
                                                 <Text color="white">Disburse</Text>
                                             </Button>
                                             <Button variant="primary" bgColor="#005F47" borderRadius="4px" height="37px" size='md'

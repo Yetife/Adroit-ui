@@ -113,7 +113,8 @@ const ViewReviewLoanRestructuringPage = () => {
                 description: inputs.description,
                 adjustedTenor: inputs.tenor,
                 adjustedAmount: inputs.amount,
-                loanCategory: "Loan Restructure"
+                loanCategory: "Loan Restructure",
+                comments: []
             }
         }).then(res => {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));

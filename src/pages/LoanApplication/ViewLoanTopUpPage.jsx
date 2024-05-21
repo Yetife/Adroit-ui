@@ -37,6 +37,9 @@ const ViewLoanTopUpPage = () => {
     const [openAdjust, setOpenAdjust] = useState(false)
     const [openComplete, setOpenComplete] = useState(false)
     const [openApprove, setOpenApprove] = useState(false)
+    const [rloading, setRLoading] = useState(false)
+    const [aLoading, setALoading] = useState(false)
+    const [dLoading, setDLoading] = useState(false)
     const [completeReview] = useCompleteReviewMutation()
     const [approve] = useApproveApplicationMutation()
     const [adjust] = useAdjustApplicationMutation()
@@ -68,18 +71,24 @@ const ViewLoanTopUpPage = () => {
     };
 
     const handleApprove = () => {
+        setALoading(true)
         approve({
             body: {
                 loanApplicationId: appId,
                 loanCategory: "Loan topup"
             }
         }).then(res => {
-            setOpenApprove(true)
+            if (res.data.status === true){
+                setALoading(false)
+                setOpenApprove(true)
+            }
         }).catch(err =>{
+            setALoading(false)
             setOpenApprove(false)
         })
     }
     const handleComplete = () => {
+        setRLoading(true)
         completeReview({
             body: {
                 adjustedTenor: data?.data?.cusDetail?.newLoanTopUpTenor ? data?.data?.cusDetail?.newLoanTopUpTenor : data?.data?.cusDetail?.tenor,
@@ -90,9 +99,11 @@ const ViewLoanTopUpPage = () => {
             }
         }).then(res => {
             if (res.data.status === true){
+                setRLoading(false)
                 setOpenComplete(true)
             }
         }).catch(err =>{
+            setRLoading(false)
             setOpenComplete(false)
         })
     }
@@ -139,14 +150,20 @@ const ViewLoanTopUpPage = () => {
         })
     }
     const handleDisburse = () => {
+        setDLoading(true)
         disburseApp({
             body: {
                 loanApplicationId: cId,
                 loanCategory: "loantopup"
             }
         }).then(res => {
-            router('/loanUnderwriting/disbursement')
+            dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+            if (res.data.status === true){
+                setDLoading(false)
+                router('/loanUnderwriting/approval')
+            }
         }).catch(err =>{
+            setDLoading(false)
             setOpenComplete(false)
         })
     }
@@ -360,7 +377,7 @@ const ViewLoanTopUpPage = () => {
                                         status === "review" && (
                                             <div className="flex float-right space-x-3 my-4">
                                                 <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                                        as={ReactLink} w={'110px'} onClick={handleApprove}>
+                                                        as={ReactLink} w={'110px'} onClick={handleApprove} isLoading={aLoading} loadingText={"Approving"}>
                                                     <Text color="white">Approve</Text>
                                                 </Button>
                                                 <Button variant="primary" bgColor="#1781BC" borderRadius="4px" height="37px" size='md'
@@ -379,7 +396,7 @@ const ViewLoanTopUpPage = () => {
                                         status === "approve" && (
                                             <div className="flex float-right space-x-3 my-4">
                                                 <Button variant="primary" bgColor="#00C796" borderRadius="4px" height="37px" size='md'
-                                                        as={ReactLink} w={'110px'} onClick={handleDisburse}>
+                                                        as={ReactLink} w={'110px'} onClick={handleDisburse} isLoading={dLoading} loadingText='Disbursing'>
                                                     <Text color="white">Disburse</Text>
                                                 </Button>
                                                 <Button variant="primary" bgColor="#005F47" borderRadius="4px" height="37px" size='md'
@@ -404,7 +421,7 @@ const ViewLoanTopUpPage = () => {
                                                 </Button>
                                                 <Button variant="primary" bgColor="#00C795" borderRadius="4px"
                                                         height="37px" size='md' as={ReactLink} w={'150px'}
-                                                        onClick={handleComplete}>
+                                                        onClick={handleComplete} isLoading={rloading} loadingText='Reviewing'>
                                                     <Text color="white">Complete Review</Text>
                                                 </Button>
                                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"
@@ -430,7 +447,7 @@ const ViewLoanTopUpPage = () => {
                                         status === "adjust" && (
                                             <div className="flex float-right space-x-3 my-8">
                                                 <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                                        as={ReactLink} w={'110px'} onClick={handleComplete}>
+                                                        as={ReactLink} w={'110px'} onClick={handleComplete} isLoading={rloading} loadingText='Reviewing'>
                                                     <Text color="white">Review</Text>
                                                 </Button>
                                                 <Button variant="outline" borderColor="#FF0909" marginRight="10px"
