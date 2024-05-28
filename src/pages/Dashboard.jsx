@@ -23,9 +23,9 @@ const Dashboard = () => {
                 <div className='flex flex-col md:flex md:flex-row w-full h-auto space-x-0 md:space-x-8 md:h-[16rem]'>
                     <div className='flex pb-3 w-full md:w-3/5 lg:w-4/5 md:h-[290px] h-[350px]'>
                         <div className='w-full bg-[#00C795] shadow-md rounded p-4'>
-                            <Stack direction={{md: "row", base: "column"}} justifyContent={{md: "space-between"}} p={{base:"10px", md:"40px"}}>
+                            <Stack direction={{md: "row", base: "column"}} justifyContent={{md: "space-between"}} p={{base:"10px", md:"30px"}}>
                                 <Stack>
-                                    <Text color="#FFF"  textAlign="center" fontFamily="Inter" fontSize="28px" fontStyle="normal" fontWeight="700" lineHeight="21.6px">Welcome back Kenny!</Text>
+                                    <Text color="#FFF"  textAlign="left" fontFamily="Inter" fontSize="28px" fontStyle="normal" fontWeight="700" lineHeight="21.6px">Welcome back {user.FirstName}!</Text>
                                     <Text color="#FFF"  fontFamily="Inter" fontSize="11px" fontStyle="normal" fontWeight="500" lineHeight="21.6px">Your last login was 12:00pm 09 Jul, 2023</Text>
                                 </Stack>
                                 <Stack p={{base: "20px 0", md: 0}}>

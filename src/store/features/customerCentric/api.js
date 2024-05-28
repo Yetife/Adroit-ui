@@ -337,7 +337,15 @@ export const customerCentricApi = createApi({
             query: (id) => ({
                 url: `/CustomerCentric/GetRepaymentPlanByCusId/${id}`,
             }),
-            providesTags: ["manualRepayment"]
+            providesTags: ["manualRepayment","updateRepaymentLateFee"]
+        }),
+        updateRepaymentLateFee: builder.mutation({
+            query: ({body}) => ({
+                url: `/CustomerCentric/UpdateRepaymentCloseLateFee`,
+                method: "PUT",
+                body
+            }),
+            invalidatesTags: ["updateRepaymentLateFee"]
         }),
         manualRepayment: builder.mutation({
             query: ({body}) => ({
@@ -389,4 +397,5 @@ export const {
     useModifyEscrowMutation,
     useManualRepaymentMutation,
     useManuallyRepayMutation,
+    useUpdateRepaymentLateFeeMutation,
 } = customerCentricApi

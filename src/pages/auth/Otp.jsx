@@ -47,7 +47,7 @@ const Otp = () => {
         setLoading(true)
         try {
             const user =  await axios.post(`${baseUrl}/Adroit/Login/UserLogin`, {
-                otp: otp,
+                otp: verificationCode,
                 username: userName,
                 userPassword: "1234",
                 ipAddress: "192.168.1.100",

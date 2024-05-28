@@ -68,7 +68,7 @@ const ViewLoanRepaymentPage = () => {
         ]
     }
 
-    const header = ['S/N', 'Loan Amount', 'Tenor', 'Status', 'Isbank Debit', 'Start Date', 'End Date', 'Next Repayment Date', 'Next Repayment Amount', 'Transaction Date', 'Actions' ]
+    const header = ['S/N', 'Loan Amount', 'Tenor', 'Status', 'Isbank Debit', 'Start Date', 'End Date', 'Transaction Date', 'Actions' ]
 
     return (
         <Layout>
@@ -145,7 +145,7 @@ const ViewLoanRepaymentPage = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status}</span>
+                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status.toString()}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
@@ -161,14 +161,6 @@ const ViewLoanRepaymentPage = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.newRepaymentAmount).format("YYYY/MM/DD")}</span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span
-                                                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item.newReapaymentDate).format("YYYY/MM/DD")}</span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span
                                                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.data?.cusDetail?.transactionDate).format("YYYY/MM/DD")}</span>
                                             </td>
                                             {/*<td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">*/}
@@ -176,7 +168,11 @@ const ViewLoanRepaymentPage = () => {
                                             {/*          className={`text-[16px] leading-5 font-[inter] truncate ${item.status === "Failed" || item.status === "Overdue" ? 'text-[#007BEC] cursor-pointer' : 'text-[#4A5D58] italic font-[300]'}  font-medium`}>{item.status === "Failed" || item.status === "Overdue"  ? "View" : "No action"}</span>*/}
                                             {/*</td>*/}
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span onClick={() => handleOpen(item.loanRepaymentId, item.loanApplicationId)} className="text-[16px] leading-5 font-[inter] truncate cursor-pointer">View</span>
+                                                {!item.status && <span
+                                                    onClick={() => handleOpen(item.loanRepaymentId, item.loanApplicationId)}
+                                                    className="text-[16px] leading-5 font-[inter] text-[#00C795] truncate cursor-pointer">View</span>}
+                                                {item.status && <span
+                                                    className="text-[16px] leading-5 font-[inter] truncate cursor-pointer italic">No action</span>}
                                             </td>
                                         </tr>
                                     ))
