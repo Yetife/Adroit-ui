@@ -169,7 +169,7 @@ const ViewLoanRepaymentPage = () => {
                                             {/*</td>*/}
                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 {!item.status && <span
-                                                    onClick={() => handleOpen(item.loanRepaymentId, item.loanApplicationId)}
+                                                    onClick={() => handleOpen(item.customerId, item.loanApplicationId)}
                                                     className="text-[16px] leading-5 font-[inter] text-[#00C795] truncate cursor-pointer">View</span>}
                                                 {item.status && <span
                                                     className="text-[16px] leading-5 font-[inter] truncate cursor-pointer italic">No action</span>}

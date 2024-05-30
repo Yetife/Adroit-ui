@@ -334,8 +334,8 @@ export const customerCentricApi = createApi({
             providesTags: ["modifyTransfer"]
         }),
         getLoanRepaymentPlan: builder.query({
-            query: (id) => ({
-                url: `/CustomerCentric/GetRepaymentPlanByCusId/${id}`,
+            query: ({id, loanId}) => ({
+                url: `/CustomerCentric/GetRepaymentPlanByCusId/${id}/${loanId}`,
             }),
             providesTags: ["manualRepayment","updateRepaymentLateFee"]
         }),
