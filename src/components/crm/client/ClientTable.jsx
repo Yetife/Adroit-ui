@@ -4,6 +4,7 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import {useGetAllClientQuery} from "../../../store/features/crm/api.js";
 import Pagination from "../../reusables/Pagination.jsx";
+import BvnNinModal from "./BvnNinModal.jsx";
 
 const ClientTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -78,6 +79,8 @@ const header = ['S/N', 'First Name','Mid. Name', 'Last Name', 'Email Address', '
 export function TableData({data, no}) {
     const router = useNavigate()
     const [ showDropdown, setShowDropdown ] = useState(false)
+    const [ open, setOpen ] = useState(false)
+    const [bData, setBdata] = useState({})
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
     const handleBlurDropdown = () => setShowDropdown(false)
 
@@ -91,6 +94,10 @@ export function TableData({data, no}) {
         }
     };
 
+    const handleOpen = (data) =>{
+        setOpen(true)
+        setBdata(data)
+    }
 
     return (
         <tr>
@@ -146,12 +153,16 @@ export function TableData({data, no}) {
                       style={{display: showDropdown ? "block" : "none"}}>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
-                        onClick={() =>  router(`/crm/clients/view?step=one&cid=${data.id}`)}>View</span>
+                        onClick={() => router(`/crm/clients/view?step=one&cid=${data.id}`)}>View</span>
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() =>  router(`/crm/addNewClient?step=one&cid=${data.id}`)}>Edit</span>
+                        onClick={() => router(`/crm/addNewClient?step=one&cid=${data.id}`)}>Edit</span>
+                    <span
+                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
+                        onClick={() => handleOpen(data)}>BVN/NIN</span>
                 </span>
             </td>
+            <BvnNinModal open={open} setOpen={setOpen} data={bData}/>
         </tr>
     )
 }
