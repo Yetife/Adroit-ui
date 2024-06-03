@@ -106,10 +106,12 @@ const Otp = () => {
                             <Text color="#135D54" p="40px 0 20px" fontFamily="Inter" fontSize={{md:"32px", base: "24px"}} fontStyle="normal" fontWeight="700" lineHeight="21.6px">
                                 Verify Login
                             </Text>
-                            <Text color="#6F8B84"  textAlign={{md:"center"}} fontFamily="Inter" fontSize="14px" fontStyle="normal" fontWeight="700" lineHeight="21.6px" display={{ base: 'none', md: 'block' }}>Enter the six (6) digit verification code sent to <br/>
-                                +234913*****4** and A******na@creditwaveng.com to continue</Text>
-                            <Text color="#6F8B84"  textAlign="center" fontFamily="Inter" fontSize="12px" fontStyle="normal" fontWeight="700" lineHeight="21.6px" display={{ base: 'block', md: 'none' }}>Enter the six (6) digit verification code sent to
-                                +234913*****4** and A******na@creditwaveng<br/>.com to continue</Text>
+                            {/*<Text color="#6F8B84"  textAlign={{md:"center"}} fontFamily="Inter" fontSize="14px" fontStyle="normal" fontWeight="700" lineHeight="21.6px" display={{ base: 'none', md: 'block' }}>Enter the six (6) digit verification code sent to <br/>*/}
+                            {/*    +234913*****4** and A******na@creditwaveng.com to continue</Text>*/}
+                            {/*<Text color="#6F8B84"  textAlign="center" fontFamily="Inter" fontSize="12px" fontStyle="normal" fontWeight="700" lineHeight="21.6px" display={{ base: 'block', md: 'none' }}>Enter the six (6) digit verification code sent to*/}
+                            {/*    +234913*****4** and A******na@creditwaveng<br/>.com to continue</Text>*/}
+                            <Text color="#6F8B84"  textAlign={{md:"center"}} fontFamily="Inter" fontSize="14px" fontStyle="normal" fontWeight="700" lineHeight="21.6px" display={{ base: 'none', md: 'block' }}>Enter the six (6) digit verification code sent to your mail to continue</Text>
+                            <Text color="#6F8B84"  textAlign="center" fontFamily="Inter" fontSize="12px" fontStyle="normal" fontWeight="700" lineHeight="21.6px" display={{ base: 'block', md: 'none' }}>Enter the six (6) digit verification code sent to your mail to continue</Text>
                             <FormControl className="md:w-[464px] w-[300px]" sx={{margin: "30px"}}>
                                 <OutlinedInput
                                     id="outlined-adornment-password"
