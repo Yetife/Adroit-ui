@@ -162,7 +162,7 @@ export function TableData({data, no}) {
                         onClick={() => handleOpen(data)}>BVN/NIN</span>
                 </span>
             </td>
-            <BvnNinModal open={open} setOpen={setOpen} data={bData}/>
+            <BvnNinModal open={open} setOpen={setOpen} modalData={bData}/>
         </tr>
     )
 }

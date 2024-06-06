@@ -101,6 +101,12 @@ export const crmApi = createApi({
             }),
             providesTags: []
         }),
+        verifyBvnOrNin: builder.query({
+            query: (id) => ({
+                url: `/CustomerCentric/GetVerificationDetailByCusId/${id}`,
+            }),
+            providesTags: []
+        }),
         getAllClient: builder.query({
             query: ({size, page}) => ({
                 url: `/CRM/Client/getall?PasgeSize=${size}&PageNumber=${page}`,
@@ -124,4 +130,5 @@ export const {
     useEditBankDetailsMutation,
     useGetClientByIdQuery,
     useGetAllClientQuery,
+    useVerifyBvnOrNinQuery,
 } = crmApi

@@ -75,7 +75,7 @@ const Navbar = ({openSidebar, name, email}) => {
                             </NavLink>
                             {/* Dropdown */}
                             <div className="relative inline-block text-left">
-                                <div className="flex items-center space-x-1 cursor-pointer" onClick={() => handleTabClick('others')}>
+                                    <div className="flex items-center space-x-1 cursor-pointer" onClick={() => handleTabClick('others')}>
                                     <button className="text-white">
                                         Others
                                     </button>
