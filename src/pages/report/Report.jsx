@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import Layout from "../Layout.jsx";
-import {ChevronRight} from "react-feather";
+import {ChevronRight, Search} from "react-feather";
 import CustomDropdown from "../../components/reusables/CustomDropdown.jsx";
 import {getCurrentDate} from "../../components/reusables/getCurrentDate.js";
+import {Button, Text} from "@chakra-ui/react";
+import {Link as ReactLink} from "react-router-dom";
 
 const reportOptions = {
     'Wallet': ['Account Opening Report', 'Customer Wallet Statement', 'Customer Transaction Report', 'Customer Transaction Receipt', 'Customer Wallet Account', 'Transaction Status', 'Customer Wallet Details',],
@@ -11,6 +13,7 @@ const reportOptions = {
     'Overdue Loan Report': ['Loan Overdue Category Report', 'Loan Collection Report']
 };
 const accountOpeningOptions = ['ALL', 'ACCOUNT NUMBER', 'BVN', 'NIN', 'EMAIL ADDRESS', 'PHONE NUMBER'];
+const daysOptions = ['0-30 DAYS', '30-60 DAYS', '60-90 DAYS', '90-120 DAYS', '120-365 DAYS', 'OVER 365 DAYS'];
 const walletAccountOptions = ['THIS WEEK', 'LAST WEEK', 'THIS MONTH', 'LAST MONTH', 'DATE RANGE']
 const statusOptions = ['ACTIVE', 'INACTIVE']
 
@@ -20,6 +23,7 @@ const Report = () => {
     const [selectedSearchOption, setSelectedSearchOption] = useState(accountOpeningOptions[0]);
     const [selectedWalletOption, setSelectedWalletOption] = useState(walletAccountOptions[0]);
     const [status, setStatus] = useState(statusOptions[0])
+    const [days, setDays] = useState(daysOptions[0])
     const [searchQuery, setSearchQuery] = useState('');
     const [inputs, setInputs] = useState({
         startDate: "",
@@ -66,6 +70,14 @@ const Report = () => {
     }
     const checkWeek = () => {
         return selectedReport === 'Customer Wallet Account' || selectedReport === 'Customer Fixed Deposit Report'
+    }
+
+    const checkStatus = () => {
+        return selectedReport === 'Transaction Status' || selectedReport === 'Loan Breakdown Report'
+    }
+
+    const checkReport = () => {
+        return selectedReport === 'Loan Application Report' || selectedReport === 'Loan Repayment Report'
     }
 
     useEffect(() => {
@@ -125,7 +137,7 @@ const Report = () => {
                         </div>
                     </div>
                     {checkOption() && (
-                        <div className="flex space-x-1 space-y-3 mx-48">
+                        <div className="flex space-x-1 space-y-3 items-center justify-center mr-2">
                             <div>
                                 <select
                                     id="searchOption"
@@ -140,31 +152,34 @@ const Report = () => {
                                     ))}
                                 </select>
                             </div>
-                            <div>
+                            <div className="relative flex items-center w-[200px] max-w-xs">
                                 <input
                                     id="searchQuery"
                                     type="text"
                                     value={searchQuery}
                                     onChange={handleSearchQueryChange}
-                                    className="block w-[200px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                     placeholder="Search"
+                                    className="block w-[200px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                 />
+                                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <Search className="w-4 h-4 text-gray-400"/>
+                                </div>
                             </div>
                             <div>
-                                <button
-                                    onClick={handleSearch}
-                                    className="py-1 px-16 bg-[#00C796] text-white rounded-md shadow-sm hover:bg-[#00C796] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007970]"
-                                >
-                                    SEARCH
-                                </button>
+                                <Button variant="primary" onClick={handleSearch} bgColor="#00C796"
+                                        borderRadius="4px"
+                                        height="31px" size='md' as={ReactLink} w={'182px'}>
+                                    <Text color="white">SEARCH</Text>
+                                </Button>
                             </div>
                         </div>
                     )}
-                    { checkWeek() && (
+                    {checkWeek() && (
                         <div>
-                            <div className="flex space-x-1 space-y-3 mx-48">
+                            <div
+                                className={`${selectedWalletOption !== "DATE RANGE" ? 'flex items-center justify-center space-x-1 ml-12 space-y-3' : "flex items-center justify-center space-x-1 mr-32 space-y-3"}flex items-center justify-center space-x-1 ml-8 space-y-3`}>
                                 <div>
-                                    <select
+                                <select
                                         id="searchOption"
                                         value={selectedSearchOption}
                                         onChange={handleSearchOptionChange}
@@ -177,15 +192,19 @@ const Report = () => {
                                         ))}
                                     </select>
                                 </div>
-                                <div>
+                                <div className="relative flex items-center w-[150px] max-w-xs">
                                     <input
                                         id="searchQuery"
                                         type="text"
                                         value={searchQuery}
                                         onChange={handleSearchQueryChange}
-                                        className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                         placeholder="Search"
+                                        className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                     />
+                                    <div
+                                        className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                        <Search className="w-4 h-4 text-gray-400"/>
+                                    </div>
                                 </div>
                                 <div>
                                     <select
@@ -201,21 +220,22 @@ const Report = () => {
                                         ))}
                                     </select>
                                 </div>
-                                { selectedWalletOption !== "DATE RANGE" && <div>
-                                    <button
-                                        onClick={handleSearch}
-                                        className="py-1 px-8 bg-[#00C796] text-white rounded-md shadow-sm hover:bg-[#00C796] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007970]"
-                                    >
-                                        SEARCH
-                                    </button>
+                                {selectedWalletOption !== "DATE RANGE" && <div>
+                                    <div>
+                                        <Button variant="primary" onClick={handleSearch} bgColor="#00C796"
+                                                borderRadius="4px"
+                                                height="31px" size='md' as={ReactLink} w={'129px'}>
+                                            <Text color="white">SEARCH</Text>
+                                        </Button>
+                                    </div>
                                 </div>}
                             </div>
                             {
                                 selectedWalletOption === "DATE RANGE" && (
-                                    <div className="flex items-center space-x-1 ml-48 mt-2">
+                                    <div className="flex items-center justify-center space-x-1 mr-32  mt-2">
                                         <div>
                                             <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
-                                                Start Date
+                                            Start Date
                                             </h3>
                                             <input
                                                 type="date"
@@ -241,21 +261,20 @@ const Report = () => {
                                             />
                                         </div>
                                         <div>
-                                            <button
-                                                onClick={handleSearch}
-                                                className="py-1 px-8 mt-6 bg-[#00C796] text-white rounded-md shadow-sm hover:bg-[#00C796] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007970]"
-                                            >
-                                                SEARCH
-                                            </button>
+                                            <Button variant="primary" onClick={handleSearch} bgColor="#00C796" mt={'22px'}
+                                                    borderRadius="4px"
+                                                    height="31px" size='md' as={ReactLink} w={'119px'}>
+                                                <Text color="white">SEARCH</Text>
+                                            </Button>
                                         </div>
                                     </div>
                                 )
                             }
                         </div>
                     )}
-                    {selectedReport === 'Transaction Status' && (
+                    {checkStatus() && (
                         <div>
-                            <div className="flex items-center space-x-1 ml-48 mt-3">
+                            <div className="flex items-center justify-center space-x-1 mr-52 mt-3">
                                 <div>
                                     <select
                                         id="searchOption"
@@ -270,18 +289,147 @@ const Report = () => {
                                         ))}
                                     </select>
                                 </div>
-                                <div>
+                                <div className="relative flex items-center w-[200px] max-w-xs">
                                     <input
                                         id="searchQuery"
                                         type="text"
                                         value={searchQuery}
                                         onChange={handleSearchQueryChange}
-                                        className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                         placeholder="Search"
+                                        className="block w-[200px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                     />
+                                    <div
+                                        className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                        <Search className="w-4 h-4 text-gray-400"/>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="flex items-center space-x-1 ml-48 mt-2">
+                            <div className="flex items-center justify-center space-x-1 mr-36 mt-2">
+                                <div>
+                                    <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
+                                        Start Date
+                                    </h3>
+                                    <input
+                                        type="date"
+                                        value={inputs.startDate}
+                                        onChange={(event) => handleChange(event, "startDate")}
+                                        placeholder="Enter start date"
+                                        max={getCurrentDate()}
+                                        className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                    />
+                                </div>
+                                <div className="">__</div>
+                                <div>
+                                    <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
+                                        End Date
+                                    </h3>
+                                    <input
+                                        type="date"
+                                        value={inputs.endDate}
+                                        onChange={(event) => handleChange(event, "endDate")}
+                                        placeholder="Enter end date"
+                                        max={getCurrentDate()}
+                                        className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                    />
+                                </div>
+                                <div>
+                                    <Button variant="primary" onClick={handleSearch} bgColor="#00C796" mt={'22px'}
+                                            borderRadius="4px"
+                                            height="31px" size='md' as={ReactLink} w={'119px'}>
+                                        <Text color="white">SEARCH</Text>
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    {
+                        selectedReport === "Customer Wallet Details" && (
+                            <div className="flex space-x-2 items-center justify-center mr-48  mt-2">
+                                <div>
+                                    <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
+                                        Account Number
+                                    </h3>
+                                    <div className="relative flex items-center w-[250px] max-w-xs">
+                                        <input
+                                            id="searchQuery"
+                                            type="text"
+                                            value={searchQuery}
+                                            onChange={handleSearchQueryChange}
+                                            placeholder="Input account number"
+                                            className="block w-[250px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <Button variant="primary" onClick={handleSearch} bgColor="#00C796"
+                                                borderRadius="4px"
+                                                height="31px" size='md' as={ReactLink} w={'129px'} mt={'24px'}>
+                                            <Text color="white">SEARCH</Text>
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    }
+                    {selectedReport === 'Fixed Deposit Details Report' && (
+                        <div className="flex items-center justify-center space-x-1 mt-2">
+                            <div>
+                                <select
+                                    id="searchOption"
+                                    value={status}
+                                    onChange={(e) => setStatus(e.target.value)}
+                                    className="block w-[140px] mt-6 py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                >
+                                    {statusOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                                <div>
+                                    <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
+                                        Start Date
+                                    </h3>
+                                    <input
+                                        type="date"
+                                        value={inputs.startDate}
+                                        onChange={(event) => handleChange(event, "startDate")}
+                                        placeholder="Enter start date"
+                                        max={getCurrentDate()}
+                                        className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                    />
+                                </div>
+                                <div className="">__</div>
+                                <div>
+                                    <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
+                                        End Date
+                                    </h3>
+                                    <input
+                                        type="date"
+                                        value={inputs.endDate}
+                                        onChange={(event) => handleChange(event, "endDate")}
+                                        placeholder="Enter end date"
+                                        max={getCurrentDate()}
+                                        className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                    />
+                                </div>
+                                <div>
+                                    <button
+                                        onClick={handleSearch}
+                                        className="py-1 px-6 mt-6 bg-[#00C796] text-white rounded-md shadow-sm hover:bg-[#00C796] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007970]"
+                                    >
+                                        SEARCH
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    {
+                        checkReport() && (
+                            <div className="flex items-center justify-center space-x-1 mr-32 mt-2">
                                 <div>
                                     <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
                                         Start Date
@@ -318,52 +466,44 @@ const Report = () => {
                                     </button>
                                 </div>
                             </div>
-
-
-                        </div>
-                    )}
-                    {
-                        selectedReport === "Customer Wallet Details" && (
-                            <div className="flex space-x-4 ml-48 mt-2">
-                                <div>
-                                    <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
-                                        Account Number
-                                    </h3>
-                                    <input
-                                        id="searchQuery"
-                                        type="text"
-                                        value={searchQuery}
-                                        onChange={handleSearchQueryChange}
-                                        className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
-                                        placeholder="Search"
-                                    />
-                                </div>
-                                <div>
-                                    <button
-                                        onClick={handleSearch}
-                                        className="py-1 px-8 mt-6 bg-[#00C796] text-white rounded-md shadow-sm hover:bg-[#00C796] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007970]"
-                                    >
-                                        SEARCH
-                                    </button>
-                                </div>
-                            </div>
                         )
                     }
-                    {selectedReport === 'Fixed Deposit Details Report' && (
-                        <div className="flex justify-center mt-2">
+                    { selectedReport === 'Loan Application Category Report' && (
+                        <div className="flex space-x-1 space-y-3 items-center justify-center">
                             <div>
                                 <select
                                     id="searchOption"
-                                    value={status}
-                                    onChange={(e) => setStatus(e.target.value)}
-                                    className="block w-[140px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                    value={days}
+                                    onChange={(e) => setDays(e.target.value)}
+                                    className="block mt-3 w-[190px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                 >
-                                    {statusOptions.map((option) => (
+                                    {daysOptions.map((option) => (
                                         <option key={option} value={option}>
                                             {option}
                                         </option>
                                     ))}
                                 </select>
+                            </div>
+                            <div className="relative flex items-center w-[200px] max-w-xs">
+                                <input
+                                    id="searchQuery"
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={handleSearchQueryChange}
+                                    placeholder="Search"
+                                    className="block w-[200px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                />
+                                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <Search className="w-4 h-4 text-gray-400"/>
+                                </div>
+                            </div>
+                            <div>
+                                <button
+                                    onClick={handleSearch}
+                                    className="py-1 px-16 bg-[#00C796] text-white rounded-md shadow-sm hover:bg-[#00C796] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007970]"
+                                >
+                                    SEARCH
+                                </button>
                             </div>
                         </div>
                     )}

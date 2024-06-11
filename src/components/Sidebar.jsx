@@ -17,12 +17,82 @@ import arrowUp from '../assets/arrowUp.svg'
 import Submenu from "./Submenu.jsx";
 import MenuIcon from '@mui/icons-material/Menu';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
+import axios from "axios";
+import {getUserToken} from "../services/storage/index.js";
+import {useEffect, useState} from "react";
+import themes from "./reusables/theme.jsx";
+import {CircularProgress, ThemeProvider} from "@mui/material";
 
 const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) => {
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
+    const token = getUserToken();
+    const user = JSON.parse(sessionStorage.getItem("userData"));
+    const [permissions, setPermissions] = useState(null);
+    const [filteredSidebarData, setFilteredSidebarData] = useState([]);
+
+    const fetchPermissions = async () => {
+        const storedPermissions = sessionStorage.getItem('userPermission');
+        if (storedPermissions) {
+            return JSON.parse(storedPermissions);
+        }else {
+            try {
+                const response = await axios.get(`${baseUrl}/ApplicationPermission/get_user_application_pages_permission/${user.UserId}`, {
+                    headers: {
+                        'Content-Type': "application/json",
+                        'Accept': "application/json",
+                        'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                        'authorization': `Bearer ${token}`
+                    }
+                });
+                sessionStorage.setItem("userPermission", JSON.stringify(response.data.data));
+                return response.data.data; // Adjust according to the structure of your API response
+            } catch (error) {
+                console.error('Error fetching permissions:', error);
+                return null;
+            }
+        }
+    };
+
+
+    useEffect(() => {
+        const getPermissions = async () => {
+            const perms = await fetchPermissions();
+            setPermissions(perms);
+        };
+        getPermissions();
+    }, []);
+
+    useEffect(() => {
+        if (permissions) {
+            const filterSidebarData = (data, perms) => {
+                return data.filter((item) => {
+                    // Check if the user has permission to view the main menu item
+                    const modulePermission = perms.modules.find(
+                        (mod) => mod.applicationModuleName === item.ssoName
+                    );
+                    if (!modulePermission) return false;
+
+                    // Check if the user has permission to view any dropdown items
+                    if (item.hasDropdown) {
+                        item.dropdown = item.dropdown.filter((subItem) => {
+                            return modulePermission.pages.some(
+                                // (page) => page.pageName === subItem.ssoPageName && page.permission?.canView
+                                (page) => page.pageName === subItem.ssoPageName
+                            );
+                        });
+                        return item.dropdown.length > 0;
+                    }
+                    return true;
+                });
+            };
+            setFilteredSidebarData(filterSidebarData(sidebarData, permissions));
+        }
+    }, [permissions]);
 
     const sidebarData = [
         {
             name: 'Dashboard',
+            ssoName: 'Dashboard',
             hasDropdown: false,
             href: '/dashboard',
             route: '/dashboard',
@@ -30,6 +100,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
         },
         {
             name: 'Loan Application',
+            ssoName: 'Loan Application',
             hasDropdown: true,
             icon: loanApp,
             route: '/loanApp',
@@ -38,30 +109,36 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
             dropdown: [
                 {
                     applicationPageName: 'Customer',
+                    ssoPageName: 'Customer',
                     href: '/loanApp/customer',
                     route: '/customer',
                 },
                 {
                     applicationPageName: 'Declined',
+                    ssoPageName: 'Declined',
                     href: '/loanApp/declined',
                     route: '/declined',
                 },
                 {
                     applicationPageName: 'Adjust',
+                    ssoPageName: 'Adjust',
                     href: '/loanApp/adjust',
                     route: '/adjust',
                 },
                 {
                     applicationPageName: 'Loan Status',
+                    ssoPageName: 'Loan Status',
                     href: '/loanApp/loanStatus',
                     route: '/loanStatus',
                 },
                 {
                     applicationPageName: 'Loan Restructuring',
+                    ssoPageName: 'Loan Restructuring',
                     href: '/loanApp/loanRestructuring',
                     route: '/loanRestructuring',
                 },{
                     applicationPageName: 'Loan Top-up',
+                    ssoPageName: 'Loan Topup',
                     href: '/loanApp/loanTopUp',
                     route: '/loanTopUp',
                 },
@@ -69,6 +146,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
         },
         {
             name: 'Loan Underwriting',
+            ssoName: 'Loan Underwritting',
             hasDropdown: true,
             icon: receipt,
             route: '/loanUnderwriting',
@@ -77,21 +155,25 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
             dropdown: [
                 {
                     applicationPageName: 'Review',
+                    ssoPageName: 'Review',
                     href: '/loanUnderwriting/review',
                     route: '/review',
                 },
                 {
                     applicationPageName: 'Approval',
+                    ssoPageName: 'Approval',
                     href: '/loanUnderwriting/approval',
                     route: '/approval',
                 },
                 {
                     applicationPageName: 'Disbursement',
+                    ssoPageName: 'Disbursement',
                     href: '/loanUnderwriting/disbursement',
                     route: '/disbursement',
                 },
                 {
                     applicationPageName: 'Loan Re-assignment',
+                    ssoPageName: 'Loan Reassignment',
                     href: '/loanUnderwriting/loanRe-assignment',
                     route: '/loanRe-assignment',
                 }
@@ -99,6 +181,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
         },
         {
             name: 'Collection',
+            ssoName: 'Collection',
             hasDropdown: true,
             icon: collection,
             route: '/collection',
@@ -107,16 +190,19 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
             dropdown: [
                 {
                     applicationPageName: 'Repayment',
+                    ssoPageName: 'Repayment',
                     href: '/collection/repayment',
                     route: '/repayment',
                 },
                 {
                     applicationPageName: 'Summary',
+                    ssoPageName: 'Summary',
                     href: '/collection/summary',
                     route: '/summary',
                 },
                 {
                     applicationPageName: 'Report',
+                    ssoPageName: 'Report',
                     href: '/collection/report',
                     route: '/report',
                 },
@@ -124,6 +210,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
         },
         {
             name: 'Staff',
+            ssoName: 'Staff',
             hasDropdown: true,
             icon: staff,
             route: '/staff',
@@ -132,6 +219,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
             dropdown: [
                 {
                     applicationPageName: 'Loan',
+                    ssoPageName: 'Loan',
                     href: '/staff/loan',
                     route: '/loan',
                 },
@@ -139,6 +227,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
         },
         {
             name: 'CRM',
+            ssoName: 'CRM',
             hasDropdown: true,
             icon: crm,
             route: '/crm',
@@ -147,11 +236,13 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
             dropdown: [
                 {
                     applicationPageName: 'Add Client',
+                    ssoPageName: 'Add Client',
                     href: '/crm/addClient',
                     route: '/addClient',
                 },
                 {
                     applicationPageName: 'Clients',
+                    ssoPageName: 'Clients',
                     href: '/crm/clients',
                     route: '/clients',
                 },
@@ -164,6 +255,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
         },
         {
             name: 'Administration',
+            ssoName: 'Administration',
             hasDropdown: true,
             icon: admin,
             route: '/administration',
@@ -172,27 +264,32 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
             dropdown: [
                 {
                     applicationPageName: 'Product',
+                    ssoPageName: 'Product',
                     href: '/administration',
                     route: '/product',
                 },
                 {
                     applicationPageName: 'Underwriter',
+                    ssoPageName: 'Underwriter',
                     href: '/administration/underwriter/level',
                     route: '/underwriter',
                     hasDropdown: true,
                     dropdown: [
                         {
                             applicationPageName: 'Level',
+                            ssoPageName: 'Underwriter_Level',
                             href: '/administration/underwriter/level',
                             route: '/level',
                         },
                         {
                             applicationPageName: 'Manage',
+                            ssoPageName: 'Underwriter_Manage',
                             href: '/administration/underwriter/manage',
                             route: '/manage',
                         },
                         {
                             applicationPageName: 'Regular Loan',
+                            ssoPageName: 'Underwriter_Regularloan',
                             href: '/administration/underwriter/regularLoan',
                             route: '/regularLoan',
                         },
@@ -200,22 +297,26 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 },
                 {
                     applicationPageName: 'Staff',
+                    ssoPageName: 'Staff',
                     href: '/administration/staff/staffLoan',
                     route: '/staff',
                     hasDropdown: true,
                     dropdown: [
                         {
                             applicationPageName: 'Loan',
+                            ssoPageName: 'Staff_Loan',
                             href: '/administration/staff/staffLoan',
                             route: '/staffLoan',
                         },
                         {
                             applicationPageName: 'Disbursed Loan',
+                            ssoPageName: 'Staff_Disbursedloan',
                             href: '/administration/staff/disbursedLoan',
                             route: '/disbursedLoan',
                         },
                         // {
                         //     applicationPageName: 'Loan Collection',
+                        //     ssoPageName: 'Staff_LoanCollection',
                         //     href: '/administration/staff/loanCollection',
                         //     route: '/loanCollection',
                         // },
@@ -223,11 +324,13 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 },
                 {
                     applicationPageName: 'Loan Tenor',
+                    ssoPageName: 'Loan_Tenor',
                     href: '/administration/loanTenor',
                     route: '/loanTenor',
                 },
                 {
                     applicationPageName: 'Report',
+                    ssoPageName: 'Report',
                     href: '/administration/report',
                     route: '/report',
                 },
@@ -242,6 +345,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
         },
         {
             name: 'Bridge Loan',
+            ssoName: 'Bridge Loan',
             hasDropdown: true,
             icon: bridge,
             route: '/bridgeLoan',
@@ -250,42 +354,50 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
             dropdown: [
                 {
                     applicationPageName: 'Documentation Setup',
+                    ssoPageName: 'Documentation_Setup',
                     href: '/bridgeLoan',
                     route: '/documentationSetUp',
                 },
                 {
                     applicationPageName: 'Documentation',
+                   ssoPageName: 'Documentation',
                     href: '/bridgeLoan/documentation',
                     route: '/documentation',
                 },
                 {
                     applicationPageName: 'Documentation Status',
+                   ssoPageName: 'Documentation_Status',
                     href: '/bridgeLoan/status',
                     route: '/status',
                 },
                 {
                     applicationPageName: 'Disbursement',
+                    ssoPageName: 'Disbursement',
                     href: '/bridgeLoan/disbursement/returned',
                     route: '/disbursement',
                     hasDropdown: true,
                     dropdown: [
                         {
                             applicationPageName: 'Returned',
+                            ssoPageName: 'Disbursement_Returned',
                             href: '/bridgeLoan/disbursement/returned',
                             route: '/returned',
                         },
                         {
                             applicationPageName: 'Process',
+                            ssoPageName: 'Disbursement_Process',
                             href: '/bridgeLoan/disbursement/processed',
                             route: '/processed',
                         },
                         {
                             applicationPageName: 'New',
+                            ssoPageName: 'Disbursement_New',
                             href: '/bridgeLoan/disbursement/new',
                             route: '/new',
                         },
                         {
                             applicationPageName: 'Disbursed',
+                            ssoPageName: 'Documentation_Disbursed',
                             href: '/bridgeLoan/disbursement/disbursed',
                             route: '/disbursed',
                         },
@@ -293,11 +405,13 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 },
                 // {
                 //     applicationPageName: 'Report',
+                //     ssoPageName: 'BridgeLoan_Report',
                 //     href: '/bridgeLoan/report',
                 //     route: '/bridgeLoan',
                 // },
                 {
                     applicationPageName: 'General Setup',
+                    ssoPageName: 'General_Setup',
                     href: '/bridgeLoan/generalSetup',
                     route: '/generalSetup',
                 },
@@ -312,13 +426,14 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
         },
         {
             name: 'General Setup',
+            ssoName: 'General Setup',
             hasDropdown: false,
             href: '/generalSetup',
             route: '/generalSetup',
             icon: setup,
         },
         {
-            name: 'Report',
+            name: 'Reports',
             hasDropdown: false,
             href: '/report',
             route: '/report',
@@ -345,136 +460,45 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                  openSidebar ? 'translate-x-0 ease-out block' : '-translate-x-full ease-in'
              }`}
              style={{ position: 'fixed', minWidth: isExpanded ? '18rem' : '3rem' }}>
-            <div className="flex items-center justify-center mt-4">
-                <div className="flex justify-between items-center">
-                    {isExpanded ? <div className="flex space-x-20 items-center">
-                        <img
-                            src={logo}
-                            alt="brand"
-                            width={109}
-                            height={32}
-                            className="cursor-pointer"
-                        />
-                        <SyncAltIcon onClick={handleToggleExpand} sx={{cursor: 'pointer'}}/>
-                    </div> : <SyncAltIcon onClick={handleToggleExpand} sx={{cursor: 'pointer'}}/>}
-                    {openSidebar && (
-                        <img
-                            className="ml-8"
-                            onClick={handleClick}
-                            src={exit}
-                            alt="exit"
-                            width={30}
-                            height={30}
-                        />
-                    )}
-                    <span className="mx-2 text-2xl font-normal focus:outline-none outline-none border-none text-white">
+            {
+                !permissions ? <ThemeProvider theme={themes}>
+                    <CircularProgress color={"waveGreen"} sx={{display: "flex", margin: "20px auto", justifyContent: "center"}}/>
+                </ThemeProvider> : <div>
+                    <div className="flex items-center justify-center mt-4">
+                        <div className="flex justify-between items-center">
+                            {isExpanded ? <div className="flex space-x-20 items-center">
+                                <img
+                                    src={logo}
+                                    alt="brand"
+                                    width={109}
+                                    height={32}
+                                    className="cursor-pointer"
+                                />
+                                <SyncAltIcon onClick={handleToggleExpand} sx={{cursor: 'pointer'}}/>
+                            </div> : <SyncAltIcon onClick={handleToggleExpand} sx={{cursor: 'pointer'}}/>}
+                            {openSidebar && (
+                                <img
+                                    className="ml-8"
+                                    onClick={handleClick}
+                                    src={exit}
+                                    alt="exit"
+                                    width={30}
+                                    height={30}
+                                />
+                            )}
+                            <span
+                                className="mx-2 text-2xl font-normal focus:outline-none outline-none border-none text-white">
             {/*Dashboard*/}
           </span>
+                        </div>
+                    </div>
+                    <div className="mt-12">
+                        {filteredSidebarData?.map((data, ind) => (
+                            <Submenu data={data} key={ind} isExpanded={isExpanded}/>
+                        ))}
+                    </div>
                 </div>
-            </div>
-            <div className="mt-12">
-                {sidebarData?.map((data, ind) => (
-                    <Submenu data={data} key={ind} isExpanded={isExpanded}/>
-                ))}
-                {/*    <div className={currentRoute === '/dashboard' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}>*/}
-                {/*        <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/dashboard'}>*/}
-                {/*            <img alt={'Dashboard_icon'} src={dashboard} width={20} height={20}/>*/}
-                {/*            <span className={"mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]"}>Dashboard</span>*/}
-                {/*        </a>*/}
-                {/*    </div>*/}
-                {/*    <div className="mt-8">*/}
-                {/*        <div className={currentRoute === '/loanApp' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}>*/}
-                {/*            <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/loanApp'}>*/}
-                {/*                <img alt={'Dashboard_icon'} src={receipt} width={20} height={20}/>*/}
-                {/*                <span className={"mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]"}>StaffLoan Application</span>*/}
-                {/*            </a>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*    <div className="mt-8">*/}
-                {/*        <div>*/}
-                {/*            <div*/}
-                {/*                onClick={handleShowDropdown}*/}
-                {/*                className={currentRoute === '/underwriting' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}*/}
-                {/*                style={{display: 'flex', justifyContent: 'space-between'}}*/}
-                {/*            >*/}
-                {/*                <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/underwriting'}>*/}
-                {/*                    <img alt={`application_icon`} src={receipt} width={20} height={20}/>*/}
-                {/*                    <span*/}
-                {/*                        className="mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]">StaffLoan Underwriting</span>*/}
-                {/*                </a>*/}
-                {/*                <img*/}
-                {/*                    className='pl-2 mr-10'*/}
-                {/*                    alt={`application_icon`}*/}
-                {/*                    src={showDropdown ? arrowUp : arrowDown}*/}
-                {/*                    width={20}*/}
-                {/*                    height={20}*/}
-                {/*                />*/}
-                {/*            </div>*/}
-                {/*            {showDropdown &&*/}
-                {/*                <div className='flex flex-col items-left px-6 py-1 mt-4 text-gray-100 bg-white bg-opacity-25'>*/}
-                {/*                    <div>*/}
-                {/*                         <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-                {/*                                                            href={'/application/manage'}>*/}
-                {/*                            <span className={`${ location.pathname === '/application/manage' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/application/manage' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>Review</span>*/}
-                {/*                        </a>*/}
-                {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-                {/*                                                           href={'/application/module'}>*/}
-                {/*                            <span className={`mx-3 text-sm font-normal text-[#0C3A35]`}>Repayment</span>*/}
-                {/*                        </a>*/}
-                {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-                {/*                                                          href={'/application/roles'}>*/}
-                {/*                            <span className={`mx-3 text-sm font-normal text-[#0C3A35]`}>Summary</span>*/}
-                {/*                        </a>*/}
-                {/*                       <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-                {/*                                                               href={'/application/permission'}>*/}
-                {/*                            <span className={`mx-3 text-sm font-normal text-[#0C3A35]`}>StaffLoan Re-assignment</span>*/}
-                {/*                        </a>*/}
-                {/*                    </div>*/}
-                {/*                </div>}*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*    <div className="mt-8">*/}
-                {/*        <div>*/}
-                {/*            <div*/}
-                {/*                onClick={handleShowDropdown}*/}
-                {/*                className={currentRoute === '/collection' && 'border-l-4 border-[#00C795] py-3 bg-[#EAFFFA]'}*/}
-                {/*                style={{display: 'flex', justifyContent: 'space-between'}}*/}
-                {/*            >*/}
-                {/*                <a className='flex items-center px-6  text-gray-100 bg-white bg-opacity-25' href={'/collection'}>*/}
-                {/*                    <img alt={`application_icon`} src={receipt} width={20} height={20}/>*/}
-                {/*                    <span*/}
-                {/*                        className="mx-3 text-sm font-normal focus:outline-none outline-none border-none text-[#072320]">Collection</span>*/}
-                {/*                </a>*/}
-                {/*                <img*/}
-                {/*                    className='pl-2 mr-10'*/}
-                {/*                    alt={`application_icon`}*/}
-                {/*                    src={showDropdown ? arrowUp : arrowDown}*/}
-                {/*                    width={20}*/}
-                {/*                    height={20}*/}
-                {/*                />*/}
-                {/*            </div>*/}
-                {/*            {showDropdown &&*/}
-                {/*                <div className='flex flex-col items-left px-6 py-1 mt-4 text-gray-100 bg-white bg-opacity-25'>*/}
-                {/*                    <div>*/}
-                {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-                {/*                           href={'/collection/approval'}>*/}
-                {/*                            <span className={`${ location.pathname === '/collection' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/collection' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>Approval</span>*/}
-                {/*                        </a>*/}
-                {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-                {/*                           href={'/collection/disbursement'}>*/}
-                {/*                            <span className={`${ location.pathname === '/collection/disbursement' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/collection/disbursement' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>Disbursement</span>*/}
-                {/*                        </a>*/}
-                {/*                        <a className="flex font-bold items-center px-6 py-2  text-gray-100 bg-white bg-opacity-25"*/}
-                {/*                           href={'/collection/re-assignment'}>*/}
-                {/*                            <span className={`${ location.pathname === '/collection/re-assignment' && 'medium'} mx-3 text-sm font-normal ${ location.pathname === '/collection/re-assignment' ? 'text-[#0C3A35]' : 'text-[#6F8B84]'}`}>StaffLoan Re-assignment</span>*/}
-                {/*                        </a>*/}
-                {/*                    </div>*/}
-                {/*                </div>}*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-
-                {/*</div>*/}
-            </div>
+            }
         </div>
     );
 };
