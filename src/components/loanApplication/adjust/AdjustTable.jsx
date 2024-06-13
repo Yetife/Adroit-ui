@@ -9,6 +9,7 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
 import {formatAmount} from "../../reusables/formatAmount.js";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const AdjustTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1)
@@ -87,6 +88,8 @@ const header = ['S/N', 'Channel', 'Loan Category', 'Email Address', 'First Name'
 
 export function TableData({data, no}) {
     const router = useNavigate()
+    const permissions = getPermission("Loan Application", "Adjust");
+
 
 
     return (
@@ -119,10 +122,10 @@ export function TableData({data, no}) {
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanDuration}</span>
             </td>
             <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
-                 <span
-                     className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/loanApp/adjust/customerDetails?id=${data.customerId}&aid=${data.applicantNumber}&status=adjust`)}>View
-                 </span>
+                {permissions.canView && <span
+                    className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
+                    onClick={() => router(`/loanApp/adjust/customerDetails?id=${data.customerId}&aid=${data.applicantNumber}&status=adjust`)}>View
+                 </span>}
             </td>
         </tr>
     )

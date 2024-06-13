@@ -7,6 +7,7 @@ import AddLoanStatusModal from "./AddLoanStatusModal.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEditStatusMutation, useGetAllStatusQuery} from "../../../store/features/loanApplication/api.js";
 import dayjs from "dayjs";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const LoanStatusTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllStatusQuery()
@@ -68,7 +69,7 @@ export function TableData({data, no}) {
     const dispatch = useDispatch()
     const [editStatus] = useEditStatusMutation()
     const router = useNavigate()
-
+    const permissions = getPermission("Loan Application", "Loan Status");
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
     const handleBlurDropdown = () => setShowDropdown(false)
@@ -133,15 +134,15 @@ export function TableData({data, no}) {
                 <span onMouseLeave={handleBlurDropdown}
                       className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
-                    <span
-                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
-                        onClick={() => handleOpenView(data)}>View</span>
-                    <span
+                   {permissions.canView && <span
+                       className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
+                       onClick={() => handleOpenView(data)}>View</span>}
+                    {permissions.canEdit && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={()=>handleOpenEdit(data)}>Edit</span>
-                    <span
+                        onClick={() => handleOpenEdit(data)}>Edit</span>}
+                    {permissions.canRemove && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={()=>router(`/loanApp/customerDetails?id=${data.uniqueId}`)}>Remove</span>
+                        onClick={() => router(`/loanApp/customerDetails?id=${data.uniqueId}`)}>Remove</span>}
                 </span>
             </td>
             <AddLoanStatusModal open={open} setOpen={setOpen} status={status} setStatus={setStatus} checked={checked}

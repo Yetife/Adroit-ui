@@ -146,7 +146,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
         },
         {
             name: 'Loan Underwriting',
-            ssoName: 'Loan Underwritting',
+            ssoName: 'Loan Underwriting',
             hasDropdown: true,
             icon: receipt,
             route: '/loanUnderwriting',

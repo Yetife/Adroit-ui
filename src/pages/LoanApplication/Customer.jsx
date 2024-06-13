@@ -1,8 +1,5 @@
 import Layout from "../Layout.jsx";
-import {useState} from "react";
-import {useDispatch} from "react-redux";
-import {useAddGenderMutation} from "../../store/features/generalSetup/api.js";
-import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {useEffect, useState} from "react";
 import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";

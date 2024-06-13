@@ -10,6 +10,7 @@ import AddLgaModal from "../../components/generalSetup/AddLgaModal.jsx";
 import {useAddStateMutation} from "../../store/features/generalSetup/api.js";
 import StateTable from "../../components/generalSetup/state/StateTable.jsx";
 import AddStateModal from "../../components/generalSetup/state/AddStateModal.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const State = () => {
     const router = useNavigate()
@@ -18,6 +19,8 @@ const State = () => {
     const [state, setState] = useState("")
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedValue, setSelectedValue] = useState('');
+    const permissions = getPermission("General Setup", "General setup");
+
 
 
     const handleSearch = (searchValue) => {
@@ -39,9 +42,10 @@ const State = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

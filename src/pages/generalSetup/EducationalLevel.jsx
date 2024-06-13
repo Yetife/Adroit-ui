@@ -8,6 +8,7 @@ import AddEducationLevelModal from "../../components/generalSetup/educationalLev
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 import {useAddEducationalLevelMutation} from "../../store/features/generalSetup/api.js";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const EducationalLevel = () => {
     const router = useNavigate()
@@ -18,6 +19,7 @@ const EducationalLevel = () => {
     const [addEducationalLevel] = useAddEducationalLevelMutation()
     const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(false);
+    const permissions = getPermission("General Setup", "General setup");
 
 
     const handleSearch = (searchValue) => {
@@ -55,9 +57,10 @@ const EducationalLevel = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

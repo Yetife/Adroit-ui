@@ -8,6 +8,7 @@ import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import LateFeePrincipalTable from "../../components/generalSetup/lateFeePrincipal/LateFeePrincipalTable.jsx";
 import AddLateFeePrincipalModal from "../../components/generalSetup/lateFeePrincipal/AddLateFeePrincipalModal.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const LateFeePrincipal = () => {
     const router = useNavigate()
@@ -17,6 +18,8 @@ const LateFeePrincipal = () => {
     const dispatch = useDispatch()
     const [addStatus] = useAddLateFeePrincipalMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    const permissions = getPermission("General Setup", "General setup");
+
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -52,9 +55,10 @@ const LateFeePrincipal = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

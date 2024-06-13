@@ -9,6 +9,7 @@ import {Button, Text} from "@chakra-ui/react";
 import LgaTable from "../../components/generalSetup/LgaTable.jsx";
 import AddDependentsModal from "../../components/generalSetup/noOfDependents/AddDependentsModal.jsx";
 import DependentsTable from "../../components/generalSetup/noOfDependents/DependentsTable.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const Dependents = () => {
     const router = useNavigate()
@@ -18,6 +19,8 @@ const Dependents = () => {
     const dispatch = useDispatch()
     const [addDependents] = useAddDependentsMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    const permissions = getPermission("General Setup", "General setup");
+
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -52,9 +55,10 @@ const Dependents = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

@@ -5,6 +5,7 @@ import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import AddRegularLoanInterestRateModal from "../../components/generalSetup/regularLoanInterestRate/AddRegularLoanInterestRateModal.jsx";
 import RegularLoanInterestRateTable from "../../components/generalSetup/regularLoanInterestRate/RegularLoanInterestRateTable.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const RegularLoanInterestRate = () => {
     const router = useNavigate()
@@ -14,6 +15,8 @@ const RegularLoanInterestRate = () => {
     const [selectedValue, setSelectedValue] = useState('');
     const [depositTo, setDepositTo] = useState("")
     const [rate, setRate] = useState("")
+    const permissions = getPermission("General Setup", "General setup");
+
 
     const handleOpen = () => {
         setOpen(true)
@@ -30,9 +33,10 @@ const RegularLoanInterestRate = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

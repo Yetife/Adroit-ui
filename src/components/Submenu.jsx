@@ -34,7 +34,7 @@ const Submenu = ({data, isExpanded}) => {
                     </div>
                     {/*{data.hasDropdown && showDropdown ? <img src={data.iconClosed} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> : data.hasDropdown ? <img src={data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' width={20} height={20}/> : null}*/}
                     {(data.hasDropdown && isExpanded) && <img
-                        src={ showDropdown ?data.iconClosed : data.iconOpened} e  alt={'arrowDown'} className='pl-2 mr-10' style={{ transition: 'transform 0.3s ease' }} width={20} height={20}/> }
+                        src={ showDropdown ?data.iconClosed : data.iconOpened} alt={'arrowDown'} className='pl-2 mr-10' style={{ transition: 'transform 0.3s ease' }} width={20} height={20}/> }
                 </div>
                 {
                     data.hasDropdown && showDropdown && (

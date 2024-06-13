@@ -6,6 +6,7 @@ import {useGetAllAdjustTopUpQuery} from "../../../store/features/loanApplication
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const AdjustTopUpTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1)
@@ -85,6 +86,8 @@ const header = ['S/N', 'Loan Category', 'First Name', 'Middle Name', 'Last Name'
 
 export function TableData({data, no}) {
     const router = useNavigate()
+    const permissions = getPermission("Loan Application", "Adjust");
+
 
     return (
         <tr>
@@ -145,10 +148,10 @@ export function TableData({data, no}) {
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.dateSubmitted).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
-                 <span
-                     className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/loanApp/topUp/adjust?id=${data.loanApplicationId}&status=adjust&type=topup`)}>View
-                 </span>
+                {permissions.canView && <span
+                    className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
+                    onClick={() => router(`/loanApp/topUp/adjust?id=${data.loanApplicationId}&status=adjust&type=topup`)}>View
+                 </span>}
             </td>
         </tr>
     )

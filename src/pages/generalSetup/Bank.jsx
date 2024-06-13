@@ -8,6 +8,7 @@ import AddBankModal from "../../components/generalSetup/bank/AddBankModal.jsx";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 import {useAddBanksMutation} from "../../store/features/generalSetup/api.js";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const Bank = () => {
     const router = useNavigate()
@@ -19,6 +20,14 @@ const Bank = () => {
     const dispatch = useDispatch()
     const [addBanks] = useAddBanksMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    // const permissions = getPermission("General Setup", "General setup");
+    const permissions = getPermission("General Setup", "General setup");
+
+    if (permissions) {
+        console.log("Permissions for 'Customer' page in 'Loan Application' module:", permissions);
+    } else {
+        console.log("Permissions not found");
+    }
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -59,9 +68,10 @@ const Bank = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

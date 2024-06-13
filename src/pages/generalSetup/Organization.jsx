@@ -8,6 +8,7 @@ import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import AddOrganizationModal from "../../components/generalSetup/organization/AddOrganizationModal.jsx";
 import OrganizationTable from "../../components/generalSetup/organization/OrganizationTable.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const Organization = () => {
     const router = useNavigate()
@@ -17,6 +18,8 @@ const Organization = () => {
     const dispatch = useDispatch()
     const [addOrganization] = useAddOrganizationMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    const permissions = getPermission("General Setup", "General setup");
+
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -51,9 +54,10 @@ const Organization = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

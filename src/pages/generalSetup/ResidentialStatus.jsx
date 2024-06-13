@@ -10,6 +10,7 @@ import OrganizationTable from "../../components/generalSetup/organization/Organi
 import AddOrganizationModal from "../../components/generalSetup/organization/AddOrganizationModal.jsx";
 import AddResidentialStatusModal from "../../components/generalSetup/residentialStatus/AddResidentialStatusModal.jsx";
 import ResidentialStatusTable from "../../components/generalSetup/residentialStatus/ResidentialStatusTable.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const ResidentialStatus = () => {
     const router = useNavigate()
@@ -19,6 +20,8 @@ const ResidentialStatus = () => {
     const dispatch = useDispatch()
     const [addResidential] = useAddResidentialStatusMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    const permissions = getPermission("General Setup", "General setup");
+
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -53,9 +56,10 @@ const ResidentialStatus = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

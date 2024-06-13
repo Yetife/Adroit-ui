@@ -19,6 +19,7 @@ import {
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
 import StopDisbursementModal from "../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const ViewAdjustLoanPage = () => {
     const [open, setOpen] = useState(false)
@@ -27,6 +28,8 @@ const ViewAdjustLoanPage = () => {
     const appId = queryParams.get("aid");
     const {data, isFetching, error} = useGetAdjustCustomerDetailsQuery(custId)
     const [rloading, setRLoading] = useState(false)
+    const permissions = getPermission("Loan Application", "Adjust");
+
 
     // const {dataa} = useGetAdjustmentDetailsQuery(custId)
     const status = queryParams.get("status");
@@ -130,15 +133,17 @@ const ViewAdjustLoanPage = () => {
                             {
                                 status === "adjust" && (
                                     <div className="flex space-x-3 my-8">
-                                        <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                                as={ReactLink} w={'110px'} onClick={handleComplete} isLoading={rloading} loadingText={"Reviewing"}>
+                                        {permissions.canReview && <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px"
+                                                 size='md'
+                                                 as={ReactLink} w={'110px'} onClick={handleComplete}
+                                                 isLoading={rloading} loadingText={"Reviewing"}>
                                             <Text color="white">Review</Text>
-                                        </Button>
-                                        <Button variant="outline" borderColor="#FF0909" marginRight="10px"
-                                                border={"1px solid #FF0909"} borderRadius="4px" height="37px"
-                                                size='md' as={ReactLink} w={'110px'} onClick={handleOpen}>
+                                        </Button>}
+                                        {permissions.canDecline && <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                                                 border={"1px solid #FF0909"} borderRadius="4px" height="37px"
+                                                 size='md' as={ReactLink} w={'110px'} onClick={handleOpen}>
                                             <Text color="#FF0909">Decline</Text>
-                                        </Button>
+                                        </Button>}
                                     </div>
                                 )
                             }
@@ -147,15 +152,17 @@ const ViewAdjustLoanPage = () => {
                             {
                                 status === "cust" && (
                                     <div className="flex space-x-3 my-8 float-right">
-                                        <Button variant="outline" borderColor="#FF0909" marginRight="10px"
-                                                border={"1px solid #FF0909"} borderRadius="4px" height="37px"
-                                                size='md' as={ReactLink} w={'150px'} onClick={handleOpen}>
+                                        {permissions.canDecline && <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                                                 border={"1px solid #FF0909"} borderRadius="4px" height="37px"
+                                                 size='md' as={ReactLink} w={'150px'} onClick={handleOpen}>
                                             <Text color="#FF0909">Decline Loan</Text>
-                                        </Button>
-                                        <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                                as={ReactLink} w={'180px'} onClick={handleComplete} isLoading={rloading} loadingText={"Reviewing"}>
+                                        </Button>}
+                                        {permissions.canReview && <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px"
+                                                 size='md'
+                                                 as={ReactLink} w={'180px'} onClick={handleComplete}
+                                                 isLoading={rloading} loadingText={"Reviewing"}>
                                             <Text color="white">Complete Review</Text>
-                                        </Button>
+                                        </Button>}
 
                                     </div>
                                 )

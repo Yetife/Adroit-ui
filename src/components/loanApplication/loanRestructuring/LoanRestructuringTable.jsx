@@ -10,6 +10,7 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
 import {formatAmount} from "../../reusables/formatAmount.js";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const LoanRestructuringTable = ({searchTerm, statusName, bvn, email, customerRef, startDate, endDate}) => {
     const [page, setPage] = useState(1)
@@ -89,6 +90,8 @@ const header = ['S/N', 'Loan Category', 'First Name', 'Last Name', 'Email Addres
 export function TableData({data, no}) {
     const [ showDropdown, setShowDropdown ] = useState(false)
     const router = useNavigate()
+    const permissions = getPermission("Loan Application", "Loan Restructuring");
+
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
     const handleBlurDropdown = () => setShowDropdown(false)
@@ -148,12 +151,12 @@ export function TableData({data, no}) {
                 <span onMouseLeave={handleBlurDropdown}
                       className="absolute z-10 w-32 right--1 md:right-10 mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
-                    <span
-                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
-                        onClick={() => router(`/loanApp/loanRestructuring/view?id=${data.loanApplicationId}&status=view`)}>View</span>
-                    <span
+                   {permissions.canView && <span
+                       className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
+                       onClick={() => router(`/loanApp/loanRestructuring/view?id=${data.loanApplicationId}&status=view`)}>View</span>}
+                    {permissions.canEdit && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => router(`/loanApp/loanRestructuring/edit?id=${data.loanApplicationId}&status=edit`)}>Edit</span>
+                        onClick={() => router(`/loanApp/loanRestructuring/edit?id=${data.loanApplicationId}&status=edit`)}>Edit</span>}
                 </span>
             </td>
         </tr>

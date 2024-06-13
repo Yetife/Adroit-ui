@@ -6,6 +6,7 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import Pagination from "../../reusables/Pagination.jsx";
 import dayjs from "dayjs";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const ReviewRestructureTable = ({searchTerm, applicationId, name, phone, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1)
@@ -85,6 +86,7 @@ const header = ['S/N', 'Loan Category', 'First Name', 'Last Name', 'Email Addres
 
 export function TableData({data, no}) {
     const router = useNavigate()
+    const permissions = getPermission("Loan Underwriting", "Review");
 
     return (
         <tr>
@@ -130,10 +132,10 @@ export function TableData({data, no}) {
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.dateSubmitted).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
-                 <span
-                     className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/loanUnderwriting/restructuring/review?id=${data.loanApplicationId}&status=review&type=structure`)}>View
-                 </span>
+                {permissions.canView && <span
+                    className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
+                    onClick={() => router(`/loanUnderwriting/restructuring/review?id=${data.loanApplicationId}&status=review&type=structure`)}>View
+                 </span>}
             </td>
         </tr>
     )

@@ -8,6 +8,7 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import AddRegularLoanInterestRateModal from "./AddRegularLoanInterestRateModal.jsx";
 import {formatAmount} from "../../reusables/formatAmount.js";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const RegularLoanInterestRateTable = () => {
     const {data, isFetching, error} = useGetAllRegularLoanInterestRateQuery()
@@ -67,6 +68,7 @@ export function TableData({data, no}) {
     const [purpose, setPurpose] = useState("")
     const [id, setId] = useState(0)
     const [deleteLoan] = useDeleteRegularLoanInterestRateMutation()
+    const permissions = getPermission("General Setup", "General setup");
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -142,9 +144,9 @@ export function TableData({data, no}) {
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
                         onClick={() => handleOpenView(data)}>View</span>
-                    <span
+                    {permissions.canUpdate && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => handleOpenEdit(data)}>Edit</span>
+                        onClick={() => handleOpenEdit(data)}>Edit</span>}
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
                         onClick={() => handleRemove(data.id)}>Remove</span>

@@ -9,6 +9,7 @@ import {Button, Text} from "@chakra-ui/react";
 import LateFeeTypeTable from "../../components/generalSetup/lateFeeType/LateFeeTypeTable.jsx";
 import AddFeeFrequencyModal from "../../components/generalSetup/feeFrequency/AddFeeFrequencyModal.jsx";
 import FeeFrequencyTable from "../../components/generalSetup/feeFrequency/FeeFrequencyTable.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const FeeFrequency = () => {
     const router = useNavigate()
@@ -18,6 +19,8 @@ const FeeFrequency = () => {
     const dispatch = useDispatch()
     const [addStatus] = useAddFeeFrequencysMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    const permissions = getPermission("General Setup", "General setup");
+
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -53,9 +56,10 @@ const FeeFrequency = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

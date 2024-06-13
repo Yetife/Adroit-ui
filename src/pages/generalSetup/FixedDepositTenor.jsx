@@ -8,6 +8,7 @@ import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import AddFixedDepositTenorModal from "../../components/generalSetup/fixedDepositTenor/AddFixedDepositTenorModal.jsx";
 import FixedDepositTenorTable from "../../components/generalSetup/fixedDepositTenor/FixedDepositTenorTable.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const FixedDepositTenor = () => {
     const router = useNavigate()
@@ -20,6 +21,8 @@ const FixedDepositTenor = () => {
     const dispatch = useDispatch()
     const [addTenor] = useAddFixedDepositTenorMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    const permissions = getPermission("General Setup", "General setup");
+
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -60,9 +63,10 @@ const FixedDepositTenor = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

@@ -9,6 +9,7 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import AddFixedDepositPreliquidationChargesModal from "./AddFixedDepositPreliquidationChargesModal.jsx";
 import {formatAmount} from "../../reusables/formatAmount.js";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const FixedDepositPreliquidationChargesTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllFixedDepositPreliquidationChargesQuery()
@@ -81,6 +82,8 @@ export function TableData({data, no}) {
     const [id, setId] = useState(0)
     const [deleteCharges] = useDeleteFixedDepositPreliquidationChargesMutation()
     const [editCharges] = useEditFixedDepositPreliquidationChargesMutation()
+    const permissions = getPermission("General Setup", "General setup");
+
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -170,7 +173,9 @@ export function TableData({data, no}) {
                 </a>
                 <span  onMouseLeave={handleBlurDropdown} className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer" style={{ display: showDropdown ? "block" : "none"}}>
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white" onClick={()=>handleOpenView(data)}>View</span>
-                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleOpenEdit(data)}>Edit</span>
+                    {permissions.canUpdate && <span
+                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
+                        onClick={() => handleOpenEdit(data)}>Edit</span>}
                     <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.id)}>Remove</span>
         </span>
             </td>

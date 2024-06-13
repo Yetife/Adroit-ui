@@ -8,6 +8,7 @@ import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import AddTitleModal from "../../components/generalSetup/title/AddTitleModal.jsx";
 import TitleTable from "../../components/generalSetup/title/TitleTable.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const Title = () => {
     const router = useNavigate()
@@ -17,6 +18,7 @@ const Title = () => {
     const dispatch = useDispatch()
     const [addTitle] = useAddTitleMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    const permissions = getPermission("General Setup", "General setup");
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -51,9 +53,10 @@ const Title = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

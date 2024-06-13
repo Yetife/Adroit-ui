@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {
     useGetAllCustomerQuery,
 } from "../../../store/features/loanApplication/api.js";
@@ -8,10 +8,17 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import {formatAmount} from "../../reusables/formatAmount.js";
 import Pagination from "../../reusables/Pagination.jsx";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const CustomerTable = ({searchTerm, applicationId, name, statusName, email, channel, startDate, endDate}) => {
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(10);
+    const permissions = getPermission("Loan Application", "Customer");
+    if (permissions) {
+        console.log("Permissions for 'Customer' page in 'Loan Application' module:", permissions);
+    } else {
+        console.log("Permissions not found");
+    }
 
     // Query data
     const { data, isFetching, error } = useGetAllCustomerQuery({
@@ -41,6 +48,7 @@ const CustomerTable = ({searchTerm, applicationId, name, statusName, email, chan
         setSize(parseInt(event.target.value, 10));
     };
 
+
     return (
         <div className="flex rounded-3xl flex-col mt-8">
             <div className="py-2 md:px-2 sm:px-2 inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
@@ -55,7 +63,7 @@ const CustomerTable = ({searchTerm, applicationId, name, statusName, email, chan
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        {filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
+                        {filteredData?.length > 0 && filteredData?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val} perms={permissions}/>)}
                         </tbody>
                     </table>
                 </div>
@@ -87,7 +95,7 @@ export function TableHeader({name}) {
 
 const header = ['S/N', 'Channel', 'Loan Category', 'Loan Amount', 'Email Address', 'First Name', 'Last Name', 'Application Date', 'Actions' ]
 
-export function TableData({data, no}) {
+export function TableData({data, no, perms}) {
     const router = useNavigate()
 
     return (
@@ -117,11 +125,11 @@ export function TableData({data, no}) {
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data.dateCreated).format("YYYY/MM/DD")}</span>
             </td>
-            <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
-                 <span
+             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
+                 {perms.canView && <span
                      className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
                      onClick={() => router(`/loanApp/customerDetails?id=${data.customerId}&aid=${data.applicantNumber}&status=cust`)}>View
-                 </span>
+                 </span>}
             </td>
         </tr>
     )

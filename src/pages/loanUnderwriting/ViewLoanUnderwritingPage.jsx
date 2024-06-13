@@ -26,6 +26,7 @@ import {
     useApproveApplicationMutation, useDisburseApplicationMutation,
     useReturnApplicationMutation
 } from "../../store/features/loanApplication/api.js";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const ViewLoanUnderwritingPage = () => {
     const [comment, setComment] = useState("")
@@ -53,6 +54,8 @@ const ViewLoanUnderwritingPage = () => {
     const [disburseApp] = useDisburseApplicationMutation()
     const [stopDisburse] = useStopDisbursementMutation()
     const dispatch = useDispatch()
+    const permissions = getPermission("Loan Underwriting", "Review");
+
 
     console.log("ffgfgdsdg", inputs.amount)
     console.log("ffgfgdsdg", data?.data.information.duration)
@@ -204,10 +207,11 @@ const ViewLoanUnderwritingPage = () => {
                             status === "review" && <div className="flex justify-between px-0 pb-1 md:pt-1 overflow-auto">
                                 <div></div>
                                 <div>
-                                    <Button variant="primary" bgColor="#00C795" borderRadius="4px"
-                                            height="37px" size='md' as={ReactLink} w={'129px'} onClick={()=>setOpenComment(true)}>
+                                    {permissions.canComment && <Button variant="primary" bgColor="#00C795" borderRadius="4px"
+                                             height="37px" size='md' as={ReactLink} w={'129px'}
+                                             onClick={() => setOpenComment(true)}>
                                         <Text color="white">Add Comment</Text>
-                                    </Button>
+                                    </Button>}
                                 </div>
                             </div>
                         }
@@ -215,10 +219,11 @@ const ViewLoanUnderwritingPage = () => {
                             status === "approve" && <div className="flex justify-between px-0 pb-2 md:pt-1 overflow-auto">
                                 <div></div>
                                 <div>
-                                    <Button variant="primary" bgColor="#FF0909" borderRadius="4px"
-                                            height="37px" size='md' as={ReactLink} w={'119px'} onClick={()=>setOpenDecision(true)}>
+                                    {permissions.canDecide && <Button variant="primary" bgColor="#FF0909" borderRadius="4px"
+                                             height="37px" size='md' as={ReactLink} w={'119px'}
+                                             onClick={() => setOpenDecision(true)}>
                                         <Text color="white">Decide</Text>
-                                    </Button>
+                                    </Button>}
                                 </div>
                             </div>
                         }
@@ -238,58 +243,65 @@ const ViewLoanUnderwritingPage = () => {
                                 {
                                     status === "review" && (
                                         <div className="flex space-x-3 my-4">
-                                            <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                                    as={ReactLink} w={'110px'} onClick={handleApprove} isLoading={aLoading} loadingText={"Approving"}>
+                                            {permissions.canApprove && <Button variant="primary" bgColor="#00C795" borderRadius="4px"
+                                                     height="37px" size='md'
+                                                     as={ReactLink} w={'110px'} onClick={handleApprove}
+                                                     isLoading={aLoading} loadingText={"Approving"}>
                                                 <Text color="white">Approve</Text>
-                                            </Button>
-                                            <Button variant="primary" bgColor="#1781BC" borderRadius="4px" height="37px" size='md'
-                                                    as={ReactLink} w={'110px'} onClick={()=>setOpenAdjust(true)}>
+                                            </Button>}
+                                            {permissions.canAdjust && <Button variant="primary" bgColor="#1781BC" borderRadius="4px"
+                                                     height="37px" size='md'
+                                                     as={ReactLink} w={'110px'} onClick={() => setOpenAdjust(true)}>
                                                 <Text color="white">Adjust</Text>
-                                            </Button>
-                                            <Button variant="outline" borderColor="#FF0909" marginRight="10px"
-                                                    border={"1px solid #FF0909"} borderRadius="4px" height="37px"
-                                                    size='md' as={ReactLink} w={'110px'} onClick={() => setOpen(true)}>
+                                            </Button>}
+                                            {permissions.canDecline && <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                                                     border={"1px solid #FF0909"} borderRadius="4px" height="37px"
+                                                     size='md' as={ReactLink} w={'110px'} onClick={() => setOpen(true)}>
                                                 <Text color="#FF0909">Decline</Text>
-                                            </Button>
+                                            </Button>}
                                         </div>
                                     )
                                 }
                                 {
                                     status === "approve" && (
                                         <div className="flex space-x-3 my-4">
-                                            <Button variant="primary" bgColor="#00C796" borderRadius="4px" height="37px" size='md'
-                                                    as={ReactLink} w={'110px'} onClick={handleDisburse}>
+                                            {permissions.canDisburse && <Button variant="primary" bgColor="#00C796" borderRadius="4px"
+                                                     height="37px" size='md'
+                                                     as={ReactLink} w={'110px'} onClick={handleDisburse}>
                                                 <Text color="white">Disburse</Text>
-                                            </Button>
-                                            <Button variant="primary" bgColor="#005F47" borderRadius="4px" height="37px" size='md'
-                                                    as={ReactLink} w={'110px'} onClick={handleReturn}>
+                                            </Button>}
+                                            {permissions.canReturn && <Button variant="primary" bgColor="#005F47" borderRadius="4px"
+                                                     height="37px" size='md'
+                                                     as={ReactLink} w={'110px'} onClick={handleReturn}>
                                                 <Text color="white">Return</Text>
-                                            </Button>
-                                            <Button variant="outline" borderColor="#FF0909" marginRight="10px"
-                                                    border={"1px solid #FF0909"} borderRadius="4px" height="37px"
-                                                    size='md' as={ReactLink} w={'110px'} onClick={() => setOpen(true)}>
+                                            </Button>}
+                                            {permissions.canDecline && <Button variant="outline" borderColor="#FF0909" marginRight="10px"
+                                                     border={"1px solid #FF0909"} borderRadius="4px" height="37px"
+                                                     size='md' as={ReactLink} w={'110px'} onClick={() => setOpen(true)}>
                                                 <Text color="#FF0909">Decline</Text>
-                                            </Button>
+                                            </Button>}
                                         </div>
                                     )
                                 }
                                 {
                                     status === "disburse" && (
                                         <div className="my-4">
-                                            <Button variant="primary" bgColor="#00C795" borderRadius="4px" height="37px" size='md'
-                                                    as={ReactLink} w={'190px'} onClick={handleStop}>
+                                            {permissions.canStopDisbursement && <Button variant="primary" bgColor="#00C795" borderRadius="4px"
+                                                     height="37px" size='md'
+                                                     as={ReactLink} w={'190px'} onClick={handleStop}>
                                                 <Text color="white">Stop Disbursement</Text>
-                                            </Button>
+                                            </Button>}
                                         </div>
                                     )
                                 }
                                 {
                                     status === "reassign" && (
                                         <div className="my-4">
-                                            <Button variant="primary" bgColor="#FF0909" borderRadius="4px" height="37px" size='md'
-                                                    as={ReactLink} w={'130px'} onClick={()=>setOpenReassign(true)}>
+                                            {permissions.canReAssign && <Button variant="primary" bgColor="#FF0909" borderRadius="4px"
+                                                     height="37px" size='md'
+                                                     as={ReactLink} w={'130px'} onClick={() => setOpenReassign(true)}>
                                                 <Text color="white">Re-assign</Text>
-                                            </Button>
+                                            </Button>}
                                         </div>
                                     )
                                 }

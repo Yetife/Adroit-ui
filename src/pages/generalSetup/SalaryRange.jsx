@@ -8,6 +8,7 @@ import Search from "../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import AddSalaryRangeModal from "../../components/generalSetup/salaryRange/AddSalaryRangeModal.jsx";
 import SalaryRangeTable from "../../components/generalSetup/salaryRange/SalaryRangeTable.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const SalaryRange = () => {
     const router = useNavigate()
@@ -17,6 +18,8 @@ const SalaryRange = () => {
     const dispatch = useDispatch()
     const [addSalaryRange] = useAddSalaryRangeMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    const permissions = getPermission("General Setup", "General setup");
+
 
 
     const handleSearch = (searchValue) => {
@@ -52,9 +55,10 @@ const SalaryRange = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>
