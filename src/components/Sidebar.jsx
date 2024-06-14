@@ -419,6 +419,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
         },
         {
             name: 'Customer Centric',
+            ssoName: 'Customer Centric',
             hasDropdown: false,
             href: '/customerCentric/fixedDeposit',
             route: '/customerCentric',
@@ -434,6 +435,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
         },
         {
             name: 'Reports',
+            ssoName: 'Report',
             hasDropdown: false,
             href: '/report',
             route: '/report',

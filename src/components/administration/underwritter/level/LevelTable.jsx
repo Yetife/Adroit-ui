@@ -10,6 +10,7 @@ import AddLevelModal from "./AddLevelModal.jsx";
 import dayjs from "dayjs";
 import Pagination from "../../../reusables/Pagination.jsx";
 import {formatAmount} from "../../../reusables/formatAmount.js";
+import {getPermission} from "../../../reusables/getPermission.js";
 
 const LevelTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -97,6 +98,8 @@ export function TableData({data, no}) {
     const dispatch = useDispatch()
     const [deleteLevel] = useDeleteLevelMutation()
     const [editLevel] = useEditLevelMutation()
+    const permissions = getPermission("Administration", "Underwriter_Level");
+
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -178,15 +181,15 @@ export function TableData({data, no}) {
                 <span onMouseLeave={handleBlurDropdown}
                       className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
-                    <span
+                    {permissions.canView && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
-                        onClick={() => handleOpenView(data)}>View</span>
-                    <span
+                        onClick={() => handleOpenView(data)}>View</span>}
+                    {permissions.canEdit && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => handleOpenEdit(data)}>Edit</span>
-                    <span
+                        onClick={() => handleOpenEdit(data)}>Edit</span>}
+                    {permissions.canRemove && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => handleRemove(data.id)}>Remove</span>
+                        onClick={() => handleRemove(data.id)}>Remove</span>}
         </span>
             </td>
             <AddLevelModal open={open} setOpen={setOpen} handleAdd={handleEdit} inputs={inputs} setInputs={setInputs}

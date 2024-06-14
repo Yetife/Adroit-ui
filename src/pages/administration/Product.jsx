@@ -11,6 +11,7 @@ import ProductModal from "../../components/administration/products/ProductModal.
 import ProductsTable from "../../components/administration/products/ProductsTable.jsx";
 import dayjs from "dayjs";
 import {useAddProductMutation} from "../../store/features/administration/api.js";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const Product = () => {
     const [open, setOpen] = useState(false)
@@ -37,6 +38,7 @@ const Product = () => {
         feeFrequency: "",
     }
     const [inputs, setInputs] = useState(initialState)
+    const permissions = getPermission("Administration", "Product");
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -94,9 +96,10 @@ const Product = () => {
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add New</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

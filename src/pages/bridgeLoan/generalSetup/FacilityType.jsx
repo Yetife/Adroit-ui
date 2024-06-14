@@ -9,6 +9,7 @@ import {useAddFacilityTypeMutation} from "../../../store/features/bridgeLoan/api
 import TenorTable from "../../../components/bridgeLoan/generalSetup/tenor/TenorTable.jsx";
 import AddFacilityTypeModal from "../../../components/bridgeLoan/generalSetup/facilityType/AddFacilityTypeModal.jsx";
 import FacilityTypeTable from "../../../components/bridgeLoan/generalSetup/facilityType/FacilityTypeTable.jsx";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 
 const FacilityType = () => {
     const router = useNavigate()
@@ -18,6 +19,7 @@ const FacilityType = () => {
     const dispatch = useDispatch()
     const [searchTerm, setSearchTerm] = useState("");
     const [addFacility] = useAddFacilityTypeMutation()
+    const permissions = getPermission("Bridge Loan", "General_Setup");
 
     const handleOpen = () => {
         setOpen(true)
@@ -53,9 +55,10 @@ const FacilityType = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

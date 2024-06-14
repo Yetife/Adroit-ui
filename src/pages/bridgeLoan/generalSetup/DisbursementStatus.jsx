@@ -14,6 +14,7 @@ import AddDisbursementStatusModal
     from "../../../components/bridgeLoan/generalSetup/disbursementStatus/AddDisbursementStatusModal.jsx";
 import DisbursementStatusTable
     from "../../../components/bridgeLoan/generalSetup/disbursementStatus/DisbursementStatusTable.jsx";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 
 const DisbursementStatus = () => {
     const router = useNavigate()
@@ -23,6 +24,7 @@ const DisbursementStatus = () => {
     const dispatch = useDispatch()
     const [searchTerm, setSearchTerm] = useState("");
     const [addStatus] = useAddDisbursementStatusMutation()
+    const permissions = getPermission("Bridge Loan", "General_Setup");
 
     const handleOpen = () => {
         setOpen(true)
@@ -59,9 +61,10 @@ const DisbursementStatus = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

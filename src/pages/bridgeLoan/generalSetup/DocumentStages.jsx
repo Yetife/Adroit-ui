@@ -14,6 +14,7 @@ import AddDocumentStagesModal
     from "../../../components/bridgeLoan/generalSetup/documentationStages/AddDocumentStagesModal.jsx";
 import search from "../../../components/reusables/Search.jsx";
 import {useAddDocumentationStageMutation} from "../../../store/features/bridgeLoan/api.js";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 
 const DocumentStages = () => {
     const router = useNavigate()
@@ -23,6 +24,7 @@ const DocumentStages = () => {
     const dispatch = useDispatch()
     const [searchTerm, setSearchTerm] = useState("");
     const [addStages] = useAddDocumentationStageMutation()
+    const permissions = getPermission("Bridge Loan", "General_Setup");
 
     const handleOpen = () => {
         setOpen(true)
@@ -58,9 +60,10 @@ const DocumentStages = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

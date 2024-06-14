@@ -8,6 +8,7 @@ import {useGetFixedDepositByIdQuery} from "../../../store/features/customerCentr
 import {formatAmount} from "../../../components/reusables/formatAmount.js";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../../components/reusables/theme.jsx";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 const ViewFixedDepositPage = () => {
     const router = useNavigate();
     const [open, setOpen] = useState(false)
@@ -15,6 +16,7 @@ const ViewFixedDepositPage = () => {
     const custId = queryParams.get("id");
     const [id, setId] = useState(null)
     const {data, isFetching, error} =  useGetFixedDepositByIdQuery(custId)
+    const permissions = getPermission("Customer Centric", "Fixed Deposit");
 
     const handleOpen = (id) => {
         setId(id)
@@ -124,8 +126,8 @@ const ViewFixedDepositPage = () => {
                                                         </td>
                                                         {item.statusName === "Pending" &&
                                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span onClick={() => handleOpen(item.referenceId)}
-                                                      className={`text-[16px] leading-5 font-[inter] truncate text-[#00C795] cursor-pointer font-medium italic`}>Approve Now</span>
+                                                                {permissions.canApprove && <span onClick={() => handleOpen(item.referenceId)}
+                                                                       className={`text-[16px] leading-5 font-[inter] truncate text-[#00C795] cursor-pointer font-medium italic`}>Approve Now</span>}
                                                             </td>}
                                                         {item.statusName !== "Pending" &&
                                                             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">

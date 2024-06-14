@@ -6,6 +6,7 @@ import ProcessedModal from "./ProcessedModal.jsx";
 import Pagination from "../../../reusables/Pagination.jsx";
 import {formatAmount} from "../../../reusables/formatAmount.js";
 import dayjs from "dayjs";
+import {getPermission} from "../../../reusables/getPermission.js";
 
 const ProcessedTable = ({searchTerm, startDate, page, setPage, size, setSize, data, isFetching, error}) => {
     // const [page, setPage] = useState(1)
@@ -85,6 +86,7 @@ export function TableData({data, no}) {
     const [status, setStatus] = useState("")
     const [selectedGender, setSelectedGender] = useState('')
     const [phone, setPhone] = useState("");
+    const permissions = getPermission("Bridge Loan", "Disbursement_Process");
 
 
     const initialState = {
@@ -195,8 +197,9 @@ export function TableData({data, no}) {
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.repaymentDate).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200 cursor-pointer">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium" onClick={()=>handleOpenReturn(data)}>Return</span>
-            </td>
+                {permissions.canReturn && <span className="text-[16px] leading-5 text-[#4A5D58] font-medium"
+                       onClick={() => handleOpenReturn(data)}>Return</span>
+                }            </td>
 
             <ProcessedModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} id={id} status={status} setPhone={setPhone} phone={phone} selectedGender={selectedGender} setSelectedGender={setSelectedGender}/>
         </tr>

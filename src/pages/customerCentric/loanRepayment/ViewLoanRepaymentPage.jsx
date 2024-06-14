@@ -9,6 +9,7 @@ import {
 } from "../../../store/features/customerCentric/api.js";
 import {formatRepayment} from "../../../components/reusables/formatAmount.js";
 import RepaymentScheduleModal from "./RepaymentScheduleModal.jsx";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 
 const ViewLoanRepaymentPage = () => {
     const router = useNavigate();
@@ -18,6 +19,7 @@ const ViewLoanRepaymentPage = () => {
     const [id, setId] = useState(null)
     const [loanId, setLoanId] = useState(null)
     const {data, isFetching, error} =  useGetLoanRepaymentByIdQuery(custId)
+    const permissions = getPermission("Customer Centric", "Loan Repayment");
 
     const handleOpen = (id, loanId) =>{
         setId(id)
@@ -25,48 +27,6 @@ const ViewLoanRepaymentPage = () => {
         setOpen(true)
     }
 
-    const details = {
-        name: "Adekunle Adebona Samuel",
-        emailAddress: "adekunle.adebona@creditwaveng.com.",
-        dob: "09/03/1991",
-        bvn: "109031991",
-        phoneNumber: "081 123 45678",
-        deposit: [
-            {
-                debit: "True",
-                startDate: "09/03/1991",
-                endDate: "09/03/1991",
-                amount: "20,000.00",
-                status: "Failed",
-                tenor: 36,
-                transDate: "July 21, 2023"
-            },{
-                debit: "True",
-                startDate: "09/03/1991",
-                endDate: "09/03/1991",
-                amount: "20,000.00",
-                status: "Success",
-                tenor: 6,
-                transDate: "July 21, 2023"
-            },{
-                debit: "False",
-                startDate: "09/03/1991",
-                endDate: "09/03/1991",
-                amount: "20,000.00",
-                status: "Reversed",
-                tenor: 12,
-                transDate: "July 21, 2023"
-            },{
-                debit: "True",
-                startDate: "09/03/1991",
-                endDate: "09/03/1991",
-                amount: "20,000.00",
-                status: "Overdue",
-                tenor: 3,
-                transDate: "July 21, 2023"
-            },
-        ]
-    }
 
     const header = ['S/N', 'Loan Amount', 'Tenor', 'Status', 'Isbank Debit', 'Start Date', 'End Date', 'Transaction Date', 'Actions' ]
 
@@ -167,13 +127,17 @@ const ViewLoanRepaymentPage = () => {
                                             {/*    <span onClick={() => handleOpen(item.loanRepaymentId, item.loanApplicationId)}*/}
                                             {/*          className={`text-[16px] leading-5 font-[inter] truncate ${item.status === "Failed" || item.status === "Overdue" ? 'text-[#007BEC] cursor-pointer' : 'text-[#4A5D58] italic font-[300]'}  font-medium`}>{item.status === "Failed" || item.status === "Overdue"  ? "View" : "No action"}</span>*/}
                                             {/*</td>*/}
-                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                {!item.status && <span
-                                                    onClick={() => handleOpen(item.customerId, item.loanApplicationId)}
-                                                    className="text-[16px] leading-5 font-[inter] text-[#00C795] truncate cursor-pointer">View</span>}
-                                                {item.status && <span
-                                                    className="text-[16px] leading-5 font-[inter] truncate cursor-pointer italic">No action</span>}
-                                            </td>
+
+                                                {!item.status && <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                    {permissions.canRepayManually && <span
+                                                        onClick={() => handleOpen(item.customerId, item.loanApplicationId)}
+                                                        className="text-[16px] leading-5 font-[inter] text-[#00C795] truncate cursor-pointer">View</span>}
+                                                </td>
+                                                }
+                                                    {item.status &&<td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                        <span className="text-[16px] leading-5 font-[inter] truncate cursor-pointer italic">No action</span>
+                                                    </td>
+                                                    }
                                         </tr>
                                     ))
                                 }

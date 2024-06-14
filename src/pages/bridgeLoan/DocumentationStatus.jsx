@@ -9,6 +9,7 @@ import {Link as ReactLink} from "react-router-dom";
 import AddDocumentationStatusModal
     from "../../components/bridgeLoan/documentationStatus/AddDocumentationStatusModal.jsx";
 import DocumentationStatusTable from "../../components/bridgeLoan/documentationStatus/DocumentationStatusTable.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const DocumentationStatus = () => {
     const [open, setOpen] = useState(false)
@@ -17,6 +18,7 @@ const DocumentationStatus = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const dispatch = useDispatch()
     const [addSetup] = useAddDocumentStatusMutation()
+    const permissions = getPermission("Bridge Loan", "Documentation_Status");
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -48,9 +50,10 @@ const DocumentationStatus = () => {
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

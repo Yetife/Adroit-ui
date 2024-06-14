@@ -8,6 +8,7 @@ import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import AddLevelModal from "../../../components/administration/underwritter/level/AddLevelModal.jsx";
 import LevelTable from "../../../components/administration/underwritter/level/LevelTable.jsx";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 
 const Level = () => {
     const [open, setOpen] = useState(false)
@@ -20,6 +21,7 @@ const Level = () => {
         maximumAmount: "",
     }
     const [inputs, setInputs] = useState(initialState)
+    const permissions = getPermission("Administration", "Underwriter_Level");
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -53,9 +55,10 @@ const Level = () => {
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

@@ -8,6 +8,7 @@ import ReturnedModal from "./ReturnedModal.jsx";
 import Pagination from "../../../reusables/Pagination.jsx";
 import {formatAmount} from "../../../reusables/formatAmount.js";
 import dayjs from "dayjs";
+import {getPermission} from "../../../reusables/getPermission.js";
 
 const ReturnedTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -87,6 +88,7 @@ export function TableData({data, no}) {
     const [status, setStatus] = useState("")
     const [selectedGender, setSelectedGender] = useState('')
     const [phone, setPhone] = useState("");
+    const permissions = getPermission("Bridge Loan", "Disbursement_Returned");
 
     const initialState = {
         surname: "",
@@ -195,7 +197,8 @@ export function TableData({data, no}) {
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.repaymentDate).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200 cursor-pointer">
-                <span className="text-[16px] leading-5 text-[#FF4B12] font-semibold" onClick={()=>handleOpenReturn(data)}>Edit</span>
+                {permissions.canEdit && <span className="text-[16px] leading-5 text-[#FF4B12] font-semibold"
+                       onClick={() => handleOpenReturn(data)}>Edit</span>}
             </td>
 
             <ReturnedModal open={open} setOpen={setOpen} inputs={inputs} setInputs={setInputs} id={id} phone={phone} setPhone={setPhone} status={status} selectedGender={selectedGender} setSelectedGender={setSelectedGender}/>

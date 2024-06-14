@@ -6,6 +6,7 @@ import {useGetAllP2PQuery} from "../../../store/features/customerCentric/api.js"
 import Pagination from "../../reusables/Pagination.jsx";
 import dayjs from "dayjs";
 import {formatAmount} from "../../reusables/formatAmount.js";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const P2PTable = ({searchTerm, dropDown, statusName, startDate, endDate}) => {
     const [page, setPage] = useState(1)
@@ -71,6 +72,7 @@ const header = ['S/N', 'Lender Name', 'Lender Email Address', 'Lender Phone Numb
 export function TableData({data, no}) {
     const [open, setOpen] = useState(false)
     const [id, setId] = useState(null)
+    const permissions = getPermission("Customer Centric", "P2P Loan");
 
     const handleOpen = (id) => {
         setId(id)
@@ -117,10 +119,10 @@ export function TableData({data, no}) {
             </td>
 
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
-                 <span
-                     className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => handleOpen(data?.p2PLoanRequestId)}>View
-                 </span>
+                {permissions.canView && <span
+                    className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
+                    onClick={() => handleOpen(data?.p2PLoanRequestId)}>View
+                 </span>}
             </td>
             <P2PModal open={open} setOpen={setOpen} id={id}/>
         </tr>

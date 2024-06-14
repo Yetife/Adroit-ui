@@ -9,6 +9,7 @@ import {Link as ReactLink} from "react-router-dom";
 import LevelTable from "../../../components/administration/underwritter/level/LevelTable.jsx";
 import AddManageModal from "../../../components/administration/underwritter/manage/AddManageModal.jsx";
 import ManageTable from "../../../components/administration/underwritter/manage/ManageTable.jsx";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 
 const Manage = () => {
     const [open, setOpen] = useState(false)
@@ -25,6 +26,7 @@ const Manage = () => {
         level: "",
     }
     const [inputs, setInputs] = useState(initialState)
+    const permissions = getPermission("Administration", "Underwriter_Manage");
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -67,9 +69,10 @@ const Manage = () => {
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

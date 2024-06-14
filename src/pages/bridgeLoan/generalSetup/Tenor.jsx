@@ -8,6 +8,7 @@ import {Button, Text} from "@chakra-ui/react";
 import AddTenorModal from "../../../components/bridgeLoan/generalSetup/tenor/AddTenorModal.jsx";
 import TenorTable from "../../../components/bridgeLoan/generalSetup/tenor/TenorTable.jsx";
 import {useAddTenorMutation} from "../../../store/features/bridgeLoan/api.js";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 
 const Tenor = () => {
     const router = useNavigate()
@@ -17,6 +18,7 @@ const Tenor = () => {
     const dispatch = useDispatch()
     const [searchTerm, setSearchTerm] = useState("");
     const [addTenor] = useAddTenorMutation()
+    const permissions = getPermission("Bridge Loan", "General_Setup");
 
     const handleOpen = () => {
         setOpen(true)
@@ -52,9 +54,10 @@ const Tenor = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

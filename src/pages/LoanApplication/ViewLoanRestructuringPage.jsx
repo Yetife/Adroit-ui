@@ -431,11 +431,11 @@ const ViewLoanRestructuringPage = () => {
                                     {
                                         status === "edit" && (
                                             <div className="flex space-x-3 float-right my-8">
-                                                <Button variant="primary" bgColor="#007BEC" borderRadius="4px"
-                                                        height="37px" size='md' as={ReactLink} w={'100px'}
-                                                        onClick={()=>setOpenModify(true)}>
+                                                {permissions.canModify && <Button variant="primary" bgColor="#007BEC" borderRadius="4px"
+                                                         height="37px" size='md' as={ReactLink} w={'100px'}
+                                                         onClick={() => setOpenModify(true)}>
                                                     <Text color="white">Modify</Text>
-                                                </Button>
+                                                </Button>}
                                                 {permissions.canReview && <Button variant="primary" bgColor="#00C795" borderRadius="4px"
                                                          height="37px" size='md' as={ReactLink} w={'150px'}
                                                          onClick={handleComplete}>

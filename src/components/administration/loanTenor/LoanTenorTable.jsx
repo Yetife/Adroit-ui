@@ -10,6 +10,7 @@ import {
     useGetAllValidLoanTenorsQuery
 } from "../../../store/features/administration/api.js";
 import Pagination from "../../reusables/Pagination.jsx";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const LoanTenorTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -92,6 +93,8 @@ export function TableData({data, no}) {
     const dispatch = useDispatch()
     const [deleteTenor] = useDeleteLoanTenorMutation()
     const [editTenor] = useEditLoanTenorMutation()
+    const permissions = getPermission("Administration", "Loan_Tenor");
+
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -157,9 +160,15 @@ export function TableData({data, no}) {
                     </svg>
                 </a>
                 <span  onMouseLeave={handleBlurDropdown} className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer" style={{ display: showDropdown ? "block" : "none"}}>
-                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white" onClick={()=>handleOpenView(data)}>View</span>
-                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleOpenEdit(data)}>Edit</span>
-                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.id)}>Remove</span>
+                   {permissions.canView && <span
+                       className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
+                       onClick={() => handleOpenView(data)}>View</span>}
+                    {permissions.canEdit && <span
+                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
+                        onClick={() => handleOpenEdit(data)}>Edit</span>}
+                    {permissions.canRemove && <span
+                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
+                        onClick={() => handleRemove(data.id)}>Remove</span>}
         </span>
             </td>
             <AddLoanTenorModal open={open} setOpen={setOpen} handleAdd={handleEdit} tenor={tenor} setTenor={setTenor} checked={checked} setChecked={setChecked} purpose={purpose}/>

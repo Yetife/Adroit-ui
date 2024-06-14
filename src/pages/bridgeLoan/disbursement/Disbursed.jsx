@@ -6,6 +6,7 @@ import {DisbursedTable} from "../../../components/bridgeLoan/disbursement/disbur
 import DisburseBulkUpload from "../../../components/bridgeLoan/disbursement/disbursed/DisburseBulkUpload.jsx";
 import {useState} from "react";
 import FilterDisbursedModal from "../../../components/bridgeLoan/disbursement/disbursed/FilterDisbursedModal.jsx";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 
 const Disbursed = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -19,6 +20,8 @@ const Disbursed = () => {
         startDate: "",
         bvn: "",
     });
+    const permissions = getPermission("Bridge Loan", "Disbursement_Disbursed");
+
 
     const handleFilter = (newFilters) => {
         setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
@@ -33,10 +36,10 @@ const Disbursed = () => {
                                 bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'} onClick={()=>setOpenFilter(true)}>
                             <Text color="white">Filter</Text>
                         </Button>
-                        <Button variant="primary" bgColor="#135D54" borderRadius="4px" height="37px" size='md'
-                                as={ReactLink} w={'109px'} onClick={()=>setOpen(true)}>
+                        {permissions.canUpload && <Button variant="primary" bgColor="#135D54" borderRadius="4px" height="37px" size='md'
+                                 as={ReactLink} w={'109px'} onClick={() => setOpen(true)}>
                             <Text color="white">Upload</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
 

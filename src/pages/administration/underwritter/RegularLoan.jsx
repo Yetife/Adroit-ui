@@ -11,6 +11,7 @@ import AddRegularLoanCharges
     from "../../../components/administration/underwritter/RegularLoan/AddRegularLoanCharges.jsx";
 import RegularLoanChargeTable
     from "../../../components/administration/underwritter/RegularLoan/RegularLoanChargeTable.jsx";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 
 const RegularLoan = () => {
     const [open, setOpen] = useState(false)
@@ -26,6 +27,7 @@ const RegularLoan = () => {
     const [selectedType, setSelectedType] = useState('');
     const [selectedLoan, setSelectedLoan] = useState('');
     const [selectedPer, setSelectedPer] = useState(false);
+    const permissions = getPermission("Administration", "Underwriter_Regularloan");
 
 
 
@@ -42,9 +44,10 @@ const RegularLoan = () => {
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-6">
                     <RegularLoanTab getTabState={getTabState}/>
                     <div>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 {tabValue === "charges" ? (

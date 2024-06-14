@@ -10,6 +10,7 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import {getUserToken} from "../../../services/storage/index.js";
 import {useGetAllProcessedDisbursementQuery} from "../../../store/features/bridgeLoan/api.js";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 
 
 const Processed = () => {
@@ -20,6 +21,7 @@ const Processed = () => {
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(10)
     const {data, isFetching, error} =  useGetAllProcessedDisbursementQuery({size, page, startDate})
+    const permissions = getPermission("Bridge Loan", "Disbursement_Process");
 
     function getCurrentDate() {
         const today = new Date();
@@ -85,7 +87,7 @@ const Processed = () => {
                         {/*<Button variant="primary" onClick={fetchData} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'129px'}>*/}
                         {/*    <Text color="white">Download</Text>*/}
                         {/*</Button>*/}
-                        <DownloadExcelButton data={data?.data} filename={`BridgeLoan_Adroit_File_${startDate}.xlsx`}/>
+                        {permissions.canDownload && <DownloadExcelButton data={data?.data} filename={`BridgeLoan_Adroit_File_${startDate}.xlsx`}/>}
                     </div>
                 </div>
                 <ProcessedTable searchTerm={searchTerm} startDate={startDate} page={page} setPage={setPage} size={size} setSize={setSize}

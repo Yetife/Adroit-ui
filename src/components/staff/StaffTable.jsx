@@ -5,6 +5,7 @@ import {useGetAllStaffLoanQuery} from "../../store/features/staff/api.js";
 import {useState} from "react";
 import Pagination from "../reusables/Pagination.jsx";
 import {formatAmount} from "../reusables/formatAmount.js";
+import {getPermission} from "../reusables/getPermission.js";
 
 const StaffTable = ({applicationId, statusName, startDate, endDate}) => {
     const [page, setPage] = useState(1)
@@ -86,6 +87,7 @@ const header = ['S/N', 'Staff ID', 'Official Email Address', 'First Name', 'Last
 
 export function TableData({data, no}) {
     const router = useNavigate()
+    const permissions = getPermission("Staff", "Loan");
 
     return (
         <tr>
@@ -111,9 +113,10 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.statusName}</span>
             </td>
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
-                <span className="w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer">
-                    <span className="block px-4 w-full py-2 text-[16px] font-medium text-[#007BEC]" onClick={()=>router(`/staff/loan/view?id=${data.uniqueId}`)}>View</span>
-                </span>
+                {permissions.canView && <span className="w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer">
+                    <span className="block px-4 w-full py-2 text-[16px] font-medium text-[#007BEC]"
+                          onClick={() => router(`/staff/loan/view?id=${data.uniqueId}`)}>View</span>
+                </span>}
             </td>
         </tr>
     )

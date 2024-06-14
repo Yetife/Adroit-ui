@@ -5,6 +5,7 @@ import themes from "../../reusables/theme.jsx";
 import {useGetAllClientQuery} from "../../../store/features/crm/api.js";
 import Pagination from "../../reusables/Pagination.jsx";
 import BvnNinModal from "./BvnNinModal.jsx";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const ClientTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -83,6 +84,8 @@ export function TableData({data, no}) {
     const [bData, setBdata] = useState({})
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
     const handleBlurDropdown = () => setShowDropdown(false)
+    const permissions = getPermission("CRM", "Clients");
+
 
     const convertPhoneNumber = (inputNumber) => {
         const cleanedNumber = inputNumber.replace(/\+234\s*/g, '');
@@ -120,23 +123,23 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{convertPhoneNumber(data?.phoneNumber)}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <a
+                {permissions.canDownload && <a
                     href={data?.debtnessLetter}  // Replace with the image URL
                     download
                     // onClick={(e) => download(e)}
                 >
                     <button className="px-3 py-2 rounded text-white text-sm bg-[#135D54] rounded-lg">Download</button>
-                </a>
+                </a>}
                 {/*<span className="text-[16px] leading-5 text-[#4A5D58] font-medium">Download</span>*/}
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <a
+                {permissions.canDownload && <a
                     href={data?.demandLetter}  // Replace with the image URL
                     download
                     // onClick={(e) => download(e)}
                 >
                     <button className="px-3 py-2 rounded text-white text-sm bg-[#135D54] rounded-lg">Download</button>
-                </a>
+                </a>}
                 {/*<span className="text-[16px] leading-5 text-[#4A5D58] font-medium">Download</span>*/}
             </td>
             <td className="px-10 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
@@ -151,12 +154,12 @@ export function TableData({data, no}) {
                 <span onMouseLeave={handleBlurDropdown}
                       className="absolute z-10 w-32 right--1 md:right-10 mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
-                    <span
+                    {permissions.canView && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
-                        onClick={() => router(`/crm/clients/view?step=one&cid=${data.id}`)}>View</span>
-                    <span
+                        onClick={() => router(`/crm/clients/view?step=one&cid=${data.id}`)}>View</span>}
+                    {permissions.canEdit && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => router(`/crm/addNewClient?step=one&cid=${data.id}`)}>Edit</span>
+                        onClick={() => router(`/crm/addNewClient?step=one&cid=${data.id}`)}>Edit</span>}
                     <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
                         onClick={() => handleOpen(data)}>BVN/NIN</span>

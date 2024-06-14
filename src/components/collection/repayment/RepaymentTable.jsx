@@ -5,6 +5,7 @@ import {useGetAllCustomerQuery} from "../../../store/features/loanApplication/ap
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../reusables/theme.jsx";
 import {formatAmount} from "../../reusables/formatAmount.js";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const RepaymentTable = ({searchTerm}) => {
     // const {data, isFetching, error} =  useGetAllCustomerQuery()
@@ -76,6 +77,7 @@ const header = ['S/N', 'Cus Ref', 'Email Address', 'Phone No.', 'First Name', 'M
 export function TableData({data, no}) {
     const router = useNavigate()
     const [open, setOpen] = useState(false)
+    const permissions = getPermission("Collection", "Repayment");
 
     return (
         <tr>
@@ -113,10 +115,10 @@ export function TableData({data, no}) {
             </td>
 
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
-                 <span
-                     className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router('/collection/repayment/loanDetails')}>View
-                 </span>
+                {permissions.canView && <span
+                    className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
+                    onClick={() => router('/collection/repayment/loanDetails')}>View
+                 </span>}
             </td>
             <EscrowModal open={open} setOpen={setOpen}/>
         </tr>

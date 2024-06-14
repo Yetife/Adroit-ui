@@ -5,6 +5,7 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import AddDocumentModal from "../../components/bridgeLoan/documentation/AddDocumentModal.jsx";
 import DocumentationTable from "../../components/bridgeLoan/documentation/documentationTable.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const Documentation = () => {
     const [open, setOpen] = useState(false)
@@ -27,6 +28,7 @@ const Documentation = () => {
         amount: "",
     }
     const [inputs, setInputs] = useState(initialState)
+    const permissions = getPermission("Bridge Loan", "Documentation");
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -94,9 +96,10 @@ const Documentation = () => {
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

@@ -8,6 +8,7 @@ import {Button, Text} from "@chakra-ui/react";
 import AddLoanTenorModal from "../../components/administration/loanTenor/AddLoanTenorModal.jsx";
 import {useAddLoanTenorMutation} from "../../store/features/administration/api.js";
 import LoanTenorTable from "../../components/administration/loanTenor/LoanTenorTable.jsx";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const LoanTenor = () => {
     const router = useNavigate()
@@ -17,6 +18,8 @@ const LoanTenor = () => {
     const dispatch = useDispatch()
     const [addTenor] = useAddLoanTenorMutation()
     const [searchTerm, setSearchTerm] = useState("");
+    const permissions = getPermission("Administration", "Loan_Tenor");
+
 
     const handleSearch = (searchValue) => {
         setSearchTerm(searchValue);
@@ -47,9 +50,10 @@ const LoanTenor = () => {
                 <div className="flex justify-between px-0 py-4  pb-2 md:pt-3">
                     <Search search={searchTerm} setSearch={handleSearch}/>
                     <div>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

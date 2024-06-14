@@ -10,6 +10,7 @@ import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import axios from "axios";
 import {getUserToken} from "../../../services/storage/index.js";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const DocumentationTable = ({searchTerm}) => {
     const dispatch = useDispatch()
@@ -116,6 +117,8 @@ export function TableData({data, no}) {
     const baseUrl = import.meta.env.VITE_APP_BASE_URL
     const token = getUserToken();
     const [doc, setDoc] = useState(null)
+    const permissions = getPermission("Bridge Loan", "Documentation");
+
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
     const handleBlurDropdown = () => setShowDropdown(false)
     const handleOpenView = (data) =>{
@@ -226,7 +229,7 @@ export function TableData({data, no}) {
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.documentationStatus}</span>
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
-                <a
+                {permissions.canDownload && <a
                     href={`data:application/pdf;base64,${data?.documentSting}`}  // Replace with the image URL
                     download="document.pdf"
                     onClick={() => fetchData(data?.uniqueId)}
@@ -237,7 +240,7 @@ export function TableData({data, no}) {
                         <Text color="white">Download</Text>
                     </Button>
                     {/*<button className="px-3 py-2 rounded text-white text-sm bg-[#135D54] rounded-lg">Download</button>*/}
-                </a>
+                </a>}
                 {/*<span className="text-[16px] leading-5 text-[#4A5D58] font-medium">Download</span>*/}
             </td>
             <td className="px-3 py-4 border-b border-gray-200">
@@ -266,12 +269,12 @@ export function TableData({data, no}) {
                 <span onMouseLeave={handleBlurDropdown}
                       className="absolute z-10 w-32 right--1 md:right-10 mt-2 shadow-md divide-y overflow-hidden bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
-                    <span
-                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
-                        onClick={() => handleOpenView(data)}>View</span>
-                    <span
+                   {permissions.canView && <span
+                       className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
+                       onClick={() => handleOpenView(data)}>View</span>}
+                    {permissions.canEdit && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => handleOpenEdit(data)}>Edit</span>
+                        onClick={() => handleOpenEdit(data)}>Edit</span>}
                 </span>
             </td>
 

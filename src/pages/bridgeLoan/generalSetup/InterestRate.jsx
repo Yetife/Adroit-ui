@@ -8,6 +8,7 @@ import Search from "../../../components/reusables/Search.jsx";
 import {Button, Text} from "@chakra-ui/react";
 import AddInterestRateModal from "../../../components/bridgeLoan/generalSetup/interestRate/AddInterestRateModal.jsx";
 import InterestRateTable from "../../../components/bridgeLoan/generalSetup/interestRate/InterestRateTable.jsx";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 
 const InterestRate = () => {
     const router = useNavigate()
@@ -17,6 +18,7 @@ const InterestRate = () => {
     const dispatch = useDispatch()
     const [searchTerm, setSearchTerm] = useState("");
     const [addTenor] = useAddInterestRateMutation()
+    const permissions = getPermission("Bridge Loan", "General_Setup");
 
     const handleOpen = () => {
         setOpen(true)
@@ -52,9 +54,10 @@ const InterestRate = () => {
                                 size='md' as={ReactLink} w={'109px'} onClick={()=>router(-1)}>
                             <Text color="#00C795">Back</Text>
                         </Button>
-                        <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'109px'}>
+                        {permissions.canAdd && <Button variant="primary" onClick={handleOpen} bgColor="#00C795" borderRadius="4px"
+                                 height="37px" size='md' as={ReactLink} w={'109px'}>
                             <Text color="white">Add</Text>
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
                 <div>

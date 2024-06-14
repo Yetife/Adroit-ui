@@ -4,6 +4,7 @@ import themes from "../../reusables/theme.jsx";
 import {useGetAllSavingsQuery} from "../../../store/features/customerCentric/api.js";
 import {useState} from "react";
 import Pagination from "../../reusables/Pagination.jsx";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const CustomerSavingsTable = ({searchTerm, dropDown, statusName, startDate, endDate}) => {
     const [page, setPage] = useState(1)
@@ -68,6 +69,7 @@ const header = ['S/N', 'Customer Ref.', 'Email Address', 'First Name', 'Last Nam
 
 export function TableData({data, no}) {
     const router = useNavigate()
+    const permissions = getPermission("Customer Centric", "Savings");
 
     return (
         <tr>
@@ -97,10 +99,10 @@ export function TableData({data, no}) {
             </td>
 
             <td className="px-6 py-4 pt-2 text-xs font-medium leading-5 whitespace-no-wrap border-b border-gray-200">
-                 <span
-                     className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
-                     onClick={() => router(`/customerCentric/savings/customerDetails?id=${data.id}`)}>View
-                 </span>
+                {permissions.canView && <span
+                    className="text-[16px] leading-5 text-[#007BEC] font-medium cursor-pointer"
+                    onClick={() => router(`/customerCentric/savings/customerDetails?id=${data.id}`)}>View
+                 </span>}
             </td>
         </tr>
     )

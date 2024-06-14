@@ -8,6 +8,7 @@ import StaffTable from "../../components/staff/StaffTable.jsx";
 import StaffRequestLoanModal from "../../components/staff/StaffRequestLoanModal.jsx";
 import FilterStaff from "../../components/staff/FilterStaff.jsx";
 import {useAddStaffLoanMutation} from "../../store/features/staff/api.js";
+import {getPermission} from "../../components/reusables/getPermission.js";
 
 const StaffLoan = () => {
     const [open, setOpen] = useState(false)
@@ -23,6 +24,7 @@ const StaffLoan = () => {
         endDate: null,
         purpose: ""
     })
+    const permissions = getPermission("Staff", "Loan");
 
     const dispatch = useDispatch()
     const [addStaffLoan] = useAddStaffLoanMutation()
@@ -86,9 +88,10 @@ const StaffLoan = () => {
                             <Text color="white">Filter</Text>
                         </Button>
                         <div className="ml-3">
-                            <Button variant="primary" onClick={()=>setOpenStaff(true)} bgColor="#FFC327" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'170px'}>
+                            {permissions.canAdd && <Button variant="primary" onClick={() => setOpenStaff(true)} bgColor="#FFC327"
+                                     borderRadius="4px" height="37px" size='md' as={ReactLink} w={'170px'}>
                                 <Text color="white">Request a Loan</Text>
-                            </Button>
+                            </Button>}
                         </div>
                     </div>
                 </div>

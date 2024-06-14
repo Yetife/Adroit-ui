@@ -11,6 +11,7 @@ import {
 import dayjs from "dayjs";
 import {useGetAllAirtimeQuery} from "../../../store/features/customerCentric/api.js";
 import Pagination from "../../reusables/Pagination.jsx";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const DocumentationSetupTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -93,6 +94,7 @@ export function TableData({data, no}) {
     const dispatch = useDispatch()
     const [dateCreated, setDateCreated] = useState("")
     const [editSetup] = useEditDocumentSetupMutation()
+    const permissions = getPermission("Bridge Loan", "Documentation_Setup");
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -161,12 +163,12 @@ export function TableData({data, no}) {
                 <span onMouseLeave={handleBlurDropdown}
                       className="absolute z-10 w-32 right--1 md:right-20 mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
-                    <span
+                    {permissions.canView && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
-                        onClick={() => handleOpenView(data)}>View</span>
-                    <span
+                        onClick={() => handleOpenView(data)}>View</span>}
+                    {permissions.canEdit && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => handleOpenEdit(data)}>Edit</span>
+                        onClick={() => handleOpenEdit(data)}>Edit</span>}
         </span>
             </td>
             <AddDocumentationSetupModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked}

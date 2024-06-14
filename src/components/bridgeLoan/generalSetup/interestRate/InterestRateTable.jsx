@@ -7,6 +7,7 @@ import {updateSnackbar} from "../../../../store/snackbar/reducer.js";
 import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../../reusables/theme.jsx";
 import AddInterestRateModal from "./AddInterestRateModal.jsx";
+import {getPermission} from "../../../reusables/getPermission.js";
 
 const InterestRateTable = ({searchTerm}) => {
     const {data, isFetching, error} = useGetAllValidInterestRateQuery()
@@ -68,6 +69,7 @@ export function TableData({data, no}) {
     const dispatch = useDispatch()
     const [deleteTenor] = useDeleteInterestRateMutation()
     const [editTenor] = useEditInterestRateMutation()
+    const permissions = getPermission("Bridge Loan", "General_Setup");
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -133,9 +135,17 @@ export function TableData({data, no}) {
                     </svg>
                 </a>
                 <span  onMouseLeave={handleBlurDropdown} className="absolute z-10 w-32  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer" style={{ display: showDropdown ? "block" : "none"}}>
-                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white" onClick={()=>handleOpenView(data)}>View</span>
-                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleOpenEdit(data)}>Edit</span>
-                    <span className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white" onClick={()=>handleRemove(data.uniqueId)}>Remove</span>
+                    {permissions.canView && <span
+                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
+                        onClick={() => handleOpenView(data)}>View</span>
+                    }
+                    {permissions.canEdit && <span
+                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
+                        onClick={() => handleOpenEdit(data)}>Edit</span>
+                    }
+                    {permissions.canRemove && <span
+                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
+                        onClick={() => handleRemove(data.uniqueId)}>Remove</span>}
         </span>
             </td>
             <AddInterestRateModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked} rate={interest} setRate={setInterest} handleAdd={handleEdit} purpose={purpose}/>

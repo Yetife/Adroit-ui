@@ -9,6 +9,7 @@ import {useGetAirtimeByIdQuery, useGetBillsPaymentByIdQuery} from "../../../stor
 import {formatAmount} from "../../../components/reusables/formatAmount.js";
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../../components/reusables/theme.jsx";
+import {getPermission} from "../../../components/reusables/getPermission.js";
 
 const ViewAirtimePage = () => {
     const router = useNavigate();
@@ -17,6 +18,7 @@ const ViewAirtimePage = () => {
     const queryParams = new URLSearchParams(location.search);
     const custId = queryParams.get("id");
     const {data, isFetching, error} = useGetAirtimeByIdQuery(custId)
+    const permissions = getPermission("Customer Centric", "Buy Airtime");
 
     const handleOpen = (id) => {
         setId(id)
@@ -117,8 +119,8 @@ const ViewAirtimePage = () => {
                                                     className="text-[16px] leading-5 text-[#4A5D58] font-medium">{item.status}</span>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span onClick={() => handleOpen(item.transactionReference)}
-                                                      className={`text-[16px] leading-5 font-[inter] text-[#007BEC] cursor-pointer font-medium`}>View</span>
+                                                            {permissions.canApprove && <span onClick={() => handleOpen(item.transactionReference)}
+                                                                   className={`text-[16px] leading-5 font-[inter] text-[#007BEC] cursor-pointer font-medium`}>View</span>}
                                                         </td>
                                                     </tr>
                                                 ))

@@ -8,6 +8,7 @@ import {LinearProgress, ThemeProvider} from "@mui/material";
 import themes from "../../../reusables/theme.jsx";
 import AddManageModal from "./AddManageModal.jsx";
 import Pagination from "../../../reusables/Pagination.jsx";
+import {getPermission} from "../../../reusables/getPermission.js";
 
 const ManageTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -99,7 +100,7 @@ export function TableData({data, no}) {
     const dispatch = useDispatch()
     const [deleteManage] = useDeleteManageMutation()
     const [editManage] = useEditManageMutation()
-
+    const permissions = getPermission("Administration", "Underwriter_Manage");
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
     const handleBlurDropdown = () => setShowDropdown(false)
@@ -192,15 +193,15 @@ export function TableData({data, no}) {
                 <span onMouseLeave={handleBlurDropdown}
                       className="absolute z-10 w-32 right--1 md:right-10 mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
-                    <span
+                    {permissions.canView && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
-                        onClick={() => handleOpenView(data)}>View</span>
-                    <span
+                        onClick={() => handleOpenView(data)}>View</span>}
+                    {permissions.canEdit && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => handleOpenEdit(data)}>Edit</span>
-                    <span
+                        onClick={() => handleOpenEdit(data)}>Edit</span>}
+                    {permissions.canRemove && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => handleRemove(data.uniqueId)}>Remove</span>
+                        onClick={() => handleRemove(data.uniqueId)}>Remove</span>}
         </span>
             </td>
             <AddManageModal open={open} setOpen={setOpen} handleAdd={handleEdit} inputs={inputs} setInputs={setInputs} purpose={purpose}/>

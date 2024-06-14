@@ -9,6 +9,7 @@ import themes from "../../reusables/theme.jsx";
 import AddDocumentationStatusModal from "./AddDocumentationStatusModal.jsx";
 import dayjs from "dayjs";
 import Pagination from "../../reusables/Pagination.jsx";
+import {getPermission} from "../../reusables/getPermission.js";
 
 const DocumentationStatusTable = ({searchTerm}) => {
     const [page, setPage] = useState(1)
@@ -91,6 +92,7 @@ export function TableData({data, no}) {
     const dispatch = useDispatch()
     const [dateCreated, setDateCreated] = useState("")
     const [editStatus] = useEditDocumentStatusMutation()
+    const permissions = getPermission("Bridge Loan", "Documentation_Status");
 
 
     const handleshowDropDown = () => setShowDropdown((initValue) => !initValue)
@@ -159,12 +161,12 @@ export function TableData({data, no}) {
                 <span onMouseLeave={handleBlurDropdown}
                       className="absolute z-10 w-32 right--1 md:right-10  mt-2 shadow-md divide-y overflow-auto bg-white rounded-md cursor-pointer"
                       style={{display: showDropdown ? "block" : "none"}}>
-                    <span
-                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
-                        onClick={() => handleOpenView(data)}>View</span>
-                    <span
+                   {permissions.canView && <span
+                       className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
+                       onClick={() => handleOpenView(data)}>View</span>}
+                    {permissions.canEdit && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
-                        onClick={() => handleOpenEdit(data)}>Edit</span>
+                        onClick={() => handleOpenEdit(data)}>Edit</span>}
         </span>
             </td>
             <AddDocumentationStatusModal open={open} setOpen={setOpen} checked={checked} setChecked={setChecked}
