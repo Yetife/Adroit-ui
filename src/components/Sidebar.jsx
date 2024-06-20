@@ -29,6 +29,8 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
     const user = JSON.parse(sessionStorage.getItem("userData"));
     const [permissions, setPermissions] = useState(null);
     const [filteredSidebarData, setFilteredSidebarData] = useState([]);
+    const [image, setImage] = useState(null)
+    const [contentType, setContentType] = useState(null)
 
     const fetchPermissions = async () => {
         const storedPermissions = sessionStorage.getItem('userPermission');
@@ -55,6 +57,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
 
 
     useEffect(() => {
+        fetchCompanyLogo()
         const getPermissions = async () => {
             const perms = await fetchPermissions();
             setPermissions(perms);
@@ -456,6 +459,25 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
         setIsExpanded((prev) => !prev);
     };
 
+    const fetchCompanyLogo = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/Adroit/Login/GetByClientId?clientId=${import.meta.env.VITE_APP_CLIENT_ID}`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                }
+            });
+            setImage(response.data.data);
+            setContentType(response.data.contentType)
+            console.log('Fetched img:', contentType);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    const imageSrc = `data:image/${contentType};base64,${image}`;
+
+
     return (
         <div onBlur={handleOnBlur}
              className={`${isExpanded ? 'w-72' : 'w-24'} fixed inset-y-0 left-0 z-30 overflow-hidden drop-shadow-2xl overflow-y-auto transition duration-300 transform bg-white lg:translate-x-0 lg:static lg:inset-0 ${
@@ -470,7 +492,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                         <div className="flex justify-between items-center">
                             {isExpanded ? <div className="flex space-x-20 items-center">
                                 <img
-                                    src={logo}
+                                    src={imageSrc}
                                     alt="brand"
                                     width={109}
                                     height={32}
@@ -494,7 +516,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
           </span>
                         </div>
                     </div>
-                    <div className="mt-12">
+                    <div className="mt-6">
                         {filteredSidebarData?.map((data, ind) => (
                             <Submenu data={data} key={ind} isExpanded={isExpanded}/>
                         ))}

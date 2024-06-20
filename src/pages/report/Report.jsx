@@ -1,10 +1,18 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "../Layout.jsx";
 import {ChevronRight, Search} from "react-feather";
 import CustomDropdown from "../../components/reusables/CustomDropdown.jsx";
 import {getCurrentDate} from "../../components/reusables/getCurrentDate.js";
 import {Button, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
+import AccountOpeningReportTable from "../../components/report/wallet/AccountOpeningReportTable.jsx";
+import DownloadExcelButton from "../../components/reusables/DownloadExcelButton.jsx";
+import CustomerWalletStatementTable from "../../components/report/wallet/CustomerWalletStatementTable.jsx";
+import CustomerTransactionReportTable from "../../components/report/wallet/CustomerTransactionReportTable.jsx";
+import CustomerTransactionReceipt from "../../components/report/wallet/CustomerTransactionReceipt.jsx";
+import CustomerWalletAccountTable from "../../components/report/wallet/CustomerWalletAccountTable.jsx";
+import TransactionStatusTable from "../../components/report/wallet/TransactionStatusTable.jsx";
+import CustomerWalletDetailsTable from "../../components/report/wallet/CustomerWalletDetailsTable.jsx";
 
 const reportOptions = {
     'Wallet': ['Account Opening Report', 'Customer Wallet Statement', 'Customer Transaction Report', 'Customer Transaction Receipt', 'Customer Wallet Account', 'Transaction Status', 'Customer Wallet Details',],
@@ -96,14 +104,14 @@ const Report = () => {
                     </div>
                     <div className="flex items-center justify-center">
                         <div className="mr-4">
-                            <label htmlFor="reportType" className="block text-[16px] font-[700] text-[#4A5D58] mb-1 uppercase">Report Type:</label>
+                            <label htmlFor="reportType" className="block text-[16px] font-[700] text-[#4A5D58] mb-1 uppercase">Report Category:</label>
                             <select
                                 id="reportType"
                                 value={selectedReportType}
                                 onChange={handleReportTypeChange}
                                 className="block w-full py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm uppercase"
                             >
-                                <option value="" disabled>Select report type</option>
+                                <option value="" disabled>Select report category</option>
                                 {Object.keys(reportOptions).map((reportType) => (
                                     <option key={reportType} value={reportType} className="border border-[#007970]">
                                         {reportType}
@@ -119,7 +127,7 @@ const Report = () => {
                         </div>
                         <div>
                             <label htmlFor="reportType"
-                                   className="block text-[16px] font-[700] text-[#4A5D58] mb-1 uppercase">Report Category:</label>
+                                   className="block text-[16px] font-[700] text-[#4A5D58] mb-1 uppercase">Report Type:</label>
                             <select
                                 id="report"
                                 value={selectedReport}
@@ -127,7 +135,7 @@ const Report = () => {
                                 className="block w-[360px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970]
                                 focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm uppercase"
                             >
-                                <option value="" disabled>Select report category</option>
+                                <option value="" disabled>Select report type</option>
                                 {reportOptions[selectedReportType]?.map((report) => (
                                     <option key={report} value={report}>
                                         {report}
@@ -274,13 +282,13 @@ const Report = () => {
                     )}
                     {checkStatus() && (
                         <div>
-                            <div className="flex items-center justify-center space-x-1 mr-52 mt-3">
+                            <div className="flex items-center justify-center space-x-1 mt-3">
                                 <div>
                                     <select
                                         id="searchOption"
                                         value={selectedSearchOption}
                                         onChange={handleSearchOptionChange}
-                                        className="block w-[170px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                        className="block w-[190px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                     >
                                         {accountOpeningOptions.map((option) => (
                                             <option key={option} value={option}>
@@ -289,14 +297,14 @@ const Report = () => {
                                         ))}
                                     </select>
                                 </div>
-                                <div className="relative flex items-center w-[200px] max-w-xs">
+                                <div className="relative flex items-center w-[400px]">
                                     <input
                                         id="searchQuery"
                                         type="text"
                                         value={searchQuery}
                                         onChange={handleSearchQueryChange}
                                         placeholder="Search"
-                                        className="block w-[200px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                        className="block w-[400px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                     />
                                     <div
                                         className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -304,7 +312,7 @@ const Report = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex items-center justify-center space-x-1 mr-36 mt-2">
+                            <div className="flex items-center justify-center space-x-1 mr-4 mt-2">
                                 <div>
                                     <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
                                         Start Date
@@ -315,7 +323,7 @@ const Report = () => {
                                         onChange={(event) => handleChange(event, "startDate")}
                                         placeholder="Enter start date"
                                         max={getCurrentDate()}
-                                        className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                        className="block w-[180px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                     />
                                 </div>
                                 <div className="">__</div>
@@ -329,13 +337,13 @@ const Report = () => {
                                         onChange={(event) => handleChange(event, "endDate")}
                                         placeholder="Enter end date"
                                         max={getCurrentDate()}
-                                        className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                        className="block w-[180px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                     />
                                 </div>
                                 <div>
                                     <Button variant="primary" onClick={handleSearch} bgColor="#00C796" mt={'22px'}
                                             borderRadius="4px"
-                                            height="31px" size='md' as={ReactLink} w={'119px'}>
+                                            height="31px" size='md' as={ReactLink} w={'189px'}>
                                         <Text color="white">SEARCH</Text>
                                     </Button>
                                 </div>
@@ -507,6 +515,20 @@ const Report = () => {
                             </div>
                         </div>
                     )}
+                    {
+                        selectedReport !== "" && <div className="flex justify-between mt-4">
+                            <div></div>
+                            <DownloadExcelButton/>
+                        </div>
+                    }
+
+                    {selectedReport === 'Account Opening Report' && <AccountOpeningReportTable />}
+                    {selectedReport === 'Customer Wallet Statement' && <CustomerWalletStatementTable />}
+                    {selectedReport === 'Customer Transaction Report' && <CustomerTransactionReportTable />}
+                    {selectedReport === 'Customer Transaction Receipt' && <CustomerTransactionReceipt />}
+                    {selectedReport === 'Customer Wallet Account' && <CustomerWalletAccountTable />}
+                    {selectedReport === 'Transaction Status' && <TransactionStatusTable />}
+                    {selectedReport === 'Customer Wallet Details' && <CustomerWalletDetailsTable />}
                     {/*{selectedReport === 'Total Fixed Deposit Report' && (*/}
                     {/*    <div className="flex justify-center mt-2">*/}
                     {/*        <div>*/}
