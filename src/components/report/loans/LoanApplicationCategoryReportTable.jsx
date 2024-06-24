@@ -1,10 +1,30 @@
 import React, {useState} from 'react';
-import dayjs from "dayjs";
-import Pagination from "../../reusables/Pagination.jsx";
 import {formatRepayment} from "../../reusables/formatAmount.js";
+import Pagination from "../../reusables/Pagination.jsx";
 
-const CustomerWalletStatementTable = ({data, page, handlePageChange, handleRowPerPageChange}) => {
+const LoanApplicationCategoryReportTable = () => {
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(10);
 
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+    };
+
+    const handleRowPerPageChange = (event) => {
+        setSize(parseInt(event.target.value, 10));
+    };
+
+    const data = [
+        {
+            disbursedAmount: "30000",
+            totalDisbursedAmount: "30000",
+            totalManagementFee: "30000",
+            totalLoanAmount: "30000",
+            totalInterest: "30000",
+            loanType: "Regular Loan"
+
+        },
+    ]
     return (
         <div className="flex rounded-3xl mt-4">
             <div className="py-2 md:px-2 sm:px-2 inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
@@ -19,16 +39,16 @@ const CustomerWalletStatementTable = ({data, page, handlePageChange, handleRowPe
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        {data.data?.length > 0 && data.data?.map((val, ind) => <TableData key={"00" + ind}
-                                                                                          no={ind + 1} data={val}/>)}
+                        {data?.length > 0 && data?.map((val, ind) => <TableData key={"00" + ind}
+                                                                                no={ind + 1} data={val}/>)}
                         </tbody>
                     </table>
                 </div>
                 {data && (
                     <Pagination
-                        totalCount={data?.totalRecords || 0}
+                        totalCount={data?.length || 0}
                         page={page}
-                        rowsPerPage={data?.pageSize}
+                        rowsPerPage={size}
                         rowsPerPageOptions={[10, 20, 50, 70, 100]}
                         sizes={[10, 20, 50, 70, 100]}
                         onPageChange={handlePageChange}
@@ -40,7 +60,7 @@ const CustomerWalletStatementTable = ({data, page, handlePageChange, handleRowPe
     );
 };
 
-export default CustomerWalletStatementTable;
+export default LoanApplicationCategoryReportTable;
 
 export function TableHeader({name}) {
     return (
@@ -50,7 +70,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Email Address', 'First Name', 'Middle Name', 'Last Name', 'Wallet Balance' ]
+const header = ['S/N', 'Loan Type', 'Total Disbursed Amount', 'Total Management Fee', 'Total Loan Amount', 'Total Interest']
 
 export function TableData({data, no}) {
     return (
@@ -59,20 +79,23 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.loanType}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.emailAddress}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.totalDisbursedAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.totalManagementFee)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.totalLoanAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.lastName}</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(data?.walletBalance)}</span>
+                <span
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.totalInterest)}</span>
             </td>
         </tr>
     )

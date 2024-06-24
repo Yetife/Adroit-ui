@@ -1,9 +1,35 @@
+import React, {useState} from 'react';
 import {formatRepayment} from "../../reusables/formatAmount.js";
-import Pagination from "../../reusables/Pagination.jsx";
 import dayjs from "dayjs";
+import Pagination from "../../reusables/Pagination.jsx";
 
-const CustomerTransactionReportTable = ({data, page, handlePageChange, handleRowPerPageChange}) => {
+const LoanApplicationReportTable = () => {
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(10);
 
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+    };
+
+    const handleRowPerPageChange = (event) => {
+        setSize(parseInt(event.target.value, 10));
+    };
+
+    const data = [
+        {
+            emailAddress: "adekunle@creditwaveng.com",
+            customerFullName: "Adebona Adekunle",
+            bvn: "5674392022",
+            loanAmount: "30000",
+            tenor: 2,
+            dateRequested: "01/08/2023",
+            dateDisbursed: "01/08/2023",
+            disbursedAmount: "30000",
+            totalProcessingFee: "30000",
+            loanType: "Regular Loan"
+
+        },
+    ]
     return (
         <div className="flex rounded-3xl mt-4">
             <div className="py-2 md:px-2 sm:px-2 inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
@@ -18,15 +44,16 @@ const CustomerTransactionReportTable = ({data, page, handlePageChange, handleRow
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        {data.data?.length > 0 && data.data?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
+                        {data?.length > 0 && data?.map((val, ind) => <TableData key={"00" + ind}
+                                                                                no={ind + 1} data={val}/>)}
                         </tbody>
                     </table>
                 </div>
                 {data && (
                     <Pagination
-                        totalCount={data?.totalRecords || 0}
+                        totalCount={data?.length || 0}
                         page={page}
-                        rowsPerPage={data?.pageSize}
+                        rowsPerPage={size}
                         rowsPerPageOptions={[10, 20, 50, 70, 100]}
                         sizes={[10, 20, 50, 70, 100]}
                         onPageChange={handlePageChange}
@@ -38,7 +65,7 @@ const CustomerTransactionReportTable = ({data, page, handlePageChange, handleRow
     );
 };
 
-export default CustomerTransactionReportTable;
+export default LoanApplicationReportTable;
 
 export function TableHeader({name}) {
     return (
@@ -48,7 +75,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Email Address', 'First Name', 'Middle Name', 'Last Name', 'Transaction Amount', 'Transaction Type', 'Transaction Date', 'From', 'To', 'Wallet Balance', 'Total Transaction Fee', 'Transaction Status' ]
+const header = ['S/N', 'Customer Full Name', 'Email Address', 'BVN', 'Loan Amount', 'Tenor', 'Date Requested', 'Date Disbursed', 'Disbursed Amount', 'Total Processing Fee', 'Loan Type']
 
 export function TableData({data, no}) {
     return (
@@ -57,46 +84,37 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{no}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.customerFullName}</span>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
                     className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.emailAddress}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.bvn}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.loanAmount}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.lastName}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.tenor}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.transAmount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.dateRequested).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.transType}</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.transDate).format("YYYY/MM/DD")}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.dateDisbursed).format("YYYY/MM/DD")}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.from).format("YYYY/MM/DD")}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.disbursedAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.to).format("YYYY/MM/DD")}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.totalProcessingFee)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(data?.walletBalance)}</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(data?.totalTransFee)}</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.transStatus}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.loanType}</span>
             </td>
         </tr>
     )

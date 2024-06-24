@@ -13,6 +13,18 @@ import CustomerTransactionReceipt from "../../components/report/wallet/CustomerT
 import CustomerWalletAccountTable from "../../components/report/wallet/CustomerWalletAccountTable.jsx";
 import TransactionStatusTable from "../../components/report/wallet/TransactionStatusTable.jsx";
 import CustomerWalletDetailsTable from "../../components/report/wallet/CustomerWalletDetailsTable.jsx";
+import CustomerAccruedInterestTable from "../../components/report/fixedDeposit/CustomerAccruedInterestTable.jsx";
+import FixedDepositDetailReportTable from "../../components/report/fixedDeposit/FixedDepositDetailReportTable.jsx";
+import CustomerFixedDepositReportTable from "../../components/report/fixedDeposit/CustomerFixedDepositReportTable.jsx";
+import TotalFixedDepositReportTable from "../../components/report/fixedDeposit/TotalFixedDepositReportTable.jsx";
+import LoanApplicationReportTable from "../../components/report/loans/LoanApplicationReportTable.jsx";
+import LoanApplicationCategoryReportTable from "../../components/report/loans/LoanApplicationCategoryReportTable.jsx";
+import LoanBreakdownReportTable from "../../components/report/loans/LoanBreakdownReportTable.jsx";
+import LoanRepaymentReportTable from "../../components/report/loans/LoanRepaymentReportTable.jsx";
+import LoanCollectionReportTable from "../../components/report/overDueLoans/LoanCollectionReportTable.jsx";
+import LoanOverdueCategoryReportTable from "../../components/report/overDueLoans/LoanOverdueCategoryReportTable.jsx";
+import axios from "axios";
+import {getUserToken} from "../../services/storage/index.js";
 
 const reportOptions = {
     'Wallet': ['Account Opening Report', 'Customer Wallet Statement', 'Customer Transaction Report', 'Customer Transaction Receipt', 'Customer Wallet Account', 'Transaction Status', 'Customer Wallet Details',],
@@ -21,23 +33,70 @@ const reportOptions = {
     'Overdue Loan Report': ['Loan Overdue Category Report', 'Loan Collection Report']
 };
 const accountOpeningOptions = ['ALL', 'ACCOUNT NUMBER', 'BVN', 'NIN', 'EMAIL ADDRESS', 'PHONE NUMBER'];
-const daysOptions = ['0-30 DAYS', '30-60 DAYS', '60-90 DAYS', '90-120 DAYS', '120-365 DAYS', 'OVER 365 DAYS'];
+const loanTypeOptions = ['ALL', 'REGULAR LOAN', 'LOAN TOP-UP', 'LOAN RESTRUCTURING'];
+const daysOptions = ['0-30 DAYS', '30-60 DAYS', '60-90 DAYS', '90-120 DAYS', '120-365 DAYS', 'OVER 365 DAYS', 'DATE RANGE'];
 const walletAccountOptions = ['THIS WEEK', 'LAST WEEK', 'THIS MONTH', 'LAST MONTH', 'DATE RANGE']
 const statusOptions = ['ACTIVE', 'INACTIVE']
 
 const Report = () => {
     const [selectedReportType, setSelectedReportType] = useState('');
     const [selectedReport, setSelectedReport] = useState("");
-    const [selectedSearchOption, setSelectedSearchOption] = useState(accountOpeningOptions[0]);
-    const [selectedWalletOption, setSelectedWalletOption] = useState(walletAccountOptions[0]);
-    const [status, setStatus] = useState(statusOptions[0])
-    const [days, setDays] = useState(daysOptions[0])
+    const [selectedSearchOption, setSelectedSearchOption] = useState("");
+    const [selectedTypeOption, setSelectedTypeOption] = useState("");
+    const [selectedWalletOption, setSelectedWalletOption] = useState("");
+    const [status, setStatus] = useState("")
+    const [days, setDays] = useState("")
     const [searchQuery, setSearchQuery] = useState('');
     const [inputs, setInputs] = useState({
         startDate: "",
         endDate: ""
     })
+    const reportUrl = import.meta.env.VITE_APP_REPORT_URL
+    const [data, setData] = useState([]);
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(10);
+    const token = getUserToken();
 
+    // ${import.meta.env.VITE_APP_CLIENT_ID}
+
+    const handleSearchType = async (pageNumber) => {
+        try {
+            const payload = {
+                reportCategory: selectedReportType,
+                reportType: selectedReport,
+                filterBy: selectedSearchOption,
+                searchQuery: searchQuery,
+                loanType: selectedTypeOption,
+                loanTenor: days,
+                dateFromDateToFilter: !!(inputs.startDate || inputs.endDate),
+                dateFrom: inputs.startDate,
+                dateTo: inputs.endDate,
+                page: pageNumber,
+                clientId: "68701ac3-5c1f-4ca1-a1e5-488ffc7d29df"
+                // clientId: import.meta.env.VITE_APP_CLIENT_ID
+            }
+            const response = await axios.post(`${reportUrl}/Report/report`, payload, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "text/plain",
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setData(response.data.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+        handleSearchType(newPage)
+    };
+
+    const handleRowPerPageChange = (event) => {
+        setSize(parseInt(event.target.value, 10));
+    };
     const handleReportTypeChange = (event) => {
         const newReportType = event.target.value;
         setSelectedReportType(newReportType);
@@ -51,10 +110,14 @@ const Report = () => {
 
     const handleReportChange = (event) => {
         setSelectedReport(event.target.value);
+        setData([])
     };
 
     const handleSearchOptionChange = (event) => {
         setSelectedSearchOption(event.target.value);
+    };
+    const handleTypeOptionChange = (event) => {
+        setSelectedTypeOption(event.target.value);
     };
 
     const handleSearchQueryChange = (event) => {
@@ -174,7 +237,7 @@ const Report = () => {
                                 </div>
                             </div>
                             <div>
-                                <Button variant="primary" onClick={handleSearch} bgColor="#00C796"
+                                <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796"
                                         borderRadius="4px"
                                         height="31px" size='md' as={ReactLink} w={'182px'}>
                                     <Text color="white">SEARCH</Text>
@@ -230,7 +293,7 @@ const Report = () => {
                                 </div>
                                 {selectedWalletOption !== "DATE RANGE" && <div>
                                     <div>
-                                        <Button variant="primary" onClick={handleSearch} bgColor="#00C796"
+                                        <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796"
                                                 borderRadius="4px"
                                                 height="31px" size='md' as={ReactLink} w={'129px'}>
                                             <Text color="white">SEARCH</Text>
@@ -269,7 +332,7 @@ const Report = () => {
                                             />
                                         </div>
                                         <div>
-                                            <Button variant="primary" onClick={handleSearch} bgColor="#00C796" mt={'22px'}
+                                            <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796" mt={'22px'}
                                                     borderRadius="4px"
                                                     height="31px" size='md' as={ReactLink} w={'119px'}>
                                                 <Text color="white">SEARCH</Text>
@@ -341,7 +404,7 @@ const Report = () => {
                                     />
                                 </div>
                                 <div>
-                                    <Button variant="primary" onClick={handleSearch} bgColor="#00C796" mt={'22px'}
+                                    <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796" mt={'22px'}
                                             borderRadius="4px"
                                             height="31px" size='md' as={ReactLink} w={'189px'}>
                                         <Text color="white">SEARCH</Text>
@@ -370,7 +433,7 @@ const Report = () => {
                                 </div>
                                 <div>
                                     <div>
-                                        <Button variant="primary" onClick={handleSearch} bgColor="#00C796"
+                                        <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796"
                                                 borderRadius="4px"
                                                 height="31px" size='md' as={ReactLink} w={'129px'} mt={'24px'}>
                                             <Text color="white">SEARCH</Text>
@@ -426,7 +489,7 @@ const Report = () => {
                                 </div>
                                 <div>
                                     <button
-                                        onClick={handleSearch}
+                                        onClick={() => handleSearchType(page)}
                                         className="py-1 px-6 mt-6 bg-[#00C796] text-white rounded-md shadow-sm hover:bg-[#00C796] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007970]"
                                     >
                                         SEARCH
@@ -467,7 +530,7 @@ const Report = () => {
                                 </div>
                                 <div>
                                     <button
-                                        onClick={handleSearch}
+                                        onClick={() => handleSearchType(page)}
                                         className="py-1 px-8 mt-6 bg-[#00C796] text-white rounded-md shadow-sm hover:bg-[#00C796] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007970]"
                                     >
                                         SEARCH
@@ -507,12 +570,208 @@ const Report = () => {
                             </div>
                             <div>
                                 <button
-                                    onClick={handleSearch}
+                                    onClick={() => handleSearchType(page)}
                                     className="py-1 px-16 bg-[#00C796] text-white rounded-md shadow-sm hover:bg-[#00C796] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007970]"
                                 >
                                     SEARCH
                                 </button>
                             </div>
+                        </div>
+                    )}
+                    {selectedReport === "Loan Overdue Category Report" && (
+                        <div>
+                            <div
+                                className={`${days !== "DATE RANGE" ? 'flex items-center justify-center space-x-1 ml-12 space-y-3' : "flex items-center justify-center space-x-1 mr-32 space-y-3"}flex items-center justify-center space-x-1 ml-8 space-y-3`}>
+                                <div>
+                                    <select
+                                        id="searchOption"
+                                        value={selectedSearchOption}
+                                        onChange={handleSearchOptionChange}
+                                        className="block mt-3 w-[170px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                    >
+                                        {accountOpeningOptions.map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <select
+                                        id="searchOption"
+                                        value={selectedTypeOption}
+                                        onChange={handleTypeOptionChange}
+                                        className="block w-[170px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                    >
+                                        {loanTypeOptions.map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <select
+                                        id="searchOption"
+                                        value={days}
+                                        onChange={(e) => setDays(e.target.value)}
+                                        className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                    >
+                                        {daysOptions.map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                {days !== "DATE RANGE" && <div>
+                                    <div>
+                                        <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796"
+                                                borderRadius="4px"
+                                                height="31px" size='md' as={ReactLink} w={'129px'}>
+                                            <Text color="white">SEARCH</Text>
+                                        </Button>
+                                    </div>
+                                </div>}
+                            </div>
+                            {
+                                days === "DATE RANGE" && (
+                                    <div className="flex items-center justify-center space-x-1 mr-36  mt-2">
+                                        <div>
+                                            <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
+                                            Start Date
+                                            </h3>
+                                            <input
+                                                type="date"
+                                                value={inputs.startDate}
+                                                onChange={(event) => handleChange(event, "startDate")}
+                                                placeholder="Enter start date"
+                                                max={getCurrentDate()}
+                                                className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                            />
+                                        </div>
+                                        <div className="">__</div>
+                                        <div>
+                                            <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
+                                                End Date
+                                            </h3>
+                                            <input
+                                                type="date"
+                                                value={inputs.endDate}
+                                                onChange={(event) => handleChange(event, "endDate")}
+                                                placeholder="Enter end date"
+                                                max={getCurrentDate()}
+                                                className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                            />
+                                        </div>
+                                        <div>
+                                            <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796" mt={'22px'}
+                                                    borderRadius="4px"
+                                                    height="31px" size='md' as={ReactLink} w={'119px'}>
+                                                <Text color="white">SEARCH</Text>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        </div>
+                    )}
+                    {selectedReport === "Loan Collection Report" && (
+                        <div>
+                            <div
+                                className={`${days !== "DATE RANGE" ? 'flex items-center justify-center space-x-1 ml-12 space-y-3' : "flex items-center justify-center space-x-1 mr-32 space-y-3"}flex items-center justify-center space-x-1 ml-8 space-y-3`}>
+                                <div>
+                                    <select
+                                        id="searchOption"
+                                        value={selectedSearchOption}
+                                        onChange={handleSearchOptionChange}
+                                        className="block mt-3 w-[170px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                    >
+                                        {accountOpeningOptions.map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="relative flex items-center w-[170px] max-w-xs">
+                                    <input
+                                        id="searchQuery"
+                                        type="text"
+                                        value={searchQuery}
+                                        onChange={handleSearchQueryChange}
+                                        placeholder="Search"
+                                        className="block w-[170px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                    />
+                                    <div
+                                        className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                        <Search className="w-4 h-4 text-gray-400"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <select
+                                        id="searchOption"
+                                        value={days}
+                                        onChange={(e) => setDays(e.target.value)}
+                                        className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                    >
+                                        {daysOptions.map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                {days !== "DATE RANGE" && <div>
+                                    <div>
+                                        <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796"
+                                                borderRadius="4px"
+                                                height="31px" size='md' as={ReactLink} w={'129px'}>
+                                            <Text color="white">SEARCH</Text>
+                                        </Button>
+                                    </div>
+                                </div>}
+                            </div>
+                            {
+                                days === "DATE RANGE" && (
+                                    <div className="flex items-center justify-center space-x-1 mr-36  mt-2">
+                                        <div>
+                                            <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
+                                                Start Date
+                                            </h3>
+                                            <input
+                                                type="date"
+                                                value={inputs.startDate}
+                                                onChange={(event) => handleChange(event, "startDate")}
+                                                placeholder="Enter start date"
+                                                max={getCurrentDate()}
+                                                className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                            />
+                                        </div>
+                                        <div className="">__</div>
+                                        <div>
+                                            <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-1">
+                                                End Date
+                                            </h3>
+                                            <input
+                                                type="date"
+                                                value={inputs.endDate}
+                                                onChange={(event) => handleChange(event, "endDate")}
+                                                placeholder="Enter end date"
+                                                max={getCurrentDate()}
+                                                className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
+                                            />
+                                        </div>
+                                        <div>
+                                            <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796" mt={'22px'}
+                                                    borderRadius="4px"
+                                                    height="31px" size='md' as={ReactLink} w={'119px'}>
+                                                <Text color="white">SEARCH</Text>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )
+                            }
                         </div>
                     )}
                     {
@@ -522,31 +781,23 @@ const Report = () => {
                         </div>
                     }
 
-                    {selectedReport === 'Account Opening Report' && <AccountOpeningReportTable />}
-                    {selectedReport === 'Customer Wallet Statement' && <CustomerWalletStatementTable />}
-                    {selectedReport === 'Customer Transaction Report' && <CustomerTransactionReportTable />}
+                    {selectedReport === 'Account Opening Report' && <AccountOpeningReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Customer Wallet Statement' && <CustomerWalletStatementTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Customer Transaction Report' && <CustomerTransactionReportTable  data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
                     {selectedReport === 'Customer Transaction Receipt' && <CustomerTransactionReceipt />}
                     {selectedReport === 'Customer Wallet Account' && <CustomerWalletAccountTable />}
                     {selectedReport === 'Transaction Status' && <TransactionStatusTable />}
                     {selectedReport === 'Customer Wallet Details' && <CustomerWalletDetailsTable />}
-                    {/*{selectedReport === 'Total Fixed Deposit Report' && (*/}
-                    {/*    <div className="flex justify-center mt-2">*/}
-                    {/*        <div>*/}
-                    {/*            <select*/}
-                    {/*                id="searchOption"*/}
-                    {/*                value={status}*/}
-                    {/*                onChange={(e)=>setStatus(e.target.value)}*/}
-                    {/*                className="block w-[140px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"*/}
-                    {/*            >*/}
-                    {/*                {statusOptions.map((option) => (*/}
-                    {/*                    <option key={option} value={option}>*/}
-                    {/*                        {option}*/}
-                    {/*                    </option>*/}
-                    {/*                ))}*/}
-                    {/*            </select>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*)}*/}
+                    {selectedReport === 'Customer Accrued Interest Till Date' && <CustomerAccruedInterestTable />}
+                    {selectedReport === 'Fixed Deposit Details Report' && <FixedDepositDetailReportTable />}
+                    {selectedReport === 'Customer Fixed Deposit Report' && <CustomerFixedDepositReportTable />}
+                    {selectedReport === 'Total Fixed Deposit Report' && <TotalFixedDepositReportTable />}
+                    {selectedReport === 'Loan Application Report' && <LoanApplicationReportTable />}
+                    {selectedReport === 'Loan Application Category Report' && <LoanApplicationCategoryReportTable />}
+                    {selectedReport === 'Loan Breakdown Report' && <LoanBreakdownReportTable />}
+                    {selectedReport === 'Loan Repayment Report' && <LoanRepaymentReportTable />}
+                    {selectedReport === 'Loan Overdue Category Report' && <LoanOverdueCategoryReportTable />}
+                    {selectedReport === 'Loan Collection Report' && <LoanCollectionReportTable />}
                 </div>
                 {/*<p>sdghsdghs</p>*/}
             </div>
