@@ -18,7 +18,7 @@ const CustomerTransactionReportTable = ({data, page, handlePageChange, handleRow
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        {data.data?.length > 0 && data.data?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
+                        {data?.data?.length > 0 && data?.data?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
                         </tbody>
                     </table>
                 </div>

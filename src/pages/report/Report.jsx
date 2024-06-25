@@ -784,22 +784,21 @@ const Report = () => {
                     {selectedReport === 'Account Opening Report' && <AccountOpeningReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
                     {selectedReport === 'Customer Wallet Statement' && <CustomerWalletStatementTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
                     {selectedReport === 'Customer Transaction Report' && <CustomerTransactionReportTable  data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
-                    {selectedReport === 'Customer Transaction Receipt' && <CustomerTransactionReceipt />}
-                    {selectedReport === 'Customer Wallet Account' && <CustomerWalletAccountTable />}
-                    {selectedReport === 'Transaction Status' && <TransactionStatusTable />}
-                    {selectedReport === 'Customer Wallet Details' && <CustomerWalletDetailsTable />}
-                    {selectedReport === 'Customer Accrued Interest Till Date' && <CustomerAccruedInterestTable />}
-                    {selectedReport === 'Fixed Deposit Details Report' && <FixedDepositDetailReportTable />}
-                    {selectedReport === 'Customer Fixed Deposit Report' && <CustomerFixedDepositReportTable />}
-                    {selectedReport === 'Total Fixed Deposit Report' && <TotalFixedDepositReportTable />}
-                    {selectedReport === 'Loan Application Report' && <LoanApplicationReportTable />}
-                    {selectedReport === 'Loan Application Category Report' && <LoanApplicationCategoryReportTable />}
-                    {selectedReport === 'Loan Breakdown Report' && <LoanBreakdownReportTable />}
-                    {selectedReport === 'Loan Repayment Report' && <LoanRepaymentReportTable />}
-                    {selectedReport === 'Loan Overdue Category Report' && <LoanOverdueCategoryReportTable />}
-                    {selectedReport === 'Loan Collection Report' && <LoanCollectionReportTable />}
+                    {selectedReport === 'Customer Transaction Receipt' && <CustomerTransactionReceipt data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Customer Wallet Account' && <CustomerWalletAccountTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Transaction Status' && <TransactionStatusTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Customer Wallet Details' && <CustomerWalletDetailsTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Customer Accrued Interest Till Date' && <CustomerAccruedInterestTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Fixed Deposit Details Report' && <FixedDepositDetailReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Customer Fixed Deposit Report' && <CustomerFixedDepositReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Total Fixed Deposit Report' && <TotalFixedDepositReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Loan Application Report' && <LoanApplicationReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Loan Application Category Report' && <LoanApplicationCategoryReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Loan Breakdown Report' && <LoanBreakdownReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Loan Repayment Report' && <LoanRepaymentReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Loan Overdue Category Report' && <LoanOverdueCategoryReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Loan Collection Report' && <LoanCollectionReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
                 </div>
-                {/*<p>sdghsdghs</p>*/}
             </div>
         </Layout>
     );

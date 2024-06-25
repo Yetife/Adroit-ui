@@ -3,34 +3,7 @@ import {formatRepayment} from "../../reusables/formatAmount.js";
 import Pagination from "../../reusables/Pagination.jsx";
 import dayjs from "dayjs";
 
-const CustomerWalletDetailsTable = () => {
-    const [page, setPage] = useState(1);
-    const [size, setSize] = useState(10);
-
-    const handlePageChange = (newPage) => {
-        setPage(newPage);
-    };
-
-    const handleRowPerPageChange = (event) => {
-        setSize(parseInt(event.target.value, 10));
-    };
-
-    const data = [
-        {
-            emailAddress: "adekunle@creditwaveng.com",
-            firstName: "Adebona",
-            middleName: "Adebona",
-            lastName: "Adekunle",
-            bvn: "7474836848",
-            nin: "5336439298",
-            dob: "01/08/2023",
-            walletBalance: "30000",
-            isOnlien: "True",
-            isBlacklist: "True",
-            status: "Active",
-
-        },
-    ]
+const CustomerWalletDetailsTable = ({data, page, handlePageChange, handleRowPerPageChange}) => {
     return (
         <div className="flex rounded-3xl mt-4">
             <div className="py-2 md:px-2 sm:px-2 inline-block min-w-full align-middle c-border shadow sm:rounded-lg">
@@ -45,16 +18,15 @@ const CustomerWalletDetailsTable = () => {
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        {data?.length > 0 && data?.map((val, ind) => <TableData key={"00" + ind}
-                                                                                no={ind + 1} data={val}/>)}
+                        {data?.data?.length > 0 && data?.data?.map((val, ind) => <TableData key={"00" + ind} no={ind + 1} data={val}/>)}
                         </tbody>
                     </table>
                 </div>
                 {data && (
                     <Pagination
-                        totalCount={data?.length || 0}
+                        totalCount={data?.totalRecords || 0}
                         page={page}
-                        rowsPerPage={size}
+                        rowsPerPage={data?.pageSize}
                         rowsPerPageOptions={[10, 20, 50, 70, 100]}
                         sizes={[10, 20, 50, 70, 100]}
                         onPageChange={handlePageChange}
