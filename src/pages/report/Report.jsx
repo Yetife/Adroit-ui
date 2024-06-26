@@ -32,7 +32,7 @@ const reportOptions = {
     'Loans': ['Loan Application Report', 'Loan Application Category Report', 'Loan Breakdown Report', 'Loan Repayment Report'],
     'Overdue Loan Report': ['Loan Overdue Category Report', 'Loan Collection Report']
 };
-const accountOpeningOptions = ['ALL', 'ACCOUNT NUMBER', 'BVN', 'NIN', 'EMAIL ADDRESS', 'PHONE NUMBER'];
+const accountOpeningOptions = ['ACCOUNT NUMBER', 'BVN', 'NIN', 'EMAIL ADDRESS', 'PHONE NUMBER'];
 const loanTypeOptions = ['ALL', 'REGULAR LOAN', 'LOAN TOP-UP', 'LOAN RESTRUCTURING'];
 const daysOptions = ['0-30 DAYS', '30-60 DAYS', '60-90 DAYS', '90-120 DAYS', '120-365 DAYS', 'OVER 365 DAYS', 'DATE RANGE'];
 const walletAccountOptions = ['THIS WEEK', 'LAST WEEK', 'THIS MONTH', 'LAST MONTH', 'DATE RANGE']
@@ -66,14 +66,15 @@ const Report = () => {
                 reportType: selectedReport,
                 filterBy: selectedSearchOption,
                 searchQuery: searchQuery,
+                fixedDepositStatus: status,
                 loanType: selectedTypeOption,
                 loanTenor: days,
                 dateFromDateToFilter: !!(inputs.startDate || inputs.endDate),
                 dateFrom: inputs.startDate,
                 dateTo: inputs.endDate,
                 page: pageNumber,
-                clientId: "68701ac3-5c1f-4ca1-a1e5-488ffc7d29df"
-                // clientId: import.meta.env.VITE_APP_CLIENT_ID
+                // clientId: "68701ac3-5c1f-4ca1-a1e5-488ffc7d29df"
+                clientId: import.meta.env.VITE_APP_CLIENT_ID
             }
             const response = await axios.post(`${reportUrl}/Report/report`, payload, {
                 headers: {
@@ -777,7 +778,7 @@ const Report = () => {
                     {
                         selectedReport !== "" && <div className="flex justify-between mt-4">
                             <div></div>
-                            <DownloadExcelButton/>
+                            <DownloadExcelButton data={data?.data} filename={`Report_File.xlsx`}/>
                         </div>
                     }
 
@@ -791,8 +792,8 @@ const Report = () => {
                     {selectedReport === 'Customer Accrued Interest Till Date' && <CustomerAccruedInterestTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
                     {selectedReport === 'Fixed Deposit Details Report' && <FixedDepositDetailReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
                     {selectedReport === 'Customer Fixed Deposit Report' && <CustomerFixedDepositReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
-                    {selectedReport === 'Total Fixed Deposit Report' && <TotalFixedDepositReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
-                    {selectedReport === 'Loan Application Report' && <LoanApplicationReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
+                    {selectedReport === 'Total Fixed Deposit Report' && <TotalFixedDepositReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange} />}
+                    {selectedReport === 'Loan Application Report' && <LoanApplicationReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange} />}
                     {selectedReport === 'Loan Application Category Report' && <LoanApplicationCategoryReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
                     {selectedReport === 'Loan Breakdown Report' && <LoanBreakdownReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}
                     {selectedReport === 'Loan Repayment Report' && <LoanRepaymentReportTable data={data} page={page} size={size} handlePageChange={handlePageChange} handleRowPerPageChange={handleRowPerPageChange}/>}

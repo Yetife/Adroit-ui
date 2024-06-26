@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import Pagination from "../../reusables/Pagination.jsx";
+import {formatRepayment} from "../../reusables/formatAmount.js";
 
 const CustomerTransactionReceipt = ({data, page, handlePageChange, handleRowPerPageChange}) => {
     return (
@@ -46,7 +47,7 @@ export function TableHeader({name}) {
     )
 }
 
-const header = ['S/N', 'Email Address', 'First Name', 'Middle Name', 'Last Name', 'Transaction Amount', 'Debit', 'Credit', 'From', 'To', 'Transaction Date', 'Transaction Status', 'Description' ]
+const header = ['S/N', 'Email Address', 'First Name', 'Last Name', 'Transaction Amount', 'Debit', 'Credit', 'From', 'To', 'Transaction Date', 'Transaction Status', 'Description' ]
 
 export function TableData({data, no}) {
     return (
@@ -62,32 +63,29 @@ export function TableData({data, no}) {
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.firstName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.middleName}</span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.lastName}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.transAmount}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.transactionAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.debit}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.debit)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.credit}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.credit)}</span>
             </td><td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.from}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.transactionDateFrom}</span>
             </td><td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.to}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.transactionDateTo}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.transDate).format("YYYY/MM/DD")}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.transactionDate}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.transStatus}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.transactionStatus}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.description}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.transactionDescription}</span>
             </td>
         </tr>
     )

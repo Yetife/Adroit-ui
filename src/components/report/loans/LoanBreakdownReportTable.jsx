@@ -96,15 +96,14 @@ export function TableData({data, no}) {
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.disbursedTo}</span>
             </td><td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.walletId}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.walletAccount}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.startDate).format("YYYY/MM/DD")}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.startDate}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(data?.endDate).format("YYYY/MM/DD")}</span>
+                <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.endDate}</span>
             </td>
         </tr>
     )

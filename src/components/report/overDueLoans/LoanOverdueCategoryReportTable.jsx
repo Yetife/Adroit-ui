@@ -60,7 +60,7 @@ export function TableData({data, no}) {
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.totalOverdueAmount)}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.loanOverdueAmount)}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
@@ -76,7 +76,7 @@ export function TableData({data, no}) {
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.totalInterest)}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">&#8358;{formatRepayment(data?.totalInterestFee)}</span>
             </td>
         </tr>
     )
