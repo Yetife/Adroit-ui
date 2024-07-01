@@ -67,7 +67,7 @@ export function TableData({data, no}) {
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dateOfBirth}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.dateOfBirth}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
@@ -94,7 +94,7 @@ export function TableData({data, no}) {
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span
-                    className="text-[16px] leading-5 text-[#4A5D58] font-medium">{data?.dateRequested}</span>
+                    className="text-[16px] leading-5 text-[#4A5D58] font-medium truncate">{data?.dateRequested}</span>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <span

@@ -19,7 +19,7 @@ const CustomerWalletStatementTable = ({data, page, handlePageChange, handleRowPe
                         </tr>
                         </thead>
                         <tbody className="bg-white">
-                        {data.data?.length > 0 && data.data?.map((val, ind) => <TableData key={"00" + ind}
+                        {data?.data?.length > 0 && data?.data?.map((val, ind) => <TableData key={"00" + ind}
                                                                                           no={ind + 1} data={val}/>)}
                         </tbody>
                     </table>

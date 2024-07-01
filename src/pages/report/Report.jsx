@@ -25,6 +25,8 @@ import LoanCollectionReportTable from "../../components/report/overDueLoans/Loan
 import LoanOverdueCategoryReportTable from "../../components/report/overDueLoans/LoanOverdueCategoryReportTable.jsx";
 import axios from "axios";
 import {getUserToken} from "../../services/storage/index.js";
+import ExcelJS from "exceljs";
+import downloadExcelButton from "../../components/reusables/DownloadExcelButton.jsx";
 
 const reportOptions = {
     'Wallet': ['Account Opening Report', 'Customer Wallet Statement', 'Customer Transaction Report', 'Customer Transaction Receipt', 'Customer Wallet Account', 'Transaction Status', 'Customer Wallet Details',],
@@ -53,11 +55,66 @@ const Report = () => {
     })
     const reportUrl = import.meta.env.VITE_APP_REPORT_URL
     const [data, setData] = useState([]);
-    const [page, setPage] = useState(1);
-    const [size, setSize] = useState(10);
+    const [reportData, setReportData] = useState([]);
+    const [page, setPage] = useState(1);    const [size, setSize] = useState(10);
     const token = getUserToken();
 
-    // ${import.meta.env.VITE_APP_CLIENT_ID}
+    const handleReportDownload = async () => {
+        try {
+            const payload = {
+                reportCategory: selectedReportType,
+                reportType: selectedReport,
+                filterBy: selectedSearchOption,
+                searchQuery: searchQuery,
+                fixedDepositStatus: status,
+                loanType: selectedTypeOption,
+                loanTenor: days,
+                dateFromDateToFilter: !!(inputs.startDate || inputs.endDate),
+                dateFrom: inputs.startDate,
+                dateTo: inputs.endDate,
+                clientId: import.meta.env.VITE_APP_CLIENT_ID
+            }
+            const response = await axios.post(`${reportUrl}/Report/report_download`, payload, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "text/plain",
+                    'XAPIKEY': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            setReportData(response.data.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    const downloadExcel = async () => {
+      await handleReportDownload()
+        console.log(reportData, 'reporttttt')
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Sheet 1');
+
+        // Add headers
+        const headers = Object.keys(reportData.data[0]);
+        worksheet.addRow(headers);
+
+        // Add data
+        reportData.data.forEach(item => {
+            const rowValues = headers.map(header => item[header]);
+            worksheet.addRow(rowValues);
+        });
+
+        // Generate blob
+        const blob = await workbook.xlsx.writeBuffer();
+
+        // Create a blob and initiate download
+        const url = URL.createObjectURL(new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${selectedReport}_report.xlsx`;
+        a.click();
+        URL.revokeObjectURL(url);
+};
 
     const handleSearchType = async (pageNumber) => {
         try {
@@ -102,6 +159,16 @@ const Report = () => {
         const newReportType = event.target.value;
         setSelectedReportType(newReportType);
         setSelectedReport("");
+        setSearchQuery("")
+        setSelectedSearchOption("")
+        setSelectedTypeOption("")
+        setSelectedWalletOption("")
+        setStatus("")
+        setDays("")
+        setInputs({
+            startDate: "",
+            endDate: ""
+        })
     };
 
     // const handleReportTypeChange = (selectedOption) => {
@@ -112,6 +179,16 @@ const Report = () => {
     const handleReportChange = (event) => {
         setSelectedReport(event.target.value);
         setData([])
+        setSearchQuery("")
+        setSelectedSearchOption("")
+        setSelectedTypeOption("")
+        setSelectedWalletOption("")
+        setStatus("")
+        setDays("")
+        setInputs({
+            startDate: "",
+            endDate: ""
+        })
     };
 
     const handleSearchOptionChange = (event) => {
@@ -217,6 +294,7 @@ const Report = () => {
                                     onChange={handleSearchOptionChange}
                                     className="block mt-3 w-[180px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                 >
+                                    <option value="" disabled>Select</option>
                                     {accountOpeningOptions.map((option) => (
                                         <option key={option} value={option}>
                                             {option}
@@ -251,12 +329,13 @@ const Report = () => {
                             <div
                                 className={`${selectedWalletOption !== "DATE RANGE" ? 'flex items-center justify-center space-x-1 ml-12 space-y-3' : "flex items-center justify-center space-x-1 mr-32 space-y-3"}flex items-center justify-center space-x-1 ml-8 space-y-3`}>
                                 <div>
-                                <select
+                                    <select
                                         id="searchOption"
                                         value={selectedSearchOption}
                                         onChange={handleSearchOptionChange}
                                         className="block mt-3 w-[170px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                     >
+                                        <option value="" disabled>Select</option>
                                         {accountOpeningOptions.map((option) => (
                                             <option key={option} value={option}>
                                                 {option}
@@ -285,6 +364,7 @@ const Report = () => {
                                         onChange={(e) => setSelectedWalletOption(e.target.value)}
                                         className="block w-[150px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                     >
+                                        <option value="" disabled>Select</option>
                                         {walletAccountOptions.map((option) => (
                                             <option key={option} value={option}>
                                                 {option}
@@ -354,6 +434,7 @@ const Report = () => {
                                         onChange={handleSearchOptionChange}
                                         className="block w-[190px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                     >
+                                        <option value="" disabled>Select</option>
                                         {accountOpeningOptions.map((option) => (
                                             <option key={option} value={option}>
                                                 {option}
@@ -453,6 +534,7 @@ const Report = () => {
                                     onChange={(e) => setStatus(e.target.value)}
                                     className="block w-[140px] mt-6 py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                 >
+                                    <option value="" disabled>Select</option>
                                     {statusOptions.map((option) => (
                                         <option key={option} value={option}>
                                             {option}
@@ -590,6 +672,7 @@ const Report = () => {
                                         onChange={handleSearchOptionChange}
                                         className="block mt-3 w-[170px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                     >
+                                        <option value="" disabled>Select</option>
                                         {accountOpeningOptions.map((option) => (
                                             <option key={option} value={option}>
                                                 {option}
@@ -598,7 +681,7 @@ const Report = () => {
                                     </select>
                                 </div>
                                 <div>
-                                    <select
+                                <select
                                         id="searchOption"
                                         value={selectedTypeOption}
                                         onChange={handleTypeOptionChange}
@@ -688,6 +771,7 @@ const Report = () => {
                                         onChange={handleSearchOptionChange}
                                         className="block mt-3 w-[170px] py-1 px-3 border border-[#007970] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#007970] focus:border-[#007970] font-[600] text-[14px] text-[#007970] sm:text-sm"
                                     >
+                                        <option value="" disabled>Select</option>
                                         {accountOpeningOptions.map((option) => (
                                             <option key={option} value={option}>
                                                 {option}
@@ -778,7 +862,9 @@ const Report = () => {
                     {
                         selectedReport !== "" && <div className="flex justify-between mt-4">
                             <div></div>
-                            <DownloadExcelButton data={data?.data} filename={`Report_File.xlsx`}/>
+                            <Button variant="primary" onClick={downloadExcel} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'129px'}>
+                                <Text color="white">Download</Text>
+                            </Button>
                         </div>
                     }
 
