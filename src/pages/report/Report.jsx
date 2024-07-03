@@ -49,6 +49,8 @@ const Report = () => {
     const [status, setStatus] = useState("")
     const [days, setDays] = useState("")
     const [searchQuery, setSearchQuery] = useState('');
+    const [loading, setLoading] = useState(false)
+    const [sLoading, setSLoading] = useState(false)
     const [inputs, setInputs] = useState({
         startDate: "",
         endDate: ""
@@ -60,6 +62,7 @@ const Report = () => {
     const token = getUserToken();
 
     const handleReportDownload = async () => {
+        setLoading(true)
         try {
             const payload = {
                 reportCategory: selectedReportType,
@@ -83,6 +86,33 @@ const Report = () => {
                 }
             });
             setReportData(response.data.data);
+            setLoading(false)
+            if (response.data.status === true){
+                console.log(reportData, 'reporttttt')
+                const workbook = new ExcelJS.Workbook();
+                const worksheet = workbook.addWorksheet('Sheet 1');
+
+                // Add headers
+                const headers = Object.keys(response.data.data.data[0]);
+                worksheet.addRow(headers);
+
+                // Add data
+                response.data.data.data.forEach(item => {
+                    const rowValues = headers.map(header => item[header]);
+                    worksheet.addRow(rowValues);
+                });
+
+                // Generate blob
+                const blob = await workbook.xlsx.writeBuffer();
+
+                // Create a blob and initiate download
+                const url = URL.createObjectURL(new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${selectedReport}_report.xlsx`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -96,7 +126,7 @@ const Report = () => {
 
         // Add headers
         const headers = Object.keys(reportData.data[0]);
-        worksheet.addRow(headers);
+        worksheet.addRow(headers);2
 
         // Add data
         reportData.data.forEach(item => {
@@ -117,6 +147,7 @@ const Report = () => {
 };
 
     const handleSearchType = async (pageNumber) => {
+        setSLoading(true)
         try {
             const payload = {
                 reportCategory: selectedReportType,
@@ -142,6 +173,7 @@ const Report = () => {
                 }
             });
             setData(response.data.data);
+            setSLoading(false)
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -179,6 +211,7 @@ const Report = () => {
     const handleReportChange = (event) => {
         setSelectedReport(event.target.value);
         setData([])
+        setReportData([])
         setSearchQuery("")
         setSelectedSearchOption("")
         setSelectedTypeOption("")
@@ -202,10 +235,6 @@ const Report = () => {
         setSearchQuery(event.target.value);
     };
 
-    const handleSearch = () => {
-        console.log(`Searching for ${searchQuery} in ${selectedSearchOption}`);
-        // Implement your search logic here
-    };
 
     const handleChange = (e, fieldName) => {
         const value = e.target.value;
@@ -318,7 +347,7 @@ const Report = () => {
                             <div>
                                 <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796"
                                         borderRadius="4px"
-                                        height="31px" size='md' as={ReactLink} w={'182px'}>
+                                        height="31px" size='md' as={ReactLink} w={'182px'} isLoading={sLoading}>
                                     <Text color="white">SEARCH</Text>
                                 </Button>
                             </div>
@@ -375,7 +404,7 @@ const Report = () => {
                                 {selectedWalletOption !== "DATE RANGE" && <div>
                                     <div>
                                         <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796"
-                                                borderRadius="4px"
+                                                borderRadius="4px" isLoading={sLoading}
                                                 height="31px" size='md' as={ReactLink} w={'129px'}>
                                             <Text color="white">SEARCH</Text>
                                         </Button>
@@ -414,7 +443,7 @@ const Report = () => {
                                         </div>
                                         <div>
                                             <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796" mt={'22px'}
-                                                    borderRadius="4px"
+                                                    borderRadius="4px" isLoading={sLoading}
                                                     height="31px" size='md' as={ReactLink} w={'119px'}>
                                                 <Text color="white">SEARCH</Text>
                                             </Button>
@@ -487,7 +516,7 @@ const Report = () => {
                                 </div>
                                 <div>
                                     <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796" mt={'22px'}
-                                            borderRadius="4px"
+                                            borderRadius="4px" isLoading={sLoading}
                                             height="31px" size='md' as={ReactLink} w={'189px'}>
                                         <Text color="white">SEARCH</Text>
                                     </Button>
@@ -516,7 +545,7 @@ const Report = () => {
                                 <div>
                                     <div>
                                         <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796"
-                                                borderRadius="4px"
+                                                borderRadius="4px" isLoading={sLoading}
                                                 height="31px" size='md' as={ReactLink} w={'129px'} mt={'24px'}>
                                             <Text color="white">SEARCH</Text>
                                         </Button>
@@ -571,12 +600,17 @@ const Report = () => {
                                     />
                                 </div>
                                 <div>
-                                    <button
-                                        onClick={() => handleSearchType(page)}
-                                        className="py-1 px-6 mt-6 bg-[#00C796] text-white rounded-md shadow-sm hover:bg-[#00C796] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007970]"
-                                    >
-                                        SEARCH
-                                    </button>
+                                    <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796"
+                                            borderRadius="4px" isLoading={sLoading}
+                                            height="31px" size='md' as={ReactLink} w={'129px'} mt={'24px'}>
+                                        <Text color="white">SEARCH</Text>
+                                    </Button>
+                                    {/*<button*/}
+                                    {/*    onClick={() => handleSearchType(page)}*/}
+                                    {/*    className="py-1 px-6 mt-6 bg-[#00C796] text-white rounded-md shadow-sm hover:bg-[#00C796] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007970]"*/}
+                                    {/*>*/}
+                                    {/*    SEARCH*/}
+                                    {/*</button>*/}
                                 </div>
                             </div>
                         </div>
@@ -612,12 +646,11 @@ const Report = () => {
                                     />
                                 </div>
                                 <div>
-                                    <button
-                                        onClick={() => handleSearchType(page)}
-                                        className="py-1 px-8 mt-6 bg-[#00C796] text-white rounded-md shadow-sm hover:bg-[#00C796] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007970]"
-                                    >
-                                        SEARCH
-                                    </button>
+                                    <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796"
+                                            borderRadius="4px" isLoading={sLoading}
+                                            height="31px" size='md' as={ReactLink} w={'129px'} mt={'24px'}>
+                                        <Text color="white">SEARCH</Text>
+                                    </Button>
                                 </div>
                             </div>
                         )
@@ -711,7 +744,7 @@ const Report = () => {
                                 {days !== "DATE RANGE" && <div>
                                     <div>
                                         <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796"
-                                                borderRadius="4px"
+                                                borderRadius="4px" isLoading={sLoading}
                                                 height="31px" size='md' as={ReactLink} w={'129px'}>
                                             <Text color="white">SEARCH</Text>
                                         </Button>
@@ -750,7 +783,7 @@ const Report = () => {
                                         </div>
                                         <div>
                                             <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796" mt={'22px'}
-                                                    borderRadius="4px"
+                                                    borderRadius="4px" isLoading={sLoading}
                                                     height="31px" size='md' as={ReactLink} w={'119px'}>
                                                 <Text color="white">SEARCH</Text>
                                             </Button>
@@ -810,7 +843,7 @@ const Report = () => {
                                 {days !== "DATE RANGE" && <div>
                                     <div>
                                         <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796"
-                                                borderRadius="4px"
+                                                borderRadius="4px" isLoading={sLoading}
                                                 height="31px" size='md' as={ReactLink} w={'129px'}>
                                             <Text color="white">SEARCH</Text>
                                         </Button>
@@ -849,7 +882,7 @@ const Report = () => {
                                         </div>
                                         <div>
                                             <Button variant="primary" onClick={() => handleSearchType(page)} bgColor="#00C796" mt={'22px'}
-                                                    borderRadius="4px"
+                                                    borderRadius="4px" isLoading={sLoading}
                                                     height="31px" size='md' as={ReactLink} w={'119px'}>
                                                 <Text color="white">SEARCH</Text>
                                             </Button>
@@ -862,7 +895,7 @@ const Report = () => {
                     {
                         selectedReport !== "" && <div className="flex justify-between mt-4">
                             <div></div>
-                            <Button variant="primary" onClick={downloadExcel} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'129px'}>
+                            <Button variant="primary" onClick={handleReportDownload} isLoading={loading} bgColor="#00C795" borderRadius="4px" height="37px" size='md' as={ReactLink} w={'129px'}>
                                 <Text color="white">Download</Text>
                             </Button>
                         </div>
