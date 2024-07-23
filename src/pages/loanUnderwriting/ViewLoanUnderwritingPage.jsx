@@ -245,7 +245,7 @@ const ViewLoanUnderwritingPage = () => {
                                         <div className="flex space-x-3 my-4">
                                             {permissions.canApprove && <Button variant="primary" bgColor="#00C795" borderRadius="4px"
                                                      height="37px" size='md'
-                                                     as={ReactLink} w={'110px'} onClick={handleApprove}
+                                                     as={ReactLink} w={'110px'} onClick={aLoading ? "" : handleApprove}
                                                      isLoading={aLoading} loadingText={"Approving"}>
                                                 <Text color="white">Approve</Text>
                                             </Button>}

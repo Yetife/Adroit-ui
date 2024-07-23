@@ -517,10 +517,17 @@ export const loanApplicationApi = createApi({
             }),
             providesTags: []
         }),
+        getSOA: builder.query({
+            query: (id) => ({
+                url: `/LoanApplication/Customer/AsUploadedBankStatement?loanId=${id}`,
+            }),
+            providesTags: []
+        }),
     })
 })
 
 export const {
+    useGetSOAQuery,
     useAddStatusMutation,
     useGetAllStatusQuery,
     useGetAllCommentQuery,

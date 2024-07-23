@@ -16,14 +16,15 @@ import {updateSnackbar} from "../../store/snackbar/reducer.js";
 import {useDispatch} from "react-redux";
 import jwtDecode from "jwt-decode";
 import {storeUserToken} from "../../services/storage/index.js";
+import {useValidateUserMutation} from "../../store/features/user/api.js";
 
 const Otp = () => {
     const [verificationCode, setVerificationCode] = useState('');
-    const [remainingTime, setRemainingTime] = useState(120);
+    const [remainingTime, setRemainingTime] = useState(300);
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const route = useNavigate()
-
+    const [validateUser] = useValidateUserMutation()
 
     useEffect(() => {
         const timerInterval = setInterval(() => {
@@ -40,16 +41,38 @@ const Otp = () => {
         setVerificationCode(inputValue);
     };
 
+    const handleClick = ()=> {
+        const user = JSON.parse(sessionStorage.getItem("userDetails"));
+        console.log(user)
+        setLoading(true)
+            validateUser({
+                body: {
+                    username: user.username,
+                    userPassword: user.password,
+                    ipAddress: "192.168.1.100",
+                    latitude: "-123.4567",
+                    longitude: "45.6789",
+                    applicationId: import.meta.env.VITE_APP_APPLICATION_ID,
+                    clientId: import.meta.env.VITE_APP_CLIENT_ID
+                }
+            }).then(res => {
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Otp Resent Successfully",success:true}));
+                setRemainingTime(300)
+                setLoading(false)
+            }).catch(err =>{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
+                setLoading(false)
+            })
+    }
     const handleLogin = async()=> {
-       const otp = JSON.parse(sessionStorage.getItem("userOtp"));
-       const userName = JSON.parse(sessionStorage.getItem("userName"));
-       const baseUrl = import.meta.env.VITE_APP_BASE_URL
+        const userDetail = JSON.parse(sessionStorage.getItem("userDetails"));
+        const baseUrl = import.meta.env.VITE_APP_BASE_URL
         setLoading(true)
         try {
             const user =  await axios.post(`${baseUrl}/Adroit/Login/UserLogin`, {
                 otp: verificationCode,
-                username: userName,
-                userPassword: "1234",
+                username: userDetail.username,
+                userPassword: userDetail.password,
                 ipAddress: "192.168.1.100",
                 latitude: "-123.4567",
                 longitude: "45.6789",
@@ -110,8 +133,8 @@ const Otp = () => {
                             {/*    +234913*****4** and A******na@creditwaveng.com to continue</Text>*/}
                             {/*<Text color="#6F8B84"  textAlign="center" fontFamily="Inter" fontSize="12px" fontStyle="normal" fontWeight="700" lineHeight="21.6px" display={{ base: 'block', md: 'none' }}>Enter the six (6) digit verification code sent to*/}
                             {/*    +234913*****4** and A******na@creditwaveng<br/>.com to continue</Text>*/}
-                            <Text color="#6F8B84"  textAlign={{md:"center"}} fontFamily="Inter" fontSize="14px" fontStyle="normal" fontWeight="700" lineHeight="21.6px" display={{ base: 'none', md: 'block' }}>Enter the six (6) digit verification code sent to your mail to continue</Text>
-                            <Text color="#6F8B84"  textAlign="center" fontFamily="Inter" fontSize="12px" fontStyle="normal" fontWeight="700" lineHeight="21.6px" display={{ base: 'block', md: 'none' }}>Enter the six (6) digit verification code sent to your mail to continue</Text>
+                            <Text color="#6F8B84"  textAlign={{md:"center"}} fontFamily="Inter" fontSize="14px" fontStyle="normal" fontWeight="700" lineHeight="21.6px" display={{ base: 'none', md: 'block' }}>Enter the four (4) digit verification code sent to your mail to continue</Text>
+                            <Text color="#6F8B84"  textAlign="center" fontFamily="Inter" fontSize="12px" fontStyle="normal" fontWeight="700" lineHeight="21.6px" display={{ base: 'block', md: 'none' }}>Enter the four (4) digit verification code sent to your mail to continue</Text>
                             <FormControl className="md:w-[464px] w-[300px]" sx={{margin: "30px"}}>
                                 <OutlinedInput
                                     id="outlined-adornment-password"
@@ -129,12 +152,22 @@ const Otp = () => {
                                     }
                                 />
                             </FormControl>
-                            <Stack>
-                                <Button variant="primary" bgColor="#00C795" size='md' as={ReactLink} isLoading={loading} isDisabled={true} colorScheme="brand" loadingText='Submitting' w={{md: '464px', base: '300px'}} height="50px"
+                            {remainingTime > 0 && <Stack>
+                                <Button variant="primary" bgColor="#00C795" size='md' as={ReactLink} isLoading={loading}
+                                        isDisabled={true} colorScheme="brand" loadingText='Submitting'
+                                        w={{md: '464px', base: '300px'}} height="50px"
                                         onClick={handleLogin}>
                                     <Text color="white">Submit</Text>
                                 </Button>
-                            </Stack>
+                            </Stack>}
+                            {remainingTime <= 0 && <Stack>
+                                <Button variant="primary" bgColor="#00C795" size='md' as={ReactLink} isLoading={loading}
+                                        isDisabled={true} colorScheme="brand" loadingText='Submitting'
+                                        w={{md: '464px', base: '300px'}} height="50px"
+                                        onClick={handleClick}>
+                                    <Text color="white">Resend Verification Code</Text>
+                                </Button>
+                            </Stack>}
                         </div>
                     </CardBody>
                 </Card>

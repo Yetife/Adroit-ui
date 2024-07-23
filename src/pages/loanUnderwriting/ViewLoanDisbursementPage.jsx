@@ -323,7 +323,7 @@ const ViewLoanDisbursementPage = () => {
             <AddCommentModal open={openComment} setOpen={setOpenComment} comment={comment} setComment={setComment}/>
             <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs} handleSubmit={handleAdjust}/>
             <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"} handleRoute={()=>router('/loanUnderwriting/disbursement')}/>
-            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/approval')}/>
+            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/review')}/>
             <DecisionModal open={openDecision} setOpen={setOpenDecision}/>
             <ReassignModal open={openReassign} setOpen={setOpenReassign}/>
             <ManualDisbursementModal open={openManual} setOpen={setOpenManual}/>

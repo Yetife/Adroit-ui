@@ -268,7 +268,7 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 {
                     applicationPageName: 'Product',
                     ssoPageName: 'Product',
-                    href: '/administration',
+                    href: '/administration/product',
                     route: '/product',
                 },
                 {
@@ -358,8 +358,8 @@ const Sidebar = ({ openSidebar, updateSidebarOpen, isExpanded, setIsExpanded}) =
                 {
                     applicationPageName: 'Documentation Setup',
                     ssoPageName: 'Documentation_Setup',
-                    href: '/bridgeLoan',
-                    route: '/documentationSetUp',
+                    href: '/bridgeLoan/documentationSetup',
+                    route: '/setUp',
                 },
                 {
                     applicationPageName: 'Documentation',

@@ -169,6 +169,7 @@ const ViewApprovalLoanPage = () => {
                 setDLoading(false)
                 router('/loanUnderwriting/approval')
             }
+            setDLoading(false)
         }).catch(err =>{
             setOpenComplete(false)
         })
@@ -260,7 +261,7 @@ const ViewApprovalLoanPage = () => {
                                         <div className="flex space-x-3 my-4">
                                             {permissions.canDisburse && <Button variant="primary" bgColor="#00C796" borderRadius="4px"
                                                      height="37px" size='md'
-                                                     as={ReactLink} w={'110px'} onClick={handleDisburse}
+                                                     as={ReactLink} w={'110px'} onClick={dLoading ? "" : handleDisburse}
                                                      isLoading={dLoading}>
                                                 <Text color="white">Disburse</Text>
                                             </Button>}
@@ -317,7 +318,7 @@ const ViewApprovalLoanPage = () => {
             <AddCommentModal open={openComment} setOpen={setOpenComment} comment={comment} setComment={setComment}/>
             <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs} handleSubmit={handleAdjust}/>
             <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"} handleRoute={()=>router('/loanUnderwriting/disbursement')}/>
-            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/approval')}/>
+            <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/review')}/>
             <DecisionModal open={openDecision} setOpen={setOpenDecision}/>
             <ReassignModal open={openReassign} setOpen={setOpenReassign}/>
         </Layout>

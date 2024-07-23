@@ -468,7 +468,7 @@ const ViewReviewTopupPage = () => {
             <DeclineApplicationModal open={open} setOpen={setOpen} id={appId}/>
             <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"}
                                    handleRoute={() => router('/loanApp/loanTopUp')}/>
-            <StopDisbursementModal open={openApprove} setOpen={setOpenApprove} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/approval')}/>
+            <StopDisbursementModal open={openApprove} setOpen={setOpenApprove} title={"Loan approved successfully"} handleRoute={()=>router('/loanUnderwriting/review')}/>
             <AdjustLoanModal open={openAdjust} setOpen={setOpenAdjust} inputs={inputs} setInputs={setInputs} handleSubmit={handleAdjust}/>
             <StopDisbursementModal open={openDisburse} setOpen={setOpenDisburse} title={"Disbursement Cancelled"} handleRoute={()=>router('/loanUnderwriting/disbursement')}/>
             <ModifyTopUpModal open={openModify} setOpen={setOpenModify} inputs={modifyInputs} setInputs={setModifyInputs} file={file} setFile={setFile} handleSubmit={handleModify}/>

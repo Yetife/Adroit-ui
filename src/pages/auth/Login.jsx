@@ -51,6 +51,10 @@ const Login = () => {
         sessionStorage.clear()
     },[])
 
+    const handleRoute = () => {
+        window.location.href = `${import.meta.env.VITE_APP_PASSWORD_RECOVERY_URL}/?id=${import.meta.env.VITE_APP_CLIENT_ID}`;
+    }
+
     const handleClick = ()=> {
         if (!inputs.username || !inputs.password) {
             dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Username and Password is required",success:false}));
@@ -68,7 +72,7 @@ const Login = () => {
                 }
             }).then(res => {
                 sessionStorage.setItem("userOtp", JSON.stringify(res.data.id));
-                sessionStorage.setItem("userName", JSON.stringify(inputs.username));
+                sessionStorage.setItem("userDetails", JSON.stringify(inputs));
                 dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
                 route('/verify')
             }).catch(err =>{
@@ -79,10 +83,10 @@ const Login = () => {
     }
 
     return (
-        <div>
+        <div className="flex min-h-screen">
             <SimpleGrid columns={{ base: 6, md: 12 }} spacing={12}>
                 <GridItem colSpan={{ base: 6, md: 6 }} display={{ base: 'none', md: 'block' }}>
-                    <Stack p={{ md:"91px 165px 635px 120px"}} h="100vh" flexDirection={"column"} className="firstRow">
+                    <Stack p={{ md:"91px 165px 835px 120px"}} h="100vh" flexDirection={"column"} className="firstRow">
                         <Text className="text">Adroit</Text>
                         <Text className="firstRow-p">We evaluate and monitor the non-performing loan accounts and implement a recovery action plan to achieve timely
                             and maximum recovery at a minimal cost and appropriate turn-around time through acceptable common practices
@@ -93,18 +97,18 @@ const Login = () => {
                     <Stack className="items-center justify-center md:my-36 my-24 flex flex-col md:w-auto m-auto;">
                         <img alt={"logo"} src={logo}/>
                         <Stack>
-                            <Stack m={{base:"45px 20px 0", md: "60px 0 0"}}>
+                            <Stack m={{base: "45px 20px 0", md: "60px 0 0"}}>
                                 <TextField size="medium" value={inputs.userName} variant="outlined"
-                                           onChange={(e)=>handleChange(e, "username")}
+                                           onChange={(e) => handleChange(e, "username")}
                                            placeholder="Username" className="w-[464px]"/>
                             </Stack>
-                            <Stack m={{base:"20px 20px", md: "25px 0px"}}>
+                            <Stack m={{base: "20px 20px", md: "25px 0px"}}>
                                 <FormControl className="w-[464px]">
                                     <OutlinedInput
                                         id="outlined-adornment-password"
                                         value={inputs.password}
                                         placeholder="Password"
-                                        onChange={(e)=>handleChange(e, "password")}
+                                        onChange={(e) => handleChange(e, "password")}
                                         type={showPassword ? 'text' : 'password'}
                                         endAdornment={
                                             <InputAdornment position="end">
@@ -114,18 +118,30 @@ const Login = () => {
                                                     onMouseDown={handleMouseDownPassword}
                                                     edge="end"
                                                 >
-                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    {showPassword ? <VisibilityOff/> : <Visibility/>}
                                                 </IconButton>
                                             </InputAdornment>
                                         }
                                     />
                                 </FormControl>
                             </Stack>
-                            <Stack m={{base:"25px 20px", md: "25px 0px"}}>
-                                <Button variant="primary" bgColor="#00C795" height="50px" size='md' as={ReactLink} isLoading={loading} isDisabled={true} colorScheme={"brand"} loadingText='Submitting' onClick={handleClick}>
+                            <Stack m={{base: "25px 20px", md: "10px 0px"}}>
+                                <Button variant="primary" bgColor="#00C795" height="50px" size='md' as={ReactLink}
+                                        isLoading={loading} isDisabled={true} colorScheme={"brand"}
+                                        loadingText='Submitting' onClick={handleClick}>
                                     <Text color="white">Login</Text>
                                 </Button>
                             </Stack>
+                            <p className=" text-[16px] text-center font-medium">Forgot password?<span
+                                style={{color: "#00C795"}} className="cursor-pointer font-semibold pl-1"
+                                onClick={handleRoute}>Click here</span></p>
+
+                            <div className="mt-40">
+                                <p className='text-[13px] text-[#135D54] font-[500] text-center'>
+                                    &copy; {new Date().getFullYear()} CreditWave Finance Limited | All
+                                    Rights Deserved
+                                </p>
+                            </div>
                         </Stack>
                     </Stack>
                 </GridItem>

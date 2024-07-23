@@ -6,7 +6,7 @@ import cloud from '../assets/cloud.svg'
 import help from '../assets/help.svg'
 import {DemoItem} from "@mui/x-date-pickers/internals/demo/index.js";
 import {DateCalendar} from "@mui/x-date-pickers";
-import userImg from '../assets/avatar.svg'
+import userImg from '../assets/avatarImg.svg'
 
 const Dashboard = () => {
     let data;

@@ -395,7 +395,7 @@ const ViewApprovalTopUpPage = () => {
                                             <div className="flex float-right space-x-3 my-4">
                                                 {permissions.canDisburse && <Button variant="primary" bgColor="#00C796" borderRadius="4px"
                                                          height="37px" size='md'
-                                                         as={ReactLink} w={'110px'} onClick={handleDisburse}
+                                                         as={ReactLink} w={'110px'} onClick={dLoading? "" : handleDisburse}
                                                          isLoading={dLoading} loadingText='Disbursing'>
                                                     <Text color="white">Disburse</Text>
                                                 </Button>}

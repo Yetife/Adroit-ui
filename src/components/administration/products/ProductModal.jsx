@@ -233,19 +233,6 @@ const fetchFeeFrequency = async () => {
                                              placeholder="Enter start date"
                                              className="font-medium w-[300px] text-black leading-relaxed px-4 py-2 rounded  border border-neutral-300"
                                          />
-                                         {/*<DatePicker*/}
-                                         {/*    className='border broder-gray-700 px-2 rounded-md py-3 text-[14px] focus:outline-none'*/}
-                                         {/*    // closeOnScroll={true}*/}
-                                         {/*    dateFormat="dd/MM/yyyy"*/}
-                                         {/*    placeholderText="Select a date"*/}
-                                         {/*    disabled={purpose === "view"}*/}
-                                         {/*    selected={startDate}*/}
-                                         {/*    onChange={(date) => setStartDate(date)}*/}
-                                         {/*    showYearDropdown*/}
-                                         {/*    showMonthDropdown*/}
-                                         {/*    showDisabledMonthNavigation*/}
-                                         {/*    dropdownMode="select"*/}
-                                         {/*/>*/}
                                     </span>
                                     <span className="flex items-center ml-16 mt-4">
                                    <h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap">

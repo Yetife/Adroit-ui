@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <title></title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <style>
+        body {
+            margin: 0;
+            background-color: #ffffff;
+            font-family: 'Inter';
+        }
+        #logo {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            height: 60px;
+        }
+        #table-border{
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .icon{
+            width: 80px;
+        }
+        .repayment-sch{
+            padding: 7px 30px;
+            border: 1px solid #dddddd;
+            text-align: left
+        }
+        .repayment{
+            padding: 1px 40px;
+            border: 1px solid #dddddd;
+            text-align: left
+        }
+        #mainDiv{
+            padding: 30px 10px 20px 20px;
+        }
+        @media (min-width: 769px) {
+            #table-border{
+                margin-left: auto;
+                margin-right: auto;
+            }
+            #mainDiv{
+                padding: 30px 20px 20px 40px;
+            }
+            .repayment-sch{
+                padding: 7px 30px;
+                border: 1px solid #dddddd;
+                text-align: left;
+            }
+            .repayment{
+                padding: 7px 50px;
+                border: 1px solid #dddddd;
+                text-align: left
+            }
+            table {
+                width: 100%; /* Make the table full width */
+                max-width: 450px; /* Limit the maximum width */
+                /*margin: 0 auto; !* Center the table *!*/
+            }
+            #amount{
+                font-size: 42px;
+            }
+            .icon{
+                width: 130px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="logo">
+    <img src="../../../../src/assets/emailImg/logo.png" alt="logo"/>
+</div>
+<div>
+    <table
+            align="center"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            role="presentation"
+            id="table-border"
+            style="border-collapse:collapse;"
+    >
+
+        <tr>
+            <td
+                    align="center"
+                    style=""
+            >
+                <table
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="border: 1px solid #C7C7C7;  border-radius: 14px; margin-top: 40px; margin-bottom: 20px;"
+                        width="100%"
+                >
+                    <tr>
+                        <td>
+                            <div style="border-bottom: 1px solid #C7C7C7; text-align: center; text-transform: uppercase;">
+                                <p style="padding: 15px; margin: 0; font-size: 15px; font-weight: 700; line-height: 20px; color: #007970;">NEW PROFILE CREATION</p>
+                            </div>
+                            <div id="mainDiv" style="color: #343434">
+                                <p style="padding-bottom: 24px; margin: 0; font-size: 14px; font-weight: 500;  line-height: 20px">
+                                    Hi {{user_name}},
+                                </p>
+                                <p style="padding-bottom: 20px; margin: 0; font-size: 14px; font-weight: 400; line-height: 20px">Welcome to Creditwave Finance Limited!</p>
+                                <p style="margin: 0; font-size: 14px; font-weight: 400; line-height: 20px">We are excited to have you join us. Below are your account details:</p>
+                                <ul>
+                                    <li style="margin: 0; font-size: 14px; font-weight: 400; line-height: 20px">Email Address: [user@example.com]</li>
+                                    <li style="margin: 0; font-size: 14px; font-weight: 400; line-height: 20px">Password: [password]</li>
+                                </ul>
+                                <p style="padding-bottom: 20px; margin: 0; font-size: 14px; font-weight: 400; line-height: 20px">Please keep this information secure and do not share it with anyone.</p>
+                                <p style="padding-bottom: 20px; margin: 0; font-size: 14px; font-weight: 400; line-height: 20px">If you need further assistance, please contact our customer support immediately on <strong>0912 002 6498</strong> or help@creditwave.ng.com to secure your account.</p>
+                                <p style="padding-top: 40px; padding-bottom: 24px; margin: 0; font-size: 14px; font-weight: 500;  line-height: 20px">
+                                    Thanks,
+                                    <br>
+                                    From Creditwave
+                                </p>
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

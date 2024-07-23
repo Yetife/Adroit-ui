@@ -1,7 +1,7 @@
 import {Avatar, Badge} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import userImg from '../assets/avatar.svg'
+import userImg from '../assets/avatarImg.svg'
 import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {ChevronDown} from "react-feather";

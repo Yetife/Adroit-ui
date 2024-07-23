@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Button, Stack, Text} from "@chakra-ui/react";
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import Layout from '../Layout.jsx'
@@ -11,24 +11,38 @@ import LoanSupportingDocument from "./LoanSupportingDocument.jsx";
 import HorizontalMenu from "../../components/reusables/HorizontalMenu.jsx";
 import {TabContext} from "@mui/lab";
 import DeclineApplicationModal from "../../components/loanApplication/DeclineApplicationModal.jsx";
-import {useCompleteReviewMutation, useGetCustomerDetailsQuery} from "../../store/features/loanApplication/api.js";
+import {
+    useCompleteReviewMutation,
+    useGetCustomerDetailsQuery, useGetSOAQuery,
+} from "../../store/features/loanApplication/api.js";
 import StopDisbursementModal from '../../components/loanUnderwritting/disbursement/StopDisbursementModal.jsx';
 import {CircularProgress, ThemeProvider} from "@mui/material";
 import themes from "../../components/reusables/theme.jsx";
 import {getPermission} from "../../components/reusables/getPermission.js";
+import MonoBankStatementModal from "../../components/loanApplication/customer/MonoBankStatementModal.jsx";
+import axios from "axios";
+import {getUserToken} from "../../services/storage/index.js";
+import {updateSnackbar} from "../../store/snackbar/reducer.js";
+import {fetchDocumentation} from "../../store/documentationSlice.js";
 
 const ViewLoanApplicationPage = () => {
     const [open, setOpen] = useState(false)
+    const [file, setFile] = useState(null)
     const queryParams = new URLSearchParams(location.search);
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
     const {data, isFetching, error} = useGetCustomerDetailsQuery(appId)
+    const [soaData, setSoaData] = useState(null)
     const status = queryParams.get("status");
     const [loading, setLoading] = useState(false)
     const [rloading, setRLoading] = useState(false)
+    const [uloading, setULoading] = useState(false)
     const [openComplete, setOpenComplete] = useState(false)
+    const [openModal, setOpenModal] = useState(false)
     const [completeReview] = useCompleteReviewMutation()
     const permissions = getPermission("Loan Application", "Customer");
+    const token = getUserToken();
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL
 
 
     const tabMenu = [
@@ -84,8 +98,54 @@ const ViewLoanApplicationPage = () => {
         setOpen(true)
     }
 
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/LoanApplication/Customer/AsUploadedBankStatement?loanId=${appId}`, {
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept': "application/json",
+                    'XAPIKEY': '_*-+pgH7QzFH%^&!Jx4w46**fI@@#5Uzi4RvtTwlEXp_!*',
+                    'authorization': `Bearer ${token}`
+                }
+            });
+            console.log(response.data)
+            setSoaData(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData()
+    }, []);
+
     const handleComplete = () => {
-        setRLoading(true)
+        if(soaData === false){
+            setOpenModal(true)
+        }else {
+            setRLoading(true)
+            completeReview({
+                body: {
+                    loanApplicationId: appId,
+                    loanCategory: "Regular loan",
+                    adjustedTenor: "",
+                    adjustedAmount: 0,
+                    comment: ""
+                }
+            }).then(res => {
+                if (res.data.status === true){
+                    setRLoading(false)
+                    setOpenComplete(true)
+                }
+            }).catch(err =>{
+                setRLoading(false)
+                setOpenComplete(false)
+            })
+        }
+
+    }
+
+    const handleReview = () => {
         completeReview({
             body: {
                 loanApplicationId: appId,
@@ -105,6 +165,36 @@ const ViewLoanApplicationPage = () => {
         })
     }
 
+    const handleUpload = async () => {
+        setULoading(true)
+        try {
+            const formData = new FormData();
+            formData.append('LoanId', appId);
+            formData.append('StatementOfAccount', file);
+
+            const token = getUserToken();
+            const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+
+            const res = await fetch(`${baseUrl}/LoanApplication/Customer/uploadManual`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'multipart/form-data',
+                    'XApiKey': import.meta.env.VITE_APP_ENCRYPTION_KEY,
+                    // 'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+            if (res.status === 200) {
+               handleReview()
+                setOpenModal(false)
+               setOpenComplete(true)
+            }
+        } catch (error) {
+            setOpenComplete(false)
+            setULoading(false)
+        }
+    }
     return (
         <Layout>
             <div>
@@ -177,6 +267,7 @@ const ViewLoanApplicationPage = () => {
             </div>
             <DeclineApplicationModal open={open} setOpen={setOpen} id={appId}/>
             <StopDisbursementModal open={openComplete} setOpen={setOpenComplete} title={"Loan review completed"} handleRoute={()=>router('/loanApp/customer')}/>
+            <MonoBankStatementModal open={openModal} setOpen={setOpenModal} handleSubmit={handleUpload} setFile={setFile} file={file} setLoading={setULoading} loading={uloading}/>
         </Layout>
     );
 };

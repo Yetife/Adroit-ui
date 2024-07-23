@@ -154,7 +154,7 @@ export function TableData({data, no}) {
                    {permissions.canView && <span
                        className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796]  hover:text-white"
                        onClick={() => router(`/loanApp/loanRestructuring/view?id=${data.loanApplicationId}&status=view`)}>View</span>}
-                    {permissions.canEdit && <span
+                    {permissions.canUpdate && <span
                         className="block px-4 w-full py-2 text-[14px] font-medium text-[#4A5D58] hover:bg-[#00C796] hover:text-white"
                         onClick={() => router(`/loanApp/loanRestructuring/edit?id=${data.loanApplicationId}&status=edit`)}>Edit</span>}
                 </span>
