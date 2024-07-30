@@ -38,9 +38,6 @@ const MonoBankStatementModal = ({open, setOpen, file, setFile, handleSubmit, loa
                             </h3>
                             <div className="flex items-center mt-4">
                                     <span>
-                                        {/*<h3 className="font-semibold text-[#4A5D58] text-[14px] whitespace-nowrap pb-3">*/}
-                                        {/*Passport Photograph*/}
-                                        {/*</h3>*/}
                                         <input
                                             type="text"
                                             value={file?.name}

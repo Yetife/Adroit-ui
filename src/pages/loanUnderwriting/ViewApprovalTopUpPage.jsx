@@ -157,7 +157,11 @@ const ViewApprovalTopUpPage = () => {
             if (res.data.status === true){
                 setDLoading(false)
                 router('/loanUnderwriting/approval')
+            }else{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+                setDLoading(false)
             }
+            setDLoading(false)
         }).catch(err =>{
             setOpenComplete(false)
         })

@@ -171,8 +171,14 @@ const ViewApprovalLoanRestructuringPage = () => {
             if (res.data.status === true){
                 setDLoading(false)
                 router('/loanUnderwriting/approval')
+            }else{
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message: res.data.message,success:true}));
+                setDLoading(false)
             }
+            setDLoading(false)
         }).catch(err =>{
+            console.log(err)
+            setDLoading(false)
             setOpenComplete(false)
         })
     }
@@ -343,7 +349,7 @@ const ViewApprovalLoanRestructuringPage = () => {
                                                                     <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">{dayjs(item?.monthlyRepaymentDate).format("YYYY/MM/DD")}</span>
                                                                 </td>
                                                                 <td className="px-10 py-2 whitespace-no-wrap border-b border-gray-200">
-                                                                    <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(item?.monthlyRepaymentLoanAmount)}</span>
+                                                                    <span className="text-[16px] leading-5 text-[#4A5D58] font-medium">&#8358;{formatRepayment(item?.repaymentAmountToBalance)}</span>
                                                                 </td>
                                                             </tr>
                                                         ))

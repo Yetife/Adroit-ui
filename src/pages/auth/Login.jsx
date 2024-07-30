@@ -73,11 +73,16 @@ const Login = () => {
             }).then(res => {
                 sessionStorage.setItem("userOtp", JSON.stringify(res.data.id));
                 sessionStorage.setItem("userDetails", JSON.stringify(inputs));
-                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"Login successful",success:true}));
-                route('/verify')
+                if (res.data.statusCode === 200){
+                    dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:res.data.message,success:true}));
+                    route('/verify')
+                }else{
+                    dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:res.data.message,success:false}));
+                    setLoading(false)
+                }
             }).catch(err =>{
-                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
                 setLoading(false)
+                dispatch(updateSnackbar({type:'TOGGLE_SNACKBAR_OPEN',message:"error",success:false}));
             })
         }
     }

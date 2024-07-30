@@ -105,6 +105,7 @@ import ViewReviewTopupPage from "../pages/loanUnderwriting/ViewReviewTopupPage.j
 import ViewAdjustLoanRestructuringPage from "../pages/LoanApplication/ViewAdjustLoanRestructuringPage.jsx";
 import ViewAdjustLoanTopUpPage from "../pages/LoanApplication/ViewAdjustLoanTopUpPage.jsx";
 import Report from "../pages/report/Report.jsx";
+import ViewApprovalTopUpPage from "../pages/loanUnderwriting/ViewApprovalTopUpPage.jsx";
 
 export const ProtectedRoute = ({ children }) => {
     const navigate = useNavigate();
@@ -317,7 +318,7 @@ const ROUTES = [
                 path: "topUp/approval",
                 exact: true,
                 element: <ProtectedRoute>
-                    <ViewReviewTopupPage />
+                    <ViewApprovalTopUpPage />
                 </ProtectedRoute>
             },
             {
