@@ -27,15 +27,18 @@
         .icon{
             width: 80px;
         }
-        .repayment-sch{
-            padding: 7px 30px;
-            border: 1px solid #dddddd;
-            text-align: left
+        .listStyle{
+            font-size: 14px;
+            font-weight: 600;
+            padding-bottom: 7px;
+            line-height: 20px;
         }
-        .repayment{
-            padding: 1px 40px;
-            border: 1px solid #dddddd;
-            text-align: left
+        .list{
+            font-size: 14px;
+            font-weight: 500;
+            padding-bottom: 7px;
+            /*padding-left: 7px;*/
+            line-height: 20px;
         }
         #mainDiv{
             padding: 30px 10px 20px 20px;
@@ -110,25 +113,47 @@
                                 <p style="padding-bottom: 20px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">We are pleased to inform you that your request to liquidate your savings on fixed deposit has been successfully processed.</p>
                                 <p style="padding-bottom: 20px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Your funds have been moved to your main wallet</p>
                                 <p style="margin: 0; font-size: 14px; font-weight: 400; line-height: 20px">Here are the details of your liquidated fixed deposit:</p>
-                                <div style="display: flex; align-items: center; gap: 30px;">
-                                    <ul>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Fixed Deposit Amount:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Interest Accrued:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Liquidation Type:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Liquidation Amount:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Liquidation Purpose:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Duration:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Liquidation Date:</li>
-                                    </ul>
-                                    <div>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">&#8358;3,000,000.00</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">&#8358;500,000.00</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Full Liquidation</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">&#8358;3,500,000.00</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Car Purchase</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">120 days</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">April 3rd, 2024</p>
-                                    </div>
+                                <div style="margin-bottom: 20px; margin-top: 2px; border-radius: 5px;">
+                                    <table
+                                            border="0"
+                                            cellpadding="10"
+                                            cellspacing="0"
+                                            style="border-collapse:collapse;"
+                                    >
+                                        <tr>
+                                            <th class="listStyle" style="font-size: 13px; font-weight: 600;"></th>
+                                            <th class="list" style="font-size: 13px; font-weight: 600;"></th>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle" >&#x2022; Fixed Deposit Amount:</td>
+                                            <td class="list">&#8358;3,000,000.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle" >&#x2022; Interest Accrued:</td>
+                                            <td class="list">&#8358;3,000,000.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; Liquidation Type:</td>
+                                            <td class="list">Full Liquidation</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; Liquidation Amount:</td>
+                                            <td class="list">&#8358;3,500,000.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; Liquidation Purpose:</td>
+                                            <td class="list">Car Purchase</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; Duration:</td>
+                                            <td class="list">120 days</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; Liquidation Date:</td>
+                                            <td class="list">April 3rd, 2024</td>
+                                        </tr>
+
+                                    </table>
                                 </div>
                                 <p style="padding-bottom: 20px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Please note that the liquidation amount, including any accrued interest, has been credited to your main wallet.</p>
                                 <p style="padding-bottom: 20px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">If you have any questions or require further assistance, please do not hesitate to contact our customer service team.</p>
@@ -181,22 +206,24 @@
                         <td align="center"
                             style="padding: 20px 50px 0 40px; font-size: 14px; line-height: 20px; color: #FFF2C7;"
                         >
-                            <a href="" target="_blank">
-                                <img
-                                        class="icon"
-                                        alt="twitterPage"
-                                        border="0"
-                                        src="../../../../src/assets/emailImg/appleIcon.png "
-                                /></a>
+                            <div style="display: flex; align-items: center; justify-content: center">
+                                <a href="" target="_blank">
+                                    <img
+                                            class="icon"
+                                            alt="twitterPage"
+                                            border="0"
+                                            src="../../../../src/assets/emailImg/appleIcon.png "
+                                    /></a>
 
-                            <a href="" target="_blank">
-                                <img
-                                        class="icon"
-                                        alt="facebookPage"
-                                        border="0"
-                                        src="../../../../src/assets/emailImg/googleIcon.png"
-                                        style="margin-left: 10px"
-                                /></a>
+                                <a href="" target="_blank">
+                                    <img
+                                            class="icon"
+                                            alt="facebookPage"
+                                            border="0"
+                                            src="../../../../src/assets/emailImg/googleIcon.png"
+                                            style="margin-left: 10px"
+                                    /></a>
+                            </div>
 
                             <div style="padding-top: 20px; padding-bottom: 20px">
                                 <p style="color: #000000; margin: 0; font-size: 10px; font-weight: 500;  line-height: 15px">

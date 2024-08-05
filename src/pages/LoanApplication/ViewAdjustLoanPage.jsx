@@ -26,7 +26,7 @@ const ViewAdjustLoanPage = () => {
     const queryParams = new URLSearchParams(location.search);
     const custId = queryParams.get("id");
     const appId = queryParams.get("aid");
-    const {data, isFetching, error} = useGetAdjustCustomerDetailsQuery(custId)
+    const {data, isFetching, error} = useGetAdjustCustomerDetailsQuery(appId)
     const [rloading, setRLoading] = useState(false)
     const permissions = getPermission("Loan Application", "Adjust");
 

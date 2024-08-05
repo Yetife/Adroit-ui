@@ -27,15 +27,18 @@
         .icon{
             width: 80px;
         }
-        .repayment-sch{
-            padding: 7px 30px;
-            border: 1px solid #dddddd;
-            text-align: left
+        .listStyle{
+            font-size: 14px;
+            font-weight: 600;
+            padding-bottom: 7px;
+            line-height: 20px;
         }
-        .repayment{
-            padding: 1px 40px;
-            border: 1px solid #dddddd;
-            text-align: left
+        .list{
+            font-size: 14px;
+            font-weight: 500;
+            padding-bottom: 7px;
+            /*padding-left: 7px;*/
+            line-height: 20px;
         }
         #mainDiv{
             padding: 30px 10px 20px 20px;
@@ -109,23 +112,43 @@
                                 </p>
                                 <p style="padding-bottom: 20px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Congratulations on achieving your savings goal. A significant milestone has been met in your financial journey and we commend you for your dedication and discipline.</p>
                                 <p style="margin: 0; font-size: 14px; font-weight: 400; line-height: 20px">Below are the details regarding the completion of your savings plan:</p>
-                                <div style="display: flex; align-items: center; gap: 30px;">
-                                    <ul>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Target Amount to Save:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Purpose/Description:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Saving Frequency:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Interest Accrued:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Start Date:</li>
-                                        <li style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">End Date:</li>
-                                    </ul>
-                                    <div>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">&#8358;300,000.00</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Car Purchase</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Weekly</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">&#8358;2,000.00</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">April 3rd, 2024</p>
-                                        <p style="padding-bottom: 10px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">July 3rd, 2024</p>
-                                    </div>
+                                <div style="margin-bottom: 20px; margin-top: 2px; border-radius: 5px;">
+                                    <table
+                                            border="0"
+                                            cellpadding="10"
+                                            cellspacing="0"
+                                            style="border-collapse:collapse;"
+                                    >
+                                        <tr>
+                                            <th class="listStyle" style="font-size: 13px; font-weight: 600;"></th>
+                                            <th class="list" style="font-size: 13px; font-weight: 600;"></th>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle" >&#x2022; Target Amount to Save:</td>
+                                            <td class="list">&#8358;3,000,000.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; Purpose/Description:</td>
+                                            <td class="list">Car Purchase</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; Saving Frequency:</td>
+                                            <td class="list">Weekly</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle" >&#x2022; Interest Accrued:</td>
+                                            <td class="list">&#8358;1,000.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; Start Date:</td>
+                                            <td class="list">April 3rd, 2024</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="listStyle">&#x2022; End Date:</td>
+                                            <td class="list">April 3rd, 2024</td>
+                                        </tr>
+
+                                    </table>
                                 </div>
                                 <p style="padding-bottom: 20px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Your Savings fund has been moved to your wallet.</p>
                                 <p style="padding-bottom: 20px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px">Please feel free to reach out to us with any questions, concerns, or assistance you may require. We're here to support you every step of the way.</p>
@@ -179,23 +202,24 @@
                         <td align="center"
                             style="padding: 20px 50px 0 40px; font-size: 14px; line-height: 20px; color: #FFF2C7;"
                         >
-                            <a href="" target="_blank">
-                                <img
-                                        class="icon"
-                                        alt="twitterPage"
-                                        border="0"
-                                        src="../../../../src/assets/emailImg/appleIcon.png "
-                                /></a>
+                            <div style="display: flex; align-items: center; justify-content: center">
+                                <a href="" target="_blank">
+                                    <img
+                                            class="icon"
+                                            alt="twitterPage"
+                                            border="0"
+                                            src="../../../../src/assets/emailImg/appleIcon.png "
+                                    /></a>
 
-                            <a href="" target="_blank">
-                                <img
-                                        class="icon"
-                                        alt="facebookPage"
-                                        border="0"
-                                        src="../../../../src/assets/emailImg/googleIcon.png"
-                                        style="margin-left: 10px"
-                                /></a>
-
+                                <a href="" target="_blank">
+                                    <img
+                                            class="icon"
+                                            alt="facebookPage"
+                                            border="0"
+                                            src="../../../../src/assets/emailImg/googleIcon.png"
+                                            style="margin-left: 10px"
+                                    /></a>
+                            </div>
                             <div style="padding-top: 20px; padding-bottom: 20px">
                                 <p style="color: #000000; margin: 0; font-size: 10px; font-weight: 500;  line-height: 15px">
                                     Phone: 0912 002 6498 (Mon-Fri from 8am-5pm)
