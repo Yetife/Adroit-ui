@@ -1,4 +1,4 @@
-import logo from '../assets/logo.svg'
+import logo from '../assets/logo.png'
 import exit from '../assets/exit.svg'
 import dashboard from '../assets/dashboard.svg'
 import collection from '../assets/collectionIcon.svg'

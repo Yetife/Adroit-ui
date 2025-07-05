@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import lock from '../../assets/lock.svg'
 import {Link as ReactLink, useNavigate} from "react-router-dom";
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/logo.png";
 import {FormControl, InputAdornment, OutlinedInput} from "@mui/material";
 import axios from "axios";
 import {updateSnackbar} from "../../store/snackbar/reducer.js";
