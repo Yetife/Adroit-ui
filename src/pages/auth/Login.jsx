@@ -144,8 +144,8 @@ const Login = () => {
                             <div className="mt-40">
                                 <p className='text-[13px] text-[#135D54] font-[500] text-center'>
                                     &copy; {new Date().getFullYear()}{" "}
-                                    <a href="mailto:sheisfinancials@gmail.com" className="underline hover:text-[#0b3f38]">
-                                        STILL
+                                    <a href="https://sheizfinancials.com/" target="_blank" rel="noreferrer" className="underline hover:text-[#0b3f38]">
+                                        SFSTL
                                     </a>{" "}
                                     | All Rights Reserved
                                 </p>
