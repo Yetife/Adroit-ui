@@ -52,7 +52,7 @@ const Login = () => {
     },[])
 
     const handleRoute = () => {
-        window.location.href = `${import.meta.env.VITE_APP_PASSWORD_RECOVERY_URL}/?id=${import.meta.env.VITE_APP_CLIENT_ID}`;
+        window.location.href = `https://adroit-password-recovery.vercel.app/?id=${import.meta.env.VITE_APP_CLIENT_ID}`;
     }
 
     const handleClick = ()=> {
