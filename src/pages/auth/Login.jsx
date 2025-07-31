@@ -145,7 +145,7 @@ const Login = () => {
                                 <p className='text-[13px] text-[#135D54] font-[500] text-center'>
                                     &copy; {new Date().getFullYear()}{" "}
                                     <a href="https://sheizfinancials.com/" target="_blank" rel="noreferrer" className="underline hover:text-[#0b3f38]">
-                                        SFSTL
+                                        SFTSL
                                     </a>{" "}
                                     | All Rights Reserved
                                 </p>
