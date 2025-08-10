@@ -101,6 +101,7 @@ const Login = () => {
                 <GridItem colSpan={{ base: 6, md: 6 }}>
                     <Stack className="items-center justify-center md:my-36 my-24 flex flex-col md:w-auto m-auto;">
                         <img alt={"logo"} src={logo}/>
+                        <p className="text-[18px] text-black mt-12 font-semibold">Login</p>
                         <Stack>
                             <Stack m={{base: "45px 20px 0", md: "60px 0 0"}}>
                                 <TextField size="medium" value={inputs.userName} variant="outlined"

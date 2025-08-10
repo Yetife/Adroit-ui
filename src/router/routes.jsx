@@ -1,7 +1,6 @@
 import Login from "../pages/auth/Login.jsx";
 import Otp from "../pages/auth/Otp.jsx";
 import Dashboard from "../pages/Dashboard.jsx";
-import Collection from "../pages/Collection.jsx";
 import Customer from "../pages/LoanApplication/Customer.jsx";
 import AdjustApplication from "../pages/LoanApplication/AdjustApplication.jsx";
 import DeclinedApplication from "../pages/LoanApplication/DeclinedApplication.jsx";
@@ -107,6 +106,7 @@ import ViewAdjustLoanTopUpPage from "../pages/LoanApplication/ViewAdjustLoanTopU
 import Report from "../pages/report/Report.jsx";
 import ViewApprovalTopUpPage from "../pages/loanUnderwriting/ViewApprovalTopUpPage.jsx";
 
+// eslint-disable-next-line react/prop-types
 export const ProtectedRoute = ({ children }) => {
     const navigate = useNavigate();
     const token = getUserToken();
