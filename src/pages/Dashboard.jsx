@@ -26,7 +26,7 @@ const Dashboard = () => {
                             <Stack direction={{md: "row", base: "column"}} justifyContent={{md: "space-between"}} p={{base:"10px", md:"30px"}}>
                                 <Stack>
                                     <Text color="#FFF"  textAlign="left" fontFamily="Inter" fontSize="28px" fontStyle="normal" fontWeight="700" lineHeight="21.6px">Welcome back {user.FirstName}!</Text>
-                                    <Text color="#FFF"  fontFamily="Inter" fontSize="11px" fontStyle="normal" fontWeight="500" lineHeight="21.6px">Your last login was 12:00pm 09 Jul, 2023</Text>
+                                    <Text color="#FFF"  fontFamily="Inter" fontSize="11px" fontStyle="normal" fontWeight="500" lineHeight="21.6px">Your last login was 12:00pm 20 Aug, 2025</Text>
                                 </Stack>
                                 <Stack p={{base: "20px 0", md: 0}}>
                                     <img src={pana} alt={'dashboard'}/>
@@ -58,7 +58,7 @@ const Dashboard = () => {
                                 <img alt={"recovery"} src={recovery} style={{width: "31px", height: "31px"}}/>
                                 <Text color="#384642" fontFamily="Inter" fontSize="24px" fontStyle="normal" fontWeight="700" lineHeight="normal">Recovery</Text>
                                 <Stack direction="row" justifyContent="space-between" pt="20px">
-                                    <Text color="#343434" fontFamily="Inter" fontSize="12px" fontStyle="normal" fontWeight="500" lineHeight="normal">01/08/2023</Text>
+                                    <Text color="#343434" fontFamily="Inter" fontSize="12px" fontStyle="normal" fontWeight="500" lineHeight="normal">01/08/2025</Text>
                                     <Text color="white" fontFamily="Inter" fontSize="10px" background="#135D54" borderRadius="8px" fontStyle="normal" fontWeight="500" p="4px" lineHeight="normal">Active</Text>
                                 </Stack>
                             </Stack>
@@ -66,7 +66,7 @@ const Dashboard = () => {
                                 <img src={cloud} style={{width: "31px", height: "31px"}}/>
                                 <Text color="#384642" fontFamily="Inter" fontSize="24px" fontStyle="normal" fontWeight="700" lineHeight="normal">Single Sign-on</Text>
                                 <Stack direction="row" justifyContent="space-between" pt="20px">
-                                    <Text color="#343434" fontFamily="Inter" fontSize="12px" fontStyle="normal" fontWeight="500" lineHeight="normal">04/08/2023</Text>
+                                    <Text color="#343434" fontFamily="Inter" fontSize="12px" fontStyle="normal" fontWeight="500" lineHeight="normal">04/08/2025</Text>
                                     <Text color="white" fontFamily="Inter" fontSize="10px" background="#135D54" borderRadius="8px" fontStyle="normal" fontWeight="500" p="4px" lineHeight="normal">Active</Text>
                                 </Stack>
                             </Stack>

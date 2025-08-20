@@ -107,7 +107,7 @@ const Otp = () => {
 
     return (
         <Stack  mt="5rem">
-            <img alt={"logo"} src={logo} className="items-center justify-center flex flex-col md:w-auto m-auto"/>
+            <img alt={"logo"} src={logo} className="items-center justify-center flex flex-col md:w-auto m-auto pt-4"/>
             <Container display="flex" h="80px"
                        alignItems={'center'}
                        py="2"
